@@ -1,0 +1,7 @@
+CREATE TABLE "problems" ("id" INTEGER PRIMARY KEY  NOT NULL  UNIQUE , "problem" TEXT NOT NULL , "proposer_id" INTEGER)
+CREATE TABLE "solutions" ("problem_id" INTEGER NOT NULL , "proposer_id" INTEGER, "solution" TEXT)
+CREATE TABLE "users" ("id" INTEGER PRIMARY KEY  NOT NULL  UNIQUE , "name" TEXT, "email" TEXT, "encr_pw" BLOB)
+CREATE TABLE "comments" ("problem_id" INTEGER, "user_id" INTEGER, "difficulty" INTEGER, "beauty" INTEGER, "knowledge_required" INTEGER, "comment" TEXT)
+CREATE TABLE "tags" ("tag_id" INTEGER PRIMARY KEY  NOT NULL  UNIQUE , "tag" TEXT NOT NULL  UNIQUE , "description" TEXT)
+CREATE TABLE "tag_list" ("problem_id" INTEGER NOT NULL , "tag_id" INTEGER NOT NULL )
+CREATE TABLE "published" ("problem_id" INTEGER NOT NULL  UNIQUE , "letter" CHAR NOT NULL , "number" INTEGER NOT NULL )

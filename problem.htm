@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Aufgabendatenbank - Aufgabe #Nummer#</title>
+	<meta name="author" content="Wurzel e.V."/>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<link rel="stylesheet" type="text/css" href="pb.css"/>
+	<link rel="icon" href="dw.ico"/>
+	<script type="text/javascript">
+		function makepreview() {
+			document.getElementById("preview").src = "test.png"; //"preview.php?proposer=" + document.getElementById("proposer").value + "&problem=" + document.getElementById("problem").value; // preview generator
+		}
+	</script>
+</head>
+<body>
+	<div class="content">
+	<h2 class="task">Aufgabe bearbeiten</h2>
+	<form class="task" title="Aufgabenformular">
+		<input type="text" name="proposer" placeholder="Autor" style="width:280px;"/>
+		<input type="text" name="tags" placeholder="Tags" style="width:250px;"/> <br/>
+		<textarea name="problem" rows="20" cols="80" placeholder="Aufgabentext" style="width:550px; height:200px;"></textarea> <br/>
+		<img alt="Vorschau" id="preview"/> <br/>
+		<input type="button" value="Vorschau" onclick="makepreview();"/>
+		<input type="submit" value="Speichern" style="float:right;"/>
+		<input type="button" value="Verwerfen" onclick="" style="float:right;"/>
+	</form>
+	
+	<div class="footer">
+	<div style="float:left; font-size:x-large; margin:3px 10px;">&#x221A;<span style="text-decoration:overline">WURZEL</span></div>
+	<div style="float:right; font-family:sans-serif; font-size:x-small;"><a href="help.htm">Hilfe</a></div>
+	<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/">Wurzel e.V.</a></div>
+	</div>
+	</div>
+</body>
+</html>
