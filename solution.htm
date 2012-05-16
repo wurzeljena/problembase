@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
-    <title>Aufgabendatenbank - Aufgabe bearbeiten</title>
+    <title>Aufgabendatenbank - Lösung bearbeiten</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
@@ -14,14 +14,13 @@
 </head>
 <body>
 	<div class="content">
-	<h2 class="task">Aufgabe bearbeiten</h2>
-	<form class="task" title="Aufgabenformular">
-		<input type="text" name="proposer" placeholder="Einsender" style="width:180px;"/>
-		<input type="text" name="location" placeholder="Ort" style="width:90px"/>
-		<input type="text" name="tags" placeholder="Tags" style="width:240px;"/> <br/>
-		<textarea name="problem" rows="20" cols="80" placeholder="Aufgabentext" style="width:550px; height:200px;"></textarea> <br/>
+	<h2 class="solution">Lösung bearbeiten</h2>
+	<form class="solution" title="Lösungsformular">
+		<img alt="Aufgabe" id="task" src="test.png"/> <br/> <!-- Bild-URL schon in PHP generieren? -->
+		<!-- evtl. noch TeX-Code der Aufgabe einblenden -->
+		<textarea name="solution" rows="60" cols="80" placeholder="Lösungstext" style="width:550px; height:400px;"></textarea> <br/>
 		<img alt="Vorschau" id="preview"/> <br/>
-		<input type="button" value="Vorschau" onclick="makepreview();"/>
+		<input type="button" value="Vorschau" onclick="makepreview();"/> <!-- könnte auch eine PDF-Ausgabe erzeugen -->
 		<input type="submit" value="Speichern" style="float:right;"/>
 		<input type="button" value="Verwerfen" onclick="" style="float:right;"/>
 	</form>

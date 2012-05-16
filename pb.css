@@ -2,25 +2,11 @@
 body
 {
 	background-color	: #40C0C0;
-	background-repeat	: no-repeat;
-	color				: #000000;
-	text-align			: justify;
-	width				: 1024px;
-	/*margin				: 0px auto;*/
 }
-
-/*IFRAME.MENU
-{
-	border	: none;
-	margin	: -8px 10px 10px -8px;
-	width	: 300px;
-	height  : 600px;
-	float	: left;
-}*/
 
 div.content {width:600px; margin:50px 100px}
 
-div.footer {padding: 30px 10px; color : #000078; font-variant:small-caps;}
+div.footer {padding:30px 10px; color:#000078; font-variant:small-caps;}
 
 /* Formatierung der Überschriften */
 h1
@@ -39,6 +25,8 @@ h2
 }
 
 h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
+h2.solution {color : #0000C0; text-shadow : #60A0C0 2px 2px 3px;}
+h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
 
 h3
 {
@@ -61,12 +49,15 @@ div.menu
 	margin-right	: 4em;
 }
 
-form.task
+form
 {
-	background-color: #A00030;
 	border-radius	: 20px;
 	padding			: 15px
 }
 
+form.task {background-color: #A00030;}
+form.solution {background-color: #0030A0;}
+form.eval {background-color: #D0D030;}
+
 input, textarea {margin : 5px;}
-img#preview {margin : 5px;}
+img#preview, img#task {margin : 5px;}
