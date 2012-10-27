@@ -61,13 +61,40 @@ div.menu
 
 form
 {
-	border-radius	: 20px;
-	padding			: 15px
+	padding			: 15px;
+}
+form.task 
+{
+	background-color: #FFA060;
+	box-shadow	: 3px 3px 5px #C08060;
+}
+form.solution 
+{
+	background-color: #A0C0FF;
+	box-shadow	: 3px 3px 5px #80A0C0;
+}
+form.eval 
+{
+	background-color: #D0D030;
+	box-shadow	: 3px 3px 5px #A0A020;
 }
 
-form.task {background-color: #A00030;}
-form.solution {background-color: #0030A0;}
-form.eval {background-color: #D0D030;}
-
 input, textarea {margin : 5px;}
-img#preview, img#task {margin : 5px;}
+input.text {font-family	: Georgia;}
+input.text, textarea {border : 1px dashed #808080;}
+form.task input.text, form.task textarea {background : #FFD080;}
+form.task input.text:hover, form.task textarea:hover {background : #FFE0A0;}
+form.solution input.text, form.solution textarea {background : #B0E0FF;}
+form.solution input.text:hover, form.solution textarea:hover {background : #D0F0FF;}
+form.eval input.text, form.eval textarea {background : #F0F050;}
+form.eval input.text:hover, form.eval textarea:hover {background : #F0F080;}
+
+input.button {}
+
+div.preview
+{
+	border	: 1px solid Gray;
+	border-radius : 5px;
+	background	: #FFF0C0;
+	margin : 5px; padding : 5px;
+}
