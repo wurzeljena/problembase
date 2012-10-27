@@ -1,35 +1,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
-    <title>Aufgabendatenbank - LÃ¶sung bearbeiten</title>
+    <title>Aufgabendatenbank - Lösung bearbeiten</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
-	<script type="text/javascript">
-		function makepreview() {
-			document.getElementById("preview").src = "test.png"; //"preview.php?proposer=" + document.getElementById("proposer").value + "&problem=" + document.getElementById("problem").value; // preview generator
-		}
-	</script>
+	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+	<script type="text/javascript" src="preview.js"></script>
 </head>
 <body>
+	<div class="head"><div style="width:50em;">
+		<div class="logo">&#x221A;<span style="text-decoration:overline">WURZEL</span></div>
+		<div class="login">Login</div>
+		<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/">Wurzel e.V.</a></div>
+	</div></div>
+
 	<div class="content">
-	<h2 class="solution">LÃ¶sung bearbeiten</h2>
-	<form class="solution" title="LÃ¶sungsformular">
+	<h2 class="solution">Lösung bearbeiten</h2>
+	<form class="solution" title="Lösungsformular" action="">
 		<img alt="Aufgabe" id="task" src="test.png"/> <br/> <!-- Bild-URL schon in PHP generieren? -->
 		<!-- evtl. noch TeX-Code der Aufgabe einblenden -->
-		<textarea name="solution" rows="60" cols="80" placeholder="LÃ¶sungstext" style="width:550px; height:400px;"></textarea> <br/>
-		<img alt="Vorschau" id="preview"/> <br/>
-		<input type="button" value="Vorschau" onclick="makepreview();"/> <!-- kÃ¶nnte auch eine PDF-Ausgabe erzeugen -->
+		<textarea class="text" name="solution" id="solution" rows="60" cols="80" placeholder="Lösungstext" style="width:557px; height:400px;" onkeyup="Preview.Update()"></textarea> <br/>
+		<div class="preview" id="preview"></div>
+		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
 		<input type="submit" value="Speichern" style="float:right;"/>
-		<input type="button" value="Verwerfen" onclick="" style="float:right;"/>
+		<input type="button" value="Verwerfen" style="float:right;" onclick=""/>
 	</form>
-	
-	<div class="footer">
-	<div style="float:left; font-size:x-large; margin:3px 10px;">&#x221A;<span style="text-decoration:overline">WURZEL</span></div>
-	<div style="float:right; font-family:sans-serif; font-size:x-small;"><a href="help.htm">Hilfe</a></div>
-	<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/">Wurzel e.V.</a></div>
 	</div>
-	</div>
+
+	<script type="text/javascript">
+		Preview.Init("solution", "preview");
+	</script>
 </body>
 </html>

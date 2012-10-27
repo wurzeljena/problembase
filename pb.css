@@ -1,12 +1,22 @@
 /* Allgemeine Formatierung */
 body
 {
-	background-color	: #40C0C0;
+	background-color	: #FFFFC0;
+	font-family	: Georgia;
+	margin	: 0;
 }
 
-div.content {width:600px; margin:50px 100px}
+div.head 
+{
+	color	: Teal;
+	background-color: Black;
+	border-bottom	: 1px solid Red;	
+	margin	: 0;	padding	: 5px;
+}
+div.head div.logo {font-size : x-large; padding : 0px 1em 0px 3em; float : left;}
+div.head div.login {color : Green; float : right;}
 
-div.footer {padding:30px 10px; color:#000078; font-variant:small-caps;}
+div.content {width:600px; margin:50px 100px}
 
 /* Formatierung der Überschriften */
 h1
