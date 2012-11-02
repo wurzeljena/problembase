@@ -44,20 +44,10 @@ h3
 	color		: #D0A020;
 }
 
-/* Formatierung von Links *//*
+/* Formatierung von Links */
 a:link, a:visited { color : #00F040; }
 a:hover		{ color : #80F0C0; }
-a:active	{ color : #C0F080; }*/
-
-/* Formatierung des Menüs */
-div.menu
-{
-	background-color: #202000;
-	border			: 1px solid #303000;
-	margin-top		: 1em;
-	margin-left		: 1em;
-	margin-right	: 4em;
-}
+a:active	{ color : #C0F080; }
 
 form
 {
