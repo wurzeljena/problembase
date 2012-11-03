@@ -18,6 +18,13 @@ div.head div.login {color : Green; float : right;}
 
 div.content {width:600px; margin:50px 100px}
 
+*.info
+{
+	font-family	: Sans-Serif;
+	font-size	: small;
+	color		: #606060;
+}
+
 /* Formatierung der Überschriften */
 h1
 {
@@ -53,6 +60,14 @@ form
 {
 	padding			: 15px;
 }
+form.filter
+{
+	background-image	: url("filter.png");
+	background-repeat	: repeat;
+	border	: 1px solid Grey;
+	border-radius	: 10px;
+	padding	: 10px;
+}
 form.task 
 {
 	background-color: #FFA060;
@@ -67,6 +82,13 @@ form.eval
 {
 	background-color: #D0D030;
 	box-shadow	: 3px 3px 5px #A0A020;
+}
+
+span.question 
+{	
+	font-family	: Sans-Serif;
+	font-size	: small;
+	color		: #A0A0A0;
 }
 
 input, textarea {margin : 5px;}

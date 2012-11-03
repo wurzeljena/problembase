@@ -1,3 +1,25 @@
+// HIDDEN TRIGGER
+var Trigger = {
+	element: null,
+	is_hidden: true,
+
+	Init: function (id) {
+		this.element = document.getElementById(id);
+	},
+	Trig: function () {
+		if (this.is_hidden) {
+			this.element.style.visibility = "visible";
+			this.element.style.position = "relative";
+		}
+		else {
+			this.element.style.visibility = "hidden";
+			this.element.style.position = "absolute";
+		}
+		this.is_hidden = !this.is_hidden;
+	}
+}
+
+// PREVIEW CODE
 // configure MathJax to accept $...$
 MathJax.Hub.Config({
 	tex2jax: {
