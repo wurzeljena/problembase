@@ -71,16 +71,19 @@ form.filter
 form.task 
 {
 	background-color: #FFA060;
+	border		: 1px solid #E06060;
 	box-shadow	: 3px 3px 5px #C08060;
 }
 form.solution 
 {
 	background-color: #A0C0FF;
+	border		: 1px solid #6090C0;
 	box-shadow	: 3px 3px 5px #80A0C0;
 }
 form.eval 
 {
 	background-color: #D0D030;
+	border		: 1px solid #A0A040;
 	box-shadow	: 3px 3px 5px #A0A020;
 }
 
