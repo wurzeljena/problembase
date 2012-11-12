@@ -19,7 +19,7 @@
 	<div class="content">
 		<form class="filter" title="Filter" action="">
 		<input type="button" value="+ Erweitert" style="float:right;" onclick="Trigger.Trig();"/>
-		<span style="color:#A0A0A0; text-transform:uppercase; margin: 0px 10px; font-size:large;">Filter</span>
+		<span class="caption">Filter</span>
 		<input type="text" name="simple_filter" placeholder="Suchbegriff" style="width:330px;"/>
 		<div id="hidden_filter" style="visibility:hidden; position:absolute;">
 			<div class="info">Erweiterte Suche</div>
@@ -34,6 +34,22 @@
 			<input type="date" name="end" style="width:80px;"/>
 		</div>
 		</form>
+
+		<div class="main">
+		<span class="caption">Aufgaben</span>
+		<a href="problem.htm" class="button" style="float:right;">Neue Aufgabe</a>
+		<div class="problem_list">
+			<div class="problem">
+			<span class="info proposer">Autor, Ort</span>
+			Hier kommt eine Vorschau für den Aufgabentext hin...
+			<table class="info"><tr>
+			<td style="width:20%; border:none;">11.11.2011</td>
+			<td style="width:30%;">Heft 11/11, Aufgabe x11</td>
+			<td style="width:40%;">1 Lösung vorhanden <a>(anzeigen)</a></td>
+			</tr></table>
+			</div>
+		</div>
+		</div>
 	</div>
 
 	<script type="text/javascript">

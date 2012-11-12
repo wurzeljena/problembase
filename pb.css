@@ -26,13 +26,6 @@ div.content {width:600px; margin:50px 100px}
 }
 
 /* Formatierung der Überschriften */
-h1
-{
-	font-family	: "Monotype Corsiva";
-	text-align	: center;
-	text-shadow : #ffffff 0px 0px 10px;
-}
-
 h2
 {
 	font-family : Script;
@@ -45,20 +38,60 @@ h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
 h2.solution {color : #0000C0; text-shadow : #60A0C0 2px 2px 3px;}
 h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
 
-h3
+span.caption
 {
-	text-align	: center;
-	color		: #D0A020;
+	text-transform	: uppercase;
+	margin		: 0px 10px;
+	font-size	: large;
+	text-shadow	: 1px 1px 0px #FFFFFF;
 }
+
+form.filter span.caption {color:#A0A0A0;}
+div.main span.caption {color:#C08060;}
 
 /* Formatierung von Links */
 a:link, a:visited { color : #00F040; }
 a:hover		{ color : #80F0C0; }
 a:active	{ color : #C0F080; }
 
+a.button {}
+
+div.main
+{
+	background	: #FFC080;
+	border-radius	: 5px;
+	margin	: 5px;	padding	: 5px;
+}
+
+div.problem_list
+{
+	margin	: 5px;
+	border	: 1px solid Black;
+}
+
+div.problem_list div.problem
+{
+	background	: #FFE0A0;
+	border-bottom	: 1px dotted Gray;
+	padding		: 5px 10px;
+}
+
+table.info td
+{
+	padding		: 0px 10px;
+	border-left	: 1px solid #808080;
+	text-align	: center;
+}
+
+span.proposer
+{
+	margin-right: 1.5em;
+}
+
 form
 {
 	padding			: 15px;
+	margin			: 5px;
 }
 form.filter
 {
@@ -106,14 +139,14 @@ form.eval input.text:hover, form.eval textarea:hover {background : #F0F080;}
 
 input.button {}
 
-div.problem
+form div.problem
 {
 	border	: 1px solid Gray;
 	border-radius : 5px;
 	background	: #FFD080;
 	margin : 5px; padding : 5px;
 }
-div.problem:before 
+form div.problem:before 
 {
 	content	: "Aufgabe: ";
 	font-family	: Sans-Serif;
