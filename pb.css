@@ -32,6 +32,9 @@ h2
 	font-size	: 3em;
 	font-weight	: lighter;
 	margin		: 30px -30px;
+	transform	: rotate(-90deg);
+	position	: absolute;
+	left	: -1em;	top	: 3em;
 }
 
 h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
