@@ -26,6 +26,7 @@ CREATE  TABLE IF NOT EXISTS `problembase`.`problems` (
   `problem` TEXT NULL ,
   `proposer_id` INT NOT NULL ,
   `remarks` TEXT NULL ,
+  `proposed` DATE NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
   INDEX `fk_problems_proposers1_idx` (`proposer_id` ASC) ,
@@ -70,6 +71,8 @@ CREATE  TABLE IF NOT EXISTS `problembase`.`users` (
   `name` VARCHAR(32) NOT NULL ,
   `email` VARCHAR(32) NULL ,
   `encr_pw` BLOB NULL ,
+  `root` TINYINT(1) NULL ,
+  `editor` TINYINT(1) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
 ENGINE = InnoDB;
