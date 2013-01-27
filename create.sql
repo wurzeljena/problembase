@@ -24,7 +24,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `problembase`.`problems` (
   `id` INT NOT NULL ,
   `problem` TEXT NULL ,
-  `proposer_id` INT NOT NULL ,
+  `proposer_id` INT NULL ,
   `remarks` TEXT NULL ,
   `proposed` DATE NULL ,
   PRIMARY KEY (`id`) ,
@@ -45,7 +45,7 @@ CREATE  TABLE IF NOT EXISTS `problembase`.`solutions` (
   `id` INT NOT NULL ,
   `problem_id` INT NOT NULL ,
   `solution` TEXT NULL ,
-  `proposer_id` INT NOT NULL ,
+  `proposer_id` INT NULL ,
   PRIMARY KEY (`id`, `problem_id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
   INDEX `fk_solutions_problems_idx` (`problem_id` ASC) ,
@@ -82,14 +82,13 @@ ENGINE = InnoDB;
 -- Table `problembase`.`comments`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `problembase`.`comments` (
-  `id` INT NOT NULL ,
   `user_id` INT NOT NULL ,
   `problem_id` INT NOT NULL ,
   `difficulty` TINYINT NULL ,
   `beauty` TINYINT NULL ,
   `knowledge_required` TINYINT NULL ,
   `comment` TEXT NULL ,
-  PRIMARY KEY (`id`, `user_id`, `problem_id`) ,
+  PRIMARY KEY (`user_id`, `problem_id`) ,
   INDEX `fk_comments_users1_idx` (`user_id` ASC) ,
   INDEX `fk_comments_problems1_idx` (`problem_id` ASC) ,
   CONSTRAINT `fk_comments_users1`
