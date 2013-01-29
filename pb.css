@@ -6,14 +6,21 @@ body
 	margin	: 0;
 }
 
-div.head 
+div.head
 {
-	color	: Teal;
-	background-color: Black;
-	border-bottom	: 1px solid Red;	
-	margin	: 0;	padding	: 5px;
+	color	: #6060A0;
+	background: linear-gradient(to bottom, #C0C0D0, #D0D0FF 50%, #D0D0FF 80%, #808080);
+	margin	: 0;
+	padding	: 7px;
+	padding-top	: 5px;
 }
-div.head div.logo {font-size : x-large; padding : 0px 1em 0px 3em; float : left;}
+div.head div.logo 
+{
+	text-shadow	: #40A0C0 1px 1px 0px;
+	font-size : x-large;
+	padding : 0px 1em 0px 3em;
+	float : left;
+}
 div.head div.login {color : Green; float : right;}
 
 div.content {width:600px; margin:50px 100px}
