@@ -66,6 +66,7 @@ a:active	{ color : #C0F080; }
 
 a.button {}
 
+/* Aufgabenliste */
 div.main
 {
 	background	: #FFC080;
@@ -98,6 +99,7 @@ span.proposer
 	margin-right: 1.5em;
 }
 
+/* Formulare */
 form
 {
 	padding			: 15px;
@@ -131,10 +133,16 @@ form.eval
 }
 
 span.question 
-{	
+{
 	font-family	: Sans-Serif;
 	font-size	: small;
 	color		: #A0A0A0;
+}
+span.eval
+{
+	font-family	: Garamond;
+	font-style	: italic;
+	padding		: 0.5em;
 }
 
 input, textarea {margin : 5px;}
@@ -150,6 +158,7 @@ form.eval input.text:hover, form.eval textarea:hover {background : #F0F080;}
 
 input.button {}
 
+/* TEX-Anzeigen */
 form div.problem
 {
 	border	: 1px solid Gray;
@@ -180,4 +189,11 @@ div.preview:before
 	font-variant: small-caps;
 	font-size	: small;
 	color		: Gray;
+}
+
+img.star
+{
+	margin	: 3px -3px -6px -3px;
+	padding	: 0;
+	transform	: rotate(60deg);
 }

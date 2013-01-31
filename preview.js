@@ -17,7 +17,7 @@ var Trigger = {
 		}
 		this.is_hidden = !this.is_hidden;
 	}
-}
+};
 
 // PREVIEW CODE
 // configure MathJax to accept $...$
@@ -64,3 +64,37 @@ var Preview = {
 
 Preview.callback = MathJax.Callback(["CreatePreview", Preview]);
 Preview.callback.autoReset = true;  // make sure it can run more than once
+
+// starring mechanism
+function Stars(name) {
+	this.input = document.getElementById(name);
+	this.value = parseInt(this.input.value);
+	this.stars = new Array();
+	this.stars[0] = document.getElementById(name + "1");
+	this.stars[1] = document.getElementById(name + "2");
+	this.stars[2] = document.getElementById(name + "3");
+	this.stars[3] = document.getElementById(name + "4");
+	this.stars[4] = document.getElementById(name + "5");
+
+	this.show = function (num) {
+		for (var i = 0; i < 5; i++) {
+			if (i < num) {
+				this.stars[i].src = "mandstar.png";
+				this.stars[i].alt = "*";
+			}
+			else {
+				this.stars[i].src = "mand.png";
+				this.stars[i].alt = "o";
+			}
+		}
+	};
+	this.set = function (num) {
+		this.value = num;
+		this.input.value = this.value;
+	};
+	this.reset = function () {
+		this.show(this.value);
+	};
+
+	this.reset();
+};
