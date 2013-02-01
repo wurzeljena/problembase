@@ -114,6 +114,7 @@ CREATE  TABLE IF NOT EXISTS `problembase`.`tags` (
   `id` INT NOT NULL ,
   `name` VARCHAR(32) NOT NULL ,
   `description` VARCHAR(128) NULL ,
+  `color` INT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
 ENGINE = InnoDB;

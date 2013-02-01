@@ -111,6 +111,12 @@ div.problem_list div.problem
 	padding		: 5px 10px;
 }
 
+div.problem_list span.tag
+{
+	margin	: 0px 5px;
+	float	: right;
+}
+
 table.info td
 {
 	padding		: 0px 10px;
@@ -121,6 +127,24 @@ table.info td
 span.proposer
 {
 	margin-right: 1.5em;
+}
+
+/* Tag-Formatierung */
+form.taglist {position: absolute; top: 4em; left: 750px;}
+span.tag
+{
+	padding			: 3px 5px;
+	border-radius	: 3px;
+	font-family		: Sans-Serif;
+	font-weight		: bold;
+	font-size		: small;
+	text-shadow		: 1px 1px 0px Gray;
+}
+
+span.tag_test
+{
+	background	: linear-gradient(to bottom, #2080C0, #0060A0);
+	color		: White;
 }
 
 /* Aufgabenseite */
@@ -141,6 +165,7 @@ div.task div.info
 div.task div.tags
 {
 	float	: right;
+	font-style	: normal;
 }
 div.task div.text {margin : 5px; padding : 5px;}
 div.task div.text:before

@@ -41,7 +41,8 @@
 		<div class="problem_list">
 			<div class="problem">
 			<span class="info proposer">Autor, Ort</span>
-			Hier kommt eine Vorschau für den Aufgabentext hin...
+			<span class="tag tag_test">Test</span>
+			Hier kommt ein hoffentlich sehr langer Aufgabentext hin, der mindestens über zwei Zeilen geht.
 			<table class="info"><tr>
 			<td style="width:20%; border:none;">11.11.2011</td>
 			<td style="width:30%;">Heft 11/11, Aufgabe x11</td>
@@ -51,6 +52,16 @@
 		</div>
 		</div>
 	</div>
+
+	<form action="index.htm" class="taglist">
+		<h3 class="caption" style="color:Gray;">[Tags]</h3>
+		<input type="text" name="tag" placeholder="Tag hinzufügen"/>
+		<input type="hidden" name="tags" value="Test"/> <br/>
+		<div style="margin:5px; margin-bottom:2em;">
+			<span class="tag tag_test">Test</span>
+		</div>
+		<a class="button" href="tags.htm">Bearbeiten</a>
+	</form>
 
 	<script type="text/javascript">
 		Trigger.Init("hidden_filter");
