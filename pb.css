@@ -21,7 +21,21 @@ div.head div.logo
 	padding : 0px 1em 0px 3em;
 	float : left;
 }
-div.head div.login {color : Green; float : right;}
+div.head div.login 
+{
+	border-radius	: 5px;
+	background	: linear-gradient(to bottom, #00E000, #00A000);
+	padding	: 3px 7px; margin	: 3px;
+	color	: White;	text-shadow	: 0px 1px 0px Black;
+	text-decoration	: none;
+	float : right;
+	box-shadow	: inset 0px 0px 1px #006000;
+}
+div.head div.login:hover
+{
+	background	: linear-gradient(to bottom, #00F000, #00D000);
+}
+div.head div.login:active {box-shadow	: inset 2px 2px 1px #006000;}
 
 div.content {width:600px; margin:50px 100px}
 
@@ -48,23 +62,33 @@ h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
 h2.solution {color : #0000C0; text-shadow : #60A0C0 2px 2px 3px;}
 h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
 
-span.caption
+*.caption
 {
 	text-transform	: uppercase;
-	margin		: 0px 10px;
+	margin		: 5px 10px;
 	font-size	: large;
+	font-weight	: normal;
 	text-shadow	: 1px 1px 0px #FFFFFF;
 }
 
-form.filter span.caption {color:#A0A0A0;}
-div.main span.caption {color:#C08060;}
+form.filter div.caption {color:#A0A0A0; float: left;}
+div.main div.caption {color:#C08060; margin-bottom: 10px;}
 
 /* Formatierung von Links */
-a:link, a:visited { color : #00F040; }
-a:hover		{ color : #80F0C0; }
-a:active	{ color : #C0F080; }
-
-a.button {}
+a.button
+{
+	border	: 1px solid #006000;
+	border-radius	: 20px;
+	background	: linear-gradient(to bottom, #00C000, #008000);
+	padding	: 3px 7px; margin	: 3px;
+	color	: White;	text-shadow	: 0px 1px 0px Black;
+	text-decoration	: none;
+}
+a.button:hover
+{
+	border	: 1px solid #008000;
+	background	: linear-gradient(to bottom, #00D000, #00A000);
+}
 
 /* Aufgabenliste */
 div.main
@@ -98,6 +122,48 @@ span.proposer
 {
 	margin-right: 1.5em;
 }
+
+/* Aufgabenseite */
+div.task
+{
+	border	: 1px solid Gray;
+	border-radius : 5px;
+	background	: #FFD080;
+	margin : 5px 0px; padding : 5px;
+	box-shadow	: 5px 5px 0px #C08060;
+}
+div.task div.info
+{
+	border-bottom	: 1px solid Teal;
+	padding		: 5px;
+	font-style	: italic;
+}
+div.task div.tags
+{
+	float	: right;
+}
+div.task div.text {margin : 5px; padding : 5px;}
+div.task div.text:before
+{
+	content	: "Aufgabe: ";
+	font-family	: Sans-Serif;
+	font-variant: small-caps;
+	font-size	: small;
+	color		: Gray;
+}
+
+table.comments
+{
+	width	: 100%;
+	border-collapse	: collapse;
+}
+table.comments tr
+{
+	border-top	: 1px dotted Gray;
+}
+table.comments tr.own {background: #D0D030;}
+table.comments td {padding: 3px; vertical-align: baseline;}
+table.comments td.author {width: 20%}
 
 /* Formulare */
 form
