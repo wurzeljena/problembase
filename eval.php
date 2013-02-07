@@ -19,8 +19,18 @@
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
 	
+	<?php
+		$id = (int)$_REQUEST['id'];
+		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
+		$problem = $result->fetchArray(SQLITE3_ASSOC);
+		$result = $pb->query("SELECT * FROM comments WHERE user_id=1 AND problem_id=".$id);
+		$comment = $result->fetchArray(SQLITE3_ASSOC);
+		$pb->close();
+	?>
 	<form class="eval" title="Bewertungsformular">
-		<div class="problem">Aufgabe</div>
+		<div class="problem" id="prob"><?php print $problem['problem']?></div>
+		<input type="hidden" name="id" value="<?php print $id?>"/>
 		<span class="eval">Eleganz</span>
 		<span onmouseout="Beauty.reset();">
 			<img class="star" id="beauty1"
@@ -34,7 +44,7 @@
 			<img class="star" id="beauty5"
 				onmouseover="Beauty.show(5);" onclick="Beauty.set(5);"/>
 			</span>
-			<input type="hidden" name="beauty" id="beauty" value="-1"/>
+			<input type="hidden" name="beauty" id="beauty" value="<?php print $comment['beauty']?>"/>
 		<span class="eval">Schwierigkeit</span>
 			<span onmouseout="Diff.reset();">
 			<img class="star" id="diff1"
@@ -48,7 +58,7 @@
 			<img class="star" id="diff5"
 				onmouseover="Diff.show(5);" onclick="Diff.set(5);"/>
 			</span>
-			<input type="hidden" name="diff" id="diff" value="-1"/>
+			<input type="hidden" name="diff" id="diff" value="<?php print $comment['difficulty']?>"/>
 		<span class="eval">Wissen</span>
 			<span onmouseout="Know.reset();">
 			<img class="star" id="know1"
@@ -62,8 +72,8 @@
 			<img class="star" id="know5"
 				onmouseover="Know.show(5);" onclick="Know.set(5);"/>
 			</span>
-			<input type="hidden" name="know" id="know" value="-1"/>
-		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"></textarea> <br/>
+			<input type="hidden" name="know" id="know" value="<?php print $comment['knowledge_required']?>"/>
+		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php print $comment['comment']?></textarea> <br/>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
 		<input type="submit" value="Speichern" style="float:right;"/>
 		<input type="button" value="Verwerfen" onclick="" style="float:right;"/>
@@ -71,6 +81,8 @@
 	</div>
 
 	<script type="text/javascript">
+		text = document.getElementById("prob");
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub, prob]);
 		var Beauty = new Stars("beauty");
 		var Diff = new Stars("diff");
 		var Know = new Stars("know");
