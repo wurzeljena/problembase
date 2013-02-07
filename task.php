@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
-    <title>Aufgabendatenbank - Aufgabe ###</title>
+    <title>Aufgabendatenbank - Aufgabe</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
@@ -16,33 +16,55 @@
 		<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/" target="_blank">Wurzel e.V.</a></div>
 	</div></div>
 
+	<?php
+		$id = (int)$_REQUEST['id'];
+		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
+		$problem = $result->fetchArray(SQLITE3_ASSOC);
+		$result = $pb->query("SELECT * FROM proposers WHERE id=".$problem['proposer_id']);
+		$proposer = $result->fetchArray(SQLITE3_ASSOC);
+		$result = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=".$id);
+	?>
 	<div class="content">
 		<div class="task">
-			<div class="info">Autor, Ort (<a href="mailto:mail@mail.xx">Mail</a>)
+			<div class="info">
+			<?php
+				print htmlspecialchars($proposer['name']).", ".htmlspecialchars($proposer['location']);
+				if ($proposer['country'] != "") print " (".htmlspecialchars($proposer['country']).")";
+			?>
 			<div class="tags">
 				<span class="tag tag_test">Test</span>
 			</div></div>
-			<div class="text">
-			Aufgabentext
-			</div>
+			<div class="text" id="prob"><?php print $problem['problem']?></div>
 		</div>
 
 		<h3 class="caption" style="margin-top:1.5em;">Kommentare</h3>
 		<table class="comments">
-			<tr class="own">
-				<td class="author">Ich, Ort</td>
-				<td class="comment">
-				<a class="button" style="float:right;" href="eval.htm">Bearbeiten</a>
-				{Bewertungsbereich} <br/> Hier steht der eigene Kommentar. 
-				</td>
-			</tr>
-			<tr>
-				<td class="author">Autor, Ort</td>
-				<td class="comment">{Bewertungsbereich} <br/> Hier steht ein anderer Kommentar.</td>
-			</tr>
+			<?php
+			while($comment=$result->fetchArray(SQLITE3_ASSOC)) {
+				if ($comment['user_id']==1)
+					echo '<tr class="own">';
+				else
+					echo '<tr>';
+				echo '<td class="author">'.$comment['name'].'</td>';
+				echo '<td class="comment">';
+				if ($comment['user_id']==1)
+					echo '<a class="button" style="float:right;" href="eval.php?id='.$comment['problem_id'].'">Bearbeiten</a>';
+				echo '{Bewertungsbereich} <br/>';
+				echo $comment['comment'];
+				echo '</td></tr>';
+			};
+			?>
 		</table>
 
 		<!-- Musterlösungen (wie Aufgabenliste in index.htm)-->
+
+		<?php $pb->close(); ?>
 	</div>
+
+	<script type="text/javascript">
+		text = document.getElementById("prob");
+		MathJax.Hub.Queue(["Typeset", MathJax.Hub, prob]);
+	</script>
 </body>
 </html>
