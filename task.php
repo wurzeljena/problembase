@@ -19,11 +19,9 @@
 	<?php
 		$id = (int)$_REQUEST['id'];
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
-		$problem = $result->fetchArray(SQLITE3_ASSOC);
-		$result = $pb->query("SELECT * FROM proposers WHERE id=".$problem['proposer_id']);
-		$proposer = $result->fetchArray(SQLITE3_ASSOC);
-		$result = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=".$id);
+		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$id, true);
+		$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$problem['proposer_id'], true);
+		$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=".$id);
 	?>
 	<div class="content">
 		<div class="task">
@@ -41,7 +39,7 @@
 		<h3 class="caption" style="margin-top:1.5em;">Kommentare</h3>
 		<table class="comments">
 			<?php
-			while($comment=$result->fetchArray(SQLITE3_ASSOC)) {
+			while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
 				if ($comment['user_id']==1)
 					echo '<tr class="own">';
 				else
