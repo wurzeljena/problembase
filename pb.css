@@ -143,18 +143,11 @@ form.taglist {position: absolute; top: 4em; left: 750px;}
 span.tag
 {
 	padding			: 3px 5px;
+	margin			: 2px;
 	border-radius	: 3px;
 	font-family		: Sans-Serif;
 	font-weight		: bold;
 	font-size		: small;
-	text-shadow		: 1px 1px 0px Gray;
-}
-
-span.tag_test
-{
-	background	: #2080C0;
-	background	: linear-gradient(to bottom, #2080C0, #0060A0);
-	color		: White;
 }
 
 /* Aufgabenseite */
