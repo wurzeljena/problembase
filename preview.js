@@ -79,11 +79,11 @@ function Stars(name) {
 	this.show = function (num) {
 		for (var i = 0; i < 5; i++) {
 			if (i < num) {
-				this.stars[i].src = "mandstar.png";
+				this.stars[i].src = "img/mandstar.png";
 				this.stars[i].alt = "*";
 			}
 			else {
-				this.stars[i].src = "mand.png";
+				this.stars[i].src = "img/mand.png";
 				this.stars[i].alt = "o";
 			}
 		}

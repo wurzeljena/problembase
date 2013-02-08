@@ -201,7 +201,7 @@ form
 }
 form.filter
 {
-	background-image	: url("filter.png");
+	background-image	: url("img/filter.png");
 	background-repeat	: repeat;
 	border	: 1px solid Grey;
 	border-radius	: 10px;
