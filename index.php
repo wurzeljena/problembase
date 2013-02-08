@@ -16,6 +16,12 @@
 		<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/" target="_blank">Wurzel e.V.</a></div>
 	</div></div>
 
+	<?php
+		include 'tags.php';
+		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$problems = $pb->query("SELECT * FROM problems, proposers WHERE problems.proposer_id=proposers.id");
+	?>
+
 	<div class="content">
 		<form class="filter" title="Filter" action="">
 		<input type="button" value="+ Erweitert" style="float:right;" onclick="Trigger.Trig();"/>
@@ -39,16 +45,38 @@
 		<a href="problem.htm" class="button" style="float:right;">Neue Aufgabe</a>
 		<div class="caption">Aufgaben</div>
 		<div class="problem_list">
-			<div class="problem">
-			<span class="info proposer">Autor, Ort</span>
-			<span class="tag tag_test">Test</span>
-			Hier kommt ein hoffentlich sehr langer Aufgabentext hin, der mindestens über zwei Zeilen geht.
-			<table class="info"><tr>
-			<td style="width:20%; border:none;">11.11.2011</td>
-			<td style="width:30%;">Heft 11/11, Aufgabe x11</td>
-			<td style="width:40%;">1 Lösung vorhanden <a>(anzeigen)</a></td>
-			</tr></table>
-			</div>
+			<?php
+			while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
+				// find out if published
+				print '<div class="problem">';
+				print '<span class="info proposer">'.htmlspecialchars($problem['name']).", ".htmlspecialchars($problem['location']);
+				if ($problem['country'] != "") print " (".htmlspecialchars($problem['country']).")";
+				print '</span>';
+
+				$tag_list = $pb->query("SELECT tag_id FROM tag_list WHERE problem_id=".$problem['id']);
+				$tags = array();
+				while ($tag = $tag_list->fetchArray(SQLITE3_NUM)) $tags[] = $tag[0];
+				tags($pb, $tags);
+				print $problem['problem'];
+				print '<table class="info"><tr>';
+				print '<td style="width:15%; border:none;">'.$problem['proposed'].'</td>';
+
+				$published = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$problem['id'], true);
+				if (count($published))
+					print '<td style="width:40%;">Heft '.$published['month'].'/'.$published['year'].
+						', Aufgabe $'.$published['letter'].$published['number'].'$</td>';
+				else
+					print '<td style="width:40%;">nicht publiziert</td>';
+
+				$numsol = $pb->querySingle("SELECT COUNT(*) FROM solutions WHERE problem_id=".$problem['id']);
+				$solstr = ($numsol <= 1) ? ($numsol ? "" : "k")."eine Lösung" : $numsol." Lösungen";
+				$numcomm = $pb->querySingle("SELECT COUNT(*) FROM comments WHERE problem_id=".$problem['id']);
+				$commstr = ($numcomm <= 1) ? ($numcomm ? "" : "k")."ein Kommentar" : $numcomm." Kommentare";
+				print '<td style="width:40%;">'.$commstr.', '.$solstr.'</td>';
+				print '</tr></table>';
+				print '</div>';
+			};
+			?>
 		</div>
 		</div>
 	</div>
@@ -57,11 +85,13 @@
 		<h3 class="caption" style="color:Gray;">[Tags]</h3>
 		<input type="text" name="tag" placeholder="Tag hinzufügen"/>
 		<input type="hidden" name="tags" value="Test"/> <br/>
-		<div style="margin:5px; margin-bottom:2em;">
-			<span class="tag tag_test">Test</span>
+		<div style="margin:3px; margin-bottom:2em;">
+			<?php tags($pb, array()); ?>
 		</div>
 		<a class="button" href="tags.htm">Bearbeiten</a>
 	</form>
+
+	<?php $pb->close(); ?>
 
 	<script type="text/javascript">
 		Trigger.Init("hidden_filter");
