@@ -41,16 +41,16 @@
 			<?php
 			while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
 				if ($comment['user_id']==1)
-					echo '<tr class="own">';
+					print '<tr class="own">';
 				else
-					echo '<tr>';
-				echo '<td class="author">'.$comment['name'].'</td>';
-				echo '<td class="comment">';
+					print '<tr>';
+				print '<td class="author">'.$comment['name'].'</td>';
+				print '<td class="comment">';
 				if ($comment['user_id']==1)
-					echo '<a class="button" style="float:right;" href="eval.php?id='.$comment['problem_id'].'">Bearbeiten</a>';
-				echo '{Bewertungsbereich} <br/>';
-				echo $comment['comment'];
-				echo '</td></tr>';
+					print '<a class="button" style="float:right;" href="eval.php?id='.$comment['problem_id'].'">Bearbeiten</a>';
+				print '{Bewertungsbereich} <br/>';
+				print $comment['comment'];
+				print '</td></tr>';
 			};
 			?>
 		</table>
