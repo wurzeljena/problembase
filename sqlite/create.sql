@@ -1,165 +1,122 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
-CREATE SCHEMA IF NOT EXISTS `problembase` DEFAULT CHARACTER SET latin1 COLLATE latin1_german1_ci ;
-USE `problembase` ;
+-- -----------------------------------------------------
+-- Table `proposers`
+-- -----------------------------------------------------
+CREATE TABLE proposers (
+  id INTEGER NOT NULL,
+  name VARCHAR(32) NULL,
+  location VARCHAR(32) NULL,
+  country VARCHAR(64) NULL,
+  email VARCHAR(32) NULL,
+  PRIMARY KEY (id ASC) );
+CREATE INDEX proposer_name ON proposers(name);
 
 -- -----------------------------------------------------
--- Table `problembase`.`proposers`
+-- Table `problems`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `problembase`.`proposers` (
-  `id` INT NOT NULL ,
-  `name` VARCHAR(32) NULL ,
-  `location` VARCHAR(32) NULL ,
-  `email` VARCHAR(32) NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `problembase`.`problems`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `problembase`.`problems` (
-  `id` INT NOT NULL ,
-  `problem` TEXT NULL ,
-  `proposer_id` INT NULL ,
-  `remarks` TEXT NULL ,
-  `proposed` DATE NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
-  INDEX `fk_problems_proposers1_idx` (`proposer_id` ASC) ,
-  CONSTRAINT `fk_problems_proposers1`
-    FOREIGN KEY (`proposer_id` )
-    REFERENCES `problembase`.`proposers` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+CREATE TABLE problems (
+  id INTEGER NOT NULL,
+  problem TEXT NOT NULL,
+  proposer_id INTEGER NULL,
+  remarks TEXT NULL,
+  proposed DATE NULL,
+  PRIMARY KEY (id ASC) ,
+  FOREIGN KEY (proposer_id)
+    REFERENCES proposers(id)
+    ON UPDATE CASCADE);
+CREATE INDEX problem_proposer ON problems(proposer_id);
 
 -- -----------------------------------------------------
--- Table `problembase`.`solutions`
+-- Table `solutions`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `problembase`.`solutions` (
-  `id` INT NOT NULL ,
-  `problem_id` INT NOT NULL ,
-  `solution` TEXT NULL ,
-  `proposer_id` INT NULL ,
-  `remarks` TEXT NULL ,
-  `month` TINYINT NULL ,
-  `year` YEAR NULL ,
-  PRIMARY KEY (`id`, `problem_id`) ,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
-  INDEX `fk_solutions_problems_idx` (`problem_id` ASC) ,
-  INDEX `fk_solutions_proposers1_idx` (`proposer_id` ASC) ,
-  CONSTRAINT `fk_solutions_problems`
-    FOREIGN KEY (`problem_id` )
-    REFERENCES `problembase`.`problems` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_solutions_proposers1`
-    FOREIGN KEY (`proposer_id` )
-    REFERENCES `problembase`.`proposers` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+CREATE TABLE solutions (
+  id INTEGER NOT NULL,
+  problem_id INTEGER NOT NULL,
+  solution TEXT NOT NULL,
+  proposer_id INTEGER NULL,
+  remarks TEXT NULL,
+  month TINYINT NULL,
+  year YEAR NULL,
+  PRIMARY KEY (id ASC),
+  FOREIGN KEY (problem_id)
+    REFERENCES problems(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (proposer_id)
+    REFERENCES proposers(id)
+    ON UPDATE CASCADE);
+CREATE INDEX solution_problem ON solutions(problem_id);
+CREATE INDEX solution_proposer ON solutions(proposer_id);
 
 -- -----------------------------------------------------
--- Table `problembase`.`users`
+-- Table `users`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `problembase`.`users` (
-  `id` INT NOT NULL ,
-  `name` VARCHAR(32) NOT NULL ,
-  `email` VARCHAR(32) NULL ,
-  `encr_pw` BLOB NULL ,
-  `root` TINYINT(1) NULL ,
-  `editor` TINYINT(1) NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
-ENGINE = InnoDB;
-
+CREATE TABLE users (
+  id INTEGER NOT NULL,
+  name VARCHAR(32) NOT NULL,
+  email VARCHAR(32) NULL,
+  encr_pw BLOB NULL,
+  root TINYINT(1) NOT NULL DEFAULT 0,
+  editor TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (id ASC) );
+CREATE UNIQUE INDEX user_name ON users(name);
 
 -- -----------------------------------------------------
--- Table `problembase`.`comments`
+-- Table `comments`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `problembase`.`comments` (
-  `user_id` INT NOT NULL ,
-  `problem_id` INT NOT NULL ,
-  `difficulty` TINYINT NULL ,
-  `beauty` TINYINT NULL ,
-  `knowledge_required` TINYINT NULL ,
-  `comment` TEXT NULL ,
-  PRIMARY KEY (`user_id`, `problem_id`) ,
-  INDEX `fk_comments_users1_idx` (`user_id` ASC) ,
-  INDEX `fk_comments_problems1_idx` (`problem_id` ASC) ,
-  CONSTRAINT `fk_comments_users1`
-    FOREIGN KEY (`user_id` )
-    REFERENCES `problembase`.`users` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_comments_problems1`
-    FOREIGN KEY (`problem_id` )
-    REFERENCES `problembase`.`problems` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+CREATE TABLE comments (
+  user_id INTEGER NOT NULL,
+  problem_id INTEGER NOT NULL,
+  difficulty TINYINT NULL,
+  beauty TINYINT NULL,
+  knowledge_required TINYINT NULL,
+  comment TEXT NULL,
+  PRIMARY KEY (user_id, problem_id),
+  FOREIGN KEY (user_id)
+    REFERENCES users(id)
+    ON UPDATE CASCADE,
+  FOREIGN KEY (problem_id)
+    REFERENCES problems(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+CREATE INDEX comment_user ON comments(user_id);
+CREATE INDEX comment_problem ON comments(problem_id);
 
 -- -----------------------------------------------------
--- Table `problembase`.`tags`
+-- Table `tags`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `problembase`.`tags` (
-  `id` INT NOT NULL ,
-  `name` VARCHAR(32) NOT NULL ,
-  `description` VARCHAR(128) NULL ,
-  `color` INT NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
-ENGINE = InnoDB;
-
+CREATE TABLE tags (
+  id INTEGER NOT NULL,
+  name VARCHAR(32) UNIQUE NOT NULL,
+  description VARCHAR(128) NULL,
+  color INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (id ASC) );
 
 -- -----------------------------------------------------
--- Table `problembase`.`tag_list`
+-- Table `tag_list`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `problembase`.`tag_list` (
-  `problem_id` INT NOT NULL ,
-  `tag_id` INT NOT NULL ,
-  PRIMARY KEY (`problem_id`, `tag_id`) ,
-  INDEX `fk_tag_list_tags1_idx` (`tag_id` ASC) ,
-  CONSTRAINT `fk_tag_list_problems1`
-    FOREIGN KEY (`problem_id` )
-    REFERENCES `problembase`.`problems` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tag_list_tags1`
-    FOREIGN KEY (`tag_id` )
-    REFERENCES `problembase`.`tags` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+CREATE TABLE tag_list (
+  problem_id INTEGER NOT NULL,
+  tag_id INTEGER NOT NULL,
+  PRIMARY KEY (problem_id, tag_id) ,
+  FOREIGN KEY (problem_id)
+    REFERENCES problems(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (tag_id)
+    REFERENCES tags(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 -- -----------------------------------------------------
--- Table `problembase`.`published`
+-- Table `published`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `problembase`.`published` (
-  `problem_id` INT NOT NULL ,
-  `letter` VARCHAR(8) NULL ,
-  `number` TINYINT NULL ,
-  `month` TINYINT NULL ,
-  `year` YEAR NULL ,
-  PRIMARY KEY (`problem_id`) ,
-  CONSTRAINT `fk_published_problems1`
-    FOREIGN KEY (`problem_id` )
-    REFERENCES `problembase`.`problems` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+CREATE TABLE published (
+  problem_id INTEGER NOT NULL,
+  letter VARCHAR(8) NULL,
+  number TINYINT NULL,
+  month TINYINT NULL,
+  year YEAR NULL,
+  PRIMARY KEY (problem_id ASC),
+  FOREIGN KEY (problem_id)
+    REFERENCES problems(id)
+    ON UPDATE CASCADE);
