@@ -53,10 +53,7 @@
 				if ($problem['country'] != "") print " (".htmlspecialchars($problem['country']).")";
 				print '</span>';
 
-				$tag_list = $pb->query("SELECT tag_id FROM tag_list WHERE problem_id=".$problem['id']);
-				$tags = array();
-				while ($tag = $tag_list->fetchArray(SQLITE3_NUM)) $tags[] = $tag[0];
-				tags($pb, $tags);
+				tags($pb, get_tags($pb, $problem['id']));
 				print $problem['problem'];
 				print '<table class="info"><tr>';
 				print '<td style="width:15%; border:none;">'.$problem['proposed'].'</td>';
