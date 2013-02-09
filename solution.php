@@ -34,9 +34,9 @@
 
 	<div class="content">
 	<h2 class="solution">Lösung bearbeiten</h2>
-	<form class="solution" id="solution" title="Lösungsformular" action="">
+	<form class="solution" id="solution" title="Lösungsformular" action="submit_solution.php" method="POST">
 		<div class="problem"><?php print $problem['problem']; ?></div>
-		<input type="hidden" name="id" value="<?php if (isset($id)) print $id; ?>">
+		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
 		<input type="hidden" name="problem_id" value="<?php if (isset($id)) print $solution['problem_id']; else print $problem_id; ?>">
 		<?php proposer_form($pb, 'solution', isset($id) ? $solution['proposer_id'] : -1); ?>
 		<textarea class="text" name="solution" id="textarea" rows="60" cols="80" placeholder="Lösungstext"
