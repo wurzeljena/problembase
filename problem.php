@@ -27,8 +27,8 @@
 
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>
-	<form class="task" id="task" title="Aufgabenformular" action="">
-		<input type="hidden" name="id" value="<?php if (isset($id)) print $id; ?>">
+	<form class="task" id="task" title="Aufgabenformular" action="submit_problem.php" method="POST">
+		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
 		<?php proposer_form($pb, 'task', isset($id) ? $problem['proposer_id'] : -1); ?>
 		<textarea class="text" name="problem" id="textarea" rows="20" cols="65" placeholder="Aufgabentext"
 			style="height:200px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $problem['problem']; ?></textarea> <br/>
