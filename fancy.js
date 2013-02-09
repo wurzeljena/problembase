@@ -1,12 +1,9 @@
 // HIDDEN TRIGGER
-var Trigger = {
-	element: null,
-	is_hidden: true,
+function Trigger(id) {
+	this.element = document.getElementById(id);
+	this.is_hidden = true;
 
-	Init: function (id) {
-		this.element = document.getElementById(id);
-	},
-	Trig: function () {
+	this.Trig = function () {
 		if (this.is_hidden) {
 			this.element.style.visibility = "visible";
 			this.element.style.position = "relative";
@@ -16,7 +13,7 @@ var Trigger = {
 			this.element.style.position = "absolute";
 		}
 		this.is_hidden = !this.is_hidden;
-	}
+	};
 };
 
 // PREVIEW CODE

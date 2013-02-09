@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
-	<script type="text/javascript" src="preview.js"></script>
+	<script type="text/javascript" src="fancy.js"></script>
 </head>
 <body>
 	<div class="head"><div style="width:50em;">

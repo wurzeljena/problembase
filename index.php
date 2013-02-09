@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
-	<script type="text/javascript" src="preview.js"></script>
+	<script type="text/javascript" src="fancy.js"></script>
 </head>
 <body>
 	<div class="head"><div style="width:50em;">
@@ -17,14 +17,14 @@
 	</div></div>
 
 	<?php
-		include 'tags.php';
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$problems = $pb->query("SELECT * FROM problems, proposers WHERE problems.proposer_id=proposers.id");
+	include 'tags.php';
+	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$problems = $pb->query("SELECT * FROM problems, proposers WHERE problems.proposer_id=proposers.id");
 	?>
 
 	<div class="content">
 		<form class="filter" title="Filter" action="">
-		<input type="button" value="+ Erweitert" style="float:right;" onclick="Trigger.Trig();"/>
+		<input type="button" value="+ Erweitert" style="float:right;" onclick="Filter.Trig();"/>
 		<div class="caption">Filter</div>
 		<input type="text" name="simple_filter" placeholder="Suchbegriff" style="width:330px;"/>
 		<div id="hidden_filter" style="visibility:hidden; position:absolute;">
@@ -91,7 +91,7 @@
 	<?php $pb->close(); ?>
 
 	<script type="text/javascript">
-		Trigger.Init("hidden_filter");
+		var Filter = new Trigger("hidden_filter");
 	</script>
 </body>
 </html>
