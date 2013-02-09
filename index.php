@@ -25,7 +25,7 @@
 	<div class="content">
 		<?php
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
-			print '<a class="problem" href="task.php?id='.$problem['id'].'">';
+			print '<a class="textbox" href="task.php?id='.$problem['id'].'">';
 			print '<div class="task problem_list">';
 			print '<div class="info">'.$problem['name'].", ".$problem['location'];
 			if ($problem['country'] != "") print " (".$problem['country'].")";

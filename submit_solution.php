@@ -8,27 +8,34 @@
 		else
 			$$key = $value;
 
-	// write proposer
-	if (!isset($proposer_id)) {
-		$insert = "INSERT INTO proposers (name, location";
-		if ($country != "")
-			$insert .= ", country";
-		$insert .= ") VALUES ('$proposer', '$location'";
-		if ($country != "")
-			$insert .= ", '$country'";
-		$insert .= ")";
-
-		$pb->exec($insert);
-		$proposer_id = $pb->lastInsertRowID();
+	if (isset($delete)) {
+		$problem_id = $pb->querySingle("SELECT problem_id FROM solutions WHERE id=$id", false);
+		$pb->exec("DELETE FROM solutions WHERE id=$id");
 	}
-
-	// write into db
-	if (isset($id))
-		$pb->exec("UPDATE solutions SET solution='$problem', proposer_id=$proposer_id WHERE id=$id");
 	else {
-		$pb->exec("INSERT INTO solutions(problem_id, solution, proposer_id) VALUES ($problem_id, '$solution', $proposer_id)");
-		$id = $pb->lastInsertRowID();
+		// write proposer
+		if (!isset($proposer_id)) {
+			$insert = "INSERT INTO proposers (name, location";
+			if ($country != "")
+				$insert .= ", country";
+			$insert .= ") VALUES ('$proposer', '$location'";
+			if ($country != "")
+				$insert .= ", '$country'";
+			$insert .= ")";
+
+			$pb->exec($insert);
+			$proposer_id = $pb->lastInsertRowID();
+		}
+
+		// write into db
+		if (isset($id))
+			$pb->exec("UPDATE solutions SET solution='$solution', proposer_id=$proposer_id WHERE id=$id");
+		else {
+			$pb->exec("INSERT INTO solutions(problem_id, solution, proposer_id) VALUES ($problem_id, '$solution', $proposer_id)");
+			$id = $pb->lastInsertRowID();
+		}
 	}
+
 	$pb->close();
 
 	// redirect to task.php

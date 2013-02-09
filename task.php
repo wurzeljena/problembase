@@ -22,7 +22,6 @@
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 	$problem = $pb->querySingle("SELECT * FROM problems WHERE id=$id", true);
 	$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$problem['proposer_id'], true);
-	$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=$id");
 	?>
 	<div class="content">
 		<div class="task">
@@ -37,14 +36,15 @@
 			<div class="text" id="prob"><?php print $problem['problem']?></div>
 		</div>
 
-		<div class="caption" style="margin-top:1.5em;">KOMMENTARE
+		<div class="caption" id="comments" style="margin-top:1.5em;">Kommentare
 		<?php
 		if(!$pb->querySingle("SELECT * FROM comments WHERE user_id=1 AND problem_id=$id", false))
 			print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Schreiben</a>';
 		?>
 		</div>
 		<table class="comments">
-			<?php
+		<?php
+			$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=$id");
 			while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
 				if ($comment['user_id']==1)
 					print '<tr class="own">';
@@ -60,10 +60,29 @@
 				print $comment['comment'];
 				print '</td></tr>';
 			};
-			?>
+		?>
 		</table>
 
-		<!-- Musterlösungen (wie Aufgabenliste in index.php)-->
+		<div class="caption" id="solutions" style="margin-top:1.5em;">Lösungen
+		<?php print '<a class="button" style="float:right;" href="solution.php?problem_id='.$id.'">Hinzufügen</a>'; ?>
+		</div>
+		<?php
+		$solutions = $pb->query("SELECT solutions.id, solutions.solution, solutions.remarks, solutions.month, solutions.year, "
+			."proposers.name, proposers.location, proposers.country FROM solutions, proposers WHERE "
+			."solutions.proposer_id=proposers.id AND problem_id=$id");
+		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
+			print '<div class="solution">';
+			print '<a class="button outer" style="top:0em;" href="solution.php?id='.$solution['id'].'">Bearbeiten</a>';
+			print '<a class="button danger outer" style="top:2em;" href="submit_solution.php?id='.$solution['id'].'&delete=1">Löschen</a>';
+			print '<div class="info">'.$solution['name'].", ".$solution['location'];
+			if ($solution['country'] != "") print " (".$solution['country'].")";
+			print '</div>';
+
+			print '<div class="text" id="soln">';
+			print $solution['solution'];
+			print '</div></div>';
+		};
+		?>
 
 		<?php $pb->close(); ?>
 	</div>

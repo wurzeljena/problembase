@@ -75,13 +75,16 @@ h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
 h2.solution {color : #0000C0; text-shadow : #60A0C0 2px 2px 3px;}
 h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
 
-*.caption
+div.caption
 {
 	margin		: 5px;
-	font-size	: large;
+	font-size	: x-large;
 	font-weight	: normal;
-	text-shadow	: 1px 1px 0px #FFFFFF;
+	font-variant: small-caps;
+	text-shadow	: 0px 0px 2px Gray;
 }
+div.caption#comments {color: #A0A000;}
+div.caption#solutions {color: #80A0E0;}
 
 /* Formatierung von Links */
 a.button
@@ -113,9 +116,14 @@ a.danger:hover
 	background	: #C00000;
 	background	: linear-gradient(to bottom, #D00000, #A00000);
 }
+a.outer
+{
+	position	: absolute;
+	left		: 620px;
+}
 
 /* Aufgabenliste */
-a.problem
+a.textbox
 {
 	text-decoration	: none;
 	color	: Black;
@@ -152,7 +160,7 @@ div.task
 	margin : 15px 5px; padding : 5px;
 	box-shadow	: 5px 5px 0px #C08060;
 }
-div.task div.info
+div.info
 {
 	border-bottom	: 1px solid Teal;
 	padding		: 5px;
@@ -163,14 +171,24 @@ div.task div.tags
 	float	: right;
 	font-style	: normal;
 }
-div.task div.text {margin : 5px; padding : 5px;}
-div.task div.text:before
+div.text {margin : 5px; padding : 5px;}
+div.text:before
 {
-	content	: "Aufgabe: ";
 	font-family	: Sans-Serif;
 	font-variant: small-caps;
 	font-size	: small;
 	color		: Gray;
+}
+div.task div.text:before {content: "Aufgabe: ";}
+div.solution div.text:before {content: "Lösung: ";}
+div.solution
+{
+	border	: 1px solid Gray;
+	border-radius : 5px;
+	background	: #D0E0FF;
+	margin : 15px 5px; padding : 5px;
+	box-shadow	: 5px 5px 0px #80A0C0;
+	position	: relative;
 }
 
 table.comments
