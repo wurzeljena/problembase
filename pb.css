@@ -45,6 +45,12 @@ div.head div.login:active {
 
 div.content {width:600px; margin:50px 100px}
 
+/* Seitenpanel im index, unterhalb des Filters */
+div.panel
+{
+	position: fixed; top: 27em; left: 750px;
+}
+
 *.info
 {
 	font-family	: Sans-Serif;
@@ -71,14 +77,11 @@ h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
 
 *.caption
 {
-	margin		: 5px 10px;
+	margin		: 5px;
 	font-size	: large;
 	font-weight	: normal;
 	text-shadow	: 1px 1px 0px #FFFFFF;
 }
-
-form.filter div.caption {color:#A0A0A0; float: left;}
-div.main div.caption {color:#C08060; margin-bottom: 10px;}
 
 /* Formatierung von Links */
 a.button
@@ -111,7 +114,6 @@ a.danger:hover
 	background	: linear-gradient(to bottom, #D00000, #A00000);
 }
 
-
 /* Aufgabenliste */
 a.problem
 {
@@ -127,7 +129,10 @@ table.info td
 }
 
 /* Tag-Formatierung */
-form.taglist {position: absolute; top: 4em; left: 750px;}
+div.taglist
+{
+	margin	: 5px;
+}
 span.tag
 {
 	padding			: 3px 5px;
@@ -189,11 +194,16 @@ form
 }
 form.filter
 {
+	position: fixed; top: 5em; left: 750px;
 	background-image	: url("img/filter.png");
 	background-repeat	: repeat;
 	border	: 1px solid Grey;
 	border-radius	: 10px;
-	padding	: 10px;
+	box-shadow	: 10px 10px 2px Gray;
+}
+form.filter table tr td
+{
+	padding		: 0px 3px;
 }
 form.task 
 {

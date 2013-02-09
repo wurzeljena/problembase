@@ -1,4 +1,4 @@
-<?php include 'tags.php'; ?>
+<?php include 'tags.php'; include 'proposers.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -23,26 +23,6 @@
 	?>
 
 	<div class="content">
-		<form class="filter" title="Filter" action="">
-		<input type="button" value="+ Erweitert" style="float:right;" onclick="Filter.Trig();"/>
-		<div class="caption">FILTER</div>
-		<input type="text" name="simple_filter" placeholder="Suchbegriff" style="width:330px;"/>
-		<div id="hidden_filter" style="visibility:hidden; position:absolute;">
-			<div class="info">Erweiterte Suche</div>
-			<span class="question">Wer?</span> <input type="text" name="proposer" placeholder="Autor" style="width:200px;"/>
-			<span class="question">Was?</span>
-			<input type="text" name="tags" placeholder="Tags" style="width:160px;"/>
-			<input type="checkbox" name="with_solution"/><span class="info">mit Lösung</span> <br/>
-			<span class="question">Wie?</span> {Bewertungsbereich} <br/>
-			<span class="question">Wann?</span> <input type="text" name="number" placeholder="No." style="width:40px;"/>
-			<input type="checkbox" name="if_start"/> <span class="info">jünger als</span> <input type="date" name="start" style="width:80px;"/>
-			<input type="checkbox" name="if_end"/> <span class=info>älter als</span>
-			<input type="date" name="end" style="width:80px;"/>
-		</div>
-		</form>
-
-		<div class="caption" style="margin-top:1.5em;">AUFGABEN
-		<a href="problem.php" class="button" style="float:right;">Neue Aufgabe</a></div>
 		<?php
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 			print '<a class="problem" href="task.php?id='.$problem['id'].'">';
@@ -75,21 +55,49 @@
 			print '</div></div></a>';
 		};
 		?>
+	</div>
 
-	<form action="index.php" class="taglist">
-		<h3 class="caption" style="color:Gray;">[TAGS]</h3>
-		<input type="text" name="tag" placeholder="Tag hinzufügen"/>
-		<input type="hidden" name="tags" value="Test"/> <br/>
-		<div style="margin:3px; margin-bottom:2em;">
-			<?php tags($pb, array()); ?>
+	<form class="filter" title="Filter" action="">
+		<div><input type="text" name="filter" placeholder="Suchbegriff"/>
+		<input type="submit" value="Filtern"></div>
+		<table style="border-top:1px solid Gray; border-bottom:1px solid Gray;">
+			<tr>
+				<td><span class="question">Wer?</span></td>
+				<td><input type="text" name="proposer" placeholder="Autor" list="proposers"/> </td>
+				<?php proposers_datalist($pb); ?>
+			</tr>
+			<tr>
+				<td><span class="question">Wie?</span></td>
+				<td> {Bewertungsbereich} </td>
+			</tr>
+			<tr>
+				<td><span class="question">Wann?</span></td>
+				<td><input type="text" name="number" placeholder="MM/JJ" style="width:45px;"/><input type="checkbox" name="with_solution"/><span class="info">mit Lösung</span></td>
+			</tr>
+			<tr>
+				<td><span class="info">älter als</span></td>
+				<td><input type="date" name="start" placeholder="JJJJ-MM-TT"/></td>
+			</tr>
+			<tr>
+				<td><span class="info">jünger als</span></td>
+				<td><input type="date" name="end" placeholder="JJJJ-MM-TT"/></td>
+			</tr>
+		</table>
+		<div class="taglist">
+			<span class="question">Was?</span>
+			<input type="text" name="tag" placeholder="Tag hinzufügen"/>
+			<input type="hidden" name="tags" value="Test"/> <br/>
+			<div style="margin:3px;">
+				<?php tags($pb, array()); ?>
+			</div>
 		</div>
-		<a class="button" href="tags.php?edit_tags=1">Bearbeiten</a>
+		<!--<a class="button" style="margin-top:2em;" href="tags.php?edit_tags=1">Tags bearbeiten</a>-->
 	</form>
 
-	<?php $pb->close(); ?>
+	<div class="panel">
+		<a href="problem.php" class="button">Neue Aufgabe</a>
+	</div>
 
-	<script type="text/javascript">
-		var Filter = new Trigger("hidden_filter");
-	</script>
+	<?php $pb->close(); ?>
 </body>
 </html>
