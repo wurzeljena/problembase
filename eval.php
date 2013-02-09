@@ -20,15 +20,15 @@
 	<h2 class="eval">Aufgabe bewerten</h2>
 	
 	<?php
-		$id = (int)$_REQUEST['id'];
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
-		$problem = $result->fetchArray(SQLITE3_ASSOC);
-		$result = $pb->query("SELECT * FROM comments WHERE user_id=1 AND problem_id=".$id);
-		$comment = $result->fetchArray(SQLITE3_ASSOC);
-		$pb->close();
+	$id = (int)$_REQUEST['id'];
+	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
+	$problem = $result->fetchArray(SQLITE3_ASSOC);
+	$result = $pb->query("SELECT * FROM comments WHERE user_id=1 AND problem_id=".$id);
+	$comment = $result->fetchArray(SQLITE3_ASSOC);
+	$pb->close();
 	?>
-	<form class="eval" title="Bewertungsformular">
+	<form class="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
 		<div class="problem" id="prob"><?php print $problem['problem']?></div>
 		<input type="hidden" name="id" value="<?php print $id?>"/>
 		<span class="eval">Eleganz</span>
