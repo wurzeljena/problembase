@@ -159,6 +159,7 @@ div.task
 	background	: #FFD080;
 	margin : 15px 5px; padding : 5px;
 	box-shadow	: 5px 5px 0px #C08060;
+	position	: relative;
 }
 div.info
 {

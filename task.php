@@ -25,6 +25,10 @@
 	?>
 	<div class="content">
 		<div class="task">
+		<?php
+			print '<a class="button outer" style="top:0em;" href="problem.php?id='.$id.'">Bearbeiten</a>';
+			print '<a class="button danger outer" style="top:2em;" href="submit_problem.php?id='.$id.'&delete=1">Löschen</a>';
+		?>
 			<div class="info">
 			<?php
 				print $proposer['name'].", ".$proposer['location'];
