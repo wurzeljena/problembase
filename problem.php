@@ -1,3 +1,4 @@
+<?php include 'proposers.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -21,21 +22,15 @@
 	if (isset($_REQUEST['id'])) {
 		$id = (int)$_REQUEST['id'];
 		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$id, true);
-		$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$problem['proposer_id'], true);
 	}
 	?>
 
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>
-	<form class="task" title="Aufgabenformular" action="">
+	<form class="task" id="task" title="Aufgabenformular" action="">
 		<input type="hidden" name="id" value="<?php if (isset($id)) print $id; ?>">
-		<input type="text" class="text" name="proposer" required placeholder="Einsender" style="width:165px;"
-			value="<?php if (isset($id)) print $proposer['name']; ?>"/>
-		<input type="text" class="text" name="location" required placeholder="Ort" style="width:100px;"
-			value="<?php if (isset($id)) print $proposer['location']; ?>"/>
-		<input type="text" class="text" name="country" placeholder="Land" style="width:245px;"
-			value="<?php if (isset($id)) print $proposer['country']; ?>"/> <br/>
-		<textarea class="text" name="problem" id="problem" rows="20" cols="65" placeholder="Aufgabentext"
+		<?php proposer_form($pb, 'task', isset($id) ? $problem['proposer_id'] : -1); ?>
+		<textarea class="text" name="problem" id="textarea" rows="20" cols="65" placeholder="Aufgabentext"
 			style="height:200px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $problem['problem']; ?></textarea> <br/>
 		<div class="preview" id="preview"></div>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
@@ -47,7 +42,7 @@
 	<?php $pb->close(); ?>
 
 	<script type="text/javascript">
-		Preview.Init("problem", "preview");
+		Preview.Init("textarea", "preview");
 	</script>
 </body>
 </html>

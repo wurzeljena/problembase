@@ -95,3 +95,15 @@ function Stars(name) {
 
 	this.reset();
 };
+
+function queryProp(form) {
+	var str = document.forms[form].elements["proposer"].value;
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+			document.getElementById("prop").innerHTML = xmlhttp.responseText;
+	}
+
+	xmlhttp.open("GET", "proposers.php?prop_query=" + escape(str), true);
+	xmlhttp.send();
+};

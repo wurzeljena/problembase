@@ -1,3 +1,4 @@
+<?php include 'proposers.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -22,7 +23,6 @@
 		$id = (int)$_REQUEST['id'];
 		$solution = $pb->querySingle("SELECT * FROM solutions WHERE id=".$id, true);
 		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$solution['problem_id'], true);
-		$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$solution['proposer_id'], true);
 	}
 	elseif (isset($_REQUEST['problem_id'])) {
 		$problem_id = (int)$_REQUEST['problem_id'];
@@ -34,17 +34,12 @@
 
 	<div class="content">
 	<h2 class="solution">Lösung bearbeiten</h2>
-	<form class="solution" title="Lösungsformular" action="">
+	<form class="solution" id="solution" title="Lösungsformular" action="">
 		<div class="problem"><?php print $problem['problem']; ?></div>
 		<input type="hidden" name="id" value="<?php if (isset($id)) print $id; ?>">
-		<input type="hidden" name="problem_id" value="<?php if (isset($id)) print $solution['problem_id']; else $problem_id; ?>">
-		<input type="text" class="text" name="proposer" required placeholder="Einsender" style="width:165px;"
-			value="<?php if (isset($id)) print $proposer['name']; ?>"/>
-		<input type="text" class="text" name="location" required placeholder="Ort" style="width:100px;"
-			value="<?php if (isset($id)) print $proposer['location']; ?>"/>
-		<input type="text" class="text" name="country" placeholder="Land" style="width:245px;"
-			value="<?php if (isset($id)) print $proposer['country']; ?>"/> <br/>
-		<textarea class="text" name="solution" id="solution" rows="60" cols="80" placeholder="Lösungstext"
+		<input type="hidden" name="problem_id" value="<?php if (isset($id)) print $solution['problem_id']; else print $problem_id; ?>">
+		<?php proposer_form($pb, 'solution', isset($id) ? $solution['proposer_id'] : -1); ?>
+		<textarea class="text" name="solution" id="textarea" rows="60" cols="80" placeholder="Lösungstext"
 			style="height:400px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $solution['solution']; ?></textarea> <br/>
 		<div class="preview" id="preview"></div>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
@@ -56,7 +51,7 @@
 	<?php $pb->close(); ?>
 
 	<script type="text/javascript">
-		Preview.Init("solution", "preview");
+		Preview.Init("textarea", "preview");
 	</script>
 </body>
 </html>
