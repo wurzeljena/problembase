@@ -41,42 +41,40 @@
 		</div>
 		</form>
 
-		<div class="main">
-		<a href="problem.php" class="button" style="float:right;">Neue Aufgabe</a>
-		<div class="caption">AUFGABEN</div>
-		<div class="problem_list">
-			<?php
-			while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
-				// find out if published
-				print '<div class="problem">';
-				print '<span class="info proposer">'.$problem['name'].", ".$problem['location'];
-				if ($problem['country'] != "") print " (".$problem['country'].")";
-				print '</span>';
+		<div class="caption" style="margin-top:1.5em;">AUFGABEN
+		<a href="problem.php" class="button" style="float:right;">Neue Aufgabe</a></div>
+		<?php
+		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
+			print '<a class="problem" href="task.php?id='.$problem['id'].'">';
+			print '<div class="task problem_list">';
+			print '<div class="info">'.$problem['name'].", ".$problem['location'];
+			if ($problem['country'] != "") print " (".$problem['country'].")";
+			print '<div class="tags">';
+			tags($pb, get_tags($pb, $problem['id']));
+			print '</div></div>';
 
-				tags($pb, get_tags($pb, $problem['id']));
-				print $problem['problem'];
-				print '<table class="info"><tr>';
-				print '<td style="width:15%; border:none;">'.$problem['proposed'].'</td>';
+			print '<div class="text" id="prob">';
+			print $problem['problem'];
+			print '<table class="info" style="margin-top:1em;"><tr>';
+			print '<td style="width:70px; border:none;">'.$problem['proposed'].'</td>';
 
-				$published = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$problem['id'], true);
-				if (count($published))
-					print '<td style="width:40%;">Heft '.$published['month'].'/'.$published['year'].
-						', Aufgabe $'.$published['letter'].$published['number'].'$</td>';
-				else
-					print '<td style="width:40%;">nicht publiziert</td>';
+			// find out if published
+			$published = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$problem['id'], true);
+			if (count($published))
+				print '<td style="width:200px;">Heft '.$published['month'].'/'.$published['year'].
+					', Aufgabe $'.$published['letter'].$published['number'].'$</td>';
+			else
+				print '<td style="width:200px;">nicht publiziert</td>';
 
-				$numsol = $pb->querySingle("SELECT COUNT(*) FROM solutions WHERE problem_id=".$problem['id']);
-				$solstr = ($numsol <= 1) ? ($numsol ? "" : "k")."eine Lösung" : $numsol." Lösungen";
-				$numcomm = $pb->querySingle("SELECT COUNT(*) FROM comments WHERE problem_id=".$problem['id']);
-				$commstr = ($numcomm <= 1) ? ($numcomm ? "" : "k")."ein Kommentar" : $numcomm." Kommentare";
-				print '<td style="width:40%;">'.$commstr.', '.$solstr.'</td>';
-				print '</tr></table>';
-				print '</div>';
-			};
-			?>
-		</div>
-		</div>
-	</div>
+			$numsol = $pb->querySingle("SELECT COUNT(*) FROM solutions WHERE problem_id=".$problem['id']);
+			$solstr = ($numsol <= 1) ? ($numsol ? "" : "k")."eine Lösung" : $numsol." Lösungen";
+			$numcomm = $pb->querySingle("SELECT COUNT(*) FROM comments WHERE problem_id=".$problem['id']);
+			$commstr = ($numcomm <= 1) ? ($numcomm ? "" : "k")."ein Kommentar" : $numcomm." Kommentare";
+			print '<td style="width:200px;">'.$commstr.', '.$solstr.'</td>';
+			print '</tr></table>';
+			print '</div></div></a>';
+		};
+		?>
 
 	<form action="index.php" class="taglist">
 		<h3 class="caption" style="color:Gray;">[TAGS]</h3>

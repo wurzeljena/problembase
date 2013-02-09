@@ -87,7 +87,7 @@ a.button
 	border-radius	: 20px;
 	background	:#00A000;
 	background	: linear-gradient(to bottom, #00C000, #008000);
-	padding	: 3px 7px; margin	: 3px;
+	padding	: 3px 7px; margin	: 0px 3px 5px 3px;
 	color	: White;	text-shadow	: 0px 1px 0px Black;
 	text-decoration	: none;
 	font-size	: medium;
@@ -113,42 +113,17 @@ a.danger:hover
 
 
 /* Aufgabenliste */
-div.main
+a.problem
 {
-	background	: #FFC080;
-	border-radius	: 5px;
-	margin	: 5px;	padding	: 5px;
+	text-decoration	: none;
+	color	: Black;
 }
-
-div.problem_list
-{
-	margin	: 5px;
-	border	: 1px solid Black;
-}
-
-div.problem_list div.problem
-{
-	background	: #FFE0A0;
-	border-bottom	: 1px dotted Gray;
-	padding		: 5px 10px;
-}
-
-div.problem_list span.tag
-{
-	margin	: 0px 5px;
-	float	: right;
-}
-
+div.problem_list:hover {background: #FFE0A0;}
 table.info td
 {
 	padding		: 0px 10px;
 	border-left	: 1px solid #808080;
 	text-align	: center;
-}
-
-span.proposer
-{
-	margin-right: 1.5em;
 }
 
 /* Tag-Formatierung */
@@ -169,7 +144,7 @@ div.task
 	border	: 1px solid Gray;
 	border-radius : 5px;
 	background	: #FFD080;
-	margin : 5px 0px; padding : 5px;
+	margin : 15px 5px; padding : 5px;
 	box-shadow	: 5px 5px 0px #C08060;
 }
 div.task div.info
