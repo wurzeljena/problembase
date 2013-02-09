@@ -20,9 +20,9 @@
 	<?php
 	$id = (int)$_REQUEST['id'];
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-	$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$id, true);
+	$problem = $pb->querySingle("SELECT * FROM problems WHERE id=$id", true);
 	$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$problem['proposer_id'], true);
-	$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=".$id);
+	$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=$id");
 	?>
 	<div class="content">
 		<div class="task">
@@ -37,7 +37,12 @@
 			<div class="text" id="prob"><?php print $problem['problem']?></div>
 		</div>
 
-		<h3 class="caption" style="margin-top:1.5em;">Kommentare</h3>
+		<div class="caption" style="margin-top:1.5em;">KOMMENTARE
+		<?php
+		if(!$pb->querySingle("SELECT * FROM comments WHERE user_id=1 AND problem_id=$id", false))
+			print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Schreiben</a>';
+		?>
+		</div>
 		<table class="comments">
 			<?php
 			while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
@@ -47,8 +52,10 @@
 					print '<tr>';
 				print '<td class="author">'.$comment['name'].'</td>';
 				print '<td class="comment">';
-				if ($comment['user_id']==1)
-					print '<a class="button" style="float:right;" href="eval.php?id='.$comment['problem_id'].'">Bearbeiten</a>';
+				if ($comment['user_id']==1) {
+					print '<a class="button danger" style="float:right;" href="submit_eval.php?id='.$id.'&delete=1">Löschen</a>';
+					print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Bearbeiten</a>';
+				}
 				print '{Bewertungsbereich} <br/>';
 				print $comment['comment'];
 				print '</td></tr>';

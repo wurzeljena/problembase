@@ -76,7 +76,7 @@
 		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php print $comment['comment']?></textarea> <br/>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
 		<input type="submit" value="Speichern" style="float:right;"/>
-		<input type="button" value="Verwerfen" onclick="" style="float:right;"/>
+		<input type="button" value="Verwerfen" onclick="history.back();" style="float:right;"/>
 	</form>
 	</div>
 

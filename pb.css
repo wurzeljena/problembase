@@ -71,7 +71,6 @@ h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
 
 *.caption
 {
-	text-transform	: uppercase;
 	margin		: 5px 10px;
 	font-size	: large;
 	font-weight	: normal;
@@ -91,6 +90,7 @@ a.button
 	padding	: 3px 7px; margin	: 3px;
 	color	: White;	text-shadow	: 0px 1px 0px Black;
 	text-decoration	: none;
+	font-size	: medium;
 }
 a.button:hover
 {
@@ -98,6 +98,19 @@ a.button:hover
 	background	: #00C000;
 	background	: linear-gradient(to bottom, #00D000, #00A000);
 }
+a.danger
+{
+	border	: 1px solid #600000;
+	background	:#A00000;
+	background	: linear-gradient(to bottom, #C00000, #800000);
+}
+a.danger:hover
+{
+	border	: 1px solid #800000;
+	background	: #C00000;
+	background	: linear-gradient(to bottom, #D00000, #A00000);
+}
+
 
 /* Aufgabenliste */
 div.main

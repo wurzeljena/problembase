@@ -25,7 +25,7 @@
 	<div class="content">
 		<form class="filter" title="Filter" action="">
 		<input type="button" value="+ Erweitert" style="float:right;" onclick="Filter.Trig();"/>
-		<div class="caption">Filter</div>
+		<div class="caption">FILTER</div>
 		<input type="text" name="simple_filter" placeholder="Suchbegriff" style="width:330px;"/>
 		<div id="hidden_filter" style="visibility:hidden; position:absolute;">
 			<div class="info">Erweiterte Suche</div>
@@ -43,7 +43,7 @@
 
 		<div class="main">
 		<a href="problem.php" class="button" style="float:right;">Neue Aufgabe</a>
-		<div class="caption">Aufgaben</div>
+		<div class="caption">AUFGABEN</div>
 		<div class="problem_list">
 			<?php
 			while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
@@ -79,7 +79,7 @@
 	</div>
 
 	<form action="index.php" class="taglist">
-		<h3 class="caption" style="color:Gray;">[Tags]</h3>
+		<h3 class="caption" style="color:Gray;">[TAGS]</h3>
 		<input type="text" name="tag" placeholder="Tag hinzufügen"/>
 		<input type="hidden" name="tags" value="Test"/> <br/>
 		<div style="margin:3px; margin-bottom:2em;">
