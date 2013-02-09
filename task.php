@@ -1,3 +1,4 @@
+<?php include 'tags.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -17,21 +18,21 @@
 	</div></div>
 
 	<?php
-		$id = (int)$_REQUEST['id'];
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$id, true);
-		$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$problem['proposer_id'], true);
-		$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=".$id);
+	$id = (int)$_REQUEST['id'];
+	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$id, true);
+	$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$problem['proposer_id'], true);
+	$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=".$id);
 	?>
 	<div class="content">
 		<div class="task">
 			<div class="info">
 			<?php
-				print htmlspecialchars($proposer['name']).", ".htmlspecialchars($proposer['location']);
-				if ($proposer['country'] != "") print " (".htmlspecialchars($proposer['country']).")";
+				print $proposer['name'].", ".$proposer['location'];
+				if ($proposer['country'] != "") print " (".$proposer['country'].")";
 			?>
 			<div class="tags">
-				<span class="tag tag_test">Test</span>
+				<?php tags($pb, get_tags($pb, $id)); ?>
 			</div></div>
 			<div class="text" id="prob"><?php print $problem['problem']?></div>
 		</div>
@@ -55,7 +56,7 @@
 			?>
 		</table>
 
-		<!-- Musterlösungen (wie Aufgabenliste in index.htm)-->
+		<!-- Musterlösungen (wie Aufgabenliste in index.php)-->
 
 		<?php $pb->close(); ?>
 	</div>

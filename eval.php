@@ -18,7 +18,7 @@
 
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
-	
+
 	<?php
 	$id = (int)$_REQUEST['id'];
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');

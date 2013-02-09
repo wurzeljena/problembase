@@ -1,3 +1,4 @@
+<?php include 'tags.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -17,7 +18,6 @@
 	</div></div>
 
 	<?php
-	include 'tags.php';
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 	$problems = $pb->query("SELECT * FROM problems, proposers WHERE problems.proposer_id=proposers.id");
 	?>
@@ -42,15 +42,15 @@
 		</form>
 
 		<div class="main">
-		<a href="problem.htm" class="button" style="float:right;">Neue Aufgabe</a>
+		<a href="problem.php" class="button" style="float:right;">Neue Aufgabe</a>
 		<div class="caption">Aufgaben</div>
 		<div class="problem_list">
 			<?php
 			while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 				// find out if published
 				print '<div class="problem">';
-				print '<span class="info proposer">'.htmlspecialchars($problem['name']).", ".htmlspecialchars($problem['location']);
-				if ($problem['country'] != "") print " (".htmlspecialchars($problem['country']).")";
+				print '<span class="info proposer">'.$problem['name'].", ".$problem['location'];
+				if ($problem['country'] != "") print " (".$problem['country'].")";
 				print '</span>';
 
 				tags($pb, get_tags($pb, $problem['id']));
@@ -78,14 +78,14 @@
 		</div>
 	</div>
 
-	<form action="index.htm" class="taglist">
+	<form action="index.php" class="taglist">
 		<h3 class="caption" style="color:Gray;">[Tags]</h3>
 		<input type="text" name="tag" placeholder="Tag hinzufügen"/>
 		<input type="hidden" name="tags" value="Test"/> <br/>
 		<div style="margin:3px; margin-bottom:2em;">
 			<?php tags($pb, array()); ?>
 		</div>
-		<a class="button" href="tags.htm">Bearbeiten</a>
+		<a class="button" href="tags.php?edit_tags=1">Bearbeiten</a>
 	</form>
 
 	<?php $pb->close(); ?>

@@ -12,7 +12,7 @@
 	$write_eval->bindValue(':diff', $diff, SQLITE3_INTEGER);
 	$write_eval->bindValue(':beauty', $beauty, SQLITE3_INTEGER);
 	$write_eval->bindValue(':know', $know, SQLITE3_INTEGER);
-	$write_eval->bindValue(':comm', htmlspecialchars($comment), SQLITE3_TEXT);
+	$write_eval->bindValue(':comm', $comment, SQLITE3_TEXT);
 	$write_eval->execute();
 	$pb->close();
 
