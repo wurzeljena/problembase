@@ -96,6 +96,7 @@ function Stars(name) {
 	this.reset();
 };
 
+// query proposer via Ajax
 function queryProp(form) {
 	var str = document.forms[form].elements["proposer"].value;
 	var xmlhttp = new XMLHttpRequest();
@@ -105,5 +106,34 @@ function queryProp(form) {
 	}
 
 	xmlhttp.open("GET", "proposers.php?prop_query=" + escape(str), true);
+	xmlhttp.send();
+};
+
+// dynamic tag list Ajax stuff
+function addTag(form) {
+	var tags = document.forms[form].elements["tags"].value;
+	var newtag = document.forms[form].elements["tag"].value;
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+			document.getElementById("tags").innerHTML = xmlhttp.responseText;
+	}
+
+	xmlhttp.open("GET", "tags.php?taglist=" + escape(tags) + "&newtag=" + newtag + "&form=" + form, true);
+	xmlhttp.send();
+};
+
+function deleteTag(form, id) {
+	var tags = document.forms[form].elements["tags"].value;
+	tags = tags.replace(RegExp(',' + id, 'g'), "");
+	tags = tags.replace(RegExp(id + ',', 'g'), "");
+	tags = tags.replace(RegExp(id, 'g'), "");
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+			document.getElementById("tags").innerHTML = xmlhttp.responseText;
+	}
+
+	xmlhttp.open("GET", "tags.php?taglist=" + escape(tags) + "&form=" + form, true);
 	xmlhttp.send();
 };

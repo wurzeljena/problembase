@@ -35,6 +35,16 @@
 			$id = $pb->lastInsertRowID();
 		}
 
+		// write tags
+		$pb->exec("DELETE FROM tag_list WHERE problem_id=$id");
+		if ($tags != "") {
+			$stmt = $pb->prepare("INSERT OR REPLACE INTO tag_list (problem_id, tag_id) VALUES ($id, :tag)");
+			foreach (explode(",", $tags) as $value) {
+				$stmt->bindValue(":tag", $value, SQLITE3_INTEGER);
+				$stmt->execute();
+			}
+		}
+
 		// redirect to task.php
 		header('Location: task.php?id='.$id);
 	}

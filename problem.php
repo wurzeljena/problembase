@@ -1,4 +1,4 @@
-<?php include 'proposers.php'; ?>
+<?php include 'proposers.php'; include 'tags.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -22,6 +22,7 @@
 	if (isset($_REQUEST['id'])) {
 		$id = (int)$_REQUEST['id'];
 		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$id, true);
+		$tags = implode(",", get_tags($pb, $problem['id']));
 	}
 	?>
 
@@ -30,6 +31,13 @@
 	<form class="task" id="task" title="Aufgabenformular" action="submit_problem.php" method="POST">
 		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
 		<?php proposer_form($pb, 'task', isset($id) ? $problem['proposer_id'] : -1); ?>
+		<input type="text" class="text" name="tag" placeholder="Tag hinzufügen" list="tag_datalist"/>
+		<input type="button" value="+" onclick="addTag('task');">
+		<?php tags_datalist($pb); ?>
+		<span id="tags" style="margin:3px;">
+			<input type="hidden" name="tags" value="<?php if (isset($id)) print $tags; ?>"/>
+			<?php if (isset($id)) tags($pb, $tags, 'task'); ?>
+		</span>
 		<textarea class="text" name="problem" id="textarea" rows="20" cols="65" placeholder="Aufgabentext"
 			style="height:200px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $problem['problem']; ?></textarea> <br/>
 		<div class="preview" id="preview"></div>

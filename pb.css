@@ -141,7 +141,7 @@ div.taglist
 {
 	margin	: 5px;
 }
-span.tag
+*.tag
 {
 	padding			: 3px 5px;
 	margin			: 2px;
@@ -149,6 +149,7 @@ span.tag
 	font-family		: Sans-Serif;
 	font-weight		: bold;
 	font-size		: small;
+	text-decoration	: none;
 }
 
 /* Aufgabenseite */

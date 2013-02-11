@@ -35,7 +35,7 @@
 				if ($proposer['country'] != "") print " (".$proposer['country'].")";
 			?>
 			<div class="tags">
-				<?php tags($pb, get_tags($pb, $id)); ?>
+				<?php tags($pb, implode(",", get_tags($pb, $id))); ?>
 			</div></div>
 			<div class="text" id="prob"><?php print $problem['problem']?></div>
 		</div>

@@ -19,7 +19,8 @@
 
 	<?php
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-	$problems = $pb->query("SELECT * FROM problems, proposers WHERE problems.proposer_id=proposers.id");
+	$problems = $pb->query("SELECT problems.id, problems.problem, problems.proposed, proposers.name, proposers.location, proposers.country"
+		." FROM problems, proposers WHERE problems.proposer_id=proposers.id");
 	?>
 
 	<div class="content">
@@ -30,7 +31,7 @@
 			print '<div class="info">'.$problem['name'].", ".$problem['location'];
 			if ($problem['country'] != "") print " (".$problem['country'].")";
 			print '<div class="tags">';
-			tags($pb, get_tags($pb, $problem['id']));
+			tags($pb, implode(",", get_tags($pb, $problem['id'])));
 			print '</div></div>';
 
 			print '<div class="text" id="prob">';
@@ -57,7 +58,7 @@
 		?>
 	</div>
 
-	<form class="filter" title="Filter" action="">
+	<form class="filter" id="filter" title="Filter" action="">
 		<div><input type="text" name="filter" placeholder="Suchbegriff"/>
 		<input type="submit" value="Filtern"></div>
 		<table style="border-top:1px solid Gray; border-bottom:1px solid Gray;">
@@ -85,10 +86,12 @@
 		</table>
 		<div class="taglist">
 			<span class="question">Was?</span>
-			<input type="text" name="tag" placeholder="Tag hinzufügen"/>
-			<input type="hidden" name="tags" value="Test"/> <br/>
-			<div style="margin:3px;">
-				<?php tags($pb, array()); ?>
+			<input type="text" name="tag" placeholder="Tag hinzufügen" list="tag_datalist"/>
+			<input type="button" value="+" onclick="addTag('filter');">
+			<?php tags_datalist($pb); ?> <br/>
+			<div id="tags" style="margin:3px;">
+				<input type="hidden" name="tags" value="<?php if (isset($_REQUEST['tags'])) print $_REQUEST['tags']; ?>"/>
+				<?php if (isset($_REQUEST['tags'])) tags($pb, $_REQUEST['tags']); ?>
 			</div>
 		</div>
 		<!--<a class="button" style="margin-top:2em;" href="tags.php?edit_tags=1">Tags bearbeiten</a>-->
