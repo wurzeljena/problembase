@@ -29,9 +29,11 @@
 
 		// write into db
 		if (isset($id))
-			$pb->exec("UPDATE problems SET problem='$problem', proposer_id=$proposer_id WHERE id=$id");
+			$pb->exec("UPDATE problems SET problem='$problem', proposer_id=$proposer_id, "
+				."remarks='$remarks', proposed=date('$proposed') WHERE id=$id");
 		else {
-			$pb->exec("INSERT INTO problems(problem, proposer_id) VALUES ('$problem', $proposer_id)");
+			$pb->exec("INSERT INTO problems(problem, proposer_id, remarks, proposed) VALUES "
+				."('$problem', $proposer_id, '$remarks', date('$proposed'))");
 			$id = $pb->lastInsertRowID();
 		}
 

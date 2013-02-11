@@ -42,6 +42,9 @@
 		<textarea class="text" name="solution" id="textarea" rows="60" cols="80" placeholder="Lösungstext"
 			style="height:400px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $solution['solution']; ?></textarea> <br/>
 		<div class="preview" id="preview"></div>
+		<textarea class="text" name="remarks" id="textarea" rows="5" cols="65" placeholder="Anmerkungen"
+			style="height:70px;"><?php if (isset($id)) print $solution['remarks']; ?></textarea>
+		Veröffentlicht in: <input type="text" class="text" name="published" placeholder="MM/JJ" style="width:50px;" value="<?php if (isset($id)) print $solution['month']."/".$solution['year']; ?>"/>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
 		<input type="submit" value="<?php if (isset($id)) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
 		<input type="button" value="Verwerfen" style="float:right;" onclick="history.back();"/>

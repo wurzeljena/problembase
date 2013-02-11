@@ -28,10 +28,16 @@
 		}
 
 		// write into db
+		if ($published != "")
+			list($month, $year) = explode("/", $published);
+		else
+			$month = $year = "NULL";
 		if (isset($id))
-			$pb->exec("UPDATE solutions SET solution='$solution', proposer_id=$proposer_id WHERE id=$id");
+			$pb->exec("UPDATE solutions SET solution='$solution', proposer_id=$proposer_id, "
+				."remarks='$remarks', year=$year, month=$month WHERE id=$id");
 		else {
-			$pb->exec("INSERT INTO solutions(problem_id, solution, proposer_id) VALUES ($problem_id, '$solution', $proposer_id)");
+			$pb->exec("INSERT INTO solutions(problem_id, solution, proposer_id, remarks, year, month) "
+				."VALUES ($problem_id, '$solution', $proposer_id, '$remarks', $year, $month)");
 			$id = $pb->lastInsertRowID();
 		}
 	}
