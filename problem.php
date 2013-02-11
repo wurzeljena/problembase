@@ -22,7 +22,7 @@
 	if (isset($_REQUEST['id'])) {
 		$id = (int)$_REQUEST['id'];
 		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$id, true);
-		$tags = implode(",", get_tags($pb, $problem['id']));
+		$tags = get_tags($pb, $problem['id']);
 	}
 	?>
 

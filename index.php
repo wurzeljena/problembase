@@ -23,7 +23,8 @@
 		"SELECT problems.id, problems.problem, problems.proposed, proposers.name, "
 		."proposers.location, proposers.country, letter, number, month, year,"
 		."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
-		."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm "
+		."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
+		."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
 		."FROM problems LEFT JOIN proposers ON problems.proposer_id=proposers.id "
 		."LEFT JOIN published ON problems.id=published.problem_id");
 	?>
@@ -36,7 +37,7 @@
 			print '<div class="info">'.$problem['name'].", ".$problem['location'];
 			if ($problem['country'] != "") print " (".$problem['country'].")";
 			print '<div class="tags">';
-			tags($pb, implode(",", get_tags($pb, $problem['id'])));
+			tags($pb, $problem['tags']);
 			print '</div></div>';
 
 			print '<div class="text" id="prob">';

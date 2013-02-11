@@ -54,11 +54,7 @@
 
 	function get_tags($pb, $problem_id)
 	{
-		$tag_list = $pb->query("SELECT tag_id FROM tag_list WHERE problem_id=".$problem_id);
-		$tags = array();
-		while ($tag = $tag_list->fetchArray(SQLITE3_NUM))
-			$tags[] = $tag[0];
-		return $tags;
+		return $pb->querySingle("SELECT group_concat(tag_id) FROM tag_list WHERE problem_id=".$problem_id, false);
 	}
 
 	// answer to Ajax queries from taglists
