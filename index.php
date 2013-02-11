@@ -19,8 +19,13 @@
 
 	<?php
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-	$problems = $pb->query("SELECT problems.id, problems.problem, problems.proposed, proposers.name, proposers.location, proposers.country"
-		." FROM problems, proposers WHERE problems.proposer_id=proposers.id");
+	$problems = $pb->query(
+		"SELECT problems.id, problems.problem, problems.proposed, proposers.name, "
+		."proposers.location, proposers.country, letter, number, month, year,"
+		."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
+		."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm "
+		."FROM problems LEFT JOIN proposers ON problems.proposer_id=proposers.id "
+		."LEFT JOIN published ON problems.id=published.problem_id");
 	?>
 
 	<div class="content">
@@ -40,17 +45,14 @@
 			print '<td style="width:70px; border:none;">'.$problem['proposed'].'</td>';
 
 			// find out if published
-			$published = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$problem['id'], true);
-			if (count($published))
-				print '<td style="width:200px;">Heft '.$published['month'].'/'.$published['year'].
-					', Aufgabe $'.$published['letter'].$published['number'].'$</td>';
+			if (isset($problem['year']))
+				print '<td style="width:200px;">Heft '.$problem['month'].'/'.$problem['year'].
+					', Aufgabe $'.$problem['letter'].$problem['number'].'$</td>';
 			else
 				print '<td style="width:200px;">nicht publiziert</td>';
 
-			$numsol = $pb->querySingle("SELECT COUNT(*) FROM solutions WHERE problem_id=".$problem['id']);
-			$solstr = ($numsol <= 1) ? ($numsol ? "" : "k")."eine Lösung" : $numsol." Lösungen";
-			$numcomm = $pb->querySingle("SELECT COUNT(*) FROM comments WHERE problem_id=".$problem['id']);
-			$commstr = ($numcomm <= 1) ? ($numcomm ? "" : "k")."ein Kommentar" : $numcomm." Kommentare";
+			$solstr = ($problem['numsol'] <= 1) ? ($problem['numsol'] ? "" : "k")."eine Lösung" : $problem['numsol']." Lösungen";
+			$commstr = ($problem['numcomm'] <= 1) ? ($problem['numcomm'] ? "" : "k")."ein Kommentar" : $problem['numcomm']." Kommentare";
 			print '<td style="width:200px;">'.$commstr.', '.$solstr.'</td>';
 			print '</tr></table>';
 			print '</div></div></a>';
