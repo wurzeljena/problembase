@@ -24,6 +24,7 @@ CREATE TABLE problems (
     REFERENCES proposers(id)
     ON UPDATE CASCADE);
 CREATE INDEX problem_proposer ON problems(proposer_id);
+CREATE INDEX problem_proposed ON problems(proposed);
 
 -- -----------------------------------------------------
 -- Table `solutions`
@@ -34,8 +35,8 @@ CREATE TABLE solutions (
   solution TEXT NOT NULL,
   proposer_id INTEGER NULL,
   remarks TEXT NULL,
-  month TINYINT NULL,
   year YEAR NULL,
+  month TINYINT NULL,
   PRIMARY KEY (id ASC),
   FOREIGN KEY (problem_id)
     REFERENCES problems(id)
@@ -46,19 +47,19 @@ CREATE TABLE solutions (
     ON UPDATE CASCADE);
 CREATE INDEX solution_problem ON solutions(problem_id);
 CREATE INDEX solution_proposer ON solutions(proposer_id);
+CREATE INDEX solution_volume ON solutions(year, month);
 
 -- -----------------------------------------------------
 -- Table `users`
 -- -----------------------------------------------------
 CREATE TABLE users (
   id INTEGER NOT NULL,
-  name VARCHAR(32) NOT NULL,
-  email VARCHAR(32) NULL,
+  name VARCHAR(32) UNIQUE NOT NULL,
+  email VARCHAR(32) UNIQUE NOT NULL,
   encr_pw BLOB NULL,
   root TINYINT(1) NOT NULL DEFAULT 0,
   editor TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (id ASC) );
-CREATE UNIQUE INDEX user_name ON users(name);
 
 -- -----------------------------------------------------
 -- Table `comments`
@@ -97,7 +98,7 @@ CREATE TABLE tags (
 CREATE TABLE tag_list (
   problem_id INTEGER NOT NULL,
   tag_id INTEGER NOT NULL,
-  PRIMARY KEY (problem_id, tag_id) ,
+  PRIMARY KEY (problem_id, tag_id),
   FOREIGN KEY (problem_id)
     REFERENCES problems(id)
     ON DELETE CASCADE
@@ -114,9 +115,11 @@ CREATE TABLE published (
   problem_id INTEGER NOT NULL,
   letter VARCHAR(8) NULL,
   number TINYINT NULL,
-  month TINYINT NULL,
   year YEAR NULL,
+  month TINYINT NULL,
   PRIMARY KEY (problem_id ASC),
   FOREIGN KEY (problem_id)
     REFERENCES problems(id)
     ON UPDATE CASCADE);
+CREATE UNIQUE INDEX published_name ON published(letter, number);
+CREATE INDEX published_volume ON published(year, month);
