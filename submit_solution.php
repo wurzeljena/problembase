@@ -28,8 +28,13 @@
 		}
 
 		// write into db
-		if ($published != "")
+		if ($published != "") {
 			list($month, $year) = explode("/", $published);
+			if ($year > 50)		// translate YY to 19JJ/20JJ
+				$year += 1900;
+			if ($year <= 50)
+				$year += 2000;
+		}
 		else
 			$month = $year = "NULL";
 		if (isset($id))

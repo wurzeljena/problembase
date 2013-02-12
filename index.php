@@ -40,6 +40,10 @@
 			
 			if ($_REQUEST['number'] != "") {
 				list($month, $year) = explode("/", $_REQUEST['number']);
+				if ($year > 50)		// translate YY to 19JJ/20JJ
+					$year += 1900;
+				if ($year <= 50)
+					$year += 2000;
 				$filter[] = "month = $month AND year = $year";
 			}
 			
@@ -113,12 +117,12 @@
 				<input type="checkbox" name="with_solution"/><span class="info">mit Lösung</span></td>
 			</tr>
 			<tr>
-				<td><span class="info">älter als</span></td>
+				<td><span class="info">nach</span></td>
 				<td><input type="date" name="start" placeholder="JJJJ-MM-TT"
 					value="<?php if (isset($_REQUEST['start'])) print $_REQUEST['start']; ?>"/></td>
 			</tr>
 			<tr>
-				<td><span class="info">jünger als</span></td>
+				<td><span class="info">vor</span></td>
 				<td><input type="date" name="end" placeholder="JJJJ-MM-TT"
 					value="<?php if (isset($_REQUEST['end'])) print $_REQUEST['end']; ?>"/></td>
 			</tr>
