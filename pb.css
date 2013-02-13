@@ -193,6 +193,14 @@ div.solution
 	position	: relative;
 }
 
+div.published
+{
+	padding		: 10px;
+	border-top	: 1px dotted Purple;
+	font-style	: italic;
+}
+form#publish { padding:0px; }
+
 table.comments
 {
 	width	: 100%;

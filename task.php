@@ -38,6 +38,39 @@
 				<?php tags($pb, get_tags($pb, $id)); ?>
 			</div></div>
 			<div class="text" id="prob"><?php print $problem['problem']?></div>
+			<div class="published">
+			<?php
+				$pub = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$id, true);
+				if (count($pub)) {
+					$volume = $pub['month']."/".($pub['year']%100);
+					$letter = $pub['letter'];
+					$number = $pub['number'];
+					print "Veröffentlicht als $$letter$number$ im Heft $volume.";
+					print "<a class='button danger' style='float:right' href='javascript:Publ.Trig();'>Ändern</a>";
+				}
+				else {
+					$date = getdate();	++$date['mon'];
+					if ($date['mon'] > 12) {
+						$date['mon'] -= 12;
+						++$date['year'];
+					}
+					$volume = $date['mon']."/".($date['year']%100);
+					$number = $letter = "";
+					print "Noch nicht veröffentlicht.";
+					print "<a class='button' style='float:right' href='javascript:Publ.Trig();'>Veröffentlichen</a>";
+				}
+			?>
+			<form id="publish" style="visibility:hidden; position:absolute;" action="publish.php" method="POST">
+				<input type="hidden" name="id" value="<?php print $id; ?>">
+				Ausgabe: <input type="text" name="volume" placeholder="MM/JJ"
+					style="width:40px;" value="<?php print $volume; ?>">
+				Nummer: <input type="text" name="letter" placeholder="xxx"
+					style="width:50px;" value="<?php print $letter; ?>">
+					<input type="text" name="number" placeholder="NN"
+					style="width:20px;" value="<?php print $number; ?>">
+				<input type="submit" value="Speichern">
+			</form>
+			</div>
 		</div>
 
 		<div class="caption" id="comments" style="margin-top:1.5em;">Kommentare
@@ -94,6 +127,7 @@
 	<script type="text/javascript">
 		text = document.getElementById("prob");
 		MathJax.Hub.Queue(["Typeset", MathJax.Hub, prob]);
+		var Publ = new Trigger("publish");
 	</script>
 </body>
 </html>
