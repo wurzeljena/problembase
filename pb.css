@@ -22,25 +22,11 @@ div.head div.logo
 	padding : 0px 1em 0px 3em;
 	float : left;
 }
-div.head div.login 
+div.head form.login
 {
-	border-radius	: 5px;
-	background	: #00C000;
-	background	: linear-gradient(to bottom, #00E000, #00A000);
-	padding	: 3px 7px; margin	: 3px;
-	color	: White;	text-shadow	: 0px 1px 0px Black;
-	text-decoration	: none;
 	float : right;
-	box-shadow	: inset 0px 0px 1px #006000;
-}
-div.head div.login:hover
-{
-	background	: #00E000;
-	background	: linear-gradient(to bottom, #00F000, #00D000);
-}
-div.head div.login:active {
-	box-shadow	: inset 2px 2px 1px #006000;
-	padding		: 5px 5px 1px 9px;
+	padding	: 0px;
+	margin	: -5px;
 }
 
 div.content {width:600px; margin:50px 100px}

@@ -1,4 +1,8 @@
-<?php include 'proposers.php'; include 'tags.php'; ?>
+<?php
+	session_start();
+	include 'tags.php';
+	include 'proposers.php';
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -11,11 +15,7 @@
 	<script type="text/javascript" src="fancy.js"></script>
 </head>
 <body>
-	<div class="head"><div style="width:50em;">
-		<div class="logo">&#x221A;<span style="text-decoration:overline">WURZEL</span></div>
-		<div class="login">Login</div>
-		<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/" target="_blank">Wurzel e.V.</a></div>
-	</div></div>
+	<?php include 'head.php'; ?>
 
 	<?php
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');

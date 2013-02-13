@@ -1,4 +1,7 @@
-<?php include 'tags.php'; ?>
+<?php
+	session_start();
+	include 'tags.php';
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -11,11 +14,7 @@
 	<script type="text/javascript" src="fancy.js"></script>
 </head>
 <body>
-	<div class="head"><div style="width:50em;">
-		<div class="logo">&#x221A;<span style="text-decoration:overline">WURZEL</span></div>
-		<div class="login">Login</div>
-		<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/" target="_blank">Wurzel e.V.</a></div>
-	</div></div>
+	<?php include 'head.php'; ?>
 
 	<?php
 	$id = (int)$_REQUEST['id'];
@@ -75,7 +74,7 @@
 
 		<div class="caption" id="comments" style="margin-top:1.5em;">Kommentare
 		<?php
-		if(!$pb->querySingle("SELECT * FROM comments WHERE user_id=1 AND problem_id=$id", false))
+		if(isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
 			print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Schreiben</a>';
 		?>
 		</div>
@@ -83,13 +82,13 @@
 		<?php
 			$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=$id");
 			while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
-				if ($comment['user_id']==1)
+				if (isset($user_id) && $comment['user_id']==$user_id)
 					print '<tr class="own">';
 				else
 					print '<tr>';
 				print '<td class="author">'.$comment['name'].'</td>';
 				print '<td class="comment">';
-				if ($comment['user_id']==1) {
+				if (isset($user_id) && $comment['user_id']==$user_id) {
 					print '<a class="button danger" style="float:right;" href="submit_eval.php?id='.$id.'&delete=1">Löschen</a>';
 					print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Bearbeiten</a>';
 				}

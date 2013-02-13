@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
@@ -10,23 +11,21 @@
 	<script type="text/javascript" src="fancy.js"></script>
 </head>
 <body>
-	<div class="head"><div style="width:50em;">
-		<div class="logo">&#x221A;<span style="text-decoration:overline">WURZEL</span></div>
-		<div class="login">Login</div>
-		<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/">Wurzel e.V.</a></div>
-	</div></div>
+	<?php include 'head.php'; ?>
 
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
 
 	<?php
-	$id = (int)$_REQUEST['id'];
-	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-	$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
-	$problem = $result->fetchArray(SQLITE3_ASSOC);
-	$result = $pb->query("SELECT * FROM comments WHERE user_id=1 AND problem_id=".$id);
-	$comment = $result->fetchArray(SQLITE3_ASSOC);
-	$pb->close();
+		$id = (int)$_REQUEST['id'];
+		if (!isset($user_id))
+			die('Fehler: Nur Benutzer dürfen kommentieren!');
+		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
+		$problem = $result->fetchArray(SQLITE3_ASSOC);
+		$result = $pb->query("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=".$id);
+		$comment = $result->fetchArray(SQLITE3_ASSOC);
+		$pb->close();
 	?>
 	<form class="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
 		<div class="problem" id="prob"><?php print $problem['problem']?></div>
