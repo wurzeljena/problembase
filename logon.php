@@ -12,6 +12,7 @@
 	if (isset($logout)) {
 		unset($_SESSION['user_id']);
 		unset($_SESSION['user_name']);
+		unset($_SESSION['email']);
 		unset($_SESSION['root']);
 		unset($_SESSION['editor']);
 	}
@@ -23,6 +24,7 @@
 		if ($user['encr_pw'] == "" || $user['encr_pw'] == hash("sha256", $password)) {
 			$_SESSION['user_id'] = $user['id'];
 			$_SESSION['user_name'] = $user['name'];
+			$_SESSION['email'] = $email;
 			$_SESSION['root'] = $user['root'];
 			$_SESSION['editor'] = $user['editor'];
 		}

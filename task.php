@@ -86,7 +86,7 @@
 					print '<tr class="own">';
 				else
 					print '<tr>';
-				print '<td class="author">'.$comment['name'].'</td>';
+				print '<td class="author"><a href="user.php?id='.$comment['user_id'].'">'.$comment['name'].'</a></td>';
 				print '<td class="comment">';
 				if (isset($user_id) && $comment['user_id']==$user_id) {
 					print '<a class="button danger" style="float:right;" href="submit_eval.php?id='.$id.'&delete=1">Löschen</a>';

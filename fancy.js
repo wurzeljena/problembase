@@ -137,3 +137,13 @@ function deleteTag(form, id) {
 	xmlhttp.open("GET", "tags.php?taglist=" + escape(tags) + "&form=" + form, true);
 	xmlhttp.send();
 };
+
+// validate password
+function validate_password() {
+	var correct = (document.forms['pw'].elements['new_pw'].value
+		== document.forms['pw'].elements['new_pw_check'].value);
+
+	if (!correct)
+		alert("Passworte stimmen nicht überein!");
+	return correct;
+}
