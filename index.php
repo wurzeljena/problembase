@@ -141,7 +141,9 @@
 	</form>
 
 	<div class="panel">
-		<a href="problem.php" class="button">Neue Aufgabe</a>
+		<?php if (isset($user_id))
+			print '<a href="problem.php" class="button">Neue Aufgabe</a>';
+		?>
 	</div>
 
 	<?php $pb->close(); ?>

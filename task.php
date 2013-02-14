@@ -25,8 +25,10 @@
 	<div class="content">
 		<div class="task">
 		<?php
-			print '<a class="button outer" style="top:0em;" href="problem.php?id='.$id.'">Bearbeiten</a>';
-			print '<a class="button danger outer" style="top:2em;" href="submit_problem.php?id='.$id.'&delete=1">Löschen</a>';
+			if (isset($user_id)) {
+				print '<a class="button outer" style="top:0em;" href="problem.php?id='.$id.'">Bearbeiten</a>';
+				print '<a class="button danger outer" style="top:2em;" href="submit_problem.php?id='.$id.'&delete=1">Löschen</a>';
+			}
 		?>
 			<div class="info">
 			<?php
@@ -45,7 +47,8 @@
 					$letter = $pub['letter'];
 					$number = $pub['number'];
 					print "Veröffentlicht als $$letter$number$ im Heft $volume.";
-					print "<a class='button danger' style='float:right' href='javascript:Publ.Trig();'>Ändern</a>";
+					if (isset($user_id) && $_SESSION['editor'])
+						print "<a class='button danger' style='float:right' href='javascript:Publ.Trig();'>Ändern</a>";
 				}
 				else {
 					$date = getdate();	++$date['mon'];
@@ -56,7 +59,8 @@
 					$volume = $date['mon']."/".($date['year']%100);
 					$number = $letter = "";
 					print "Noch nicht veröffentlicht.";
-					print "<a class='button' style='float:right' href='javascript:Publ.Trig();'>Veröffentlichen</a>";
+					if (isset($user_id) && $_SESSION['editor'])
+						print "<a class='button' style='float:right' href='javascript:Publ.Trig();'>Veröffentlichen</a>";
 				}
 			?>
 			<form id="publish" style="visibility:hidden; position:absolute;" action="publish.php" method="POST">
@@ -100,7 +104,10 @@
 		</table>
 
 		<div class="caption" id="solutions" style="margin-top:1.5em;">Lösungen
-		<?php print '<a class="button" style="float:right;" href="solution.php?problem_id='.$id.'">Hinzufügen</a>'; ?>
+		<?php
+			if (isset($user_id))
+				print '<a class="button" style="float:right;" href="solution.php?problem_id='.$id.'">Hinzufügen</a>';
+		?>
 		</div>
 		<?php
 		$solutions = $pb->query("SELECT solutions.id, solutions.solution, solutions.remarks, solutions.month, solutions.year, "
@@ -108,8 +115,10 @@
 			."solutions.proposer_id=proposers.id AND problem_id=$id");
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
 			print '<div class="solution">';
-			print '<a class="button outer" style="top:0em;" href="solution.php?id='.$solution['id'].'">Bearbeiten</a>';
-			print '<a class="button danger outer" style="top:2em;" href="submit_solution.php?id='.$solution['id'].'&delete=1">Löschen</a>';
+			if (isset($user_id)) {
+				print '<a class="button outer" style="top:0em;" href="solution.php?id='.$solution['id'].'">Bearbeiten</a>';
+				print '<a class="button danger outer" style="top:2em;" href="submit_solution.php?id='.$solution['id'].'&delete=1">Löschen</a>';
+			}
 			print '<div class="info">'.$solution['name'].", ".$solution['location'];
 			if ($solution['country'] != "") print " (".$solution['country'].")";
 			print '</div>';
