@@ -1,4 +1,7 @@
 <?php
+	session_start();
+	if (!isset($_SESSION['user_id']) || !$_SESSION['editor'])
+		die("Änderungen nur als Redakteur möglich!");
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 
 	// read parameters

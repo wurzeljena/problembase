@@ -1,4 +1,7 @@
 <?php
+	session_start();
+	if (!isset($_SESSION['user_id']))
+		die("Änderungen nur angemeldet möglich!");
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 
 	// read parameters
