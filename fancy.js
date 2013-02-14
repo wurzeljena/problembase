@@ -154,6 +154,6 @@ function setright(id, name) {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () { }
 
-	xmlhttp.open("POST", "edit_user.php?id=" + id + "&" + name + "=" + (+elem.checked), true);
+	xmlhttp.open("POST", "edit_user.php?id=" + id + "&update&" + name + "=" + (+elem.checked), true);
 	xmlhttp.send();
 }

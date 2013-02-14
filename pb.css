@@ -326,7 +326,7 @@ table.users tr#forms td
 {
 	background	: #F04080;
 }
-form#edit, form#pw
+form#edit, form#pw, form#newuser
 {
 	padding		: 0px;
 	margin		: 0px;
