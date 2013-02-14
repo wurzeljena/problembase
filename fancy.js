@@ -147,3 +147,13 @@ function validate_password() {
 		alert("Passworte stimmen nicht überein!");
 	return correct;
 }
+
+// rights management
+function setright(id, name) {
+	var elem = document.getElementById(name + id);
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () { }
+
+	xmlhttp.open("POST", "edit_user.php?id=" + id + "&" + name + "=" + (+elem.checked), true);
+	xmlhttp.send();
+}
