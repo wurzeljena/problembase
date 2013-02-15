@@ -49,6 +49,12 @@
 	</form>
 	</div>
 
+	<div id="panel">
+		<?php if (isset($user_id))
+			include "tagpanel.php";
+		?>
+	</div>
+
 	<?php $pb->close(); ?>
 
 	<script type="text/javascript">

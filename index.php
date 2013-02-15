@@ -140,7 +140,7 @@
 		<!--<a class="button" style="margin-top:2em;" href="tags.php?edit_tags=1">Tags bearbeiten</a>-->
 	</form>
 
-	<div class="panel">
+	<div id="panel">
 		<?php if (isset($user_id))
 			print '<a href="problem.php" class="button">Neue Aufgabe</a>';
 		?>

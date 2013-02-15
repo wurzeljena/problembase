@@ -138,6 +138,49 @@ function deleteTag(form, id) {
 	xmlhttp.send();
 };
 
+// tag editor functions
+function loadTag() {
+	var id = document.forms['tageditor'].elements['id'].value;
+
+	if (id != "") {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function () {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				eval("var resp = " + xmlhttp.responseText);
+				document.forms['tageditor'].elements['name'].value = resp.name;
+				document.forms['tageditor'].elements['description'].value = resp.desc;
+				document.forms['tageditor'].elements['color'].value = resp.color;
+				document.getElementById('submit_tag').value = "Ändern";
+				tagPreview();
+			}
+		}
+
+		xmlhttp.open("GET", "tags.php?taginfo&id=" + id, true);
+		xmlhttp.send();
+	}
+	else {
+		document.forms['tageditor'].elements['name'].value = "";
+		document.forms['tageditor'].elements['description'].value = "";
+		document.forms['tageditor'].elements['color'].value = "";
+		document.getElementById('submit_tag').value = "Hinzufügen";
+	}
+}
+
+function tagPreview() {
+	var name = document.forms['tageditor'].elements['name'].value;
+	var desc = document.forms['tageditor'].elements['description'].value;
+	var clr = document.forms['tageditor'].elements['color'].value;
+
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+			document.getElementById('result_tag').innerHTML = xmlhttp.responseText;
+	}
+
+	xmlhttp.open("GET", "tags.php?drawtag&name=" + name + "&desc=" + escape(desc) + "&color=" + escape(clr), true);
+	xmlhttp.send();
+}
+
 // validate password
 function validate_password() {
 	var correct = (document.forms['pw'].elements['new_pw'].value
