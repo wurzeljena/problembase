@@ -195,10 +195,17 @@ table.comments
 table.comments tr
 {
 	border-top	: 1px dotted Gray;
+	background	: #FFFF60;
 }
 table.comments tr.own {background: #D0D030;}
+table.comments tr.eval
+{
+	text-align	: center;
+	border-top	: none;
+	border-bottom	: 1px dotted Gray;
+}
 table.comments td {padding: 3px; vertical-align: baseline;}
-table.comments td.author {width: 20%}
+table.comments td.author {width: 20%;}
 
 /* Formulare */
 form

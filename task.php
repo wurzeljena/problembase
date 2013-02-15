@@ -96,8 +96,21 @@
 					print '<a class="button danger" style="float:right;" href="submit_eval.php?id='.$id.'&delete=1">Löschen</a>';
 					print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Bearbeiten</a>';
 				}
-				print '{Bewertungsbereich} <br/>';
-				print $comment['comment'];
+				print $comment['comment'].'</td></tr>';
+
+				if (isset($user_id) && $comment['user_id']==$user_id)
+					print '<tr class="eval own"><td colspan=2>';
+				else
+					print '<tr class="eval"><td colspan=2>';
+				$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
+				$critcols = array('beauty', 'difficulty', 'knowledge_required');
+				for ($crit=0; $crit<3; ++$crit) {
+					print '<span class="eval">'.$critnames[$crit].'</span> ';
+					for ($star=1; $star<=5; ++$star)
+						print ($star<=$comment[$critcols[$crit]]) ?
+							'<img class="star" src="img/mandstar.png" alt="*"> ' :
+							'<img class="star" src="img/mand.png" alt="o"> ';
+				}
 				print '</td></tr>';
 			};
 		?>
