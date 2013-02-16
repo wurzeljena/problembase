@@ -11,15 +11,22 @@ CREATE TABLE proposers (
 CREATE INDEX proposer_name ON proposers(name);
 
 -- -----------------------------------------------------
+-- Table `snippets`
+-- -----------------------------------------------------
+CREATE VIRTUAL TABLE files USING fts4 (
+  content TEXT,
+  tokenize=simple);
+
+-- -----------------------------------------------------
 -- Table `problems`
 -- -----------------------------------------------------
 CREATE TABLE problems (
   id INTEGER NOT NULL,
-  problem TEXT NOT NULL,
+  file_id INTEGER NOT NULL,
   proposer_id INTEGER NULL,
   remarks TEXT NULL,
   proposed DATE NULL,
-  PRIMARY KEY (id ASC) ,
+  PRIMARY KEY (id ASC),
   FOREIGN KEY (proposer_id)
     REFERENCES proposers(id)
     ON UPDATE CASCADE);
@@ -32,7 +39,7 @@ CREATE INDEX problem_proposed ON problems(proposed);
 CREATE TABLE solutions (
   id INTEGER NOT NULL,
   problem_id INTEGER NOT NULL,
-  solution TEXT NOT NULL,
+  file_id INTEGER NOT NULL,
   proposer_id INTEGER NULL,
   remarks TEXT NULL,
   year YEAR NULL,
