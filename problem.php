@@ -21,7 +21,7 @@
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 	if (isset($_REQUEST['id'])) {
 		$id = (int)$_REQUEST['id'];
-		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$id, true);
+		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
 		$tags = get_tags($pb, $problem['id']);
 	}
 	?>

@@ -30,6 +30,7 @@ CREATE TABLE problems (
   FOREIGN KEY (proposer_id)
     REFERENCES proposers(id)
     ON UPDATE CASCADE);
+CREATE INDEX problem_file ON problems(file_id);
 CREATE INDEX problem_proposer ON problems(proposer_id);
 CREATE INDEX problem_proposed ON problems(proposed);
 
@@ -53,6 +54,7 @@ CREATE TABLE solutions (
     REFERENCES proposers(id)
     ON UPDATE CASCADE);
 CREATE INDEX solution_problem ON solutions(problem_id);
+CREATE INDEX solution_file ON solutions(file_id);
 CREATE INDEX solution_proposer ON solutions(proposer_id);
 CREATE INDEX solution_volume ON solutions(year, month);
 
