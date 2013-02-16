@@ -22,6 +22,11 @@ div.head div.logo
 	padding : 0px 1em 0px 3em;
 	float : left;
 }
+div.head a
+{
+	text-decoration	: none;
+}
+div.head a:hover {color: #6060C0;}
 div.head form.login
 {
 	float : right;

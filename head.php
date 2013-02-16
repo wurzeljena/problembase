@@ -3,7 +3,9 @@
 		$user_id = $_SESSION['user_id'];
 ?>
 <div class="head"><div style="width:50em;">
-	<div class="logo">&#x221A;<span style="text-decoration:overline">WURZEL</span></div>
+	<div class="logo">
+		<a href="index.php">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
+	</div>
 	<?php if (!isset($user_id)) { ?>
 		<form class="login" action="logon.php" method="POST">
 		<input type="text" style="width:15em;" name="email" placeholder="E-Mail">
