@@ -12,7 +12,9 @@
 			$$key = $value;
 
 	if (isset($delete)) {
+		$file_id = $pb->querySingle("SELECT file_id FROM problems WHERE id=$id");
 		$pb->exec("DELETE FROM problems WHERE id=$id");
+		$pb->exec("DELETE FROM files WHERE files.rowid=$file_id");
 		header('Location: index.php');
 	}
 	else {
@@ -31,12 +33,17 @@
 		}
 
 		// write into db
-		if (isset($id))
-			$pb->exec("UPDATE problems SET problem='$problem', proposer_id=$proposer_id, "
+		if (isset($id)) {
+			$file_id = $pb->querySingle("SELECT file_id FROM problems WHERE id=$id");
+			$pb->exec("UPDATE files SET content='$problem' WHERE rowid=$file_id");
+			$pb->exec("UPDATE problems SET proposer_id=$proposer_id, "
 				."remarks='$remarks', proposed=date('$proposed') WHERE id=$id");
+		}
 		else {
-			$pb->exec("INSERT INTO problems(problem, proposer_id, remarks, proposed) VALUES "
-				."('$problem', $proposer_id, '$remarks', date('$proposed'))");
+			$pb->exec("INSERT INTO files(content) VALUES('$problem')");
+			$file_id = $pb->lastInsertRowID();
+			$pb->exec("INSERT INTO problems(file_id, proposer_id, remarks, proposed) VALUES "
+				."($file_id, $proposer_id, '$remarks', date('$proposed'))");
 			$id = $pb->lastInsertRowID();
 		}
 

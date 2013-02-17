@@ -12,8 +12,10 @@
 			$$key = $value;
 
 	if (isset($delete)) {
+		$file_id = $pb->querySingle("SELECT file_id FROM solutions WHERE id=$id");
 		$problem_id = $pb->querySingle("SELECT problem_id FROM solutions WHERE id=$id", false);
 		$pb->exec("DELETE FROM solutions WHERE id=$id");
+		$pb->exec("DELETE FROM files WHERE files.rowid=$file_id");
 	}
 	else {
 		// write proposer
@@ -40,13 +42,17 @@
 		}
 		else
 			$month = $year = "NULL";
-		if (isset($id))
-			$pb->exec("UPDATE solutions SET solution='$solution', proposer_id=$proposer_id, "
+		if (isset($id)) {
+			$file_id = $pb->querySingle("SELECT file_id FROM solutions WHERE id=$id");
+			$pb->exec("UPDATE files SET content='$solution' WHERE rowid=$file_id");
+			$pb->exec("UPDATE solutions SET proposer_id=$proposer_id, "
 				."remarks='$remarks', year=$year, month=$month WHERE id=$id");
+		}
 		else {
-			$pb->exec("INSERT INTO solutions(problem_id, solution, proposer_id, remarks, year, month) "
-				."VALUES ($problem_id, '$solution', $proposer_id, '$remarks', $year, $month)");
-			$id = $pb->lastInsertRowID();
+			$pb->exec("INSERT INTO files(content) VALUES('$solution')");
+			$file_id = $pb->lastInsertRowID();
+			$pb->exec("INSERT INTO solutions(problem_id, file_id, proposer_id, remarks, year, month) "
+				."VALUES ($problem_id, $file_id, $proposer_id, '$remarks', $year, $month)");
 		}
 	}
 
