@@ -96,7 +96,7 @@
 	if (isset($_REQUEST['id']) && isset($_REQUEST['name'])) {
 		session_start();
 		if (!isset($_SESSION['user_id']))
-			die("Nur für angemelde Benutzer möglich!");
+			die("Nur f&uuml;r angemelde Benutzer m&ouml;glich!");
 
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 		foreach ($_REQUEST as $key=>$value)

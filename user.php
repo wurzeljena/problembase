@@ -1,10 +1,10 @@
 <?php session_start(); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html>
 <head>
     <title>Aufgabendatenbank</title>
 	<meta name="author" content="Wurzel e.V."/>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -16,7 +16,7 @@
 	<?php
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 		if (!isset($user_id))
-			die("Nur für angemeldete Nutzer sichtbar!");
+			die("Nur f&uuml;r angemeldete Nutzer sichtbar!");
 		$root = $_SESSION['root'];
 	?>
 
@@ -62,14 +62,14 @@
 					<input type="hidden" name="id" value="<?php print $user_id; ?>">
 					<input type="text" name="name" placeholder="Name" value="<?php print $user['name'] ?>">
 					<input type="text" name="email" style="width:200px;" placeholder="E-Mail" value="<?php print $user['email'] ?>">
-					<input type="submit" value="Ändern">
+					<input type="submit" value="&Auml;ndern">
 				</form>
 				<form id="pw" action="edit_user.php" method="POST" onsubmit="return validate_password()">
 					<input type="hidden" name="id" value="<?php print $user_id; ?>">
 					<input type="password" style="width:100px;" name="old_pw" placeholder="Altes Passwort">
 					<input type="password" style="width:100px;" name="new_pw" placeholder="Neues Passwort">
-					<input type="password" style="width:100px;" name="new_pw_check" placeholder="Bestätigen">
-					<input type="submit" value="Passwort ändern">
+					<input type="password" style="width:100px;" name="new_pw_check" placeholder="Best&auml;tigen">
+					<input type="submit" value="Passwort &auml;ndern">
 				</form>
 				</td></tr>
 				<?php } ?>

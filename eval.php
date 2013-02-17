@@ -1,10 +1,10 @@
 <?php session_start(); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html>
 <head>
     <title>Aufgabendatenbank - Aufgabe bewerten</title>
 	<meta name="author" content="Wurzel e.V."/>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -19,7 +19,7 @@
 	<?php
 		$id = (int)$_REQUEST['id'];
 		if (!isset($user_id))
-			die('Fehler: Nur Benutzer dürfen kommentieren!');
+			die('Fehler: Nur Benutzer d&uuml;rfen kommentieren!');
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 		$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
 		$problem = $result->fetchArray(SQLITE3_ASSOC);

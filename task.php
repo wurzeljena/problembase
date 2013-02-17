@@ -2,12 +2,12 @@
 	session_start();
 	include 'tags.php';
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html>
 <head>
     <title>Aufgabendatenbank - Aufgabe</title>
 	<meta name="author" content="Wurzel e.V."/>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -27,7 +27,7 @@
 		<?php
 			if (isset($user_id)) {
 				print '<a class="button outer" style="top:0em;" href="problem.php?id='.$id.'">Bearbeiten</a>';
-				print '<a class="button danger outer" style="top:2em;" href="submit_problem.php?id='.$id.'&delete=1">Löschen</a>';
+				print '<a class="button danger outer" style="top:2em;" href="submit_problem.php?id='.$id.'&delete=1">L&ouml;schen</a>';
 			}
 		?>
 			<div class="info">
@@ -46,9 +46,9 @@
 					$volume = $pub['month']."/".($pub['year']%100);
 					$letter = $pub['letter'];
 					$number = $pub['number'];
-					print "Veröffentlicht als $$letter$number$ im Heft $volume.";
+					print "Ver&ouml;ffentlicht als $$letter$number$ im Heft $volume.";
 					if (isset($user_id) && $_SESSION['editor'])
-						print "<a class='button danger' style='float:right' href='javascript:Publ.Trig();'>Ändern</a>";
+						print "<a class='button danger' style='float:right' href='javascript:Publ.Trig();'>&Auml;ndern</a>";
 				}
 				else {
 					$date = getdate();	++$date['mon'];
@@ -58,9 +58,9 @@
 					}
 					$volume = $date['mon']."/".($date['year']%100);
 					$number = $letter = "";
-					print "Noch nicht veröffentlicht.";
+					print "Noch nicht ver&ouml;ffentlicht.";
 					if (isset($user_id) && $_SESSION['editor'])
-						print "<a class='button' style='float:right' href='javascript:Publ.Trig();'>Veröffentlichen</a>";
+						print "<a class='button' style='float:right' href='javascript:Publ.Trig();'>Ver&ouml;ffentlichen</a>";
 				}
 			?>
 			<form id="publish" style="visibility:hidden; position:absolute;" action="publish.php" method="POST">
@@ -93,7 +93,7 @@
 				print '<td class="author"><a href="user.php#'.$comment['user_id'].'">'.$comment['name'].'</a></td>';
 				print '<td class="comment">';
 				if (isset($user_id) && $comment['user_id']==$user_id) {
-					print '<a class="button danger" style="float:right;" href="submit_eval.php?id='.$id.'&delete=1">Löschen</a>';
+					print '<a class="button danger" style="float:right;" href="submit_eval.php?id='.$id.'&delete=1">L&ouml;schen</a>';
 					print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Bearbeiten</a>';
 				}
 				print $comment['comment'].'</td></tr>';
@@ -116,10 +116,10 @@
 		?>
 		</table>
 
-		<div class="caption" id="solutions" style="margin-top:1.5em;">Lösungen
+		<div class="caption" id="solutions" style="margin-top:1.5em;">L&ouml;sungen
 		<?php
 			if (isset($user_id))
-				print '<a class="button" style="float:right;" href="solution.php?problem_id='.$id.'">Hinzufügen</a>';
+				print '<a class="button" style="float:right;" href="solution.php?problem_id='.$id.'">Hinzuf&uuml;gen</a>';
 		?>
 		</div>
 		<?php
@@ -130,7 +130,7 @@
 			print '<div class="solution">';
 			if (isset($user_id)) {
 				print '<a class="button outer" style="top:0em;" href="solution.php?id='.$solution['id'].'">Bearbeiten</a>';
-				print '<a class="button danger outer" style="top:2em;" href="submit_solution.php?id='.$solution['id'].'&delete=1">Löschen</a>';
+				print '<a class="button danger outer" style="top:2em;" href="submit_solution.php?id='.$solution['id'].'&delete=1">L&ouml;schen</a>';
 			}
 			print '<div class="info">'.$solution['name'].", ".$solution['location'];
 			if ($solution['country'] != "") print " (".$solution['country'].")";

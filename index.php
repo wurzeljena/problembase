@@ -3,12 +3,12 @@
 	include 'tags.php';
 	include 'proposers.php';
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html>
 <head>
     <title>Aufgabendatenbank</title>
 	<meta name="author" content="Wurzel e.V."/>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -86,7 +86,7 @@
 			else
 				print '<td style="width:200px;">nicht publiziert</td>';
 
-			$solstr = ($problem['numsol'] <= 1) ? ($problem['numsol'] ? "" : "k")."eine Lösung" : $problem['numsol']." Lösungen";
+			$solstr = ($problem['numsol'] <= 1) ? ($problem['numsol'] ? "" : "k")."eine L&ouml;sung" : $problem['numsol']." L&ouml;sungen";
 			$commstr = ($problem['numcomm'] <= 1) ? ($problem['numcomm'] ? "" : "k")."ein Kommentar" : $problem['numcomm']." Kommentare";
 			print '<td style="width:200px;">'.$commstr.', '.$solstr.'</td>';
 			print '</tr></table>';
@@ -114,7 +114,7 @@
 				<td><span class="question">Wann?</span></td>
 				<td><input type="text" name="number" placeholder="MM/JJ" style="width:45px;"
 					value="<?php if (isset($_REQUEST['number'])) print $_REQUEST['number']; ?>"/>
-				<input type="checkbox" name="with_solution"/><span class="info">mit Lösung</span></td>
+				<input type="checkbox" name="with_solution"/><span class="info">mit L&ouml;sung</span></td>
 			</tr>
 			<tr>
 				<td><span class="info">nach</span></td>
@@ -129,7 +129,7 @@
 		</table>
 		<div class="taglist">
 			<span class="question">Was?</span>
-			<input type="text" name="tag" placeholder="Tag hinzufügen" list="tag_datalist"/>
+			<input type="text" name="tag" placeholder="Tag hinzuf&uuml;gen" list="tag_datalist"/>
 			<input type="button" value="+" onclick="addTag('filter');">
 			<?php tags_datalist($pb); ?> <br/>
 			<div id="tags" style="margin:3px;">

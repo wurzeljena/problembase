@@ -1,12 +1,12 @@
 <?php
 	session_start();
 	if (!isset($_SESSION['user_id']) || !$_SESSION['editor'])
-		die("Änderungen nur als Redakteur möglich!");
+		die("&Auml;nderungen nur als Redakteur m&ouml;glich!");
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 
 	// read parameters
 	foreach ($_REQUEST as $key=>$value)
-		$$key = $value;
+		$$key = $pb->escapeString($value);
 
 	// write into db
 	if ($volume == "")

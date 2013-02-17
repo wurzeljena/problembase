@@ -4,10 +4,7 @@
 
 	// read parameters
 	foreach ($_REQUEST as $key=>$value)
-		if (is_string($value))
-			$$key = $pb->escapeString($value);
-		else
-			$$key = $value;
+		$$key = $pb->escapeString($value);
 
 	if (isset($logout)) {
 		unset($_SESSION['user_id']);

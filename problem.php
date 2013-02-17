@@ -3,12 +3,12 @@
 	include 'tags.php';
 	include 'proposers.php';
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<!DOCTYPE html>
+<html>
 <head>
     <title>Aufgabendatenbank - Aufgabe bearbeiten</title>
 	<meta name="author" content="Wurzel e.V."/>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -31,7 +31,7 @@
 	<form class="task" id="task" title="Aufgabenformular" action="submit_problem.php" method="POST">
 		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
 		<?php proposer_form($pb, 'task', isset($id) ? $problem['proposer_id'] : -1); ?>
-		<input type="text" class="text" name="tag" placeholder="Tag hinzufügen" list="tag_datalist"/>
+		<input type="text" class="text" name="tag" placeholder="Tag hinzuf&uuml;gen" list="tag_datalist"/>
 		<input type="button" value="+" onclick="addTag('task');">
 		<?php tags_datalist($pb); ?>
 		<span id="tags" style="margin:3px;">

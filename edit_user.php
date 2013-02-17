@@ -1,16 +1,13 @@
 <?php
 	session_start();
 	if (!isset($_SESSION['user_id']))
-		die("Änderungen nur angemeldet möglich!");
+		die("&Auml;nderungen nur angemeldet m&ouml;glich!");
 	$user_id = $_SESSION['user_id'];
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 
 	// read parameters
 	foreach ($_REQUEST as $key=>$value)
-		if (is_string($value))
-			$$key = $pb->escapeString($value);
-		else
-			$$key = $value;
+		$$key = $pb->escapeString($value);
 
 	// new user
 	if (isset($newname) && !isset($id) && $_SESSION['root']) {

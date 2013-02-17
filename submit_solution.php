@@ -1,15 +1,12 @@
 <?php
 	session_start();
 	if (!isset($_SESSION['user_id']))
-		die("Änderungen nur angemeldet möglich!");
+		die("&Auml;nderungen nur angemeldet m&ouml;glich!");
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 
 	// read parameters
 	foreach ($_REQUEST as $key=>$value)
-		if (is_string($value))
-			$$key = $pb->escapeString($value);
-		else
-			$$key = $value;
+		$$key = $pb->escapeString($value);
 
 	if (isset($delete)) {
 		$problem_id = $pb->querySingle("SELECT problem_id FROM solutions WHERE id=$id", false);
