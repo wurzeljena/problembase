@@ -20,12 +20,12 @@
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 	if (isset($_REQUEST['id'])) {
 		$id = (int)$_REQUEST['id'];
-		$solution = $pb->querySingle("SELECT * FROM solutions WHERE id=".$id, true);
-		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$solution['problem_id'], true);
+		$solution = $pb->querySingle("SELECT solutions.*, files.content AS solution FROM solutions JOIN files ON solutions.file_id=files.rowid WHERE id=$id", true);
+		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=".$solution['problem_id'], true);
 	}
 	elseif (isset($_REQUEST['problem_id'])) {
 		$problem_id = (int)$_REQUEST['problem_id'];
-		$problem = $pb->querySingle("SELECT * FROM problems WHERE id=".$problem_id, true);
+		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$problem_id", true);
 	}
 	else
 		die("Invalid URL: no problem or solution given.");

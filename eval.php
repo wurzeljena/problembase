@@ -21,9 +21,9 @@
 		if (!isset($user_id))
 			die('Fehler: Nur Benutzer d&uuml;rfen kommentieren!');
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$result = $pb->query("SELECT * FROM problems WHERE id=".$id);
+		$result = $pb->query("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id");
 		$problem = $result->fetchArray(SQLITE3_ASSOC);
-		$result = $pb->query("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=".$id);
+		$result = $pb->query("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id");
 		$comment = $result->fetchArray(SQLITE3_ASSOC);
 		$pb->close();
 	?>

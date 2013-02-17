@@ -19,21 +19,21 @@
 
 	<?php
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$query = "SELECT problems.id, problems.problem, problems.proposed, proposers.name, "
+		$query = "SELECT problems.id, files.content AS problem, problems.proposed, proposers.name, "
 			."proposers.location, proposers.country, letter, number, month, year,"
 			."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
 			."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
 			."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
-			."FROM problems LEFT JOIN proposers ON problems.proposer_id=proposers.id "
+			."FROM problems JOIN files ON problems.file_id=files.rowid "
+			."LEFT JOIN proposers ON problems.proposer_id=proposers.id "
 			."LEFT JOIN published ON problems.id=published.problem_id";
 
 		// add filter constraints
 		if (isset($_REQUEST['filter'])) {
 			$filter = array();
 
-			$words = array_filter(explode(' ', $_REQUEST['filter']));
-			foreach ($words as $word)
-				$filter[] = "problems.problem LIKE '%$word%'";
+			if ($_REQUEST['filter'] != "")
+				$filter[] = "problem MATCH '".$pb->escapeString($_REQUEST['filter'])."'";
 
 			if ($_REQUEST['proposer'] != "")
 				$filter[] = "proposers.name LIKE '%".$_REQUEST['proposer']."%'";

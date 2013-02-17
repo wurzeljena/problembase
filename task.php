@@ -19,7 +19,7 @@
 	<?php
 	$id = (int)$_REQUEST['id'];
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-	$problem = $pb->querySingle("SELECT * FROM problems WHERE id=$id", true);
+	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
 	$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$problem['proposer_id'], true);
 	?>
 	<div class="content">
@@ -123,9 +123,11 @@
 		?>
 		</div>
 		<?php
-		$solutions = $pb->query("SELECT solutions.id, solutions.solution, solutions.remarks, solutions.month, solutions.year, "
-			."proposers.name, proposers.location, proposers.country FROM solutions, proposers WHERE "
-			."solutions.proposer_id=proposers.id AND problem_id=$id");
+		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year, "
+			."proposers.name, proposers.location, proposers.country FROM solutions "
+			."LEFT JOIN proposers ON solutions.proposer_id=proposers.id "
+			."LEFT JOIN files ON solutions.file_id=files.rowid "
+			."WHERE problem_id=$id");
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
 			print '<div class="solution">';
 			if (isset($user_id)) {
