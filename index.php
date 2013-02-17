@@ -32,9 +32,8 @@
 		if (isset($_REQUEST['filter'])) {
 			$filter = array();
 
-			$words = array_filter(explode(' ', $_REQUEST['filter']));
-			foreach ($words as $word)
-				$filter[] = "problems.problem LIKE '%$word%'";
+			if ($_REQUEST['filter'] != "")
+				$filter[] = "problem MATCH '".$pb->escapeString($_REQUEST['filter'])."'";
 
 			if ($_REQUEST['proposer'] != "")
 				$filter[] = "proposers.name LIKE '%".$_REQUEST['proposer']."%'";
