@@ -105,7 +105,7 @@ function queryProp(form) {
 			document.getElementById("prop").innerHTML = xmlhttp.responseText;
 	}
 
-	xmlhttp.open("GET", "proposers.php?prop_query=" + encodeURI(str), true);
+	xmlhttp.open("GET", "proposers.php?prop_query=" + encodeURIComponent(str), true);
 	xmlhttp.send();
 };
 
@@ -119,7 +119,7 @@ function addTag(form) {
 			document.getElementById("tags").innerHTML = xmlhttp.responseText;
 	}
 
-	xmlhttp.open("GET", "tags.php?taglist=" + encodeURI(tags) + "&newtag=" + newtag + "&form=" + form, true);
+	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&newtag=" + newtag + "&form=" + form, true);
 	xmlhttp.send();
 };
 
@@ -134,7 +134,7 @@ function deleteTag(form, id) {
 			document.getElementById("tags").innerHTML = xmlhttp.responseText;
 	}
 
-	xmlhttp.open("GET", "tags.php?taglist=" + encodeURI(tags) + "&form=" + form, true);
+	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
 	xmlhttp.send();
 };
 
@@ -150,7 +150,7 @@ function loadTag() {
 				document.forms['tageditor'].elements['name'].value = resp.name;
 				document.forms['tageditor'].elements['description'].value = resp.desc;
 				document.forms['tageditor'].elements['color'].value = resp.color;
-				document.getElementById('submit_tag').value = "&Auml;ndern";
+				document.getElementById('submit_tag').value = "\u00c4ndern";
 				tagPreview();
 			}
 		}
@@ -162,7 +162,8 @@ function loadTag() {
 		document.forms['tageditor'].elements['name'].value = "";
 		document.forms['tageditor'].elements['description'].value = "";
 		document.forms['tageditor'].elements['color'].value = "";
-		document.getElementById('submit_tag').value = "Hinzuf&uuml;gen";
+		document.getElementById('submit_tag').value = "Hinzuf\u00fcgen";
+		document.getElementById('result_tag').innerHTML = "";
 	}
 }
 
@@ -177,7 +178,7 @@ function tagPreview() {
 			document.getElementById('result_tag').innerHTML = xmlhttp.responseText;
 	}
 
-	xmlhttp.open("GET", "tags.php?drawtag&name=" + name + "&desc=" + encodeURI(desc) + "&color=" + encodeURI(clr), true);
+	xmlhttp.open("GET", "tags.php?drawtag&name=" + name + "&desc=" + encodeURIComponent(desc) + "&color=" + encodeURIComponent(clr), true);
 	xmlhttp.send();
 }
 
