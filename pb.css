@@ -80,33 +80,38 @@ div.caption#solutions {color: #80A0E0;}
 /* Formatierung von Links */
 a.button
 {
-	border	: 1px solid #006000;
-	border-radius	: 20px;
-	background	:#00A000;
-	background	: linear-gradient(to bottom, #00C000, #008000);
-	padding	: 3px 7px; margin	: 0px 3px 5px 3px;
+	border-radius	: 5px;
+	background		: #00C000;
+	background		: linear-gradient(to bottom, #00E000, #00A000);
+	padding	: 3px 7px;	margin	: 0px 3px 5px 3px;
 	color	: White;	text-shadow	: 0px 1px 0px Black;
+	text-decoration	: none;
+	box-shadow	: inset 0px 0px 1px #006000;
 	text-decoration	: none;
 	font-size	: medium;
 }
 a.button:hover
 {
-	border	: 1px solid #008000;
-	background	: #00C000;
-	background	: linear-gradient(to bottom, #00D000, #00A000);
+	background	: #00E000;
+	background	: linear-gradient(to bottom, #00F000, #00D000);
+}
+a.button:active
+{
+	box-shadow	: inset 2px 2px 1px #006000;
+	padding		: 4px 6px 2px 8px;
 }
 a.danger
 {
-	border	: 1px solid #600000;
-	background	:#A00000;
+	background	: #A00000;
+	box-shadow	: inset 0px 0px 1px #600000;
 	background	: linear-gradient(to bottom, #C00000, #800000);
 }
 a.danger:hover
 {
-	border	: 1px solid #800000;
-	background	: #C00000;
-	background	: linear-gradient(to bottom, #D00000, #A00000);
+	background	: #E0000;
+	background	: linear-gradient(to bottom, #FF0000, #C00000);
 }
+a.danger:active {box-shadow	: inset 2px 2px 1px #600000;}
 a.outer
 {
 	position	: absolute;
