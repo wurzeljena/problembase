@@ -9,6 +9,7 @@
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
 	<script type="text/javascript" src="fancy.js"></script>
+	<script type="text/javascript" src="ajax.js"></script>
 </head>
 <body>
 	<?php include 'head.php'; ?>
