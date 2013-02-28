@@ -1,3 +1,7 @@
 
 *.sln
 *.suo
+*.phpproj
+*.phpproj.user
+.project
+sqlite/*.sqlite
