@@ -26,7 +26,7 @@
 		<table class="users">
 			<tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr>
 		<?php
-		$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY comments.user_id ORDER BY name");
+		$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
 			while ($user = $users->fetchArray(SQLITE3_ASSOC)) { ?>
 				<tr <?php print 'id='.$user['id']; ?>>
 					<td><?php print $user['name'] ?></td>
