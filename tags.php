@@ -16,7 +16,7 @@
 		$gradclr = color2int($color);
 
 		// decide on text color
-		$white = ($color[0]*$color[0] + $color[1]*$color[1] + $color[2]*$color[2] < 2*0x100*0x100);
+		$white = (0.07*$color[0] + 0.71*$color[1] + 0.21*$color[2] < 0.5*0x100);
 
 		// write tag
 		if ($form == '')
@@ -27,7 +27,7 @@
 		if ($white)
 			print "color:White;text-shadow:1px 1px 0px Black;";
 		else
-			print "color:Black;text-shadow:1px 1px 0px Gray;";
+			print "color:Black;text-shadow:1px 1px 0px White;";
 		print "background:linear-gradient(to bottom, ".int2clrstr($tagcolor).",".int2clrstr($gradclr).");' ";
 		print "title='$desc'>$name";
 		if ($form == '')
