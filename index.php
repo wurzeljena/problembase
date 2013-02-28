@@ -56,7 +56,7 @@
 			$tags = array_filter(explode(',', $_REQUEST['tags']));
 			foreach ($tags as $tag)
 				$filter[] = "$tag IN (SELECT tag_id FROM tag_list WHERE problems.id=tag_list.problem_id)";
-			
+
 			if (count($filter))
 				$query .= " WHERE ".implode(" AND ", $filter);
 		}
@@ -130,11 +130,9 @@
 		</table>
 		<div class="taglist">
 			<span class="question">Was?</span>
-			<input type="text" name="tag" placeholder="Tag hinzuf&uuml;gen" list="tag_datalist"/>
-			<input type="button" value="+" onclick="addTag('filter');">
-			<?php tags_datalist($pb); ?> <br/>
+			<?php tag_select($pb, "filter"); ?>
+			<input type="hidden" name="tags" value="<?php if (isset($_REQUEST['tags'])) print $_REQUEST['tags']; ?>"/>
 			<div id="tags" style="margin:3px;">
-				<input type="hidden" name="tags" value="<?php if (isset($_REQUEST['tags'])) print $_REQUEST['tags']; ?>"/>
 				<?php if (isset($_REQUEST['tags'])) tags($pb, $_REQUEST['tags'], 'filter'); ?>
 			</div>
 		</div>

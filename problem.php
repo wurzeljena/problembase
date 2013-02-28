@@ -32,11 +32,9 @@
 	<form class="task" id="task" title="Aufgabenformular" action="submit_problem.php" method="POST">
 		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
 		<?php proposer_form($pb, 'task', isset($id) ? $problem['proposer_id'] : -1); ?>
-		<input type="text" class="text" name="tag" placeholder="Tag hinzuf&uuml;gen" list="tag_datalist"/>
-		<input type="button" value="+" onclick="addTag('task');">
-		<?php tags_datalist($pb); ?>
+		<?php tag_select($pb, "task"); ?>
+		<input type="hidden" name="tags" value="<?php if (isset($id)) print $tags; ?>"/>
 		<span id="tags" style="margin:3px;">
-			<input type="hidden" name="tags" value="<?php if (isset($id)) print $tags; ?>"/>
 			<?php if (isset($id)) tags($pb, $tags, 'task'); ?>
 		</span>
 		<textarea class="text" name="problem" id="textarea" rows="20" cols="65" placeholder="Aufgabentext"

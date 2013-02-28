@@ -44,15 +44,16 @@
 			print_tag($tag_info['id'], $tag_info['name'], $tag_info['description'], $tag_info['color'], $form);
 	}
 
-	function tags_datalist($pb)
+	function tag_select($pb, $filter)
 	{
-		$tags = $pb->query("SELECT name FROM tags");
+		$tags = $pb->query("SELECT id, name FROM tags");
 
-		print '<datalist id="tag_datalist">';
+		print "<select name='tag' onchange='addTag(\"$filter\");'>";
+		print '<option selected value="0">&mdash;Tag hinzuf&uuml;gen&mdash;</option>';
 		while($tag = $tags->fetchArray(SQLITE3_NUM)) {
-			print '<option value="'.$tag[0].'">';
+			print '<option value="'.$tag[0].'">'.$tag[1].'</option>';
 		}
-		print '</datalist>';
+		print "</select>";
 	}
 
 	function get_tags($pb, $problem_id)
@@ -63,17 +64,7 @@
 	// answer to Ajax queries from taglists
 	if (isset($_REQUEST['taglist'])) {
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		if (isset($_REQUEST['newtag'])) {
-			$newtag = $pb->querySingle("SELECT id FROM tags WHERE name='".$_REQUEST['newtag']."'", false);
-			if ($_REQUEST['taglist'] == "")
-				$taglist = $newtag;
-			else
-				$taglist = $_REQUEST['taglist'].",".$newtag;
-		}
-		else
-			$taglist = $_REQUEST['taglist'];
-		print '<input type="hidden" name="tags" value="'.$taglist.'"/>';
-		tags($pb, $taglist, $_REQUEST['form']);
+		tags($pb, $_REQUEST['taglist'], $_REQUEST['form']);
 		$pb->close();
 	}
 

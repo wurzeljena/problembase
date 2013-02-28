@@ -15,14 +15,29 @@ function queryProp(form) {
 function addTag(form) {
 	var tags = document.forms[form].elements["tags"].value;
 	var newtag = document.forms[form].elements["tag"].value;
+
+	// add tag
+	if (newtag != 0) {
+		if (tags.length)
+			tags += "," + newtag;
+		else
+			tags = newtag;
+	}
+
+	// set hidden tag input
+	document.forms[form].elements["tags"].value = tags;
+
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 			document.getElementById("tags").innerHTML = xmlhttp.responseText;
 	}
 
-	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&newtag=" + newtag + "&form=" + form, true);
+	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
 	xmlhttp.send();
+
+	// reset select element
+	document.forms[form].elements["tag"].value = "0";
 };
 
 function deleteTag(form, id) {
@@ -35,6 +50,9 @@ function deleteTag(form, id) {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 			document.getElementById("tags").innerHTML = xmlhttp.responseText;
 	}
+
+	// set hidden tag input
+	document.forms[form].elements["tags"].value = tags; 
 
 	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
 	xmlhttp.send();
