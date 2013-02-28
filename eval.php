@@ -80,8 +80,6 @@
 	</div>
 
 	<script type="text/javascript">
-		text = document.getElementById("prob");
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub, prob]);
 		var Beauty = new Stars("beauty");
 		var Diff = new Stars("diff");
 		var Know = new Stars("know");

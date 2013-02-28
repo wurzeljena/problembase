@@ -10,6 +10,10 @@ function incrPage(incr) {
 	xmlhttp.onreadystatechange = function () {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 			document.getElementById("tasklist").innerHTML = xmlhttp.responseText;
+
+		// render math
+		for (var id = 0; id < 10; id++)
+			MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prob" + id]);
 	}
 
 	if (request.length > 0)

@@ -148,8 +148,6 @@
 	</div>
 
 	<script type="text/javascript">
-		text = document.getElementById("prob");
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub, prob]);
 		var Publ = new Trigger("publish");
 	</script>
 </body>
