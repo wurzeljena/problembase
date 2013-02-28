@@ -1,3 +1,27 @@
+// pager in index
+function incrPage(incr) {
+	var page = document.getElementById("page").innerHTML - 1;
+	var request = document.getElementById("request").value;
+
+	if (page + incr >= 0)
+		page += incr;
+
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+			document.getElementById("tasklist").innerHTML = xmlhttp.responseText;
+	}
+
+	if (request.length > 0)
+		request += "&";
+	xmlhttp.open("GET", "tasklist.php?" + request + "page=" + page, true);
+	xmlhttp.send();
+
+	// set info
+	document.getElementById("page").innerHTML = page + 1;
+	document.getElementById("pagetasks").innerHTML = (10 * page + 1) + "&mdash;" + 10 * (page + 1);
+};
+
 // query proposer via Ajax
 function queryProp(form) {
 	var str = document.forms[form].elements["proposer"].value;

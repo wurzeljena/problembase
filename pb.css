@@ -42,6 +42,17 @@ div#panel
 	position: fixed; top: 6em; left: 750px;
 }
 
+/* Pager zum Seitenwechseln */
+div#pager
+{
+	position: fixed; top: 30em; left: 750px;
+}
+div#pager span#request
+{
+	position	: absolute;
+	visibility	: hidden;
+}
+
 *.info
 {
 	font-family	: Sans-Serif;
