@@ -9,10 +9,8 @@
 		$$key = $pb->escapeString($value);
 
 	if (isset($delete)) {
-		$file_id = $pb->querySingle("SELECT file_id FROM solutions WHERE id=$id");
 		$problem_id = $pb->querySingle("SELECT problem_id FROM solutions WHERE id=$id", false);
 		$pb->exec("DELETE FROM solutions WHERE id=$id");
-		$pb->exec("DELETE FROM files WHERE files.rowid=$file_id");
 	}
 	else {
 		// write proposer

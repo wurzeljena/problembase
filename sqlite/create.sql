@@ -34,6 +34,12 @@ CREATE INDEX problem_file ON problems(file_id);
 CREATE INDEX problem_proposer ON problems(proposer_id);
 CREATE INDEX problem_proposed ON problems(proposed);
 
+CREATE TRIGGER delete_problemfile
+  BEFORE DELETE ON problems FOR EACH ROW
+  BEGIN
+    DELETE FROM files WHERE rowid=OLD.file_id;
+  END;
+
 -- -----------------------------------------------------
 -- Table `solutions`
 -- -----------------------------------------------------
@@ -57,6 +63,12 @@ CREATE INDEX solution_problem ON solutions(problem_id);
 CREATE INDEX solution_file ON solutions(file_id);
 CREATE INDEX solution_proposer ON solutions(proposer_id);
 CREATE INDEX solution_volume ON solutions(year, month);
+
+CREATE TRIGGER delete_solutionfile
+  BEFORE DELETE ON solutions FOR EACH ROW
+  BEGIN
+    DELETE FROM files WHERE rowid=OLD.file_id;
+  END;
 
 -- -----------------------------------------------------
 -- Table `users`

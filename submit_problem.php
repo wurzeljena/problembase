@@ -9,9 +9,7 @@
 		$$key = $pb->escapeString($value);
 
 	if (isset($delete)) {
-		$file_id = $pb->querySingle("SELECT file_id FROM problems WHERE id=$id");
 		$pb->exec("DELETE FROM problems WHERE id=$id");
-		$pb->exec("DELETE FROM files WHERE files.rowid=$file_id");
 		header('Location: index.php');
 	}
 	else {
