@@ -12,8 +12,8 @@
 		<input type="button" id="delete_tag" value="L&ouml;schen" disabled onclick="deleteTag();">
 	</div>
 	<div>
-		<input type="text" name="name" style="width:120px;" placeholder="Name" onchange="tagPreview();">
-		<input type="color" name="color" style="width:60px;" placeholder="Farbe" onchange="tagPreview();" title="Format: #hhhhhh"> <br/>
+		<input type="text" name="name" style="width:120px;" placeholder="Name" required onchange="tagPreview();">
+		<input type="color" name="color" style="width:60px;" placeholder="Farbe" required onchange="tagPreview();" title="Format: #hhhhhh"> <br/>
 		<input type="text" name="description" style="width:200px;" placeholder="Beschreibung" onchange="tagPreview();"> <br/>
 		<input type="checkbox" name="hidden" style="margin:10px 5px;"><span class="info">nicht &ouml;ffentlich</span>
 		<input type="submit" id="submit_tag" style="float:right;" value="Hinzuf&uuml;gen"> <br/>
