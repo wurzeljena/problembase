@@ -15,8 +15,14 @@
 		if (isset($_REQUEST['filter'])) {
 			$filter = array();
 
-			if ($_REQUEST['filter'] != "")
-				$filter[] = "problem MATCH '".$pb->escapeString($_REQUEST['filter'])."'";
+			if ($_REQUEST['filter'] != "") {
+				$pb->exec("CREATE TEMPORARY TABLE filter AS "
+					."SELECT id AS problem_id FROM problems JOIN files ON files.rowid=problems.file_id "
+					."WHERE content MATCH '".$pb->escapeString($_REQUEST['filter'])."' "
+					."UNION SELECT problem_id FROM solutions JOIN files ON files.rowid=solutions.file_id "
+					."WHERE content MATCH '".$pb->escapeString($_REQUEST['filter'])."'");
+				$filter[] = "problems.id IN filter";
+			}
 
 			if ($_REQUEST['proposer'] != "")
 				$filter[] = "proposers.name LIKE '%".$_REQUEST['proposer']."%'";
