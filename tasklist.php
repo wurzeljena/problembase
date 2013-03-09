@@ -88,6 +88,7 @@
 	}
 
 	if (isset($_REQUEST['page'])) {
+		session_start();
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 		tasklist($pb, $_REQUEST['page']);
 	}

@@ -98,6 +98,8 @@ function loadTag() {
 				document.forms['tageditor'].elements['name'].value = resp.name;
 				document.forms['tageditor'].elements['description'].value = resp.desc;
 				document.forms['tageditor'].elements['color'].value = resp.color;
+				document.forms['tageditor'].elements['hidden'].checked = resp.hidden;
+				document.getElementById('delete_tag').disabled = false;
 				document.getElementById('submit_tag').value = "\u00c4ndern";
 				tagPreview();
 			}
@@ -110,6 +112,8 @@ function loadTag() {
 		document.forms['tageditor'].elements['name'].value = "";
 		document.forms['tageditor'].elements['description'].value = "";
 		document.forms['tageditor'].elements['color'].value = "";
+		document.forms['tageditor'].elements['hidden'].checked = false;
+		document.getElementById('delete_tag').disabled = true;
 		document.getElementById('submit_tag').value = "Hinzuf\u00fcgen";
 		document.getElementById('result_tag').innerHTML = "";
 	}

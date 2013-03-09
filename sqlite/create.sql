@@ -111,6 +111,7 @@ CREATE TABLE tags (
   name VARCHAR(32) UNIQUE NOT NULL,
   description VARCHAR(128) NULL,
   color INT NOT NULL DEFAULT 0,
+  hidden BOOL NOT NULL DEFAULT 0,
   PRIMARY KEY (id ASC) );
 
 -- -----------------------------------------------------

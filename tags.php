@@ -38,7 +38,8 @@
 
 	function tags($pb, $tags, $form = "") {
 		// get tag data from db
-		$tags = $pb->query("SELECT * FROM tags WHERE id in (".$tags.")");
+		$restr = isset($_SESSION['user_id']) ? "" : " AND hidden=0";
+		$tags = $pb->query("SELECT * FROM tags WHERE id in (".$tags.")".$restr);
 
 		while($tag_info = $tags->fetchArray(SQLITE3_ASSOC))
 			print_tag($tag_info['id'], $tag_info['name'], $tag_info['description'], $tag_info['color'], $form);
@@ -46,7 +47,8 @@
 
 	function tag_select($pb, $filter)
 	{
-		$tags = $pb->query("SELECT id, name FROM tags");
+		$restr = isset($_SESSION['user_id']) ? "" : " WHERE hidden=0";
+		$tags = $pb->query("SELECT id, name FROM tags".$restr);
 
 		print "<select name='tag' onchange='addTag(\"$filter\");'>";
 		print '<option selected value="0">&mdash;Tag hinzuf&uuml;gen&mdash;</option>';
@@ -63,6 +65,7 @@
 
 	// answer to Ajax queries from taglists
 	if (isset($_REQUEST['taglist'])) {
+		session_start();
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 		tags($pb, $_REQUEST['taglist'], $_REQUEST['form']);
 		$pb->close();
@@ -70,11 +73,12 @@
 
 	// answer to Ajax queries from tag form
 	if (isset($_REQUEST['taginfo'])) {
+		session_start();
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		list($name, $desc, $color) = $pb->query("SELECT name, description, color FROM tags WHERE id='".$_REQUEST['id']."'")
+		list($name, $desc, $color, $hidden) = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_REQUEST['id']."'")
 			->fetchArray(SQLITE3_NUM);
 		$color = "#".substr("00000".dechex($color),-6);
-		print "{name : '$name', desc : '$desc', color : '$color'}";
+		print "{name : '$name', desc : '$desc', color : '$color', hidden : $hidden}";
 		$pb->close();
 	}
 
@@ -93,10 +97,12 @@
 		foreach ($_REQUEST as $key=>$value)
 			$$key = $pb->escapeString($value);
 		$color = hexdec(substr($color, -6));
+		$hidden = isset($_REQUEST['hidden']) ? 1 : 0;
+
 		if ($id == "")
-			$pb->exec("INSERT INTO tags (name, description, color) VALUES ('$name', '$description', $color)");
+			$pb->exec("INSERT INTO tags (name, description, color, hidden) VALUES ('$name', '$description', $color, $hidden)");
 		else
-			$pb->exec("UPDATE tags SET name='$name', description='$description', color=$color WHERE id=$id");
+			$pb->exec("UPDATE tags SET name='$name', description='$description', color=$color, hidden=$hidden WHERE id=$id");
 		$pb->close();
 		header('Location: '.$referer);
 	}
