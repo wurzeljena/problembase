@@ -155,7 +155,7 @@ function validate_password() {
 		== document.forms['pw'].elements['new_pw_check'].value);
 
 	if (!correct)
-		alert("Passworte stimmen nicht &uuml;berein!");
+		alert("Passworte stimmen nicht \u00fcberein!");
 	return correct;
 }
 

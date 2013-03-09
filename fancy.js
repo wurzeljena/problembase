@@ -67,11 +67,8 @@ function Stars(name) {
 	this.input = document.getElementById(name);
 	this.value = parseInt(this.input.value);
 	this.stars = new Array();
-	this.stars[0] = document.getElementById(name + "1");
-	this.stars[1] = document.getElementById(name + "2");
-	this.stars[2] = document.getElementById(name + "3");
-	this.stars[3] = document.getElementById(name + "4");
-	this.stars[4] = document.getElementById(name + "5");
+	for (var i = 0; i < 5; i++)
+		this.stars[i] = document.getElementById(name + (i+1));
 
 	this.show = function (num) {
 		for (var i = 0; i < 5; i++) {

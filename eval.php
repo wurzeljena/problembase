@@ -13,9 +13,6 @@
 <body>
 	<?php include 'head.php'; ?>
 
-	<div class="content">
-	<h2 class="eval">Aufgabe bewerten</h2>
-
 	<?php
 		$id = (int)$_REQUEST['id'];
 		if (!isset($user_id))
@@ -27,6 +24,9 @@
 		$comment = $result->fetchArray(SQLITE3_ASSOC);
 		$pb->close();
 	?>
+
+	<div class="content">
+	<h2 class="eval">Aufgabe bewerten</h2>
 	<form class="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
 		<div class="problem" id="prob"><?php print $problem['problem']?></div>
 		<input type="hidden" name="id" value="<?php print $id?>"/>

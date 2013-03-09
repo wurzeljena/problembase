@@ -65,7 +65,6 @@
 				<?php if (isset($_REQUEST['tags'])) tags($pb, $_REQUEST['tags'], 'filter'); ?>
 			</div>
 		</div>
-		<!--<a class="button" style="margin-top:2em;" href="tags.php?edit_tags=1">Tags bearbeiten</a>-->
 	</form>
 
 	<div id="panel">
