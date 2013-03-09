@@ -9,7 +9,7 @@
 					print "<option value='$id'>$tag</option>";
 			?>
 		</select>
-		<input type="button" value="L&ouml;schen" disabled onclick="">
+		<input type="button" id="delete_tag" value="L&ouml;schen" disabled onclick="deleteTag();">
 	</div>
 	<div>
 		<input type="text" name="name" style="width:120px;" placeholder="Name" onchange="tagPreview();">

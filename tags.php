@@ -22,7 +22,7 @@
 		if ($form == '')
 			print "<span class='tag' ";
 		else
-			print "<a class='tag' href='javascript:deleteTag(\"$form\", $id)' ";
+			print "<a class='tag' href='javascript:removeTag(\"$form\", $id)' ";
 		echo "style='background:".int2clrstr($tagcolor).";";
 		if ($white)
 			print "color:White;text-shadow:1px 1px 0px Black;";
@@ -88,7 +88,7 @@
 	}
 
 	// write tag from tag form
-	if (isset($_REQUEST['id']) && isset($_REQUEST['name'])) {
+	if (isset($_REQUEST['id']) && (isset($_REQUEST['name']) || isset($_REQUEST['delete']))) {
 		session_start();
 		if (!isset($_SESSION['user_id']))
 			die("Nur f&uuml;r angemelde Benutzer m&ouml;glich!");
@@ -96,14 +96,23 @@
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 		foreach ($_REQUEST as $key=>$value)
 			$$key = $pb->escapeString($value);
-		$color = hexdec(substr($color, -6));
-		$hidden = isset($_REQUEST['hidden']) ? 1 : 0;
 
-		if ($id == "")
-			$pb->exec("INSERT INTO tags (name, description, color, hidden) VALUES ('$name', '$description', $color, $hidden)");
-		else
-			$pb->exec("UPDATE tags SET name='$name', description='$description', color=$color, hidden=$hidden WHERE id=$id");
+		if (isset($_REQUEST['delete'])) {
+			$pb->exec("PRAGMA foreign_keys=on");
+			$pb->exec("DELETE FROM tags WHERE id=$id");
+		}
+		else {
+			$color = hexdec(substr($color, -6));
+			$hidden = isset($_REQUEST['hidden']) ? 1 : 0;
+
+			if ($id == "")
+				$pb->exec("INSERT INTO tags (name, description, color, hidden) VALUES ('$name', '$description', $color, $hidden)");
+			else
+				$pb->exec("UPDATE tags SET name='$name', description='$description', color=$color, hidden=$hidden WHERE id=$id");
+		}
 		$pb->close();
-		header('Location: '.$referer);
+
+		if (!isset($_REQUEST['delete']))
+			header('Location: '.$referer);
 	}
 ?>

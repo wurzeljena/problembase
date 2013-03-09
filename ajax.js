@@ -68,7 +68,7 @@ function addTag(form) {
 	document.forms[form].elements["tag"].value = "0";
 };
 
-function deleteTag(form, id) {
+function removeTag(form, id) {
 	var tags = document.forms[form].elements["tags"].value;
 	tags = tags.replace(RegExp(',' + id, 'g'), "");
 	tags = tags.replace(RegExp(id + ',', 'g'), "");
@@ -117,6 +117,21 @@ function loadTag() {
 		document.getElementById('submit_tag').value = "Hinzuf\u00fcgen";
 		document.getElementById('result_tag').innerHTML = "";
 	}
+}
+
+function deleteTag() {
+	var id = document.forms['tageditor'].elements['id'].value;
+
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			document.forms['tageditor'].elements['id'].value = "";
+			loadTag();
+		}
+	}
+
+	xmlhttp.open("POST", "tags.php?id=" + id + "&delete=1", true);
+	xmlhttp.send();
 }
 
 function tagPreview() {
