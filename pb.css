@@ -68,6 +68,7 @@ h2
 	font-weight	: lighter;
 	margin		: 30px -30px;
 	transform	: rotate(-90deg);
+	-webkit-transform	: rotate(-90deg);
 	position	: absolute;
 	left	: -1em;	top	: 3em;
 	z-index	: -1;
@@ -119,7 +120,7 @@ a.danger
 }
 a.danger:hover
 {
-	background	: #E0000;
+	background	: #E00000;
 	background	: linear-gradient(to bottom, #FF0000, #C00000);
 }
 a.danger:active {box-shadow	: inset 2px 2px 1px #600000;}
@@ -337,6 +338,7 @@ img.star
 	margin	: 3px -3px -6px -3px;
 	padding	: 0;
 	transform	: rotate(60deg);
+	-webkit-transform	: rotate(60deg);
 }
 
 /* Benutzer-Verwaltung */
