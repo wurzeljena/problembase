@@ -8,7 +8,7 @@ CREATE TABLE proposers (
   country VARCHAR(64) NULL,
   email VARCHAR(32) NULL,
   PRIMARY KEY (id ASC) );
-CREATE INDEX proposer_name ON proposers(name);
+CREATE UNIQUE INDEX proposer_namelocation ON proposers(name, location);
 
 -- -----------------------------------------------------
 -- Table `snippets`
@@ -23,15 +23,10 @@ CREATE VIRTUAL TABLE files USING fts4 (
 CREATE TABLE problems (
   id INTEGER NOT NULL,
   file_id INTEGER NOT NULL,
-  proposer_id INTEGER NULL,
   remarks TEXT NULL,
   proposed DATE NULL,
-  PRIMARY KEY (id ASC),
-  FOREIGN KEY (proposer_id)
-    REFERENCES proposers(id)
-    ON UPDATE CASCADE);
+  PRIMARY KEY (id ASC) );
 CREATE INDEX problem_file ON problems(file_id);
-CREATE INDEX problem_proposer ON problems(proposer_id);
 CREATE INDEX problem_proposed ON problems(proposed);
 
 CREATE TRIGGER delete_problemfile
@@ -41,13 +36,28 @@ CREATE TRIGGER delete_problemfile
   END;
 
 -- -----------------------------------------------------
+-- ... and connection to proposers
+-- -----------------------------------------------------
+CREATE TABLE problemproposers (
+  problem_id INTEGER NOT NULL,
+  proposer_id INTEGER NOT NULL,
+  PRIMARY KEY (problem_id, proposer_id),
+  FOREIGN KEY (problem_id)
+    REFERENCES problems(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (proposer_id)
+    REFERENCES proposers(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+
+-- -----------------------------------------------------
 -- Table `solutions`
 -- -----------------------------------------------------
 CREATE TABLE solutions (
   id INTEGER NOT NULL,
   problem_id INTEGER NOT NULL,
   file_id INTEGER NOT NULL,
-  proposer_id INTEGER NULL,
   remarks TEXT NULL,
   year YEAR NULL,
   month TINYINT NULL,
@@ -55,13 +65,9 @@ CREATE TABLE solutions (
   FOREIGN KEY (problem_id)
     REFERENCES problems(id)
     ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY (proposer_id)
-    REFERENCES proposers(id)
     ON UPDATE CASCADE);
 CREATE INDEX solution_problem ON solutions(problem_id);
 CREATE INDEX solution_file ON solutions(file_id);
-CREATE INDEX solution_proposer ON solutions(proposer_id);
 CREATE INDEX solution_volume ON solutions(year, month);
 
 CREATE TRIGGER delete_solutionfile
@@ -69,6 +75,22 @@ CREATE TRIGGER delete_solutionfile
   BEGIN
     DELETE FROM files WHERE rowid=OLD.file_id;
   END;
+
+-- -----------------------------------------------------
+-- ... and connection to proposers
+-- -----------------------------------------------------
+CREATE TABLE solutionproposers (
+  solution_id INTEGER NOT NULL,
+  proposer_id INTEGER NOT NULL,
+  PRIMARY KEY (solution_id, proposer_id),
+  FOREIGN KEY (solution_id)
+    REFERENCES solutions(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (proposer_id)
+    REFERENCES proposers(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
 
 -- -----------------------------------------------------
 -- Table `users`
@@ -115,7 +137,7 @@ CREATE TABLE tags (
   PRIMARY KEY (id ASC) );
 
 -- -----------------------------------------------------
--- Table `tag_list`
+-- ... and connection to problems
 -- -----------------------------------------------------
 CREATE TABLE tag_list (
   problem_id INTEGER NOT NULL,
