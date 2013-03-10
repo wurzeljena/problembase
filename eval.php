@@ -28,7 +28,7 @@
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
 	<form class="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
-		<div class="problem" id="prob"><?php print $problem['problem']?></div>
+		<div class="problem" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<input type="hidden" name="id" value="<?php print $id?>"/>
 		<span class="eval">Eleganz</span>
 		<span onmouseout="Beauty.reset();">

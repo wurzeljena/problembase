@@ -68,7 +68,7 @@
 			print '</div></div>';
 
 			print '<div class="text" id="prob'.($problem_id++).'">';
-			print $problem['problem'];
+			print htmlspecialchars($problem['problem']);
 			print '<table class="info" style="margin-top:1em;"><tr>';
 			print '<td style="width:70px; border:none;">'.$problem['proposed'].'</td>';
 

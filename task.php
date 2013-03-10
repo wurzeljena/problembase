@@ -38,7 +38,7 @@
 			<div class="tags">
 				<?php tags($pb, get_tags($pb, $id)); ?>
 			</div></div>
-			<div class="text" id="prob"><?php print $problem['problem']?></div>
+			<div class="text" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 			<div class="published">
 			<?php
 				$pub = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$id, true);
@@ -139,7 +139,7 @@
 			print '</div>';
 
 			print '<div class="text" id="soln">';
-			print $solution['solution'];
+			print htmlspecialchars($solution['solution']);
 			print '</div></div>';
 		};
 		?>
