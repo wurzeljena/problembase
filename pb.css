@@ -149,7 +149,7 @@ div.taglist
 {
 	margin	: 5px;
 }
-*.tag
+span.tag
 {
 	padding			: 3px 5px;
 	margin			: 2px;
@@ -159,6 +159,7 @@ div.taglist
 	font-size		: small;
 	text-decoration	: none;
 }
+img.close {margin-bottom: -1px;	margin-left: 3px;}
 
 /* Aufgabenseite */
 div.task

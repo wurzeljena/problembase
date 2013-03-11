@@ -19,10 +19,7 @@
 		$white = (0.07*$color[0] + 0.71*$color[1] + 0.21*$color[2] < 0.5*0x100);
 
 		// write tag
-		if ($form == '')
-			print "<span class='tag' ";
-		else
-			print "<a class='tag' href='javascript:removeTag(\"$form\", $id)' ";
+		print "<span class='tag' ";
 		echo "style='background:".int2clrstr($tagcolor).";";
 		if ($white)
 			print "color:White;text-shadow:1px 1px 0px Black;";
@@ -30,10 +27,9 @@
 			print "color:Black;text-shadow:1px 1px 0px White;";
 		print "background:linear-gradient(to bottom, ".int2clrstr($tagcolor).",".int2clrstr($gradclr).");' ";
 		print "title='$desc'>$name";
-		if ($form == '')
-			print "</span>";
-		else
-			print "</a>";
+		if ($form != "")
+			print "<a href='javascript:removeTag(\"$form\",$id)'><img class='close' src='img/close.png' alt='x'></a>";
+		print "</span>";
 	}
 
 	function tags($pb, $tags, $form = "") {
