@@ -21,24 +21,20 @@
 
 		print "<input type='text' class='text' id='proposer' name='proposer' list='proposers' required "
 			."placeholder='Einsender' style='width:165px;' value='$name' onblur='queryProp(\"$form\");'/>"
-			."<span id='prop'> <input type='hidden' name='proposer_id' value='$proposer_id'> </span> <br/>";
+			."<input type='hidden' name='proposer_id' value='$proposer_id'>"
+			."<input type='text' class='text' name='location' value='$location' required "
+			."placeholder='Ort' style='width:110px;'/>"
+			."<input type='text' class='text' name='country' value='$country' "
+			."placeholder='Land' style='width:245px;'/> <br/>";
 		proposers_datalist($pb);
 	}
 
 	// answer to Ajax queries for proposers
 	if (isset($_REQUEST['prop_query'])) {
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$prop = $pb->querySingle("SELECT * FROM proposers WHERE name='".$pb->escapeString($_REQUEST['prop_query'])."'", true);
-		if (count($prop)) {
-			print "<input type='hidden' name='proposer_id' value='".$prop['id']."'>";
-			print "gefunden";
-		}
-		else {
-			print "<input type='text' class='text' name='location' required "
-				."placeholder='Ort' style='width:110px;'/>"
-				."<input type='text' class='text' name='country' "
-				."placeholder='Land' style='width:245px;'/>";
-		}
+		$res = $pb->query("SELECT id, location, country FROM proposers WHERE name='".$pb->escapeString($_REQUEST['prop_query'])."'")
+			->fetchArray(SQLITE3_ASSOC);
+		print json_encode($res);
 		$pb->close();
 	}
 ?>
