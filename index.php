@@ -61,7 +61,7 @@
 			<span class="question">Was?</span>
 			<?php tag_select($pb, "filter"); ?>
 			<input type="hidden" name="tags" value="<?php if (isset($_REQUEST['tags'])) print $_REQUEST['tags']; ?>"/>
-			<div id="tags" style="margin:3px;">
+			<div id="taglist" style="margin:3px;">
 				<?php if (isset($_REQUEST['tags'])) tags($pb, $_REQUEST['tags'], 'filter'); ?>
 			</div>
 		</div>

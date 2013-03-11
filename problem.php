@@ -34,7 +34,7 @@
 		<?php proposer_form($pb, 'task', isset($id) ? $problem['proposer_id'] : -1); ?>
 		<?php tag_select($pb, "task"); ?>
 		<input type="hidden" name="tags" value="<?php if (isset($id)) print $tags; ?>"/>
-		<span id="tags" style="margin:3px;">
+		<span id="taglist" style="margin:3px;">
 			<?php if (isset($id)) tags($pb, $tags, 'task'); ?>
 		</span>
 		<textarea class="text" name="problem" id="textarea" rows="20" cols="65" placeholder="Aufgabentext"

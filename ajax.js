@@ -51,8 +51,19 @@ function queryProp(form) {
 };
 
 // dynamic tag list Ajax stuff
+function drawTags(form) {
+	var tags = document.forms[form].tags.value;
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+			document.getElementById("taglist").innerHTML = xmlhttp.responseText;
+	}
+	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
+	xmlhttp.send();
+}
+
 function addTag(form) {
-	var tags = document.forms[form].elements["tags"].value;
+	var tags = document.forms[form].tags.value;
 	var newtag = document.forms[form].elements["tag"].value;
 
 	// add tag
@@ -63,38 +74,22 @@ function addTag(form) {
 			tags = newtag;
 	}
 
-	// set hidden tag input
-	document.forms[form].elements["tags"].value = tags;
-
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-			document.getElementById("tags").innerHTML = xmlhttp.responseText;
-	}
-
-	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
-	xmlhttp.send();
+	document.forms[form].tags.value = tags;
 
 	// reset select element
 	document.forms[form].elements["tag"].value = "0";
+
+	drawTags(form);
 };
 
 function removeTag(form, id) {
-	var tags = document.forms[form].elements["tags"].value;
+	var tags = document.forms[form].tags.value;
 	tags = tags.replace(RegExp(',' + id, 'g'), "");
 	tags = tags.replace(RegExp(id + ',', 'g'), "");
 	tags = tags.replace(RegExp(id, 'g'), "");
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-			document.getElementById("tags").innerHTML = xmlhttp.responseText;
-	}
+	document.forms[form].tags.value = tags;
 
-	// set hidden tag input
-	document.forms[form].elements["tags"].value = tags; 
-
-	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
-	xmlhttp.send();
+	drawTags(form);
 };
 
 // tag editor functions

@@ -159,7 +159,12 @@ span.tag
 	font-size		: small;
 	text-decoration	: none;
 }
-img.close {margin-bottom: -1px;	margin-left: 3px;}
+img.close
+{
+	margin-bottom	: -1px;
+	margin-left		: 3px;
+	border	: none;
+}
 
 /* Aufgabenseite */
 div.task
