@@ -44,7 +44,7 @@
 				<td><span class="question">Wann?</span></td>
 				<td><input type="text" name="number" placeholder="MM/JJ" style="width:45px;"
 					value="<?php if (isset($_REQUEST['number'])) print $_REQUEST['number']; ?>"/>
-				<input type="checkbox" name="with_solution"/><span class="info">mit L&ouml;sung</span></td>
+				<input type="checkbox" name="with_solution" <?php if (isset($_REQUEST['with_solution'])) print "checked"; ?>/><span class="info">mit L&ouml;sung</span></td>
 			</tr>
 			<tr>
 				<td><span class="info">nach</span></td>

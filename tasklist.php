@@ -26,7 +26,7 @@
 
 			if ($_REQUEST['proposer'] != "")
 				$filter[] = "proposers.name LIKE '%".$_REQUEST['proposer']."%'";
-			
+
 			if ($_REQUEST['number'] != "") {
 				list($month, $year) = explode("/", $_REQUEST['number']);
 				if ($year > 50)		// translate YY to 19JJ/20JJ
@@ -35,7 +35,10 @@
 					$year += 2000;
 				$filter[] = "month = $month AND year = $year";
 			}
-			
+
+			if (isset($_REQUEST['with_solution']))
+				$filter[] = "EXISTS (SELECT solutions.id FROM solutions WHERE problems.id=solutions.problem_id)";
+
 			if ($_REQUEST['start'] != "")
 				$filter[] = "proposed > '".$_REQUEST['start']."'";
 			if ($_REQUEST['end'] != "")
