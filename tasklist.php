@@ -61,11 +61,11 @@
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 			print '<a class="textbox" href="task.php?id='.$problem['id'].'">';
 			print '<div class="task problem_list">';
-			print '<div class="info">'.$problem['name'].", ".$problem['location'];
-			if ($problem['country'] != "") print " (".$problem['country'].")";
-			print '<div class="tags">';
+			print '<div class="info"><div class="tags">';
 			tags($pb, $problem['tags']);
-			print '</div></div>';
+			print '</div>'.$problem['name'].", ".$problem['location'];
+			if ($problem['country'] != "") print " (".$problem['country'].")";
+			print '</div>';
 
 			print '<div class="text" id="prob'.($problem_id++).'">';
 			print htmlspecialchars($problem['problem']);

@@ -31,13 +31,13 @@
 			}
 		?>
 			<div class="info">
+			<div class="tags">
+				<?php tags($pb, get_tags($pb, $id)); ?>
+			</div>
 			<?php
 				print $proposer['name'].", ".$proposer['location'];
 				if ($proposer['country'] != "") print " (".$proposer['country'].")";
-			?>
-			<div class="tags">
-				<?php tags($pb, get_tags($pb, $id)); ?>
-			</div></div>
+			?></div>
 			<div class="text" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 			<div class="published">
 			<?php
