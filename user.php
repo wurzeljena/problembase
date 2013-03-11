@@ -77,8 +77,8 @@
 
 			<?php if ($root) { ?>
 				<tr><form id="newuser" action="edit_user.php" method="POST">
-					<td><input type="text" name="newname" style="width:100px;" placeholder="Name"></td>
-					<td><input type="email" name="email" style="width:180px;" placeholder="E-Mail"></td>
+					<td><input type="text" name="newname" style="width:100px;" placeholder="Name" required></td>
+					<td><input type="email" name="email" style="width:180px;" placeholder="E-Mail" required></td>
 					<td><input type="checkbox" name="root"></td>
 					<td><input type="checkbox" name="editor"></td>
 					<td><input type="submit" value="Erstellen"></td>
