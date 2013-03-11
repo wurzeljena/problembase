@@ -253,7 +253,7 @@ form#tageditor
 	background-color	: #40E0C0;
 	border	: 1px solid Grey;
 	border-radius	: 10px;
-	box-shadow	: 10px 10px 2px #208080;
+	box-shadow	: 3px 3px 3px #208080;
 }
 form.task 
 {

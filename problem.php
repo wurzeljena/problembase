@@ -49,9 +49,7 @@
 	</div>
 
 	<div id="panel">
-		<?php if (isset($user_id))
-			include "tagpanel.php";
-		?>
+		<iframe src="tagpanel.php" style="border:none;" width="270" height="270"></iframe>
 	</div>
 
 	<?php $pb->close(); ?>
