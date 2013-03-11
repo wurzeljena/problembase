@@ -107,7 +107,7 @@ function loadTag() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 				eval("var resp = " + xmlhttp.responseText);
 				document.forms['tageditor'].elements['name'].value = resp.name;
-				document.forms['tageditor'].elements['description'].value = resp.desc;
+				document.forms['tageditor'].elements['description'].value = resp.description;
 				document.forms['tageditor'].elements['color'].value = resp.color;
 				document.forms['tageditor'].elements['hidden'].checked = resp.hidden;
 				document.getElementById('delete_tag').disabled = false;

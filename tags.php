@@ -75,10 +75,10 @@
 	if (isset($_REQUEST['taginfo'])) {
 		session_start();
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		list($name, $desc, $color, $hidden) = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_REQUEST['id']."'")
-			->fetchArray(SQLITE3_NUM);
-		$color = "#".substr("00000".dechex($color),-6);
-		print "{name : '$name', desc : '$desc', color : '$color', hidden : $hidden}";
+		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_REQUEST['id']."'")
+			->fetchArray(SQLITE3_ASSOC);
+		$res['color'] = "#".substr("00000".dechex($res['color']),-6);
+		print json_encode($res);
 		$pb->close();
 	}
 
