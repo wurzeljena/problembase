@@ -190,7 +190,7 @@ div.text:before
 	color		: Gray;
 }
 div.task div.text:before {content: "Aufgabe: ";}
-div.solution div.text:before {content: "L&ouml;sung: ";}
+div.solution div.text:before {content: "L\00f6sung: ";}
 div.solution
 {
 	border	: 1px solid Gray;

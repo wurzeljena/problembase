@@ -29,6 +29,28 @@
 		proposers_datalist($pb);
 	}
 
+	function printproposers($pb, $type, $id)
+	{
+		// get proposers
+		$proposers = $pb->query("SELECT name, location, country FROM {$type}proposers "
+			."JOIN proposers ON {$type}proposers.proposer_id=proposers.id WHERE {$type}_id=$id");
+
+		// print their list - or remarks, if there are none
+		$first = true;
+		while(list($name, $location, $country) = $proposers->fetchArray(SQLITE3_NUM)) {
+			if (!$first)
+				print " und ";
+			else
+				$first = false;
+			print "$name, $location";
+			if (isset($country))
+				print " ($country)";
+		}
+
+		if ($first)
+			print $pb->querySingle("SELECT remarks FROM {$type}s WHERE id=$id", false);
+	}
+
 	// answer to Ajax queries for proposers
 	if (isset($_REQUEST['prop_query'])) {
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');

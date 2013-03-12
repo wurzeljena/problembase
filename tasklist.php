@@ -2,13 +2,11 @@
 	include 'tags.php';
 
 	function tasklist($pb, $page) {
-		$query = "SELECT problems.id, files.content AS problem, problems.proposed, proposers.name, "
-			."proposers.location, proposers.country, letter, number, month, year,"
+		$query = "SELECT problems.id, files.content AS problem, problems.proposed, letter, number, month, year,"
 			."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
 			."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
 			."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
 			."FROM problems JOIN files ON problems.file_id=files.rowid "
-			."LEFT JOIN proposers ON problems.proposer_id=proposers.id "
 			."LEFT JOIN published ON problems.id=published.problem_id";
 
 		// add filter constraints
@@ -24,9 +22,12 @@
 				$filter[] = "problems.id IN filter";
 			}
 
-			if ($_REQUEST['proposer'] != "")
-				$filter[] = "proposers.name LIKE '%".$_REQUEST['proposer']."%'";
-			
+			if ($_REQUEST['proposer'] != "") {
+				$pb->exec("CREATE TEMPORARY TABLE propfilter AS "
+					."SELECT id AS problem_id FROM proposers WHERE name LIKE '%".$_REQUEST['proposer']."%'");
+				$filter[] = "EXISTS (SELECT proposer_id FROM problemproposers WHERE problem_id=problems.id AND proposer_id IN propfilter)";
+			}
+
 			if ($_REQUEST['number'] != "") {
 				list($month, $year) = explode("/", $_REQUEST['number']);
 				if ($year > 50)		// translate YY to 19JJ/20JJ
@@ -61,8 +62,8 @@
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 			print '<a class="textbox" href="task.php?id='.$problem['id'].'">';
 			print '<div class="task problem_list">';
-			print '<div class="info">'.$problem['name'].", ".$problem['location'];
-			if ($problem['country'] != "") print " (".$problem['country'].")";
+			print '<div class="info">';
+			printproposers($pb, "problem", $problem['id']);
 			print '<div class="tags">';
 			tags($pb, $problem['tags']);
 			print '</div></div>';
@@ -89,6 +90,7 @@
 
 	if (isset($_REQUEST['page'])) {
 		session_start();
+		include 'proposers.php';
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 		tasklist($pb, $_REQUEST['page']);
 	}
