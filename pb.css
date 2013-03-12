@@ -173,7 +173,6 @@ div.task
 	border-radius : 5px;
 	background	: #FFD080;
 	margin : 15px 5px; padding : 5px;
-	box-shadow	: 5px 5px 0px #C08060;
 	position	: relative;
 }
 div.info
@@ -203,7 +202,6 @@ div.solution
 	border-radius : 5px;
 	background	: #D0E0FF;
 	margin : 15px 5px; padding : 5px;
-	box-shadow	: 5px 5px 0px #80A0C0;
 	position	: relative;
 }
 
@@ -246,9 +244,8 @@ form.filter
 	position: fixed; top: 9em; left: 750px;
 	background-image	: url("img/filter.png");
 	background-repeat	: repeat;
-	border	: 1px solid Grey;
 	border-radius	: 10px;
-	box-shadow	: 10px 10px 2px Gray;
+	box-shadow	: 3px 3px 5px Gray;
 }
 form.filter table tr td
 {
@@ -257,26 +254,22 @@ form.filter table tr td
 form#tageditor
 {
 	background-color	: #40E0C0;
-	border	: 1px solid Grey;
 	border-radius	: 10px;
-	box-shadow	: 3px 3px 3px #208080;
+	box-shadow	: 3px 3px 5px #208080;
 }
 form.task 
 {
 	background-color: #FFA060;
-	border		: 1px solid #E06060;
 	box-shadow	: 3px 3px 5px #C08060;
 }
 form.solution 
 {
 	background-color: #A0C0FF;
-	border		: 1px solid #6090C0;
 	box-shadow	: 3px 3px 5px #80A0C0;
 }
 form.eval 
 {
 	background-color: #D0D030;
-	border		: 1px solid #A0A040;
 	box-shadow	: 3px 3px 5px #A0A020;
 }
 
@@ -303,8 +296,6 @@ form.solution input.text, form.solution textarea {background : #B0E0FF;}
 form.solution input.text:hover, form.solution textarea:hover {background : #D0F0FF;}
 form.eval input.text, form.eval textarea {background : #F0F050;}
 form.eval input.text:hover, form.eval textarea:hover {background : #F0F080;}
-
-input.button {}
 
 /* TEX-Anzeigen */
 form div.problem
