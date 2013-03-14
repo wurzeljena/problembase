@@ -61,7 +61,7 @@
 				<form id="edit" action="edit_user.php" method="POST">
 					<input type="hidden" name="id" value="<?php print $user_id; ?>">
 					<input type="text" name="name" placeholder="Name" value="<?php print $user['name'] ?>">
-					<input type="text" name="email" style="width:200px;" placeholder="E-Mail" value="<?php print $user['email'] ?>">
+					<input type="email" name="email" style="width:200px;" placeholder="E-Mail" value="<?php print $user['email'] ?>">
 					<input type="submit" value="&Auml;ndern">
 				</form>
 				<form id="pw" action="edit_user.php" method="POST" onsubmit="return validate_password()">

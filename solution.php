@@ -44,7 +44,7 @@
 		<div class="preview" id="preview"></div>
 		<textarea class="text" name="remarks" id="textarea" rows="5" cols="65" placeholder="Anmerkungen"
 			style="height:70px;"><?php if (isset($id)) print $solution['remarks']; ?></textarea>
-		Ver&ouml;ffentlicht in: <input type="text" class="text" name="published" placeholder="MM/JJ" style="width:50px;" value="<?php if (isset($solution['month'])) print $solution['month']."/".($solution['year']%100); ?>"/>
+		Ver&ouml;ffentlicht in: <input type="text" class="text" name="published" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}" style="width:50px;" value="<?php if (isset($solution['month'])) print $solution['month']."/".($solution['year']%100); ?>"/>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
 		<input type="submit" value="<?php if (isset($id)) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
 		<input type="button" value="Verwerfen" style="float:right;" onclick="history.back();"/>

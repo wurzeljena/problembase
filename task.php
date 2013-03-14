@@ -65,11 +65,11 @@
 			?>
 			<form id="publish" style="visibility:hidden; position:absolute;" action="publish.php" method="POST">
 				<input type="hidden" name="id" value="<?php print $id; ?>">
-				Ausgabe: <input type="text" name="volume" placeholder="MM/JJ"
+				Ausgabe: <input type="text" name="volume" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
 					style="width:40px;" value="<?php print $volume; ?>">
 				Nummer: <input type="text" name="letter" placeholder="xxx"
 					style="width:50px;" value="<?php print $letter; ?>">
-					<input type="text" name="number" placeholder="NN"
+					<input type="text" name="number" placeholder="NN" pattern="[1-9]|[0-5][0-9]|60"
 					style="width:20px;" value="<?php print $number; ?>">
 				<input type="submit" value="Speichern">
 			</form>

@@ -42,18 +42,18 @@
 			</tr>
 			<tr>
 				<td><span class="question">Wann?</span></td>
-				<td><input type="text" name="number" placeholder="MM/JJ" style="width:45px;"
+				<td><input type="text" name="number" placeholder="MM/JJ" style="width:45px;" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
 					value="<?php if (isset($_REQUEST['number'])) print $_REQUEST['number']; ?>"/>
 				<input type="checkbox" name="with_solution" <?php if (isset($_REQUEST['with_solution'])) print "checked"; ?>/><span class="info">mit L&ouml;sung</span></td>
 			</tr>
 			<tr>
 				<td><span class="info">nach</span></td>
-				<td><input type="date" name="start" placeholder="JJJJ-MM-TT"
+				<td><input type="date" name="start" placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"
 					value="<?php if (isset($_REQUEST['start'])) print $_REQUEST['start']; ?>"/></td>
 			</tr>
 			<tr>
 				<td><span class="info">vor</span></td>
-				<td><input type="date" name="end" placeholder="JJJJ-MM-TT"
+				<td><input type="date" name="end" placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"
 					value="<?php if (isset($_REQUEST['end'])) print $_REQUEST['end']; ?>"/></td>
 			</tr>
 		</table>

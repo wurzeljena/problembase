@@ -8,7 +8,7 @@
 	</div>
 	<?php if (!isset($user_id)) { ?>
 		<form class="login" action="logon.php" method="POST">
-		<input type="text" style="width:15em;" name="email" placeholder="E-Mail">
+		<input type="email" style="width:15em;" name="email" placeholder="E-Mail">
 		<input type="password" name="password" placeholder="Passwort">
 		<input type="hidden" name="referer" value="<?php print $_SERVER['REQUEST_URI']; ?>">
 		<input type="submit" value="Login">
