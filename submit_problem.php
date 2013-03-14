@@ -9,6 +9,7 @@
 		$$key = $pb->escapeString($value);
 
 	if (isset($delete)) {
+		$pb->exec("PRAGMA foreign_keys=on;");
 		$pb->exec("DELETE FROM problems WHERE id=$id");
 		header('Location: index.php');
 	}

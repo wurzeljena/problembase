@@ -9,6 +9,7 @@
 		$$key = $pb->escapeString($value);
 
 	if (isset($delete)) {
+		$pb->exec("PRAGMA foreign_keys=on;");
 		$problem_id = $pb->querySingle("SELECT problem_id FROM solutions WHERE id=$id", false);
 		$pb->exec("DELETE FROM solutions WHERE id=$id");
 	}

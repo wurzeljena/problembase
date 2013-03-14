@@ -19,6 +19,7 @@
 
 	// delete user
 	if (isset($id) && isset($delete) && $_SESSION['root']) {
+		$pb->exec("PRAGMA foreign_keys=on;");
 		$pb->exec("DELETE FROM users WHERE id=$id");
 		header('Location: user.php');
 		break;
