@@ -49,6 +49,25 @@
 			print $pb->querySingle("SELECT remarks FROM {$type}s WHERE id=$id", false);
 	}
 
+	function writeproposers($pb, $nums, $proposer, $proposer_id, $location, $country) {
+		foreach ($nums as $num) {
+			if ($proposer_id[$num] == "-1") {
+				$insert = "INSERT INTO proposers (name, location";
+				if ($country[$num] != "")
+					$insert .= ", country";
+				$insert .= ") VALUES ('{$proposer[$num]}', '{$location[$num]}'";
+				if ($country[$num] != "")
+					$insert .= ", '{$country[$num]}'";
+				$insert .= ")";
+
+				$pb->exec($insert);
+				$proposer_id[$num] = $pb->lastInsertRowID();
+			}
+		}
+		
+		return $proposer_id;
+	}
+
 	// answer to Ajax queries for proposers
 	if (isset($_REQUEST['prop_query'])) {
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
