@@ -62,6 +62,102 @@ var Preview = {
 Preview.callback = MathJax.Callback(["CreatePreview", Preview]);
 Preview.callback.autoReset = true;  // make sure it can run more than once
 
+// proposer list
+function PropForm(form, list) {
+	this.form = form;
+	this.nums = Array();
+	var self = this;
+
+	this.newProp = function (num) {
+		if (document.forms[form].elements["new" + num].checked) {
+			document.forms[form].elements["proposer_id[" + num + "]"].value = -1;
+			document.forms[form].elements["location[" + num + "]"].disabled = false;
+			document.forms[form].elements["location[" + num + "]"].value = "";
+			document.forms[form].elements["country[" + num + "]"].disabled = false;
+			document.forms[form].elements["country[" + num + "]"].value = "";
+		}
+		else
+			queryProp(self, form, num);
+	}
+
+	this.addProp = function () {
+		var max = Math.max.apply(Math, this.nums);
+		var num = (max < 0) ? 0 : max + 1;
+
+		var prop = document.createElement("div");
+		prop.id = "prop" + num;
+
+		var name = document.createElement("input");
+		name.type = name.className = "text";
+		name.name = "proposer[" + num + "]";
+		name.setAttribute("list", "proposers");
+		name.required = true;
+		name.placeholder = "Einsender";
+		name.onblur = function () { queryProp(self, form, num); };
+		prop.appendChild(name);
+
+		var id = document.createElement("input");
+		id.type = "hidden";
+		id.name = "proposer_id[" + num + "]";
+		id.value = "-1";
+		prop.appendChild(id);
+
+		var checknew = document.createElement("input");
+		checknew.type = "checkbox";
+		checknew.name = "new" + num;
+		checknew.title = "neu";
+		checknew.onclick = function () { self.newProp(num); };
+		prop.appendChild(checknew);
+
+		var location = document.createElement("input");
+		location.type = location.className = "text";
+		location.name = "location[" + num + "]";
+		location.required = true;
+		location.placeholder = "Ort";
+		prop.appendChild(location);
+
+		var country = document.createElement("input");
+		country.type = country.className = "text";
+		country.name = "country[" + num + "]";
+		country.placeholder = "Land";
+		prop.appendChild(country);
+
+		var remove = document.createElement("input");
+		remove.type = "button";
+		remove.value = "entfernen";
+		remove.onclick = function () { self.removeProp(num); };
+		remove.placeholder = "Land";
+		prop.appendChild(remove);
+
+		var propsDiv = document.getElementById("proplist");
+		propsDiv.appendChild(prop);
+
+		this.nums.push(num);
+		return num;
+	}
+
+	this.removeProp = function (num) {
+		this.nums.splice(this.nums.indexOf(num), 1);
+		var propDiv = document.getElementById("prop" + num);
+		propDiv.parentNode.removeChild(propDiv);
+	}
+
+	// on sending form: write nums to an hidden input field
+	document.forms[form].onsubmit =
+		function () { document.forms[form].elements["propnums"].value = self.nums.toString(); };
+
+	// write initial data
+	for (var i = 0; i < list.length; i++) {
+		var num = this.addProp();
+		document.forms[form].elements["proposer[" + num + "]"].value = list[i].name;
+		document.forms[form].elements["proposer_id[" + num + "]"].value = list[i].id;
+		document.forms[form].elements["location[" + num + "]"].value = list[i].location;
+		document.forms[form].elements["location[" + num + "]"].disabled = true;
+		document.forms[form].elements["country[" + num + "]"].value = list[i].country;
+		document.forms[form].elements["country[" + num + "]"].disabled = true;
+	}
+}
+
 // starring mechanism
 function Stars(name) {
 	this.input = document.getElementById(name);

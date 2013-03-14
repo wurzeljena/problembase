@@ -10,23 +10,21 @@
 		print '</datalist>';
 	}
 
-	function proposer_form($pb, $form, $proposer_id)
+	function proposer_form($pb, $form, $type, $type_id)
 	{
-		$name = $location = $country = '';
-		if (isset($proposer_id) && $proposer_id != -1) {
-			$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$proposer_id, true);
-			foreach ($proposer as $key=>$value)
-				$$key = $value;
-		}
+		$proposers = $pb->query("SELECT id, name, location, country FROM {$type}proposers "
+			."JOIN proposers ON {$type}proposers.proposer_id=proposers.id WHERE {$type}_id=$type_id");
 
-		print "<input type='text' class='text' id='proposer' name='proposer' list='proposers' required "
-			."placeholder='Einsender' style='width:165px;' value='$name' onblur='queryProp(\"$form\");'/>"
-			."<input type='hidden' name='proposer_id' value='$proposer_id'>"
-			."<input type='text' class='text' name='location' value='$location' required "
-			."placeholder='Ort' style='width:110px;'/>"
-			."<input type='text' class='text' name='country' value='$country' "
-			."placeholder='Land' style='width:245px;'/> <br/>";
 		proposers_datalist($pb);
+		print "<div id='proplist'><input type='hidden' name='propnums'/></div>";
+		print "<input type='button' value='Autor hinzuf&uuml;gen' onclick='propForm.addProp();'/>";
+
+		print "<script type='text/javascript'>";
+		print "var propForm = new PropForm('$form', [";
+		$num = 0;
+		while($proposer = $proposers->fetchArray(SQLITE3_ASSOC))
+			print (($num++ > 0) ? ", " : "").json_encode($proposer);
+		print "]);</script>";
 	}
 
 	function printproposers($pb, $type, $id)

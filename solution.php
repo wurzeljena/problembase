@@ -38,7 +38,7 @@
 		<div class="problem"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
 		<input type="hidden" name="problem_id" value="<?php if (isset($id)) print $solution['problem_id']; else print $problem_id; ?>">
-		<?php proposer_form($pb, 'solution', isset($id) ? $solution['proposer_id'] : -1); ?>
+		<?php proposer_form($pb, "solution", "solution", isset($id) ? $id : -1); ?>
 		<textarea class="text" name="solution" id="textarea" rows="60" cols="80" placeholder="L&ouml;sungstext"
 			style="height:400px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $solution['solution']; ?></textarea> <br/>
 		<div class="preview" id="preview"></div>
