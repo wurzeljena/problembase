@@ -26,34 +26,6 @@ function incrPage(incr) {
 	document.getElementById("pagetasks").innerHTML = (10 * page + 1) + "&mdash;" + 10 * (page + 1);
 };
 
-// query proposer via Ajax
-function queryProp(formobj, form, num) {
-	var str = document.forms[form].elements["proposer[" + num + "]"].value;
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			eval("var resp = " + xmlhttp.responseText);
-			if (resp) {
-				document.forms[form].elements["proposer_id[" + num + "]"].value = resp.id;
-				document.forms[form].elements["new" + num].checked = false;
-				document.forms[form].elements["new" + num].disabled = false;
-				document.forms[form].elements["location[" + num + "]"].value = resp.location;
-				document.forms[form].elements["location[" + num + "]"].disabled = true;
-				document.forms[form].elements["country[" + num + "]"].value = resp.country;
-				document.forms[form].elements["country[" + num + "]"].disabled = true;
-			}
-			else {
-				document.forms[form].elements["new" + num].checked = true;
-				document.forms[form].elements["new" + num].disabled = true;
-				formobj.newProp(num);
-			}
-		}
-	}
-
-	xmlhttp.open("GET", "proposers.php?prop_query=" + encodeURIComponent(str), true);
-	xmlhttp.send();
-};
-
 // dynamic tag list Ajax stuff
 function addTag(form) {
 	var tags = document.forms[form].elements["tags"].value;

@@ -71,9 +71,11 @@
 	// answer to Ajax queries for proposers
 	if (isset($_REQUEST['prop_query'])) {
 		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$res = $pb->query("SELECT id, location, country FROM proposers WHERE name='".$pb->escapeString($_REQUEST['prop_query'])."'")
-			->fetchArray(SQLITE3_ASSOC);
-		print json_encode($res);
+		$proposers = $pb->query("SELECT id, location, country FROM proposers WHERE name='".$pb->escapeString($_REQUEST['prop_query'])."'");
+		print "[";	$num = 0;
+		while($proposer = $proposers->fetchArray(SQLITE3_ASSOC))
+			print (($num++ > 0) ? ", " : "").json_encode($proposer);
+		print "]";
 		$pb->close();
 	}
 ?>

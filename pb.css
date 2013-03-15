@@ -292,11 +292,11 @@ input.text {font-family	: Georgia;}
 input.text, textarea {border : 1px dashed #808080;}
 textarea {width:545px;}
 form.task input.text, form.task textarea {background : #FFD080;}
-form.task input.text:hover:not([disabled]), form.task textarea:hover {background : #FFE0A0;}
+form.task input.text:hover, form.task textarea:hover {background : #FFE0A0;}
 form.solution input.text, form.solution textarea {background : #B0E0FF;}
-form.solution input.text:hover:not([disabled]), form.solution textarea:hover {background : #D0F0FF;}
+form.solution input.text:hover, form.solution textarea:hover {background : #D0F0FF;}
 form.eval input.text, form.eval textarea {background : #F0F050;}
-form.eval input.text:hover:not([disabled]), form.eval textarea:hover {background : #F0F080;}
+form.eval input.text:hover, form.eval textarea:hover {background : #F0F080;}
 
 input.button {}
 
