@@ -62,6 +62,135 @@ var Preview = {
 Preview.callback = MathJax.Callback(["CreatePreview", Preview]);
 Preview.callback.autoReset = true;  // make sure it can run more than once
 
+// proposer list
+function PropForm(form, list) {
+	this.form = form;
+	this.nums = Array();
+	this.datalists = Array();
+	this.data = Array();
+	var self = this;
+
+	this.addProp = function () {
+		var max = Math.max.apply(Math, this.nums);
+		var num = (max < 0) ? 0 : max + 1;
+
+		var prop = document.createElement("div");
+		prop.id = "prop" + num;
+
+		var name = document.createElement("input");
+		name.type = name.className = "text";
+		name.name = "proposer[" + num + "]";
+		name.setAttribute("list", "proposers");
+		name.autocomplete = "off";
+		name.required = true;
+		name.placeholder = "Einsender";
+		name.onblur = function () { self.queryProp(this, num, true); };
+		prop.appendChild(name);
+
+		var id = document.createElement("input");
+		id.type = "hidden";
+		id.name = "proposer_id[" + num + "]";
+		id.value = "-1";
+		prop.appendChild(id);
+
+		var locationlist = document.createElement("datalist");
+		locationlist.id = "propdata" + num;
+		prop.appendChild(locationlist);
+		this.datalists[num] = locationlist;
+
+		var location = document.createElement("input");
+		location.type = location.className = "text";
+		location.name = "location[" + num + "]";
+		location.setAttribute("list", "propdata" + num);
+		location.autocomplete = "off";
+		location.required = true;
+		location.placeholder = "Ort";
+		location.onblur = function () { self.setLoc(this, num); };
+		prop.appendChild(location);
+
+		var country = document.createElement("input");
+		country.type = country.className = "text";
+		country.name = "country[" + num + "]";
+		country.placeholder = "Land";
+		prop.appendChild(country);
+
+		var remove = document.createElement("input");
+		remove.type = "button";
+		remove.value = "entfernen";
+		remove.onclick = function () { self.removeProp(num); };
+		remove.placeholder = "Land";
+		prop.appendChild(remove);
+
+		var propsDiv = document.getElementById("proplist");
+		propsDiv.appendChild(prop);
+
+		this.nums.push(num);
+		return num;
+	}
+
+	// query proposer via Ajax
+	this.queryProp = function (prop, num, async) {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function () {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				eval("var resp = " + xmlhttp.responseText);
+				document.forms[form].elements["location[" + num + "]"].value = "";
+				document.forms[form].elements["country[" + num + "]"].value = "";
+
+				var option;
+				while (option = self.datalists[num].firstChild)
+					self.datalists[num].removeChild(option);
+
+				self.data[num] = Object();
+				for (var i = 0; i < resp.length; i++) {
+					var option = document.createElement("option");
+					option.value = resp[i].location;
+					self.datalists[num].appendChild(option);
+
+					// remember country and id
+					self.data[num][resp[i].location] = { id: resp[i].id, country: resp[i].country };
+				}
+			}
+		}
+
+		xmlhttp.open("GET", "proposers.php?prop_query=" + encodeURIComponent(prop.value), async);
+		xmlhttp.send();
+	}
+
+	// react to location blur
+	this.setLoc = function (loc, num) {
+		if (this.data[num].hasOwnProperty(loc.value)) {
+			var propdata = this.data[num][loc.value];
+			document.forms[form].elements["proposer_id[" + num + "]"].value = propdata.id;
+			document.forms[form].elements["country[" + num + "]"].value = propdata.country;
+		}
+		else {
+			document.forms[form].elements["proposer_id[" + num + "]"].value = -1;
+			document.forms[form].elements["country[" + num + "]"].value = "";
+		}
+	}
+
+	this.removeProp = function (num) {
+		this.nums.splice(this.nums.indexOf(num), 1);
+		var propDiv = document.getElementById("prop" + num);
+		propDiv.parentNode.removeChild(propDiv);
+	}
+
+	// on sending form: write nums to an hidden input field
+	document.forms[form].onsubmit =
+		function () { document.forms[form].elements["propnums"].value = self.nums.toString(); };
+
+	// write initial data
+	for (var i = 0; i < list.length; i++) {
+		var num = this.addProp();
+		document.forms[form].elements["proposer[" + num + "]"].value = list[i].name;
+		this.queryProp(document.forms[form].elements["proposer[" + num + "]"], num, false);
+		document.forms[form].elements["proposer_id[" + num + "]"].value = list[i].id;
+		document.forms[form].elements["location[" + num + "]"].value = list[i].location;
+		document.forms[form].elements["country[" + num + "]"].value = list[i].country;
+	}
+}
+
 // starring mechanism
 function Stars(name) {
 	this.input = document.getElementById(name);

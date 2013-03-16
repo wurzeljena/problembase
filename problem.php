@@ -31,7 +31,7 @@
 	<h2 class="task">Aufgabe bearbeiten</h2>
 	<form class="task" id="task" title="Aufgabenformular" action="submit_problem.php" method="POST">
 		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
-		<?php proposer_form($pb, 'task', isset($id) ? $problem['proposer_id'] : -1); ?>
+		<?php proposer_form($pb, "task", "problem", isset($id) ? $id : -1); ?>
 		<?php tag_select($pb, "task"); ?>
 		<input type="hidden" name="tags" value="<?php if (isset($id)) print $tags; ?>"/>
 		<span id="taglist" style="margin:3px;">

@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	include 'tags.php';
+	include 'proposers.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,6 @@
 	$id = (int)$_REQUEST['id'];
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
-	$proposer = $pb->querySingle("SELECT * FROM proposers WHERE id=".$problem['proposer_id'], true);
 	?>
 	<div class="content">
 		<div class="task">
@@ -34,10 +34,8 @@
 			<div class="tags">
 				<?php tags($pb, get_tags($pb, $id)); ?>
 			</div>
-			<?php
-				print $proposer['name'].", ".$proposer['location'];
-				if ($proposer['country'] != "") print " (".$proposer['country'].")";
-			?></div>
+			<?php printproposers($pb, "problem", $id); ?>
+			</div>
 			<div class="text" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 			<div class="published">
 			<?php
@@ -123,9 +121,7 @@
 		?>
 		</div>
 		<?php
-		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year, "
-			."proposers.name, proposers.location, proposers.country FROM solutions "
-			."LEFT JOIN proposers ON solutions.proposer_id=proposers.id "
+		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year FROM solutions "
 			."LEFT JOIN files ON solutions.file_id=files.rowid "
 			."WHERE problem_id=$id");
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
@@ -134,8 +130,8 @@
 				print '<a class="button outer" style="top:0em;" href="solution.php?id='.$solution['id'].'">Bearbeiten</a>';
 				print '<a class="button danger outer" style="top:2em;" href="submit_solution.php?id='.$solution['id'].'&delete=1">L&ouml;schen</a>';
 			}
-			print '<div class="info">'.$solution['name'].", ".$solution['location'];
-			if ($solution['country'] != "") print " (".$solution['country'].")";
+			print '<div class="info">';
+			printproposers($pb, "solution", $solution['id']);
 			print '</div>';
 
 			print '<div class="text" id="soln">';

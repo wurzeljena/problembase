@@ -26,30 +26,6 @@ function incrPage(incr) {
 	document.getElementById("pagetasks").innerHTML = (10 * page + 1) + "&mdash;" + 10 * (page + 1);
 };
 
-// query proposer via Ajax
-function queryProp(form) {
-	var str = document.forms[form].elements["proposer"].value;
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			eval("var resp = " + xmlhttp.responseText);
-			if (resp) {
-				document.forms[form].elements["proposer_id"].value = resp.id;
-				document.forms[form].elements["location"].value = resp.location;
-				document.forms[form].elements["country"].value = resp.country;
-			}
-			else {
-				document.forms[form].elements["proposer_id"].value = -1;
-				document.forms[form].elements["location"].value = "";
-				document.forms[form].elements["country"].value = "";
-			}
-		}
-	}
-
-	xmlhttp.open("GET", "proposers.php?prop_query=" + encodeURIComponent(str), true);
-	xmlhttp.send();
-};
-
 // dynamic tag list Ajax stuff
 function drawTags(form) {
 	var tags = document.forms[form].tags.value;

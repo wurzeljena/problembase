@@ -1,12 +1,14 @@
 <?php
 	session_start();
+	include 'proposers.php';
 	if (!isset($_SESSION['user_id']))
 		die("&Auml;nderungen nur angemeldet m&ouml;glich!");
 	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
 
 	// read parameters
+	$proposer = $proposer_id = $location = $country = [];
 	foreach ($_REQUEST as $key=>$value)
-		$$key = $pb->escapeString($value);
+		$$key = $value;
 
 	if (isset($delete)) {
 		$pb->exec("PRAGMA foreign_keys=on;");
@@ -15,18 +17,7 @@
 	}
 	else {
 		// write proposer
-		if (!isset($proposer_id)) {
-			$insert = "INSERT INTO proposers (name, location";
-			if ($country != "")
-				$insert .= ", country";
-			$insert .= ") VALUES ('$proposer', '$location'";
-			if ($country != "")
-				$insert .= ", '$country'";
-			$insert .= ")";
-
-			$pb->exec($insert);
-			$proposer_id = $pb->lastInsertRowID();
-		}
+		$proposer_id = writeproposers($pb, explode(",", $propnums), $proposer, $proposer_id, $location, $country);
 
 		// write into db
 		if ($published != "") {
@@ -40,15 +31,24 @@
 			$month = $year = "NULL";
 		if (isset($id)) {
 			$file_id = $pb->querySingle("SELECT file_id FROM solutions WHERE id=$id");
-			$pb->exec("UPDATE files SET content='$solution' WHERE rowid=$file_id");
-			$pb->exec("UPDATE solutions SET proposer_id=$proposer_id, "
-				."remarks='$remarks', year=$year, month=$month WHERE id=$id");
+			$pb->exec("UPDATE files SET content='{$pb->escapeString($solution)}' WHERE rowid=$file_id");
+			$pb->exec("UPDATE solutions SET remarks='{$pb->escapeString($remarks)}', year=$year, month=$month WHERE id=$id");
 		}
 		else {
-			$pb->exec("INSERT INTO files(content) VALUES('$solution')");
+			$pb->exec("INSERT INTO files(content) VALUES('{$pb->escapeString($solution)}')");
 			$file_id = $pb->lastInsertRowID();
-			$pb->exec("INSERT INTO solutions(problem_id, file_id, proposer_id, remarks, year, month) "
-				."VALUES ($problem_id, $file_id, $proposer_id, '$remarks', $year, $month)");
+			$pb->exec("INSERT INTO solutions(problem_id, file_id, remarks, year, month) "
+				."VALUES ($problem_id, $file_id, '{$pb->escapeString($remarks)}', $year, $month)");
+			$id = $pb->lastInsertRowID();
+		}
+
+		// write proposers
+		if (isset($id))
+			$pb->exec("DELETE FROM solutionproposers WHERE solution_id=$id");
+		$stmt = $pb->prepare("INSERT OR REPLACE INTO solutionproposers (solution_id, proposer_id) VALUES ($id, :proposer)");
+		foreach ($proposer_id as $value) {
+			$stmt->bindValue(":proposer", $value, SQLITE3_INTEGER);
+			$stmt->execute();
 		}
 	}
 
