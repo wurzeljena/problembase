@@ -27,7 +27,7 @@
 
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
-	<form class="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
+	<form class="eval" id="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
 		<div class="problem" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<input type="hidden" name="id" value="<?php print $id?>"/>
 		<label class="eval" for="beautystars">Eleganz</label>
@@ -75,7 +75,11 @@
 		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php print $comment['comment']?></textarea> <br/>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
 		<input type="submit" value="Speichern" style="float:right;"/>
-		<input type="button" value="Verwerfen" onclick="history.back();" style="float:right;"/>
+		<?php if (isset($id)) {?>
+		<input type="checkbox" name="delete"/>
+		<input type="button" value="L&ouml;schen" style="float:right;"
+			onclick="if (confirm('Kommentar wirklich l&ouml;schen?')) postDelete('eval');"/>
+		<?php } ?>
 	</form>
 	</div>
 

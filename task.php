@@ -25,10 +25,8 @@
 	<div class="content">
 		<div class="task">
 		<?php
-			if (isset($user_id)) {
-				print '<a class="button outer" style="top:0em;" href="problem.php?id='.$id.'">Bearbeiten</a>';
-				print '<a class="button danger outer" style="top:2em;" href="submit_problem.php?id='.$id.'&delete=1">L&ouml;schen</a>';
-			}
+			if (isset($user_id))
+				print "<a class='button outer' style='top:0em;' href='problem.php?id=$id'>Bearbeiten</a>";
 		?>
 			<div class="info">
 			<div class="tags">
@@ -90,10 +88,8 @@
 					print '<tr>';
 				print '<td class="author"><a href="user.php#'.$comment['user_id'].'">'.$comment['name'].'</a></td>';
 				print '<td class="comment">';
-				if (isset($user_id) && $comment['user_id']==$user_id) {
-					print '<a class="button danger" style="float:right;" href="submit_eval.php?id='.$id.'&delete=1">L&ouml;schen</a>';
-					print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Bearbeiten</a>';
-				}
+				if (isset($user_id) && $comment['user_id']==$user_id)
+					print "<a class='button' style='float:right;' href='eval.php?id=$id'>Bearbeiten</a>";
 				print $comment['comment'].'</td></tr>';
 
 				if (isset($user_id) && $comment['user_id']==$user_id)
@@ -126,10 +122,8 @@
 			."WHERE problem_id=$id");
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
 			print '<div class="solution">';
-			if (isset($user_id)) {
+			if (isset($user_id))
 				print '<a class="button outer" style="top:0em;" href="solution.php?id='.$solution['id'].'">Bearbeiten</a>';
-				print '<a class="button danger outer" style="top:2em;" href="submit_solution.php?id='.$solution['id'].'&delete=1">L&ouml;schen</a>';
-			}
 			print '<div class="info">';
 			printproposers($pb, "solution", $solution['id']);
 			print '</div>';

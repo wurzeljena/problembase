@@ -191,6 +191,12 @@ function PropForm(form, list) {
 	}
 }
 
+// script for delete buttons
+function postDelete(form) {
+	document.forms[form].elements["delete"].checked = true;
+	document.forms[form].submit();
+}
+
 // starring mechanism
 function Stars(name) {
 	this.input = document.getElementById(name);

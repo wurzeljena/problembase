@@ -108,7 +108,6 @@
 		}
 		$pb->close();
 
-		if (!isset($_REQUEST['delete']))
-			header('Location: '.$referer);
+		header('Location: '.$referer);
 	}
 ?>

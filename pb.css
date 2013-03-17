@@ -286,6 +286,11 @@ span.eval, label.eval
 	padding		: 0.5em;
 }
 
+form input[name="delete"]
+{
+	display	: none;
+}
+
 input, textarea, select {margin : 5px;}
 input.text {font-family	: Georgia;}
 input.text, textarea {border : 1px dashed #808080;}

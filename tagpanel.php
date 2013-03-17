@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
+	<script type="text/javascript" src="fancy.js"></script>
 	<script type="text/javascript" src="ajax.js"></script>
 </head>
 <body>
@@ -19,7 +20,9 @@
 					$pb->close();
 				?>
 			</select>
-			<input type="button" id="delete_tag" value="L&ouml;schen" disabled onclick="deleteTag();">
+			<input type="checkbox" name="delete"/>
+			<input type="button" id="delete_tag" value="L&ouml;schen" disabled
+				onclick="if (confirm('Tag wirklich l&ouml;schen?')) postDelete('tageditor');"/>
 		</div>
 		<div>
 			<input type="text" name="name" style="width:120px;" placeholder="Name" required onchange="tagPreview();">

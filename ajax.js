@@ -101,21 +101,6 @@ function loadTag() {
 	}
 }
 
-function deleteTag() {
-	var id = document.forms['tageditor'].elements['id'].value;
-
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			document.forms['tageditor'].elements['id'].value = "";
-			loadTag();
-		}
-	}
-
-	xmlhttp.open("POST", "tags.php?id=" + id + "&delete=1", true);
-	xmlhttp.send();
-}
-
 function tagPreview() {
 	var name = document.forms['tageditor'].elements['name'].value;
 	var desc = document.forms['tageditor'].elements['description'].value;
