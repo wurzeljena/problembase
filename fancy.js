@@ -133,7 +133,7 @@ function PropForm(form, list) {
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function () {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				eval("var resp = " + xmlhttp.responseText);
+				var resp = JSON.parse(xmlhttp.responseText);
 				document.forms[form].elements["location[" + num + "]"].value = "";
 				document.forms[form].elements["country[" + num + "]"].value = "";
 

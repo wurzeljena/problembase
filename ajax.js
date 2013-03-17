@@ -76,7 +76,7 @@ function loadTag() {
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function () {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				eval("var resp = " + xmlhttp.responseText);
+				var resp = JSON.parse(xmlhttp.responseText);
 				document.forms['tageditor'].elements['name'].value = resp.name;
 				document.forms['tageditor'].elements['description'].value = resp.description;
 				document.forms['tageditor'].elements['color'].value = resp.color;
