@@ -17,11 +17,9 @@
 		$id = (int)$_REQUEST['id'];
 		if (!isset($user_id))
 			die('Fehler: Nur Benutzer d&uuml;rfen kommentieren!');
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
-		$result = $pb->query("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id");
-		$problem = $result->fetchArray(SQLITE3_ASSOC);
-		$result = $pb->query("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id");
-		$comment = $result->fetchArray(SQLITE3_ASSOC);
+		$pb = new SQLite3('sqlite/problembase.sqlite');
+		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
+		$comment = $pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", true);
 		$pb->close();
 	?>
 
@@ -43,7 +41,7 @@
 			<img class="star" id="beauty5"
 				onmouseover="Beauty.show(5);" onclick="Beauty.set(5);"/>
 			</span>
-			<input type="hidden" name="beauty" id="beauty" value="<?php print $comment['beauty']?>"/>
+			<input type="hidden" name="beauty" id="beauty" value="<?php print empty($comment) ? -1 : $comment['beauty']?>"/>
 		<label class="eval" for="diffstars">Schwierigkeit</label>
 			<span id="diffstars" onmouseout="Diff.reset();">
 			<img class="star" id="diff1"
@@ -57,7 +55,7 @@
 			<img class="star" id="diff5"
 				onmouseover="Diff.show(5);" onclick="Diff.set(5);"/>
 			</span>
-			<input type="hidden" name="diff" id="diff" value="<?php print $comment['difficulty']?>"/>
+			<input type="hidden" name="diff" id="diff" value="<?php print empty($comment) ? -1 : $comment['difficulty']?>"/>
 		<label class="eval" for="knowstars">Wissen</label>
 			<span id="knowstars" onmouseout="Know.reset();">
 			<img class="star" id="know1"
@@ -71,8 +69,9 @@
 			<img class="star" id="know5"
 				onmouseover="Know.show(5);" onclick="Know.set(5);"/>
 			</span>
-			<input type="hidden" name="know" id="know" value="<?php print $comment['knowledge_required']?>"/>
-		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php print $comment['comment']?></textarea> <br/>
+			<input type="hidden" name="know" id="know" value="<?php print empty($comment) ? -1 : $comment['knowledge_required']?>"/>
+		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php
+			if (!empty($comment)) print $comment['comment']?></textarea> <br/>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
 		<input type="submit" value="Speichern" style="float:right;"/>
 		<?php if (isset($id)) {?>

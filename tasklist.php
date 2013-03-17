@@ -94,7 +94,7 @@
 	if (isset($_REQUEST['page'])) {
 		session_start();
 		include 'proposers.php';
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$pb = new SQLite3('sqlite/problembase.sqlite');
 		tasklist($pb, $_REQUEST['page']);
 	}
 ?>

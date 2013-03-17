@@ -14,7 +14,7 @@
 	<?php include 'head.php'; ?>
 
 	<?php
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$pb = new SQLite3('sqlite/problembase.sqlite');
 		if (!isset($user_id))
 			die("Nur f&uuml;r angemeldete Nutzer sichtbar!");
 		$root = $_SESSION['root'];

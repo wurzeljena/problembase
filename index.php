@@ -20,7 +20,7 @@
 
 	<div class="content" id="tasklist">
 		<?php
-			$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+			$pb = new SQLite3('sqlite/problembase.sqlite');
 			tasklist($pb, 0);
 		?>
 	</div>

@@ -3,7 +3,7 @@
 	include 'proposers.php';
 	if (!isset($_SESSION['user_id']))
 		die("&Auml;nderungen nur angemeldet m&ouml;glich!");
-	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$pb = new SQLite3('sqlite/problembase.sqlite');
 
 	// read parameters
 	$proposer = $proposer_id = $location = $country = [];

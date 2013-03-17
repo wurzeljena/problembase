@@ -3,7 +3,7 @@
 	if (!isset($_SESSION['user_id']))
 		die("&Auml;nderungen nur angemeldet m&ouml;glich!");
 	$user_id = $_SESSION['user_id'];
-	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$pb = new SQLite3('sqlite/problembase.sqlite');
 
 	// read parameters
 	foreach ($_REQUEST as $key=>$value)

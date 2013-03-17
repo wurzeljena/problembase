@@ -18,7 +18,7 @@
 	<?php include 'head.php'; ?>
 
 	<?php
-	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$pb = new SQLite3('sqlite/problembase.sqlite');
 	if (isset($_REQUEST['id'])) {
 		$id = (int)$_REQUEST['id'];
 		$solution = $pb->querySingle("SELECT solutions.*, files.content AS solution FROM solutions JOIN files ON solutions.file_id=files.rowid WHERE id=$id", true);

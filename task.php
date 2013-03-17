@@ -19,7 +19,7 @@
 
 	<?php
 	$id = (int)$_REQUEST['id'];
-	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$pb = new SQLite3('sqlite/problembase.sqlite');
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
 	?>
 	<div class="content">
@@ -80,7 +80,7 @@
 		</div>
 		<table class="comments">
 		<?php
-			$comments = $pb->query("SELECT * FROM comments, users WHERE comments.user_id=users.id AND problem_id=$id");
+			$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id");
 			while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
 				if (isset($user_id) && $comment['user_id']==$user_id)
 					print '<tr class="own">';

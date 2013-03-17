@@ -56,13 +56,13 @@
 
 	function get_tags($pb, $problem_id)
 	{
-		return $pb->querySingle("SELECT group_concat(tag_id) FROM tag_list WHERE problem_id=".$problem_id, false);
+		return $pb->querySingle("SELECT group_concat(tag_id) FROM tag_list WHERE problem_id=$problem_id", false);
 	}
 
 	// answer to Ajax queries from taglists
 	if (isset($_REQUEST['taglist'])) {
 		session_start();
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$pb = new SQLite3('sqlite/problembase.sqlite');
 		tags($pb, $_REQUEST['taglist'], $_REQUEST['form']);
 		$pb->close();
 	}
@@ -70,7 +70,7 @@
 	// answer to Ajax queries from tag form
 	if (isset($_REQUEST['taginfo'])) {
 		session_start();
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$pb = new SQLite3('sqlite/problembase.sqlite');
 		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_REQUEST['id']."'")
 			->fetchArray(SQLITE3_ASSOC);
 		$res['color'] = "#".substr("00000".dechex($res['color']),-6);
@@ -89,7 +89,7 @@
 		if (!isset($_SESSION['user_id']))
 			die("Nur f&uuml;r angemelde Benutzer m&ouml;glich!");
 
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$pb = new SQLite3('sqlite/problembase.sqlite');
 		foreach ($_REQUEST as $key=>$value)
 			$$key = $pb->escapeString($value);
 

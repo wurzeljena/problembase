@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$pb = new SQLite3('sqlite/problembase.sqlite');
 
 	// read parameters
 	foreach ($_REQUEST as $key=>$value)

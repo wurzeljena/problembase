@@ -1,11 +1,11 @@
 <?php
 	function proposers_datalist($pb)
 	{
-		$proposers = $pb->query("SELECT name FROM proposers");
-		
+		$proposers = $pb->query("SELECT DISTINCT name FROM proposers");
+
 		print '<datalist id="proposers">';
 		while($proposer = $proposers->fetchArray(SQLITE3_NUM)) {
-			print '<option value="'.$proposer[0].'">';
+			print '<option value="'.htmlspecialchars($proposer[0]).'">';
 		}
 		print '</datalist>';
 	}
@@ -55,22 +55,22 @@
 				$insert = "INSERT INTO proposers (name, location";
 				if ($country[$num] != "")
 					$insert .= ", country";
-				$insert .= ") VALUES ('{$proposer[$num]}', '{$location[$num]}'";
+				$insert .= ") VALUES ('{$pb->escapeString($proposer[$num])}', '{$pb->escapeString($location[$num])}'";
 				if ($country[$num] != "")
-					$insert .= ", '{$country[$num]}'";
+					$insert .= ", '{$pb->escapeString($country[$num])}'";
 				$insert .= ")";
 
 				$pb->exec($insert);
 				$proposer_id[$num] = $pb->lastInsertRowID();
 			}
 		}
-		
+
 		return $proposer_id;
 	}
 
 	// answer to Ajax queries for proposers
 	if (isset($_REQUEST['prop_query'])) {
-		$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+		$pb = new SQLite3('sqlite/problembase.sqlite');
 		$proposers = $pb->query("SELECT id, location, country FROM proposers WHERE name='".$pb->escapeString($_REQUEST['prop_query'])."'");
 		print "[";	$num = 0;
 		while($proposer = $proposers->fetchArray(SQLITE3_ASSOC))

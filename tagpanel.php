@@ -13,7 +13,7 @@
 			<select name="id" onchange="loadTag();">
 				<option value="" selected>&mdash;Neuer Tag&mdash;</option>
 				<?php
-					$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+					$pb = new SQLite3('sqlite/problembase.sqlite');
 					$tags = $pb->query("SELECT id, name FROM tags");
 					while(list($id, $tag) = $tags->fetchArray(SQLITE3_NUM))
 						print "<option value='$id'>$tag</option>";

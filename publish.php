@@ -2,7 +2,7 @@
 	session_start();
 	if (!isset($_SESSION['user_id']) || !$_SESSION['editor'])
 		die("&Auml;nderungen nur als Redakteur m&ouml;glich!");
-	$pb = new SQLite3('sqlite/problembase.sqlite', '0666');
+	$pb = new SQLite3('sqlite/problembase.sqlite');
 
 	// read parameters
 	foreach ($_REQUEST as $key=>$value)
