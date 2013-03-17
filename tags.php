@@ -46,7 +46,7 @@
 		$restr = isset($_SESSION['user_id']) ? "" : " WHERE hidden=0";
 		$tags = $pb->query("SELECT id, name FROM tags".$restr);
 
-		print "<select name='tag' onchange='addTag(\"$filter\");'>";
+		print "<select name='tag' id='tag_select' onchange='addTag(\"$filter\");'>";
 		print '<option selected value="0">&mdash;Tag hinzuf&uuml;gen&mdash;</option>';
 		while($tag = $tags->fetchArray(SQLITE3_NUM)) {
 			print '<option value="'.$tag[0].'">'.$tag[1].'</option>';

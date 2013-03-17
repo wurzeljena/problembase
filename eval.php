@@ -30,8 +30,8 @@
 	<form class="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
 		<div class="problem" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<input type="hidden" name="id" value="<?php print $id?>"/>
-		<span class="eval">Eleganz</span>
-		<span onmouseout="Beauty.reset();">
+		<label class="eval" for="beautystars">Eleganz</label>
+		<span id="beautystars" onmouseout="Beauty.reset();">
 			<img class="star" id="beauty1"
 				onmouseover="Beauty.show(1);" onclick="Beauty.set(1);"/>
 			<img class="star" id="beauty2"
@@ -44,8 +44,8 @@
 				onmouseover="Beauty.show(5);" onclick="Beauty.set(5);"/>
 			</span>
 			<input type="hidden" name="beauty" id="beauty" value="<?php print $comment['beauty']?>"/>
-		<span class="eval">Schwierigkeit</span>
-			<span onmouseout="Diff.reset();">
+		<label class="eval" for="diffstars">Schwierigkeit</label>
+			<span id="diffstars" onmouseout="Diff.reset();">
 			<img class="star" id="diff1"
 				onmouseover="Diff.show(1);" onclick="Diff.set(1);"/>
 			<img class="star" id="diff2"
@@ -58,8 +58,8 @@
 				onmouseover="Diff.show(5);" onclick="Diff.set(5);"/>
 			</span>
 			<input type="hidden" name="diff" id="diff" value="<?php print $comment['difficulty']?>"/>
-		<span class="eval">Wissen</span>
-			<span onmouseout="Know.reset();">
+		<label class="eval" for="knowstars">Wissen</label>
+			<span id="knowstars" onmouseout="Know.reset();">
 			<img class="star" id="know1"
 				onmouseover="Know.show(1);" onclick="Know.set(1);"/>
 			<img class="star" id="know2"

@@ -273,13 +273,13 @@ form.eval
 	box-shadow	: 3px 3px 5px #A0A020;
 }
 
-span.question 
+label.question
 {
 	font-family	: Sans-Serif;
 	font-size	: small;
 	color		: #A0A0A0;
 }
-span.eval
+span.eval, label.eval
 {
 	font-family	: Garamond;
 	font-style	: italic;
