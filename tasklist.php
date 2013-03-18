@@ -1,8 +1,8 @@
 <?php
 	include 'tags.php';
-
-	function tasklist($pb, $page) {
-		$query = "SELECT problems.id, files.content AS problem, problems.proposed, letter, number, month, year,"
+	
+	function taskquery($pb, $page) {
+			$query = "SELECT problems.id, files.content AS problem, problems.proposed, letter, number, month, year,"
 			."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
 			."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
 			."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
@@ -59,8 +59,10 @@
 		// show proper page
 		$query .= " LIMIT 10 OFFSET ".(10*$page);
 
-		$problems = $pb->query($query);
+		return $pb->query($query);
+	}
 
+	function tasklist($pb, $problems) {
 		$problem_id=0;
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 			print '<a class="textbox" href="task.php?id='.$problem['id'].'">';
@@ -95,6 +97,6 @@
 		session_start();
 		include 'proposers.php';
 		$pb = new SQLite3('sqlite/problembase.sqlite');
-		tasklist($pb, $_REQUEST['page']);
+		tasklist($pb, taskquery($pb, $_REQUEST['page']));
 	}
 ?>

@@ -28,48 +28,22 @@
 	<form class="eval" id="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
 		<div class="problem" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<input type="hidden" name="id" value="<?php print $id?>"/>
-		<label class="eval" for="beautystars">Eleganz</label>
-		<span id="beautystars" onmouseout="Beauty.reset();">
-			<img class="star" id="beauty1"
-				onmouseover="Beauty.show(1);" onclick="Beauty.set(1);"/>
-			<img class="star" id="beauty2"
-				onmouseover="Beauty.show(2);" onclick="Beauty.set(2);"/>
-			<img class="star" id="beauty3"
-				onmouseover="Beauty.show(3);" onclick="Beauty.set(3);"/>
-			<img class="star" id="beauty4"
-				onmouseover="Beauty.show(4);" onclick="Beauty.set(4);"/>
-			<img class="star" id="beauty5"
-				onmouseover="Beauty.show(5);" onclick="Beauty.set(5);"/>
-			</span>
-			<input type="hidden" name="beauty" id="beauty" value="<?php print empty($comment) ? -1 : $comment['beauty']?>"/>
-		<label class="eval" for="diffstars">Schwierigkeit</label>
-			<span id="diffstars" onmouseout="Diff.reset();">
-			<img class="star" id="diff1"
-				onmouseover="Diff.show(1);" onclick="Diff.set(1);"/>
-			<img class="star" id="diff2"
-				onmouseover="Diff.show(2);" onclick="Diff.set(2);"/>
-			<img class="star" id="diff3"
-				onmouseover="Diff.show(3);" onclick="Diff.set(3);"/>
-			<img class="star" id="diff4"
-				onmouseover="Diff.show(4);" onclick="Diff.set(4);"/>
-			<img class="star" id="diff5"
-				onmouseover="Diff.show(5);" onclick="Diff.set(5);"/>
-			</span>
-			<input type="hidden" name="diff" id="diff" value="<?php print empty($comment) ? -1 : $comment['difficulty']?>"/>
-		<label class="eval" for="knowstars">Wissen</label>
-			<span id="knowstars" onmouseout="Know.reset();">
-			<img class="star" id="know1"
-				onmouseover="Know.show(1);" onclick="Know.set(1);"/>
-			<img class="star" id="know2"
-				onmouseover="Know.show(2);" onclick="Know.set(2);"/>
-			<img class="star" id="know3"
-				onmouseover="Know.show(3);" onclick="Know.set(3);"/>
-			<img class="star" id="know4"
-				onmouseover="Know.show(4);" onclick="Know.set(4);"/>
-			<img class="star" id="know5"
-				onmouseover="Know.show(5);" onclick="Know.set(5);"/>
-			</span>
-			<input type="hidden" name="know" id="know" value="<?php print empty($comment) ? -1 : $comment['knowledge_required']?>"/>
+		<?php
+			$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
+			$critcols = array('beauty', 'difficulty', 'knowledge_required');
+			$critobj = array('Beauty', 'Diff', 'Know');
+			$critid = array('beauty', 'diff', 'know');
+			for ($crit=0; $crit<3; ++$crit) {
+				print "<label class='eval' for='{$critid[$crit]}stars'>{$critnames[$crit]}</label>";
+				print "<span id='{$critid[$crit]}stars' onmouseout='{$critobj[$crit]}.reset();'>";
+				for ($star=1; $star<=5; ++$star)
+					print "<img class='star' id='{$critid[$crit]}$star' "
+						."onmouseover='{$critobj[$crit]}.show($star);' onclick='{$critobj[$crit]}.set($star);'/> ";
+				print "</span>";
+				print "<input type='hidden' name='{$critid[$crit]}' id='{$critid[$crit]}' value='".
+					(empty($comment) ? -1 : $comment[$critcols[$crit]])."'/>";
+			}
+		?>
 		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php
 			if (!empty($comment)) print $comment['comment']?></textarea> <br/>
 		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>

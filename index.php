@@ -21,7 +21,7 @@
 	<div class="content" id="tasklist">
 		<?php
 			$pb = new SQLite3('sqlite/problembase.sqlite');
-			tasklist($pb, 0);
+			tasklist($pb, taskquery($pb, 0));
 		?>
 	</div>
 
