@@ -4,34 +4,58 @@ body
 	background-color	: #FFFFC0;
 	font-family	: Georgia;
 	margin	: 0;
+	padding-top	: 50px;
 }
+body.iframe { padding-top: 0; }
 
 div.head
 {
+	position	: fixed;
+	z-index	: 1;	top	: 0;
 	width	: 100%;	width	: calc(100% - 14px);
-	color	: #6060A0;
-	background: #C0C0D0;
-	background: linear-gradient(to bottom, #C0C0D0, #D0D0FF 50%, #D0D0FF 80%, #808080);
+	background: #F0B070;
+	background: linear-gradient(to bottom, #F0B060, #FFC070 50%, #F8C880 80%, #D0B070);
 	padding	: 7px;
 	padding-top	: 5px;
 }
-div.head span.logo
+div.head a#logo
 {
-	text-shadow	: #40A0C0 1px 1px 0px;
-	font-size : x-large;
-	padding : 0px 10px;
-	vertical-align	: middle;
-}
-div.head a
-{
+	color	: #F06020;
+	text-shadow	: 0.5px 0.5px 1px #808060, -1px -1px 1px #FFFFF0;
 	text-decoration	: none;
+	font-size : x-large;
+	vertical-align	: middle;
+	transition	: color 0.5s;
 }
-span.logo a:hover {color: #6060C0;}
-div.head form.login
+div.head a#logo:hover {color: #FF4000;}
+div.head form#login
 {
-	float : right;
 	padding	: 0px;
 	margin	: -5px 0px;
+}
+@media (max-width: 899px) {
+	div.head form#login
+	{	
+		z-index	: 2;
+		display	: none;
+		position: absolute;
+		right	: 5px;	top	: 35px;
+		background	: #F0D0A0;
+		border		: 1px solid #C08040;
+		border-radius	: 5px 0px 5px 5px;
+	}
+}
+@media (min-width: 900px)
+{
+	div.head form#login
+	{
+		float : right;
+	}
+}
+span#username
+{
+	color  : #F06020;
+	margin	: 5px;
 }
 
 /* Navigation im Seitenmenü bzw. Header */
@@ -201,6 +225,8 @@ a.button
 	box-shadow	: inset 0px 0px 1px #006000;
 	text-decoration	: none;
 	font-size	: medium;
+	display		: inline-block;
+	white-space	: nowrap;
 }
 a.button:hover
 {
