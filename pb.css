@@ -199,6 +199,7 @@ table.info td
 div.taglist
 {
 	margin	: 5px;
+	line-height	: 1.5em;
 }
 span.tag
 {
@@ -208,7 +209,7 @@ span.tag
 	font-family		: Sans-Serif;
 	font-weight		: bold;
 	font-size		: small;
-	text-decoration	: none;
+	white-space		: nowrap;
 }
 img.close
 {

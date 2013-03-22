@@ -29,7 +29,7 @@
 		print "title='$desc'>$name";
 		if ($form != "")
 			print "<a href='javascript:removeTag(\"$form\",$id)'><img class='close' src='img/close.png' alt='x'></a>";
-		print "</span>";
+		print "</span> ";
 	}
 
 	function tags($pb, $tags, $form = "") {
