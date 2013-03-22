@@ -2,10 +2,10 @@
 	if (isset($_SESSION['user_id']))
 		$user_id = $_SESSION['user_id'];
 ?>
-<div class="head"><div style="width:50em;">
-	<div class="logo">
+<div class="head"><div class="center">
+	<span class="logo">
 		<a href="index.php">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
-	</div>
+	</span>
 	<form class="login" action="logon.php" method="POST">
 	<input type="hidden" name="referer" value="<?php print $_SERVER['REQUEST_URI']; ?>">
 	<?php if (!isset($user_id)) { ?>

@@ -9,6 +9,7 @@
     <title>Aufgabendatenbank - Aufgabe bearbeiten</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -26,6 +27,11 @@
 		$tags = get_tags($pb, $problem['id']);
 	}
 	?>
+
+	<div class="center">
+	<div id="panel">
+		<iframe src="tagpanel.php" style="border:none;" width="270" height="270"></iframe>
+	</div>
 
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>
@@ -51,9 +57,6 @@
 		<?php } ?>
 	</form>
 	</div>
-
-	<div id="panel">
-		<iframe src="tagpanel.php" style="border:none;" width="270" height="270"></iframe>
 	</div>
 
 	<?php $pb->close(); ?>

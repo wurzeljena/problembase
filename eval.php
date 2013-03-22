@@ -5,6 +5,7 @@
     <title>Aufgabendatenbank - Aufgabe bewerten</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -23,6 +24,7 @@
 		$pb->close();
 	?>
 
+	<div class="center">
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
 	<form class="eval" id="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
@@ -54,6 +56,7 @@
 			onclick="if (confirm('Kommentar wirklich l&ouml;schen?')) postDelete('eval');"/>
 		<?php } ?>
 	</form>
+	</div>
 	</div>
 
 	<script type="text/javascript">

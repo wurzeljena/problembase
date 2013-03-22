@@ -8,6 +8,7 @@
     <title>Aufgabendatenbank - L&ouml;sung bearbeiten</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -32,6 +33,7 @@
 		die("Invalid URL: no problem or solution given.");
 	?>
 
+	<div class="center">
 	<div class="content">
 	<h2 class="solution">L&ouml;sung bearbeiten</h2>
 	<form class="solution" id="solution" title="L&ouml;sungsformular" action="submit_solution.php" method="POST">
@@ -53,6 +55,7 @@
 			onclick="if (confirm('L&ouml;sung wirklich l&ouml;schen?')) postDelete('solution');"/>
 		<?php } ?>
 	</form>
+	</div>
 	</div>
 
 	<?php $pb->close(); ?>

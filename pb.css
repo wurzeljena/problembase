@@ -8,38 +8,63 @@ body
 
 div.head
 {
+	width	: 100%;	width	: calc(100% - 14px);
 	color	: #6060A0;
 	background: #C0C0D0;
 	background: linear-gradient(to bottom, #C0C0D0, #D0D0FF 50%, #D0D0FF 80%, #808080);
-	margin	: 0;
 	padding	: 7px;
 	padding-top	: 5px;
 }
-div.head div.logo 
+div.head span.logo
 {
 	text-shadow	: #40A0C0 1px 1px 0px;
 	font-size : x-large;
-	padding : 0px 1em 0px 3em;
-	float : left;
+	padding : 0px 10px;
+	vertical-align	: middle;
 }
 div.head a
 {
 	text-decoration	: none;
 }
-div.head a:hover {color: #6060C0;}
+span.logo a:hover {color: #6060C0;}
 div.head form.login
 {
 	float : right;
 	padding	: 0px;
-	margin	: -5px;
+	margin	: -5px 0px;
 }
 
-div.content {width:600px; margin:50px 100px}
+div.center {margin: 0 auto;}
+@media (min-width: 600px)
+{
+	div.center {width: 600px;}
+	div.content {width: 600px;}
+}
+@media (min-width: 900px)
+{
+	div.center {width: 900px;}
+}
 
-/* Seitenpanel im index, unterhalb des Filters */
+div.content
+{
+	position:	relative;
+}
+
+/* Seitenpanel neben div.content */
 div#panel
 {
-	position: fixed; top: 6em; left: 750px;
+	float		: right;
+	visibility	: hidden;
+	position	: absolute;
+	width		: 280px;
+}
+@media (min-width: 900px)
+{
+	div#panel
+	{
+		visibility	: visible;
+		position	: static;
+	}
 }
 
 /* Pager zum Seitenwechseln */
@@ -63,14 +88,14 @@ div#pager span#request
 /* Formatierung der Überschriften */
 h2
 {
-	font-family : Script;
+	font-family : Mistral;
 	font-size	: 3em;
 	font-weight	: lighter;
 	margin		: 30px -30px;
 	transform	: rotate(-90deg);
 	-webkit-transform	: rotate(-90deg);
 	position	: absolute;
-	left	: -1em;	top	: 3em;
+	left	: -3em;	top	: 3em;
 	z-index	: -1;
 }
 
@@ -136,7 +161,7 @@ a.textbox
 	text-decoration	: none;
 	color	: Black;
 }
-div.problem_list:hover {background: #FFE0A0;}
+a.textbox div.task:hover {background: #FFE0A0;}
 table.info td
 {
 	padding		: 0px 10px;
@@ -241,7 +266,6 @@ form
 }
 form.filter
 {
-	position: fixed; top: 9em; left: 750px;
 	background-image	: url("img/filter.png");
 	background-repeat	: repeat;
 	border-radius	: 10px;

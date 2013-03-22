@@ -5,6 +5,7 @@
     <title>Aufgabendatenbank</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="fancy.js"></script>
@@ -20,6 +21,7 @@
 		$root = $_SESSION['root'];
 	?>
 
+	<div class="center">
 	<div class="content">
 		<div class="caption" id="users" style="margin-top:1.5em;">Benutzer</div>
 		<table class="users">
@@ -85,6 +87,7 @@
 				</form></tr>
 			<?php } ?>
 		</table>
+	</div>
 	</div>
 
 	<?php $pb->close(); ?>

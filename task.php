@@ -9,6 +9,7 @@
     <title>Aufgabendatenbank - Aufgabe</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -22,6 +23,7 @@
 	$pb = new SQLite3('sqlite/problembase.sqlite');
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
 	?>
+	<div class="center">
 	<div class="content">
 		<div class="task">
 		<?php
@@ -135,6 +137,7 @@
 		?>
 
 		<?php $pb->close(); ?>
+	</div>
 	</div>
 
 	<script type="text/javascript">

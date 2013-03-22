@@ -9,6 +9,7 @@
     <title>Aufgabendatenbank</title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
@@ -17,14 +18,10 @@
 </head>
 <body>
 	<?php include 'head.php'; ?>
+	<?php $pb = new SQLite3('sqlite/problembase.sqlite'); ?>
 
-	<div class="content" id="tasklist">
-		<?php
-			$pb = new SQLite3('sqlite/problembase.sqlite');
-			tasklist($pb, taskquery($pb, 0));
-		?>
-	</div>
-
+	<div class="center">
+	<div id="panel">
 	<form class="filter" id="filter" title="Filter" action="index.php" method="GET">
 		<div><input type="text" name="filter" placeholder="Suchbegriff"
 			value="<?php if (isset($_REQUEST['filter'])) print $_REQUEST['filter']; ?>"/>
@@ -66,15 +63,12 @@
 			</div>
 		</div>
 	</form>
-
-	<div id="panel">
-		<?php if (isset($user_id)) {
-				print '<a href="problem.php" class="button">Neue Aufgabe</a>';
-				print '<a href="user.php" class="button">Benutzerliste</a>';
-			}
-		?>
 	</div>
-	
+
+	<div class="content" id="tasklist">
+		<?php tasklist($pb, taskquery($pb, 0)); ?>
+	</div>
+
 	<div id="pager">
 		<a href="javascript:incrPage(-5);" class="button">&laquo;</a>
 		<a href="javascript:incrPage(-1);" class="button">&lt;</a>
@@ -82,6 +76,7 @@
 		<input type="hidden" id="request" value="<?php print $_SERVER['QUERY_STRING']; ?>">
 		<a href="javascript:incrPage(1);" class="button">&gt;</a>
 		<a href="javascript:incrPage(5);" class="button">&raquo;</a>
+	</div>
 	</div>
 
 	<?php $pb->close(); ?>
