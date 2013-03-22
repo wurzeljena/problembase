@@ -71,10 +71,10 @@
 
 	<div id="pager">
 		<a href="javascript:incrPage(-5);" class="button">&laquo;</a>
-		<a href="javascript:incrPage(-1);" class="button">&lt;</a>
-		Seite <span id="page">1</span>, Aufgaben <span id="pagetasks">1&mdash;10</span>
+		<a href="javascript:incrPage(-1);" class="button">&lsaquo;</a>
+		Seite <span id="page">1</span>
 		<input type="hidden" id="request" value="<?php print $_SERVER['QUERY_STRING']; ?>">
-		<a href="javascript:incrPage(1);" class="button">&gt;</a>
+		<a href="javascript:incrPage(1);" class="button">&rsaquo;</a>
 		<a href="javascript:incrPage(5);" class="button">&raquo;</a>
 	</div>
 	</div>

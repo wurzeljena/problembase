@@ -70,7 +70,32 @@ div#panel
 /* Pager zum Seitenwechseln */
 div#pager
 {
-	position: fixed; top: 30em; left: 750px;
+	background	: #ffa060;
+	text-align	: center;
+	border	: 1px solid #c08040;
+	border-bottom	: none;
+	position: fixed;
+	width	: 200px;
+	bottom	: 0em;
+	padding	: 9px 5px 0px;
+	border-radius	: 10px 10px 0px 0px;
+	box-shadow	: 0px 0px 5px #c0a080;
+}
+@media (max-width: 899px)
+{
+	div#pager
+	{
+		left	: 50%;
+		margin-left	: -105px;
+	}
+}
+@media (min-width: 900px)
+{
+	div#pager
+	{
+		right	: 50%;
+		margin-right: -415px;
+	}
 }
 div#pager span#request
 {
@@ -156,6 +181,7 @@ a.outer
 }
 
 /* Aufgabenliste */
+div#tasklist { margin-bottom: 3em; }
 a.textbox
 {
 	text-decoration	: none;
