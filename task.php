@@ -101,11 +101,13 @@
 				$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
 				$critcols = array('beauty', 'difficulty', 'knowledge_required');
 				for ($crit=0; $crit<3; ++$crit) {
+					print '<span class="evalspan">';
 					print '<span class="eval">'.$critnames[$crit].'</span> ';
 					for ($star=1; $star<=5; ++$star)
 						print ($star<=$comment[$critcols[$crit]]) ?
 							'<img class="star" src="img/mandstar.png" alt="*"> ' :
 							'<img class="star" src="img/mand.png" alt="o"> ';
+					print '</span> ';
 				}
 				print '</td></tr>';
 			};

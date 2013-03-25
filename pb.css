@@ -330,6 +330,10 @@ label.question
 	font-size	: small;
 	color		: #A0A0A0;
 }
+span.evalspan
+{
+	white-space	: nowrap;
+}
 span.eval, label.eval
 {
 	font-family	: Garamond;
@@ -345,7 +349,7 @@ form input[name="delete"]
 input, textarea, select {margin : 5px;}
 input.text {font-family	: Georgia;}
 input.text, textarea {border : 1px dashed #808080;}
-textarea {width:545px;}
+textarea {width: 100%; width: calc(100% - 10px);}
 form.task input.text, form.task textarea {background : #FFD080;}
 form.task input.text:hover, form.task textarea:hover {background : #FFE0A0;}
 form.solution input.text, form.solution textarea {background : #B0E0FF;}
