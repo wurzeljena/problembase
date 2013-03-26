@@ -1,6 +1,25 @@
 <?php
 	if (isset($_SESSION['user_id']))
 		$user_id = $_SESSION['user_id'];
+
+	function printhead($title = "") {
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aufgabendatenbank<?=($title ? " &emdash; " : "").$title?></title>
+	<meta name="author" content="Wurzel e.V."/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" href="pb.css"/>
+	<link rel="icon" href="dw.ico"/>
+	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+	<script type="text/javascript" src="fancy.js"></script>
+	<script type="text/javascript" src="ajax.js"></script>
+</head>
+<?php }
+
+	function printheader() {
+		global $user_id;
 ?>
 <div class="head"><div style="width:50em;">
 	<div class="logo">
@@ -20,3 +39,4 @@
 	</form>
 	<div style="font-family:sans-serif; font-size:x-small;">Aufgabendatenbank <br /> &copy; 2012 <a href="http://www.wurzel.org/" target="_blank">Wurzel e.V.</a></div>
 </div></div>
+<?php } ?>

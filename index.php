@@ -1,22 +1,13 @@
 <?php
 	session_start();
+	include 'head.php';
 	include 'proposers.php';
 	include 'tasklist.php';
+
+	printhead();
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Aufgabendatenbank</title>
-	<meta name="author" content="Wurzel e.V."/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" type="text/css" href="pb.css"/>
-	<link rel="icon" href="dw.ico"/>
-	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
-	<script type="text/javascript" src="fancy.js"></script>
-	<script type="text/javascript" src="ajax.js"></script>
-</head>
 <body>
-	<?php include 'head.php'; ?>
+	<?php printheader(); ?>
 
 	<div class="content" id="tasklist">
 		<?php
