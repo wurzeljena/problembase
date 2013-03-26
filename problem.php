@@ -20,7 +20,7 @@
 
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>
-	<form class="task" id="task" title="Aufgabenformular" action="submit_problem.php" method="POST">
+	<form class="task" id="task" title="Aufgabenformular" action="<?=$_SERVER["PBROOT"]?>/submit_problem.php" method="POST">
 		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
 		<?php proposer_form($pb, "task", "problem", isset($id) ? $id : -1); ?>
 		<?php tag_select($pb, "task"); ?>
@@ -44,7 +44,7 @@
 	</div>
 
 	<div id="panel">
-		<iframe src="tagpanel.php" style="border:none;" width="270" height="270"></iframe>
+		<iframe src="<?=$_SERVER["PBROOT"]?>/tagpanel.php" style="border:none;" width="270" height="270"></iframe>
 	</div>
 
 	<?php $pb->close(); ?>

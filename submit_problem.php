@@ -13,7 +13,7 @@
 	if (isset($delete)) {
 		$pb->exec("PRAGMA foreign_keys=on;");
 		$pb->exec("DELETE FROM problems WHERE id=$id");
-		header('Location: index.php');
+		header("Location: {$_SERVER["PBROOT"]}/");
 	}
 	else {
 		// write proposer
@@ -51,8 +51,8 @@
 			}
 		}
 
-		// redirect to task.php
-		header('Location: task.php?id='.$id);
+		// redirect to task page
+		header("Location: {$_SERVER["PBROOT"]}/task.php?id=$id");
 	}
 
 	$pb->close();

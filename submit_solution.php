@@ -54,6 +54,6 @@
 
 	$pb->close();
 
-	// redirect to task.php
-	header('Location: task.php?id='.$problem_id);
+	// redirect to task page
+	header("Location: {$_SERVER["PBROOT"]}/task.php?id=$problem_id");
 ?>

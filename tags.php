@@ -28,7 +28,7 @@
 		print "background:linear-gradient(to bottom, ".int2clrstr($tagcolor).",".int2clrstr($gradclr).");' ";
 		print "title='$desc'>$name";
 		if ($form != "")
-			print "<a href='javascript:removeTag(\"$form\",$id)'><img class='close' src='img/close.png' alt='x'></a>";
+			print "<a href='javascript:removeTag(\"$form\",$id)'><img class='close' src='{$_SERVER["PBROOT"]}/img/close.png' alt='x'></a>";
 		print "</span>";
 	}
 
@@ -108,6 +108,6 @@
 		}
 		$pb->close();
 
-		header('Location: '.$referer);
+		header("Location: {$_SERVER["PBROOT"]}/tagpanel.php");
 	}
 ?>

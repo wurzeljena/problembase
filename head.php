@@ -10,11 +10,12 @@
     <title>Aufgabendatenbank<?=($title ? " &emdash; " : "").$title?></title>
 	<meta name="author" content="Wurzel e.V."/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" type="text/css" href="pb.css"/>
-	<link rel="icon" href="dw.ico"/>
-	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
-	<script type="text/javascript" src="fancy.js"></script>
-	<script type="text/javascript" src="ajax.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?=$_SERVER["PBROOT"]?>/pb.css"/>
+	<link rel="icon" href="<?=$_SERVER["PBROOT"]?>/dw.ico"/>
+	<script type="text/javascript"> var rootdir="<?=$_SERVER["PBROOT"]?>"; </script>
+	<script type="text/javascript" src="<?=$_SERVER["PBROOT"]?>/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+	<script type="text/javascript" src="<?=$_SERVER["PBROOT"]?>/fancy.js"></script>
+	<script type="text/javascript" src="<?=$_SERVER["PBROOT"]?>/ajax.js"></script>
 </head>
 <?php }
 
@@ -25,7 +26,7 @@
 	<div class="logo">
 		<a href="index.php">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
 	</div>
-	<form class="login" action="logon.php" method="POST">
+	<form class="login" action="<?=$_SERVER["PBROOT"]?>/logon.php" method="POST">
 	<input type="hidden" name="referer" value="<?php print $_SERVER['REQUEST_URI']; ?>">
 	<?php if (!isset($user_id)) { ?>
 		<input type="email" style="width:15em;" name="email" placeholder="E-Mail">

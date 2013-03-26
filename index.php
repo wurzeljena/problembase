@@ -16,7 +16,7 @@
 		?>
 	</div>
 
-	<form class="filter" id="filter" title="Filter" action="index.php" method="GET">
+	<form class="filter" id="filter" title="Filter" action="<?=$_SERVER["PBROOT"]?>/" method="GET">
 		<div><input type="text" name="filter" placeholder="Suchbegriff"
 			value="<?php if (isset($_REQUEST['filter'])) print $_REQUEST['filter']; ?>"/>
 		<input type="submit" value="Filtern"></div>
@@ -60,8 +60,8 @@
 
 	<div id="panel">
 		<?php if (isset($user_id)) {
-				print '<a href="problem.php" class="button">Neue Aufgabe</a>';
-				print '<a href="user.php" class="button">Benutzerliste</a>';
+				print "<a href='{$_SERVER["PBROOT"]}/problem.php' class='button'>Neue Aufgabe</a>";
+				print "<a href='{$_SERVER["PBROOT"]}/user.php' class='button'>Benutzerliste</a>";
 			}
 		?>
 	</div>

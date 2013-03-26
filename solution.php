@@ -25,7 +25,7 @@
 
 	<div class="content">
 	<h2 class="solution">L&ouml;sung bearbeiten</h2>
-	<form class="solution" id="solution" title="L&ouml;sungsformular" action="submit_solution.php" method="POST">
+	<form class="solution" id="solution" title="L&ouml;sungsformular" action="<?=$_SERVER["PBROOT"]?>/submit_solution.php" method="POST">
 		<div class="problem"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
 		<input type="hidden" name="problem_id" value="<?php if (isset($id)) print $solution['problem_id']; else print $problem_id; ?>">

@@ -70,7 +70,7 @@
 			<?php } ?>
 
 			<?php if ($root) { ?>
-				<tr><form id="newuser" action="edit_user.php" method="POST">
+				<tr><form id="newuser" action="<?=$_SERVER["PBROOT"]?>/edit_user.php" method="POST">
 					<td><input type="text" name="newname" style="width:100px;" placeholder="Name" required></td>
 					<td><input type="email" name="email" style="width:180px;" placeholder="E-Mail" required></td>
 					<td><input type="checkbox" name="root"></td>

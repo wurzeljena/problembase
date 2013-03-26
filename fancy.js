@@ -153,7 +153,7 @@ function PropForm(form, list) {
 			}
 		}
 
-		xmlhttp.open("GET", "proposers.php?prop_query=" + encodeURIComponent(prop.value), async);
+		xmlhttp.open("GET", rootdir + "/proposers.php?prop_query=" + encodeURIComponent(prop.value), async);
 		xmlhttp.send();
 	}
 
@@ -208,11 +208,11 @@ function Stars(name) {
 	this.show = function (num) {
 		for (var i = 0; i < 5; i++) {
 			if (i < num) {
-				this.stars[i].src = "img/mandstar.png";
+				this.stars[i].src = rootdir + "/img/mandstar.png";
 				this.stars[i].alt = "*";
 			}
 			else {
-				this.stars[i].src = "img/mand.png";
+				this.stars[i].src = rootdir + "/img/mand.png";
 				this.stars[i].alt = "o";
 			}
 		}

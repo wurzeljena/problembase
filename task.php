@@ -18,7 +18,7 @@
 		<div class="task">
 		<?php
 			if (isset($user_id))
-				print "<a class='button outer' style='top:0em;' href='problem.php?id=$id'>Bearbeiten</a>";
+				print "<a class='button outer' style='top:0em;' href='{$_SERVER["PBROOT"]}/problem.php?id=$id'>Bearbeiten</a>";
 		?>
 			<div class="info">
 			<div class="tags">
@@ -51,7 +51,7 @@
 						print "<a class='button' style='float:right' href='javascript:Publ.Trig();'>Ver&ouml;ffentlichen</a>";
 				}
 			?>
-			<form id="publish" style="visibility:hidden; position:absolute;" action="publish.php" method="POST">
+			<form id="publish" style="visibility:hidden; position:absolute;" action="<?=$_SERVER["PBROOT"]?>/publish.php" method="POST">
 				<input type="hidden" name="id" value="<?php print $id; ?>">
 				Ausgabe: <input type="text" name="volume" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
 					style="width:40px;" value="<?php print $volume; ?>">
@@ -67,7 +67,7 @@
 		<div class="caption" id="comments" style="margin-top:1.5em;">Kommentare
 		<?php
 		if(isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
-			print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Schreiben</a>';
+			print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/eval.php?id=$id'>Schreiben</a>";
 		?>
 		</div>
 		<table class="comments">
@@ -78,10 +78,10 @@
 					print '<tr class="own">';
 				else
 					print '<tr>';
-				print '<td class="author"><a href="user.php#'.$comment['user_id'].'">'.$comment['name'].'</a></td>';
+				print "<td class='author'><a href='{$_SERVER["PBROOT"]}/user.php#{$comment['user_id']}'>{$comment['name']}</a></td>";
 				print '<td class="comment">';
 				if (isset($user_id) && $comment['user_id']==$user_id)
-					print "<a class='button' style='float:right;' href='eval.php?id=$id'>Bearbeiten</a>";
+					print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/eval.php?id=$id'>Bearbeiten</a>";
 				print $comment['comment'].'</td></tr>';
 
 				if (isset($user_id) && $comment['user_id']==$user_id)
@@ -94,8 +94,8 @@
 					print '<span class="eval">'.$critnames[$crit].'</span> ';
 					for ($star=1; $star<=5; ++$star)
 						print ($star<=$comment[$critcols[$crit]]) ?
-							'<img class="star" src="img/mandstar.png" alt="*"> ' :
-							'<img class="star" src="img/mand.png" alt="o"> ';
+							"<img class='star' src='{$_SERVER["PBROOT"]}/img/mandstar.png' alt='*'> " :
+							"<img class='star' src='{$_SERVER["PBROOT"]}/img/mand.png' alt='o'> ";
 				}
 				print '</td></tr>';
 			};
@@ -105,7 +105,7 @@
 		<div class="caption" id="solutions" style="margin-top:1.5em;">L&ouml;sungen
 		<?php
 			if (isset($user_id))
-				print '<a class="button" style="float:right;" href="solution.php?problem_id='.$id.'">Hinzuf&uuml;gen</a>';
+				print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/solution.php?problem_id=$id'>Hinzuf&uuml;gen</a>";
 		?>
 		</div>
 		<?php
@@ -115,7 +115,7 @@
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
 			print '<div class="solution">';
 			if (isset($user_id))
-				print '<a class="button outer" style="top:0em;" href="solution.php?id='.$solution['id'].'">Bearbeiten</a>';
+				print "<a class='button outer' style='top:0em;' href='{$_SERVER["PBROOT"]}/solution.php?id={$solution['id']}'>Bearbeiten</a>";
 			print '<div class="info">';
 			printproposers($pb, "solution", $solution['id']);
 			print '</div>';

@@ -3,13 +3,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
+	<script type="text/javascript"> var rootdir="<?=$_SERVER["PBROOT"]?>"; </script>
 	<script type="text/javascript" src="fancy.js"></script>
 	<script type="text/javascript" src="ajax.js"></script>
 </head>
 <body>
-	<form id="tageditor" action="tags.php" method="POST">
+	<form id="tageditor" action="<?=$_SERVER["PBROOT"]?>/tags.php" method="POST">
 		<div>
-			<input type="hidden" name="referer" value="<?php print $_SERVER['REQUEST_URI']; ?>">
 			<select name="id" onchange="loadTag();">
 				<option value="" selected>&mdash;Neuer Tag&mdash;</option>
 				<?php

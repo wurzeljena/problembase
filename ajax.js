@@ -18,7 +18,7 @@ function incrPage(incr) {
 
 	if (request.length > 0)
 		request += "&";
-	xmlhttp.open("GET", "tasklist.php?" + request + "page=" + page, true);
+	xmlhttp.open("GET", rootdir + "/tasklist.php?" + request + "page=" + page, true);
 	xmlhttp.send();
 
 	// set info
@@ -34,7 +34,7 @@ function drawTags(form) {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
 			document.getElementById("taglist").innerHTML = xmlhttp.responseText;
 	}
-	xmlhttp.open("GET", "tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
+	xmlhttp.open("GET", rootdir + "/tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
 	xmlhttp.send();
 }
 
@@ -87,7 +87,7 @@ function loadTag() {
 			}
 		}
 
-		xmlhttp.open("GET", "tags.php?taginfo&id=" + id, true);
+		xmlhttp.open("GET", rootdir + "/tags.php?taginfo&id=" + id, true);
 		xmlhttp.send();
 	}
 	else {
@@ -112,7 +112,7 @@ function tagPreview() {
 			document.getElementById('result_tag').innerHTML = xmlhttp.responseText;
 	}
 
-	xmlhttp.open("GET", "tags.php?drawtag&name=" + name + "&desc=" + encodeURIComponent(desc) + "&color=" + encodeURIComponent(clr), true);
+	xmlhttp.open("GET", rootdir + "/tags.php?drawtag&name=" + name + "&desc=" + encodeURIComponent(desc) + "&color=" + encodeURIComponent(clr), true);
 	xmlhttp.send();
 }
 
@@ -132,6 +132,6 @@ function setright(id, name) {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () { }
 
-	xmlhttp.open("POST", "edit_user.php?id=" + id + "&update&" + name + "=" + (+elem.checked), true);
+	xmlhttp.open("POST", rootdir + "/edit_user.php?id=" + id + "&update&" + name + "=" + (+elem.checked), true);
 	xmlhttp.send();
 }

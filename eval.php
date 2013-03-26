@@ -19,7 +19,7 @@
 
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
-	<form class="eval" id="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">
+	<form class="eval" id="eval" title="Bewertungsformular" action="<?=$_SERVER["PBROOT"]?>/submit_eval.php" method="POST">
 		<div class="problem" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<input type="hidden" name="id" value="<?php print $id?>"/>
 		<?php
