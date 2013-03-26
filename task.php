@@ -18,7 +18,7 @@
 		<div class="task">
 		<?php
 			if (isset($user_id))
-				print "<a class='button outer' style='top:0em;' href='{$_SERVER["PBROOT"]}/problem.php?id=$id'>Bearbeiten</a>";
+				print "<a class='button outer' style='top:0em;' href='{$_SERVER["PBROOT"]}/$id/edit'>Bearbeiten</a>";
 		?>
 			<div class="info">
 			<div class="tags">
@@ -67,7 +67,7 @@
 		<div class="caption" id="comments" style="margin-top:1.5em;">Kommentare
 		<?php
 		if(isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
-			print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/eval.php?id=$id'>Schreiben</a>";
+			print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/$id/evaluate'>Schreiben</a>";
 		?>
 		</div>
 		<table class="comments">
@@ -78,10 +78,10 @@
 					print '<tr class="own">';
 				else
 					print '<tr>';
-				print "<td class='author'><a href='{$_SERVER["PBROOT"]}/user.php#{$comment['user_id']}'>{$comment['name']}</a></td>";
+				print "<td class='author'><a href='{$_SERVER["PBROOT"]}/users/{$comment['user_id']}'>{$comment['name']}</a></td>";
 				print '<td class="comment">';
 				if (isset($user_id) && $comment['user_id']==$user_id)
-					print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/eval.php?id=$id'>Bearbeiten</a>";
+					print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/$id/evaluate'>Bearbeiten</a>";
 				print $comment['comment'].'</td></tr>';
 
 				if (isset($user_id) && $comment['user_id']==$user_id)
@@ -105,7 +105,7 @@
 		<div class="caption" id="solutions" style="margin-top:1.5em;">L&ouml;sungen
 		<?php
 			if (isset($user_id))
-				print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/solution.php?problem_id=$id'>Hinzuf&uuml;gen</a>";
+				print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/$id/addsolution'>Hinzuf&uuml;gen</a>";
 		?>
 		</div>
 		<?php
@@ -115,7 +115,7 @@
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
 			print '<div class="solution">';
 			if (isset($user_id))
-				print "<a class='button outer' style='top:0em;' href='{$_SERVER["PBROOT"]}/solution.php?id={$solution['id']}'>Bearbeiten</a>";
+				print "<a class='button outer' style='top:0em;' href='{$_SERVER["PBROOT"]}/$id/{$solution['id']}'>Bearbeiten</a>";
 			print '<div class="info">';
 			printproposers($pb, "solution", $solution['id']);
 			print '</div>';

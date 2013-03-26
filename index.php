@@ -60,12 +60,12 @@
 
 	<div id="panel">
 		<?php if (isset($user_id)) {
-				print "<a href='{$_SERVER["PBROOT"]}/problem.php' class='button'>Neue Aufgabe</a>";
-				print "<a href='{$_SERVER["PBROOT"]}/user.php' class='button'>Benutzerliste</a>";
+				print "<a href='{$_SERVER["PBROOT"]}/new' class='button'>Neue Aufgabe</a>";
+				print "<a href='{$_SERVER["PBROOT"]}/users' class='button'>Benutzerliste</a>";
 			}
 		?>
 	</div>
-	
+
 	<div id="pager">
 		<a href="javascript:incrPage(-5);" class="button">&laquo;</a>
 		<a href="javascript:incrPage(-1);" class="button">&lt;</a>

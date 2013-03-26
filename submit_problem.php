@@ -52,7 +52,7 @@
 		}
 
 		// redirect to task page
-		header("Location: {$_SERVER["PBROOT"]}/task.php?id=$id");
+		header("Location: {$_SERVER["PBROOT"]}/$id/");
 	}
 
 	$pb->close();
