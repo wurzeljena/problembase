@@ -74,6 +74,7 @@
 		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_REQUEST['id']."'")
 			->fetchArray(SQLITE3_ASSOC);
 		$res['color'] = "#".substr("00000".dechex($res['color']),-6);
+		header("Content-Type: application/json");
 		print json_encode($res);
 		$pb->close();
 	}
