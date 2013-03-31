@@ -1,5 +1,17 @@
 <?php
 	session_start();
+
+	$id = (int)$_REQUEST['id'];
+	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
+
+	// if no such problem exists, throw a 404 error
+	if (empty($problem)) {
+		$error = "Aufgabe nicht gefunden";
+		include 'error404.php';
+		exit();
+	}
+
 	include 'head.php';
 	include 'tags.php';
 	include 'proposers.php';
@@ -8,12 +20,6 @@
 ?>
 <body>
 	<?php printheader(); ?>
-
-	<?php
-	$id = (int)$_REQUEST['id'];
-	$pb = new SQLite3('sqlite/problembase.sqlite');
-	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
-	?>
 	<div class="content">
 		<div class="task">
 		<?php

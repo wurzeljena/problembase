@@ -6,13 +6,8 @@
 	foreach ($_REQUEST as $key=>$value)
 		$$key = $pb->escapeString($value);
 
-	if (isset($logout)) {
-		unset($_SESSION['user_id']);
-		unset($_SESSION['user_name']);
-		unset($_SESSION['email']);
-		unset($_SESSION['root']);
-		unset($_SESSION['editor']);
-	}
+	if (isset($logout))
+		session_destroy();
 	else {
 		// look up user ID and password hash
 		$user = $pb->querySingle("SELECT * FROM users WHERE email='$email'", true);

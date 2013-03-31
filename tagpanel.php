@@ -1,3 +1,10 @@
+<?php
+	session_start();
+	if (!isset($_SESSION['user_id'])) {
+		include 'error403.php';
+		exit();
+	}
+?>
 <!DOCTYPE html>
 <html>
 <head>

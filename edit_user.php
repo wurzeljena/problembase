@@ -1,7 +1,9 @@
 <?php
 	session_start();
-	if (!isset($_SESSION['user_id']))
-		die("&Auml;nderungen nur angemeldet m&ouml;glich!");
+	if (!isset($_SESSION['user_id'])) {
+		include 'error403.php';
+		exit();
+	}
 	$user_id = $_SESSION['user_id'];
 	$pb = new SQLite3('sqlite/problembase.sqlite');
 

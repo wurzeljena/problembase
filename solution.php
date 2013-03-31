@@ -1,28 +1,39 @@
 <?php
 	session_start();
+
+	// if user isn't authenticated, throw a 403 error
+	if (!isset($_SESSION['user_id'])) {
+		include 'error403.php';
+		exit();
+	}
+
+	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$problem_id = (int)$_REQUEST['problem_id'];
+	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$problem_id", true);
+	if (empty($problem))
+		$error = "Aufgabe nicht gefunden";
+
+	if (isset($_REQUEST['id'])) {
+		$id = (int)$_REQUEST['id'];
+		$solution = $pb->querySingle("SELECT solutions.*, files.content AS solution FROM solutions JOIN files ON solutions.file_id=files.rowid WHERE id=$id", true);
+		if (!isset($solution['problem_id']))
+			$error = "L&ouml;sung nicht gefunden";
+		if (isset($solution['problem_id']) && $solution['problem_id'] != $_REQUEST['problem_id'])
+			$error = "L&ouml;sung geh&ouml;rt zu anderer Aufgabe";
+	}
+
+	// answer invalid requests properly
+	if (isset($error)) {
+		include 'error404.php';
+		exit();
+	}
+
 	include 'head.php';
 	include 'proposers.php';
-
 	printhead();
 ?>
 <body>
 	<?php printheader(); ?>
-
-	<?php
-	$pb = new SQLite3('sqlite/problembase.sqlite');
-	if (isset($_REQUEST['id'])) {
-		$id = (int)$_REQUEST['id'];
-		$solution = $pb->querySingle("SELECT solutions.*, files.content AS solution FROM solutions JOIN files ON solutions.file_id=files.rowid WHERE id=$id", true);
-		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=".$solution['problem_id'], true);
-	}
-	elseif (isset($_REQUEST['problem_id'])) {
-		$problem_id = (int)$_REQUEST['problem_id'];
-		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$problem_id", true);
-	}
-	else
-		die("Invalid URL: no problem or solution given.");
-	?>
-
 	<div class="content">
 	<h2 class="solution">L&ouml;sung bearbeiten</h2>
 	<form class="solution" id="solution" title="L&ouml;sungsformular" action="<?=$_SERVER["PBROOT"]?>/submit_solution.php" method="POST">

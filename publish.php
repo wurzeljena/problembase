@@ -1,7 +1,9 @@
 <?php
 	session_start();
-	if (!isset($_SESSION['user_id']) || !$_SESSION['editor'])
-		die("&Auml;nderungen nur als Redakteur m&ouml;glich!");
+	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
+		include 'error403.php';
+		exit();
+	}
 	$pb = new SQLite3('sqlite/problembase.sqlite');
 
 	// read parameters

@@ -1,25 +1,26 @@
 <?php
 	session_start();
-	include 'head.php';
 
+	// if user isn't authenticated, throw a 403 error
+	if (!isset($_SESSION['user_id'])) {
+		include 'error403.php';
+		exit();
+	}
+
+	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
+	$root = $_SESSION['root'];
+
+	include 'head.php';
 	printhead();
 ?>
 <body>
 	<?php printheader(); ?>
-
-	<?php
-		$pb = new SQLite3('sqlite/problembase.sqlite');
-		if (!isset($user_id))
-			die("Nur f&uuml;r angemeldete Nutzer sichtbar!");
-		$root = $_SESSION['root'];
-	?>
-
 	<div class="content">
 		<div class="caption" id="users" style="margin-top:1.5em;">Benutzer</div>
 		<table class="users">
 			<tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr>
 		<?php
-		$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
 			while ($user = $users->fetchArray(SQLITE3_ASSOC)) { ?>
 				<tr <?php print 'id='.$user['id']; ?>>
 					<td><?php print $user['name'] ?></td>

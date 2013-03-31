@@ -1,22 +1,30 @@
 <?php
 	session_start();
-	include 'head.php';
 
+	// if user isn't authenticated, throw a 403 error
+	if (!isset($_SESSION['user_id'])) {
+		include 'error403.php';
+		exit();
+	}
+
+	$id = (int)$_REQUEST['id'];
+	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
+	$comment = $pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", true);
+	$pb->close();
+
+	// if no such problem exists, throw a 404 error
+	if (empty($problem)) {
+		$error = "Aufgabe nicht gefunden";
+		include 'error404.php';
+		exit();
+	}
+
+	include 'head.php';
 	printhead();
 ?>
 <body>
 	<?php printheader(); ?>
-
-	<?php
-		$id = (int)$_REQUEST['id'];
-		if (!isset($user_id))
-			die('Fehler: Nur Benutzer d&uuml;rfen kommentieren!');
-		$pb = new SQLite3('sqlite/problembase.sqlite');
-		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
-		$comment = $pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", true);
-		$pb->close();
-	?>
-
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
 	<form class="eval" id="eval" title="Bewertungsformular" action="<?=$_SERVER["PBROOT"]?>/submit_eval.php" method="POST">

@@ -87,8 +87,10 @@
 	// write tag from tag form
 	if (isset($_REQUEST['id']) && (isset($_REQUEST['name']) || isset($_REQUEST['delete']))) {
 		session_start();
-		if (!isset($_SESSION['user_id']))
-			die("Nur f&uuml;r angemelde Benutzer m&ouml;glich!");
+		if (!isset($_SESSION['user_id'])) {
+			include 'error403.php';
+			exit();
+		}
 
 		$pb = new SQLite3('sqlite/problembase.sqlite');
 		foreach ($_REQUEST as $key=>$value)

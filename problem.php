@@ -1,29 +1,42 @@
 <?php
 	session_start();
-	include 'head.php';
-	include 'tags.php';
-	include 'proposers.php';
 
-	printhead();
-?>
-<body>
-	<?php printheader(); ?>
+	// if user isn't authenticated, throw a 403 error
+	if (!isset($_SESSION['user_id'])) {
+		include 'error403.php';
+		exit();
+	}
 
-	<?php
 	$pb = new SQLite3('sqlite/problembase.sqlite');
 	if (isset($_REQUEST['id'])) {
 		$id = (int)$_REQUEST['id'];
 		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
-		$tags = get_tags($pb, $problem['id']);
 	}
-	?>
 
+	// if no such problem exists, throw a 404 error
+	if (isset($_REQUEST['id']) && empty($problem)) {
+		$error = "Aufgabe nicht gefunden";
+		include 'error404.php';
+		exit();
+	}
+
+	include 'head.php';
+	include 'tags.php';
+	include 'proposers.php';
+	printhead();
+?>
+<body>
+	<?php printheader(); ?>
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>
 	<form class="task" id="task" title="Aufgabenformular" action="<?=$_SERVER["PBROOT"]?>/submit_problem.php" method="POST">
-		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
-		<?php proposer_form($pb, "task", "problem", isset($id) ? $id : -1); ?>
-		<?php tag_select($pb, "task"); ?>
+		<?php
+			if (isset($id)) print "<input type='hidden' name='id' value='$id'>";
+			proposer_form($pb, "task", "problem", isset($id) ? $id : -1);
+			tag_select($pb, "task");
+			if (isset($id))
+				$tags = get_tags($pb, $problem['id']);
+		?>
 		<input type="hidden" name="tags" value="<?php if (isset($id)) print $tags; ?>"/>
 		<span id="taglist" style="margin:3px;">
 			<?php if (isset($id)) tags($pb, $tags, 'task'); ?>
