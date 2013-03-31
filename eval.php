@@ -21,7 +21,7 @@
 	}
 
 	include 'head.php';
-	printhead();
+	printhead("Aufgabe bewerten");
 ?>
 <body>
 	<?php printheader(); ?>

@@ -30,7 +30,7 @@
 
 	include 'head.php';
 	include 'proposers.php';
-	printhead();
+	printhead("L&ouml;sung ".(isset($id) ? "bearbeiten" : "erstellen"));
 ?>
 <body>
 	<?php printheader(); ?>

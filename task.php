@@ -16,7 +16,7 @@
 	include 'tags.php';
 	include 'proposers.php';
 
-	printhead();
+	printhead("Aufgabe $id");
 ?>
 <body>
 	<?php printheader(); ?>

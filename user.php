@@ -12,7 +12,7 @@
 	$root = $_SESSION['root'];
 
 	include 'head.php';
-	printhead();
+	printhead("Benutzerliste");
 ?>
 <body>
 	<?php printheader(); ?>

@@ -14,7 +14,7 @@
 	}
 
 	// if no such problem exists, throw a 404 error
-	if (isset($_REQUEST['id']) && empty($problem)) {
+	if (isset($id) && empty($problem)) {
 		$error = "Aufgabe nicht gefunden";
 		include 'error404.php';
 		exit();
@@ -23,7 +23,7 @@
 	include 'head.php';
 	include 'tags.php';
 	include 'proposers.php';
-	printhead();
+	printhead("Aufgabe ".(isset($id) ? "bearbeiten" : "erstellen"));
 ?>
 <body>
 	<?php printheader(); ?>
