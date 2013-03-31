@@ -49,11 +49,16 @@ PHP 5.3.0 or newer is required. Get a clone by
 	git clone --recursive git://github.com/wurzeljena/problembase.git
 
 You can either clone into the document root or a subdirectory. In this case,
-set
+add
 
 	SetEnvIf always_match ^ PBROOT=/path/to/problembase
 
-in your `httpd.conf`. Now create the database:
+and in either case
+
+	ErrorDocument 403 /path/to/problembase/error403.php
+	ErrorDocument 404 /path/to/problembase/error404.php
+
+to your `httpd.conf`. Now create the database:
 
 	cd sqlite
 	sqlite3 -init create.sql problembase.sqlite
