@@ -125,20 +125,20 @@ div.content
 }
 
 /* Seitenpanel neben div.content */
-div#panel
-{
-	float		: right;
-	visibility	: hidden;
-	position	: absolute;
-	width		: 280px;
-}
+div#panel { max-width: 340px; }
 @media (min-width: 900px)
 {
 	div#panel
 	{
-		visibility	: visible;
-		position	: static;
+		position: fixed;
+		left	: 50%;
+		margin-left	: 180px;
+		width	: 270px;
 	}
+}
+@media (max-width: 899px)
+{
+	div#panel iframe { display: none; }
 }
 
 /* Pager zum Seitenwechseln */
