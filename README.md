@@ -58,7 +58,10 @@ and in either case
 	ErrorDocument 403 /path/to/problembase/error403.php
 	ErrorDocument 404 /path/to/problembase/error404.php
 
-to your `httpd.conf`. Now create the database:
+to your `httpd.conf`. You might also want to "compile" the `.htaccess` files
+into your `httpd.conf` using [htaccessConverter](https://github.com/preinheimer/htaccessConverter)
+This speeds up your server a bit. Don't forget to adapt the `RewriteRule`s to
+your needs. Now create the database:
 
 	cd sqlite
 	sqlite3 -init create.sql problembase.sqlite
