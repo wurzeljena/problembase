@@ -35,6 +35,10 @@
 	?>
 
 	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	</div>
+
 	<div class="content">
 	<h2 class="solution">L&ouml;sung bearbeiten</h2>
 	<form class="solution" id="solution" title="L&ouml;sungsformular" action="submit_solution.php" method="POST">

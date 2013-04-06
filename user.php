@@ -23,6 +23,10 @@
 	?>
 
 	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	</div>
+
 	<div class="content">
 		<div class="caption" id="users" style="margin-top:1.5em;"><i class="icon-group"></i> Benutzer</div>
 		<table class="users">

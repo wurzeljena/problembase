@@ -26,6 +26,10 @@
 	?>
 
 	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	</div>
+
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
 	<form class="eval" id="eval" title="Bewertungsformular" action="submit_eval.php" method="POST">

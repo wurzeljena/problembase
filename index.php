@@ -23,6 +23,7 @@
 
 	<div class="center">
 	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
 	<form class="filter" id="filter" title="Filter" action="index.php" method="GET">
 		<div><input type="text" name="filter" placeholder="Suchbegriff"
 			value="<?php if (isset($_REQUEST['filter'])) print $_REQUEST['filter']; ?>"/>

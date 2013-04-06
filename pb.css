@@ -34,6 +34,56 @@ div.head form.login
 	margin	: -5px 0px;
 }
 
+/* Navigation im Seitenmenü bzw. Header */
+nav ul
+{
+	list-style	: none outside;
+	padding		: 0px;
+	margin		: 5px;
+	margin-bottom	: 1em;
+	border-radius	: 5px;
+	border		: 1px solid #C08040;
+}
+nav#headermenu
+{
+	display	: inline-block;
+	float	: right;
+	margin	: 0 5px;
+}
+nav#headermenu ul
+{
+	display	: inline-block;
+	margin	: 0;
+}
+nav#headermenu ul li
+{
+	display : inline-block;
+	padding : 5px;
+}
+nav#headermenu ul li span {display:none;}
+nav ul li
+{
+	background	: #FFC040;
+	box-shadow	: -5px 5px 8px rgba(255, 255, 255, 0.3) inset;
+	padding	: 5px 15px 5px 10px;
+	transition	: 0.5s background;
+}
+nav ul li:hover { background: #FF8040; }
+nav ul li a
+{
+	text-decoration	: none;
+	color	: Teal;
+	font-variant	: small-caps;
+}
+@media (max-width: 899px)
+{
+	nav#sidemenu { display: none; }
+}
+@media (min-width: 900px)
+{
+	nav#headermenu { display: none; }
+}
+
 div.center {margin: 0 auto;}
 @media (min-width: 600px)
 {

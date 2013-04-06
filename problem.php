@@ -31,7 +31,8 @@
 
 	<div class="center">
 	<div id="panel">
-		<iframe src="tagpanel.php" style="border:none;" width="270" height="270"></iframe>
+	<?php drawMenu("sidemenu"); ?>
+		<iframe src="tagpanel.php" style="border:none;overflow:hidden" width="270" height="210"></iframe>
 	</div>
 
 	<div class="content">
