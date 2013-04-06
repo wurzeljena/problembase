@@ -31,10 +31,10 @@
 
 	<div class="content">
 		<div class="task">
-		<?php
-			if (isset($user_id))
-				print "<a class='button outer' style='top:0em;' href='problem.php?id=$id'>Bearbeiten</a>";
-		?>
+			<?php
+				if (isset($user_id))
+					print "<a class='button inner' href='problem.php?id=$id'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+			?>
 			<div class="info">
 			<div class="tags">
 				<?php tags($pb, get_tags($pb, $id)); ?>
@@ -82,7 +82,7 @@
 		<div class="caption" id="comments" style="margin-top:1.5em;"><i class="icon-comments"></i> Kommentare
 		<?php
 		if(isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
-			print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Schreiben</a>';
+			print "<a class='button' style='float:right;' href='eval.php?id={$id}'><i class='icon-pencil'></i> Schreiben</a>";
 		?>
 		</div>
 		<table class="comments">
@@ -94,10 +94,10 @@
 				else
 					print '<tr>';
 				print '<td class="author"><a href="user.php#'.$comment['user_id'].'">'.$comment['name'].'</a></td>';
-				print '<td class="comment">';
+				print '<td class="comment"><div style="position:relative;">';
 				if (isset($user_id) && $comment['user_id']==$user_id)
-					print "<a class='button' style='float:right;' href='eval.php?id=$id'>Bearbeiten</a>";
-				print $comment['comment'].'</td></tr>';
+					print "<a class='button inner' href='eval.php?id=$id'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+				print $comment['comment'].'</div></td></tr>';
 
 				if (isset($user_id) && $comment['user_id']==$user_id)
 					print '<tr class="eval own"><td colspan=2>';
@@ -122,7 +122,7 @@
 		<div class="caption" id="solutions" style="margin-top:1.5em;"><i class="icon-book"></i> L&ouml;sungen
 		<?php
 			if (isset($user_id))
-				print '<a class="button" style="float:right;" href="solution.php?problem_id='.$id.'">Hinzuf&uuml;gen</a>';
+				print "<a class='button' style='float:right;' href='solution.php?problem_id=$id'><i class='icon-plus-sign'></i> Hinzuf&uuml;gen</a>";
 		?>
 		</div>
 		<?php
@@ -132,7 +132,7 @@
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
 			print '<div class="solution">';
 			if (isset($user_id))
-				print '<a class="button outer" style="top:0em;" href="solution.php?id='.$solution['id'].'">Bearbeiten</a>';
+				print "<a class='button inner' href='solution.php?id={$solution['id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			print '<div class="info">';
 			printproposers($pb, "solution", $solution['id']);
 			print '</div>';

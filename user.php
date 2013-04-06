@@ -38,7 +38,7 @@
 					<td><?php print $user['name'] ?></td>
 					<?php
 					if ($user['id']==$user_id)
-						print '<td><a class="button" href="javascript:User.Trig();">Bearbeiten</a></td>	';
+						print '<td><a class="button" href="javascript:User.Trig();"><i class="icon-pencil"></i> Bearbeiten</a></td>	';
 					else
 						print '<td style="font-family:monospace;">'.$user['email'].'</td>';
 					?>

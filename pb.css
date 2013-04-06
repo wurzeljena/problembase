@@ -250,10 +250,23 @@ a.danger:hover
 	background	: linear-gradient(to bottom, #FF0000, #C00000);
 }
 a.danger:active {box-shadow	: inset 2px 2px 1px #600000;}
-a.outer
+a.inner
 {
 	position	: absolute;
-	left		: 620px;
+	right	: 5px;	top	: 7px;
+	z-index	: 1;	opacity	: 0;
+	transition	: opacity 0.5s;
+}
+*:hover > a.inner {opacity:1;}
+@media (max-width: 900px)
+{
+	a.inner
+	{
+		opacity: 1;
+		position: static;
+		float: right;
+	}
+	a.inner span {display:none;}
 }
 
 /* Aufgabenliste */
