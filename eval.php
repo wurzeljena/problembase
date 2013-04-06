@@ -7,6 +7,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
+	<link rel="stylesheet" type="text/css" href="Font-Awesome/css/Font-Awesome.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
 	<script type="text/javascript" src="fancy.js"></script>

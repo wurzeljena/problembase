@@ -11,6 +11,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
+	<link rel="stylesheet" type="text/css" href="Font-Awesome/css/Font-Awesome.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
 	<script type="text/javascript" src="fancy.js"></script>
@@ -74,7 +75,7 @@
 			</div>
 		</div>
 
-		<div class="caption" id="comments" style="margin-top:1.5em;">Kommentare
+		<div class="caption" id="comments" style="margin-top:1.5em;"><i class="icon-comments"></i> Kommentare
 		<?php
 		if(isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
 			print '<a class="button" style="float:right;" href="eval.php?id='.$id.'">Schreiben</a>';
@@ -114,7 +115,7 @@
 		?>
 		</table>
 
-		<div class="caption" id="solutions" style="margin-top:1.5em;">L&ouml;sungen
+		<div class="caption" id="solutions" style="margin-top:1.5em;"><i class="icon-book"></i> L&ouml;sungen
 		<?php
 			if (isset($user_id))
 				print '<a class="button" style="float:right;" href="solution.php?problem_id='.$id.'">Hinzuf&uuml;gen</a>';

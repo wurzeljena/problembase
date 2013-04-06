@@ -7,6 +7,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
+	<link rel="stylesheet" type="text/css" href="Font-Awesome/css/Font-Awesome.css"/>
 	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="fancy.js"></script>
 	<script type="text/javascript" src="ajax.js"></script>
@@ -23,7 +24,7 @@
 
 	<div class="center">
 	<div class="content">
-		<div class="caption" id="users" style="margin-top:1.5em;">Benutzer</div>
+		<div class="caption" id="users" style="margin-top:1.5em;"><i class="icon-group"></i> Benutzer</div>
 		<table class="users">
 			<tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr>
 		<?php
