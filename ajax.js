@@ -106,14 +106,8 @@ function tagPreview() {
 	var desc = document.forms['tageditor'].elements['description'].value;
 	var clr = document.forms['tageditor'].elements['color'].value;
 
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-			document.getElementById('result_tag').innerHTML = xmlhttp.responseText;
-	}
-
-	xmlhttp.open("GET", rootdir + "/tags.php?drawtag&name=" + name + "&desc=" + encodeURIComponent(desc) + "&color=" + encodeURIComponent(clr), true);
-	xmlhttp.send();
+	document.getElementById('result_tag').innerHTML = "";
+	document.getElementById('result_tag').appendChild(writeTag(name , desc, clr));
 }
 
 // validate password

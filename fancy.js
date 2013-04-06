@@ -191,6 +191,35 @@ function PropForm(form, list) {
 	}
 }
 
+// tag creation
+function writeTag(name, description, color) {
+	var tag = document.createElement("span");
+	tag.textContent = name;
+	tag.title = description;
+	tag.className = "tag";
+
+	// compute other color
+	var clr = color.split("");
+	for (var chan = 0; chan < 3; chan++) {
+		var comp = parseInt(clr[2 * chan + 1], 16);
+		if (comp >= 2)
+			clr[2 * chan + 1] = (comp - 2).toString(16);
+		else
+			clr[2 * chan + 1] = (comp + 2).toString(16);
+	}
+	var altcolor = clr.join("");
+	tag.style.backgroundColor = color;
+	tag.style.backgroundImage = "linear-gradient(to bottom, " + color + ", " + altcolor + ")";
+
+	// decide on text color
+	var white = (0.07 * parseInt(color.substr(5, 2), 16)
+		+ 0.71 * parseInt(color.substr(3, 2), 16)
+		+ 0.21 * parseInt(color.substr(1, 2), 16) < 0.7 * 256);
+	tag.style.color = white ? "White" : "Black";
+	tag.style.textShadow = "1px 1px 0px " + (white ? "Black" : "White");
+	return tag;
+}
+
 // script for delete buttons
 function postDelete(form) {
 	document.forms[form].elements["delete"].checked = true;

@@ -79,11 +79,6 @@
 		$pb->close();
 	}
 
-	if (isset($_REQUEST['drawtag'])) {
-		$color = hexdec(substr($_REQUEST['color'], -6));
-		print_tag(0, $_REQUEST['name'], $_REQUEST['desc'], $color);
-	}
-
 	// write tag from tag form
 	if (isset($_REQUEST['id']) && (isset($_REQUEST['name']) || isset($_REQUEST['delete']))) {
 		session_start();
