@@ -397,17 +397,17 @@ form#tageditor
 	border-radius	: 10px;
 	box-shadow	: 3px 3px 5px #208080;
 }
-form.task 
+form.task
 {
 	background-color: #FFA060;
 	box-shadow	: 3px 3px 5px #C08060;
 }
-form.solution 
+form.solution
 {
 	background-color: #A0C0FF;
 	box-shadow	: 3px 3px 5px #80A0C0;
 }
-form.eval 
+form.eval
 {
 	background-color: #D0D030;
 	box-shadow	: 3px 3px 5px #A0A020;
