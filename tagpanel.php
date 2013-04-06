@@ -1,12 +1,24 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Tag-Editor</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="pb.css"/>
+	<link rel="icon" href="dw.ico"/>
 	<script type="text/javascript" src="fancy.js"></script>
 	<script type="text/javascript" src="ajax.js"></script>
 </head>
-<body>
+<?php
+	if (isset($_REQUEST['standalone'])) {
+		print "<body>";
+		include 'head.php';
+		print "<div class='center'><div class='content'>";
+	}
+	else
+		print "<body class='iframe'>"
+?>
 	<form id="tageditor" action="tags.php" method="POST">
 		<div>
 			<input type="hidden" name="referer" value="<?php print $_SERVER['REQUEST_URI']; ?>">
@@ -29,9 +41,10 @@
 			<input type="color" name="color" style="width:60px;" placeholder="Farbe" pattern="#?[a-fA-F0-9]{6}$" required onchange="tagPreview();" title="[#]hhhhhh"> <br/>
 			<input type="text" name="description" style="width:200px;" placeholder="Beschreibung" onchange="tagPreview();"> <br/>
 			<input type="checkbox" name="hidden" id="hidden" style="margin:10px 5px;"><label class="info" for="hidden">nicht &ouml;ffentlich</label>
-			<input type="submit" id="submit_tag" style="float:right;" value="Hinzuf&uuml;gen"> <br/>
+			<input type="submit" id="submit_tag" style="margin:1em;" value="Hinzuf&uuml;gen"> <br/>
 			<span class="info" style="font-variant: small-caps; margin: 5px;">(Vorschau)</span><span id="result_tag"></span>
 		</div>
 	</form>
+	<?php if (isset($_REQUEST['standalone'])) print "</div></div>"; ?>
 </body>
 </html>
