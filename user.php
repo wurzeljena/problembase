@@ -30,7 +30,8 @@
 	<div class="content">
 		<div class="caption" id="users" style="margin-top:1.5em;"><i class="icon-group"></i> Benutzer</div>
 		<table class="users">
-			<tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr>
+			<thead><tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr></thead>
+		<tbody>
 		<?php
 		$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
 			while ($user = $users->fetchArray(SQLITE3_ASSOC)) { ?>
@@ -64,7 +65,7 @@
 				</tr>
 
 				<?php if ($user['id']==$user_id) { ?>
-				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan=5>
+				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan="5">
 				<form id="edit" action="edit_user.php" method="POST">
 					<input type="hidden" name="id" value="<?php print $user_id; ?>">
 					<input type="text" name="name" placeholder="Name" value="<?php print $user['name'] ?>">
@@ -81,8 +82,10 @@
 				</td></tr>
 				<?php } ?>
 			<?php } ?>
+			</tbody>
 
 			<?php if ($root) { ?>
+			<tfoot>
 				<tr><form id="newuser" action="edit_user.php" method="POST">
 					<td><input type="text" name="newname" style="width:100px;" placeholder="Name" required></td>
 					<td><input type="email" name="email" style="width:180px;" placeholder="E-Mail" required></td>
@@ -90,6 +93,7 @@
 					<td><input type="checkbox" name="editor"></td>
 					<td><input type="submit" value="Erstellen"></td>
 				</form></tr>
+			</tfoot>
 			<?php } ?>
 		</table>
 	</div>

@@ -501,6 +501,10 @@ table.users
 	border-collapse	: collapse;
 	border-radius	: 5px;
 }
+table.users tbody tr:hover,
+table.users tfoot tr:hover {
+	background	: #FFC0C0;
+}
 table.users td, table.users th
 {
 	padding	: 5px 10px;
