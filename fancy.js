@@ -25,7 +25,7 @@ function PopupTrigger(id) {
 		document.body.addEventListener("click", Hide);
 	}
 
-	Hide = function (event) {
+	var Hide = function (event) {
 		var elem = event.target;
 		while (elem != self.element && elem != document.body)
 			elem = elem.parentNode;

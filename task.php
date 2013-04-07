@@ -46,12 +46,12 @@
 			<?php
 				$pub = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$id, true);
 				if (count($pub)) {
-					$volume = $pub['month']."/".($pub['year']%100);
+					$volume = $pub['month']."/".str_pad($pub['year']%100, 2, "0", STR_PAD_LEFT);
 					$letter = $pub['letter'];
 					$number = $pub['number'];
-					print "Ver&ouml;ffentlicht als $$letter$number$ im Heft $volume.";
+					print "Publiziert als $$letter\,$number$ im Heft $volume.";
 					if (isset($user_id) && $_SESSION['editor'])
-						print "<a class='button danger' style='float:right' href='javascript:Publ.Trig();'>&Auml;ndern</a>";
+						print "<a class='button danger' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>";
 				}
 				else {
 					$date = getdate();	++$date['mon'];
@@ -59,22 +59,28 @@
 						$date['mon'] -= 12;
 						++$date['year'];
 					}
-					$volume = $date['mon']."/".($date['year']%100);
+					$volume = $date['mon']."/".str_pad($date['year']%100, 2, "0", STR_PAD_LEFT);
 					$number = $letter = "";
 					print "Noch nicht ver&ouml;ffentlicht.";
 					if (isset($user_id) && $_SESSION['editor'])
-						print "<a class='button' style='float:right' href='javascript:Publ.Trig();'>Ver&ouml;ffentlichen</a>";
+						print "<a class='button' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>Ver&ouml;ffentlichen</span></a>";
 				}
 			?>
-			<form id="publish" style="visibility:hidden; position:absolute;" action="publish.php" method="POST">
+			<form id="publish" style="display:none;" action="publish.php" method="POST">
 				<input type="hidden" name="id" value="<?php print $id; ?>">
-				Ausgabe: <input type="text" name="volume" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
+				<input type="submit" style="float:right;" value="Speichern">
+				<div style="display:inline;white-space:nowrap;">
+				<label for="volume">Ausgabe:</label>
+				<input type="text" id="volume" name="volume" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
 					style="width:40px;" value="<?php print $volume; ?>">
-				Nummer: <input type="text" name="letter" placeholder="xxx"
+				</div>
+				<div style="display:inline;white-space:nowrap;">
+				<label for="letter">Nummer:</label>
+				<input type="text" id="letter" name="letter" placeholder="xxx"
 					style="width:50px;" value="<?php print $letter; ?>">
-					<input type="text" name="number" placeholder="NN" pattern="[1-9]|[0-5][0-9]|60"
+				<input type="text" name="number" placeholder="NN" pattern="[1-9]|[0-5][0-9]|60"
 					style="width:20px;" value="<?php print $number; ?>">
-				<input type="submit" value="Speichern">
+				</div>
 			</form>
 			</div>
 		</div>
@@ -148,7 +154,7 @@
 	</div>
 
 	<script type="text/javascript">
-		var Publ = new Trigger("publish");
+		var Publ = new PopupTrigger("publish");
 	</script>
 </body>
 </html>
