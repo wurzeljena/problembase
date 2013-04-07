@@ -5,16 +5,12 @@
 	include 'tasklist.php';
 
 	printhead();
+	$pb = new SQLite3('sqlite/problembase.sqlite');
 ?>
 <body>
 	<?php printheader(); ?>
 
-	<div class="content" id="tasklist">
-		<?php
-			$pb = new SQLite3('sqlite/problembase.sqlite');
-			tasklist($pb, taskquery($pb, 0));
-		?>
-	</div>
+	<div class="content" id="tasklist"></div>
 
 	<form class="filter" id="filter" title="Filter" action="<?=$_SERVER["PBROOT"]?>/" method="GET">
 		<div><input type="text" name="filter" placeholder="Suchbegriff"
@@ -76,6 +72,9 @@
 		<a href="javascript:incrPage(1);" class="button">&gt;</a>
 		<a href="javascript:incrPage(5);" class="button">&raquo;</a>
 	</div>
+
+	<!-- show first page of content -->
+	<script>incrPage(0);</script>
 
 	<?php $pb->close(); ?>
 </body>

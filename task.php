@@ -27,9 +27,8 @@
 				print "<a class='button outer' style='top:0em;' href='{$_SERVER["PBROOT"]}/$id/edit'>Bearbeiten</a>";
 		?>
 			<div class="info">
-			<div class="tags">
-				<?php tags($pb, get_tags($pb, $id)); ?>
-			</div>
+			<div class="tags"></div>
+			<?php tags($pb, get_tags($pb, $id)); ?>
 			<?php printproposers($pb, "problem", $id); ?>
 			</div>
 			<div class="text" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>

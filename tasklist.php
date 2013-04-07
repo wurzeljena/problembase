@@ -1,8 +1,10 @@
 <?php
+	define("TASKS_PER_PAGE", 10);
+
 	include 'tags.php';
 	
 	function taskquery($pb, $page) {
-			$query = "SELECT problems.id, files.content AS problem, problems.proposed, letter, number, month, year,"
+		$query = "SELECT problems.id, files.content AS problem, problems.proposed, letter, number, month, year,"
 			."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
 			."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
 			."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
@@ -47,7 +49,7 @@
 
 			$tags = array_filter(explode(',', $_REQUEST['tags']));
 			foreach ($tags as $tag)
-				$filter[] = "$tag IN (SELECT tag_id FROM tag_list WHERE problems.id=tag_list.problem_id)";
+				$filter[] = "EXISTS (SELECT rowid FROM tag_list WHERE problems.id=tag_list.problem_id and tag_list.tag_id=$tag)";
 
 			if (count($filter))
 				$query .= " WHERE ".implode(" AND ", $filter);
@@ -57,19 +59,20 @@
 		$query .= " ORDER BY year DESC, month DESC";
 
 		// show proper page
-		$query .= " LIMIT 10 OFFSET ".(10*$page);
+		$query .= " LIMIT ".TASKS_PER_PAGE." OFFSET ".(TASKS_PER_PAGE*$page);
 
 		return $pb->query($query);
 	}
 
 	function tasklist($pb, $problems) {
 		$problem_id=0;
+		$tags = Array(10);
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 			print "<a class='textbox' href='{$_SERVER["PBROOT"]}/{$problem['id']}/'>";
 			print '<div class="task problem_list">';
-			print '<div class="info"><div class="tags">';
-			tags($pb, $problem['tags']);
-			print '</div>';
+			print '<div class="info">';
+			print "<div class='tags'></div>";
+			$tags[$problem_id] = $problem['tags'];
 			printproposers($pb, "problem", $problem['id']);
 			print '</div>';
 
@@ -91,12 +94,19 @@
 			print '</tr></table>';
 			print '</div></div></a>';
 		}
+
+		print "<script id='tagscript'> (function () {";
+		print "var taglists = document.getElementsByClassName('tags');";
+		for (--$problem_id; $problem_id > 0; --$problem_id)		// go backwards
+			tags($pb, $tags[$problem_id], "taglists[$problem_id]");
+		print "})();</script>";
 	}
 
 	if (isset($_REQUEST['page'])) {
 		session_start();
 		include 'proposers.php';
 		$pb = new SQLite3('sqlite/problembase.sqlite');
+		header("Content-Type: text/html; encoding=utf-8");
 		tasklist($pb, taskquery($pb, $_REQUEST['page']));
 	}
 ?>

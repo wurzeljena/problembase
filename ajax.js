@@ -8,12 +8,16 @@ function incrPage(incr) {
 
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			document.getElementById("tasklist").innerHTML = xmlhttp.responseText;
 
-		// render math
-		for (var id = 0; id < 10; id++)
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prob" + id]);
+			// show tags
+			eval(document.getElementById("tagscript").text);
+
+			// render math
+			for (var id = 0; id < 10; id++)
+				MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prob" + id]);
+		}
 	}
 
 	if (request.length > 0)

@@ -1,44 +1,21 @@
 <?php
-	function int2clrstr($num)
-	{
-		$str = "00000".dechex($num);
-		return "#".substr($str, -6);
-	}
+	function tags($pb, $tags, $taglist = "taglist") {
+		if ($taglist === "taglist"): ?>
+		<script> (function () {
+			var taglist = document.getElementsByClassName("tags")[0];
+<?php	endif;
 
-	function int2color($num) { return array($num % 0x100, ($num % 0x10000)>>8, $num>>16); }
-	function color2int($clr) { return $clr[0] + ($clr[1]<<8) + ($clr[2]<<16); }
-
-	function print_tag($id, $name, $desc, $tagcolor, $form = "") {
-		// compute 2nd color for gradient
-		$color = int2color($tagcolor);
-		foreach ($color as &$comp)
-			$comp += ($comp>=32) ? -32 : 32;
-		$gradclr = color2int($color);
-
-		// decide on text color
-		$white = (0.07*$color[0] + 0.71*$color[1] + 0.21*$color[2] < 0.5*0x100);
-
-		// write tag
-		print "<span class='tag' ";
-		echo "style='background:".int2clrstr($tagcolor).";";
-		if ($white)
-			print "color:White;text-shadow:1px 1px 0px Black;";
-		else
-			print "color:Black;text-shadow:1px 1px 0px White;";
-		print "background:linear-gradient(to bottom, ".int2clrstr($tagcolor).",".int2clrstr($gradclr).");' ";
-		print "title='$desc'>$name";
-		if ($form != "")
-			print "<a href='javascript:removeTag(\"$form\",$id)'><img class='close' src='{$_SERVER["PBROOT"]}/img/close.png' alt='x'></a>";
-		print "</span>";
-	}
-
-	function tags($pb, $tags, $form = "") {
 		// get tag data from db
 		$restr = isset($_SESSION['user_id']) ? "" : " AND hidden=0";
 		$tags = $pb->query("SELECT * FROM tags WHERE id in (".$tags.")".$restr);
+		while($tag_info = $tags->fetchArray(SQLITE3_ASSOC)) {
+			$tag_info['color'] = "#".substr("00000".dechex($tag_info['color']),-6);
+			print "$taglist.appendChild(writeTag(".json_encode($tag_info)."));";
+		}
 
-		while($tag_info = $tags->fetchArray(SQLITE3_ASSOC))
-			print_tag($tag_info['id'], $tag_info['name'], $tag_info['description'], $tag_info['color'], $form);
+		if ($taglist === "taglist"): ?>
+		})();</script>
+<?php	endif;
 	}
 
 	function tag_form($pb, $form, $taglist)
