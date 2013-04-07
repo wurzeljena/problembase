@@ -177,8 +177,8 @@ function PropForm(form, list) {
 	}
 
 	// on sending form: write nums to an hidden input field
-	document.forms[form].onsubmit =
-		function () { document.forms[form].elements["propnums"].value = self.nums.toString(); };
+	document.forms[form].addEventListener("submit",
+		function () { document.forms[form].elements["propnums"].value = self.nums.toString(); });
 
 	// write initial data
 	for (var i = 0; i < list.length; i++) {
@@ -192,7 +192,7 @@ function PropForm(form, list) {
 }
 
 // tag creation
-function writeTag(name, description, color) {
+function writeTag(name, description, color, id, taglist) {
 	var tag = document.createElement("span");
 	tag.textContent = name;
 	tag.title = description;
@@ -217,6 +217,18 @@ function writeTag(name, description, color) {
 		+ 0.21 * parseInt(color.substr(1, 2), 16) < 0.7 * 256);
 	tag.style.color = white ? "White" : "Black";
 	tag.style.textShadow = "1px 1px 0px " + (white ? "Black" : "White");
+
+	// if it's part of a tag list, show close button
+	if (taglist !== undefined) {
+		var image = document.createElement("img");
+		image.className = "close";
+		image.alt = "Tag \"" + name + "\" entfernen";
+		image.src = rootdir + "/img/close.png";
+		image.style.cursor = "pointer";
+		image.onclick =  function () { taglist.remove(id, this.parentNode); };
+		tag.appendChild(image);
+	}
+
 	return tag;
 }
 

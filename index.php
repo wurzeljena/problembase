@@ -50,11 +50,13 @@
 		</table>
 		<div class="taglist">
 			<label class="question" for="tag_select">Was?</label>
-			<?php tag_select($pb, "filter"); ?>
-			<input type="hidden" name="tags" value="<?php if (isset($_REQUEST['tags'])) print $_REQUEST['tags']; ?>"/>
-			<div id="taglist" style="margin:3px;">
-				<?php if (isset($_REQUEST['tags'])) tags($pb, $_REQUEST['tags'], 'filter'); ?>
-			</div>
+			<?php
+				if (isset($_REQUEST['tags']))
+					$tags = $_REQUEST['tags'];
+				else
+					$tags = "";
+				tag_form($pb, "filter", $tags);
+			?>
 		</div>
 	</form>
 

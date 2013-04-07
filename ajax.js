@@ -27,46 +27,45 @@ function incrPage(incr) {
 };
 
 // dynamic tag list Ajax stuff
-function drawTags(form) {
-	var tags = document.forms[form].tags.value;
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-			document.getElementById("taglist").innerHTML = xmlhttp.responseText;
+function TagList(form, init) {
+	this.list = Array();
+	this.taglist = document.getElementById("taglist");
+	var self = this;
+
+	this.add = function (newtag) {
+		// if there's nothing to add, exit
+		if (newtag == 0 || this.list.indexOf(newtag) >= 0)
+			return;
+
+		// add tag
+		this.list.push(newtag);
+
+		// find out how it looks like and add to list
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function () {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				var resp = JSON.parse(xmlhttp.responseText);
+				self.taglist.appendChild(writeTag(resp.name, resp.description, resp.color, newtag, self));
+			}
+		}
+
+		xmlhttp.open("GET", rootdir + "/tags.php?taginfo&id=" + newtag, true);
+		xmlhttp.send();
 	}
-	xmlhttp.open("GET", rootdir + "/tags.php?taglist=" + encodeURIComponent(tags) + "&form=" + form, true);
-	xmlhttp.send();
+
+	this.remove = function (id, elem) {
+		this.list.splice(this.list.indexOf(id), 1);
+		elem.parentNode.removeChild(elem);
+	}
+
+	// add initial tags
+	for (var i = 0; i < init.length; i++)
+		this.add(init[i]);
+
+	// function to write result on form submit
+	document.forms[form].addEventListener("submit",
+		function () { document.forms[form].tags.value = self.list.toString(); } )
 }
-
-function addTag(form) {
-	var tags = document.forms[form].tags.value;
-	var newtag = document.forms[form].elements["tag"].value;
-
-	// add tag
-	if (newtag != 0) {
-		if (tags.length)
-			tags += "," + newtag;
-		else
-			tags = newtag;
-	}
-
-	document.forms[form].tags.value = tags;
-
-	// reset select element
-	document.forms[form].elements["tag"].value = "0";
-
-	drawTags(form);
-};
-
-function removeTag(form, id) {
-	var tags = document.forms[form].tags.value;
-	tags = tags.replace(RegExp(',' + id, 'g'), "");
-	tags = tags.replace(RegExp(id + ',', 'g'), "");
-	tags = tags.replace(RegExp(id, 'g'), "");
-	document.forms[form].tags.value = tags;
-
-	drawTags(form);
-};
 
 // tag editor functions
 function loadTag() {

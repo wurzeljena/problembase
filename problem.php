@@ -33,14 +33,12 @@
 		<?php
 			if (isset($id)) print "<input type='hidden' name='id' value='$id'>";
 			proposer_form($pb, "task", "problem", isset($id) ? $id : -1);
-			tag_select($pb, "task");
 			if (isset($id))
 				$tags = get_tags($pb, $problem['id']);
+			else
+				$tags = "";
+			tag_form($pb, "task", $tags);
 		?>
-		<input type="hidden" name="tags" value="<?php if (isset($id)) print $tags; ?>"/>
-		<span id="taglist" style="margin:3px;">
-			<?php if (isset($id)) tags($pb, $tags, 'task'); ?>
-		</span>
 		<textarea class="text" name="problem" id="textarea" rows="20" cols="65" placeholder="Aufgabentext"
 			style="height:200px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $problem['problem']; ?></textarea>
 		<div class="preview" id="preview"></div>
