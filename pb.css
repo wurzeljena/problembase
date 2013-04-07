@@ -203,17 +203,6 @@ h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
 h2.solution {color : #0000C0; text-shadow : #60A0C0 2px 2px 3px;}
 h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
 
-div.caption
-{
-	margin		: 5px;
-	font-size	: x-large;
-	font-weight	: normal;
-	font-variant: small-caps;
-	text-shadow	: 0px 0px 2px Gray;
-}
-div.caption#comments {color: #A0A000;}
-div.caption#solutions {color: #80A0E0;}
-
 /* Formatierung von Links */
 a.button
 {
@@ -500,11 +489,6 @@ img.star
 }
 
 /* Benutzer-Verwaltung */
-div.caption#users
-{
-	color	: #C00060;
-	text-shadow	: 0px 0px 2px #C00060;
-}
 table.users
 {
 	width	: 100%;

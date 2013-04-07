@@ -85,12 +85,29 @@
 			</div>
 		</div>
 
-		<div class="caption" id="comments" style="margin-top:1.5em;"><i class="icon-comments"></i> Kommentare
 		<?php
+		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year FROM solutions "
+			."LEFT JOIN files ON solutions.file_id=files.rowid "
+			."WHERE problem_id=$id");
+		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
+			print '<div class="solution">';
+			if (isset($user_id))
+				print "<a class='button inner' href='solution.php?id={$solution['id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+			print '<div class="info">';
+			printproposers($pb, "solution", $solution['id']);
+			print '</div>';
+
+			print '<div class="text" id="soln">';
+			print htmlspecialchars($solution['solution']);
+			print '</div></div>';
+		};
+
+		if (isset($user_id))
+			print "<a class='button' href='solution.php?problem_id=$id'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
 		if(isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
-			print "<a class='button' style='float:right;' href='eval.php?id={$id}'><i class='icon-pencil'></i> Schreiben</a>";
+			print "<a class='button' style='float:right;' href='eval.php?id=$id'><i class='icon-comments'></i> Kommentar schreiben</a>";
 		?>
-		</div>
+
 		<table class="comments">
 		<?php
 			$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id");
@@ -124,30 +141,6 @@
 			};
 		?>
 		</table>
-
-		<div class="caption" id="solutions" style="margin-top:1.5em;"><i class="icon-book"></i> L&ouml;sungen
-		<?php
-			if (isset($user_id))
-				print "<a class='button' style='float:right;' href='solution.php?problem_id=$id'><i class='icon-plus-sign'></i> Hinzuf&uuml;gen</a>";
-		?>
-		</div>
-		<?php
-		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year FROM solutions "
-			."LEFT JOIN files ON solutions.file_id=files.rowid "
-			."WHERE problem_id=$id");
-		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
-			print '<div class="solution">';
-			if (isset($user_id))
-				print "<a class='button inner' href='solution.php?id={$solution['id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
-			print '<div class="info">';
-			printproposers($pb, "solution", $solution['id']);
-			print '</div>';
-
-			print '<div class="text" id="soln">';
-			print htmlspecialchars($solution['solution']);
-			print '</div></div>';
-		};
-		?>
 
 		<?php $pb->close(); ?>
 	</div>

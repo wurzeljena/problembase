@@ -28,7 +28,6 @@
 	</div>
 
 	<div class="content">
-		<div class="caption" id="users" style="margin-top:1.5em;"><i class="icon-group"></i> Benutzer</div>
 		<table class="users">
 			<thead><tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr></thead>
 		<tbody>
