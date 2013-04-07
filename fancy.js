@@ -192,14 +192,14 @@ function PropForm(form, list) {
 }
 
 // tag creation
-function writeTag(name, description, color, id, taglist) {
+function writeTag(taginfo, taglist) {
 	var tag = document.createElement("span");
-	tag.textContent = name;
-	tag.title = description;
+	tag.textContent = taginfo.name;
+	tag.title = taginfo.description;
 	tag.className = "tag";
 
 	// compute other color
-	var clr = color.split("");
+	var clr = taginfo.color.split("");
 	for (var chan = 0; chan < 3; chan++) {
 		var comp = parseInt(clr[2 * chan + 1], 16);
 		if (comp >= 2)
@@ -208,13 +208,13 @@ function writeTag(name, description, color, id, taglist) {
 			clr[2 * chan + 1] = (comp + 2).toString(16);
 	}
 	var altcolor = clr.join("");
-	tag.style.backgroundColor = color;
-	tag.style.backgroundImage = "linear-gradient(to bottom, " + color + ", " + altcolor + ")";
+	tag.style.backgroundColor = taginfo.color;
+	tag.style.backgroundImage = "linear-gradient(to bottom, " + taginfo.color + ", " + altcolor + ")";
 
 	// decide on text color
-	var white = (0.07 * parseInt(color.substr(5, 2), 16)
-		+ 0.71 * parseInt(color.substr(3, 2), 16)
-		+ 0.21 * parseInt(color.substr(1, 2), 16) < 0.7 * 256);
+	var white = (0.07 * parseInt(taginfo.color.substr(5, 2), 16)
+		+ 0.71 * parseInt(taginfo.color.substr(3, 2), 16)
+		+ 0.21 * parseInt(taginfo.color.substr(1, 2), 16) < 0.7 * 256);
 	tag.style.color = white ? "White" : "Black";
 	tag.style.textShadow = "1px 1px 0px " + (white ? "Black" : "White");
 
@@ -222,10 +222,10 @@ function writeTag(name, description, color, id, taglist) {
 	if (taglist !== undefined) {
 		var image = document.createElement("img");
 		image.className = "close";
-		image.alt = "Tag \"" + name + "\" entfernen";
+		image.alt = "Tag \"" + taginfo.name + "\" entfernen";
 		image.src = rootdir + "/img/close.png";
 		image.style.cursor = "pointer";
-		image.onclick =  function () { taglist.remove(id, this.parentNode); };
+		image.onclick = function () { taglist.remove(taginfo.id, this.parentNode); };
 		tag.appendChild(image);
 	}
 

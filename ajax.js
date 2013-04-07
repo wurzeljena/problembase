@@ -45,7 +45,8 @@ function TagList(form, init) {
 		xmlhttp.onreadystatechange = function () {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 				var resp = JSON.parse(xmlhttp.responseText);
-				self.taglist.appendChild(writeTag(resp.name, resp.description, resp.color, newtag, self));
+				resp.id = newtag;
+				self.taglist.appendChild(writeTag(resp, self));
 			}
 		}
 
@@ -101,12 +102,14 @@ function loadTag() {
 }
 
 function tagPreview() {
-	var name = document.forms['tageditor'].elements['name'].value;
-	var desc = document.forms['tageditor'].elements['description'].value;
-	var clr = document.forms['tageditor'].elements['color'].value;
+	var taginfo = {
+		name: document.forms['tageditor'].elements['name'].value,
+		description: document.forms['tageditor'].elements['description'].value,
+		color: document.forms['tageditor'].elements['color'].value
+	};
 
 	document.getElementById('result_tag').innerHTML = "";
-	document.getElementById('result_tag').appendChild(writeTag(name , desc, clr));
+	document.getElementById('result_tag').appendChild(writeTag(taginfo));
 }
 
 // validate password
