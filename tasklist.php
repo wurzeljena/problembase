@@ -66,7 +66,7 @@
 
 	function tasklist($pb, $problems) {
 		$problem_id=0;
-		$tags = Array(10);
+		$tags = Array(TASKS_PER_PAGE);
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 			print "<a class='textbox' href='{$_SERVER["PBROOT"]}/{$problem['id']}/'>";
 			print '<div class="task problem_list">';

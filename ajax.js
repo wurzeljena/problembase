@@ -15,7 +15,7 @@ function incrPage(incr) {
 			eval(document.getElementById("tagscript").text);
 
 			// render math
-			for (var id = 0; id < 10; id++)
+			for (var id = 0; document.getElementById("prob" + id); id++)
 				MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prob" + id]);
 		}
 	}
