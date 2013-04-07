@@ -102,45 +102,44 @@
 			print '</div></div>';
 		};
 
+		// show buttons between solutions and comments
 		if (isset($user_id))
 			print "<a class='button' href='solution.php?problem_id=$id'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
-		if(isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
+		if (isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
 			print "<a class='button' style='float:right;' href='eval.php?id=$id'><i class='icon-comments'></i> Kommentar schreiben</a>";
-		?>
 
-		<table class="comments">
-		<?php
-			$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id");
-			while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
-				if (isset($user_id) && $comment['user_id']==$user_id)
-					print '<tr class="own">';
-				else
-					print '<tr>';
-				print '<td class="author"><a href="user.php#'.$comment['user_id'].'">'.$comment['name'].'</a></td>';
-				print '<td class="comment"><div style="position:relative;">';
-				if (isset($user_id) && $comment['user_id']==$user_id)
-					print "<a class='button inner' href='eval.php?id=$id'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
-				print $comment['comment'].'</div></td></tr>';
+		// if not logged in, separate comments from solutions with a lightweight header
+		if (!isset($user_id))
+			print "<h3 id='comments'><i class='icon-comment-alt'></i> Kommentare</h3>";
 
-				if (isset($user_id) && $comment['user_id']==$user_id)
-					print '<tr class="eval own"><td colspan=2>';
-				else
-					print '<tr class="eval"><td colspan=2>';
-				$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
-				$critcols = array('beauty', 'difficulty', 'knowledge_required');
-				for ($crit=0; $crit<3; ++$crit) {
-					print '<span class="evalspan">';
-					print '<span class="eval">'.$critnames[$crit].'</span> ';
-					for ($star=1; $star<=5; ++$star)
-						print ($star<=$comment[$critcols[$crit]]) ?
-							'<img class="star" src="img/mandstar.png" alt="*"> ' :
-							'<img class="star" src="img/mand.png" alt="o"> ';
-					print '</span> ';
-				}
-				print '</td></tr>';
-			};
+		$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id");
+		while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
+			if (isset($user_id) && $comment['user_id']==$user_id)
+				print '<div class="comment own">';
+			else
+				print '<div class="comment">';
+			if (isset($user_id) && $comment['user_id']==$user_id)
+				print "<a class='button inner' href='eval.php?id=$id'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+			print "<div class='author'>{$comment['name']}";
+			if (isset($user_id))
+				print " <a href='mailto:{$comment['email']}'><i class='icon-envelope'></i></a>";
+			print '</div><div class="text">'.htmlspecialchars($comment['comment']).'</div>';
+
+			print '<div class="eval">';
+			$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
+			$critcols = array('beauty', 'difficulty', 'knowledge_required');
+			for ($crit=0; $crit<3; ++$crit) {
+				print '<span class="evalspan">';
+				print '<span class="eval">'.$critnames[$crit].'</span> ';
+				for ($star=1; $star<=5; ++$star)
+					print ($star<=$comment[$critcols[$crit]]) ?
+						'<img class="star" src="img/mandstar.png" alt="*"> ' :
+						'<img class="star" src="img/mand.png" alt="o"> ';
+				print '</span> ';
+			}
+			print '</div></div>';
+		};
 		?>
-		</table>
 
 		<?php $pb->close(); ?>
 	</div>

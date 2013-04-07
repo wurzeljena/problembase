@@ -317,7 +317,7 @@ div.task div.tags
 	float	: right;
 	font-style	: normal;
 }
-div.text {margin : 5px; padding : 5px;}
+div.text {margin : 10px;}
 div.text:before
 {
 	font-family	: Sans-Serif;
@@ -326,7 +326,7 @@ div.text:before
 	color		: Gray;
 }
 div.task div.text:before {content: "Aufgabe: ";}
-div.solution div.text:before {content: "L\00f6sung: ";}
+
 div.solution
 {
 	border	: 1px solid Gray;
@@ -335,6 +335,7 @@ div.solution
 	margin : 15px 5px; padding : 5px;
 	position	: relative;
 }
+div.solution div.text:before {content: "L\00f6sung: ";}
 
 div.published
 {
@@ -355,25 +356,50 @@ form#publish
 	form#publish { right: 50px; }
 }
 
-table.comments
+h3#comments
 {
-	width	: 100%;
-	border-collapse	: collapse;
+	font-family	: Garamond, Serif;
+	font-size	: x-large;
+	font-weight	: normal;
+	margin	: 0.8em 1em 0.2em;
+	color	: #A0A000;
+	text-shadow	: 1px 1px 0px #808000;
 }
-table.comments tr
+div.comment
 {
-	border-top	: 1px dotted Gray;
-	background	: #FFFF60;
+	border	: 1px solid Gray;
+	border-radius : 5px;
+	margin : 15px 5px; padding : 5px 10px;
+	background	: #C0C020;
+	position	: relative;
 }
-table.comments tr.own {background: #D0D030;}
-table.comments tr.eval
+div.own {background: #E0E020;}
+div.comment div.author
 {
+	display		: inline;
+	margin		: 3px 10px 3px 0px;
+	font-family	: Sans-Serif;
+	font-size	: small;
+	font-style	: italic;
+	color	: #404040;
+}
+div.own div.author	{ display: none; }
+div.comment div.author a
+{
+	margin-left	: 3px;
+	font-size	: medium;
+	text-decoration	: none;
+}
+div.comment div.text
+{
+	display	: inline;
+	margin	: 3px;
+}
+div.comment div.eval
+{
+	clear	: right;
 	text-align	: center;
-	border-top	: none;
-	border-bottom	: 1px dotted Gray;
 }
-table.comments td {padding: 3px; vertical-align: baseline;}
-table.comments td.author {width: 20%;}
 
 /* Formulare */
 form
