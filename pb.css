@@ -187,15 +187,16 @@ div#pager span#request
 /* Formatierung der Überschriften */
 h2
 {
-	font-family : Mistral;
-	font-size	: 3em;
-	font-weight	: lighter;
-	margin		: 30px -30px;
+	font-family : Mistral, Garamond, Serif;
+	font-style	: italic;
+	font-size	: 50px;
+	font-weight	: normal;
 	transform	: rotate(-90deg);
 	-webkit-transform	: rotate(-90deg);
 	position	: absolute;
-	left	: -3em;	top	: 3em;
-	z-index	: -1;
+	width	: 600px;	text-align	: right;
+	left	: -350px;	top	: 300px;
+	margin	: 0;	z-index	: -1;
 }
 
 h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
