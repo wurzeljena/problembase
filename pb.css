@@ -132,8 +132,8 @@ div#panel { max-width: 340px; }
 	{
 		position: fixed;
 		left	: 50%;
-		margin-left	: 180px;
-		width	: 270px;
+		margin-left	: 170px;
+		width	: 280px;
 	}
 }
 @media (max-width: 899px)
@@ -414,10 +414,6 @@ form.filter
 	border-radius	: 10px;
 	box-shadow	: 3px 3px 5px Gray;
 }
-form.filter table tr td
-{
-	padding		: 0px 3px;
-}
 form#tageditor
 {
 	background-color	: #40E0C0;
@@ -440,11 +436,21 @@ form.eval
 	box-shadow	: 3px 3px 5px #A0A020;
 }
 
+form.filter div#questions
+{
+	border-top		: 1px solid Gray;
+	border-bottom	: 1px solid Gray;
+}
 label.question
 {
 	font-family	: Sans-Serif;
 	font-size	: small;
 	color		: #A0A0A0;
+}
+label:first-child
+{
+	display		: inline-block;
+	width	: 4em;
 }
 span.evalspan
 {
