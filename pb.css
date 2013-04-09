@@ -4,48 +4,172 @@ body
 	background-color	: #FFFFC0;
 	font-family	: Georgia;
 	margin	: 0;
+	padding-top	: 50px;
 }
+body.iframe { padding-top: 0; }
 
 div.head
 {
-	color	: #6060A0;
-	background: #C0C0D0;
-	background: linear-gradient(to bottom, #C0C0D0, #D0D0FF 50%, #D0D0FF 80%, #808080);
-	margin	: 0;
+	position	: fixed;
+	z-index	: 1;	top	: 0;
+	width	: 100%;	width	: calc(100% - 14px);
+	background: #F0B070;
+	background: linear-gradient(to bottom, #F0B060, #FFC070 50%, #F8C880 80%, #D0B070);
 	padding	: 7px;
 	padding-top	: 5px;
 }
-div.head div.logo 
+div.head a#logo
 {
-	text-shadow	: #40A0C0 1px 1px 0px;
+	color	: #F06020;
+	text-shadow	: 0.5px 0.5px 1px #808060, -1px -1px 1px #FFFFF0;
+	text-decoration	: none;
 	font-size : x-large;
-	padding : 0px 1em 0px 3em;
-	float : left;
+	vertical-align	: middle;
+	transition	: color 0.5s;
 }
-div.head a
+div.head a#logo:hover {color: #FF4000;}
+div.head form#login
+{
+	padding	: 0px;
+	margin	: -5px 0px;
+}
+@media (max-width: 899px) {
+	div.head form#login
+	{	
+		z-index	: 2;
+		display	: none;
+		position: absolute;
+		right	: 12px;	top	: 40px;
+		background	: #F0D0A0;
+		border		: 1px solid #C08040;
+		border-radius	: 5px 0px 5px 5px;
+	}
+}
+@media (min-width: 900px)
+{
+	div.head form#login
+	{
+		float : right;
+	}
+}
+span#username
+{
+	color  : #F06020;
+	margin	: 5px;
+}
+
+/* Navigation im Seitenmenü bzw. Header */
+nav ul
+{
+	list-style	: none outside;
+	padding		: 0px;
+	margin		: 5px;
+	margin-bottom	: 1em;
+	border-radius	: 5px;
+	border		: 1px solid #C08040;
+}
+nav#headermenu
+{
+	display	: inline-block;
+	float	: right;
+	margin	: 0 5px;
+}
+nav#headermenu ul
+{
+	display	: inline-block;
+	margin	: 0;
+}
+nav#headermenu ul li
+{
+	display : inline-block;
+	padding : 5px;
+}
+nav#headermenu ul li span {display:none;}
+nav ul li
+{
+	background	: #FFC040;
+	box-shadow	: -5px 5px 8px rgba(255, 255, 255, 0.3) inset;
+	padding	: 5px 15px 5px 10px;
+	transition	: 0.5s background;
+}
+nav ul li:hover { background: #FF8040; }
+nav ul li a
 {
 	text-decoration	: none;
+	color	: Teal;
+	font-variant	: small-caps;
 }
-div.head a:hover {color: #6060C0;}
-div.head form.login
+@media (max-width: 899px)
 {
-	float : right;
-	padding	: 0px;
-	margin	: -5px;
+	nav#sidemenu { display: none; }
+}
+@media (min-width: 900px)
+{
+	nav#headermenu { display: none; }
 }
 
-div.content {width:600px; margin:50px 100px}
-
-/* Seitenpanel im index, unterhalb des Filters */
-div#panel
+div.center {margin: 0 auto;}
+@media (min-width: 600px)
 {
-	position: fixed; top: 6em; left: 750px;
+	div.center {width: 600px;}
+	div.content {width: 600px;}
+}
+@media (min-width: 900px)
+{
+	div.center {width: 900px;}
+}
+
+div.content
+{
+	position:	relative;
+}
+
+/* Seitenpanel neben div.content */
+div#panel { max-width: 340px; }
+@media (min-width: 900px)
+{
+	div#panel
+	{
+		position: fixed;
+		left	: 50%;
+		margin-left	: 170px;
+		width	: 280px;
+	}
+}
+@media (max-width: 899px)
+{
+	div#panel iframe { display: none; }
 }
 
 /* Pager zum Seitenwechseln */
 div#pager
 {
-	position: fixed; top: 30em; left: 750px;
+	background	: #ffa060;
+	text-align	: center;
+	border	: 1px solid #c08040;
+	border-bottom	: none;
+	position: fixed;
+	width	: 200px;
+	bottom	: 0em;
+	padding	: 9px 5px 0px;
+	border-radius	: 10px 10px 0px 0px;
+	box-shadow	: 0px 0px 5px #c0a080;
+}
+@media (max-width: 899px)
+{
+	div#pager
+	{
+		left	: 50%;
+		margin-left	: -105px;
+	}
+}
+@media (min-width: 900px)
+{
+	div#pager
+	{
+		right	: 50%;
+		margin-right: -415px;
+	}
 }
 div#pager span#request
 {
@@ -63,31 +187,21 @@ div#pager span#request
 /* Formatierung der Überschriften */
 h2
 {
-	font-family : Script;
-	font-size	: 3em;
-	font-weight	: lighter;
-	margin		: 30px -30px;
+	font-family : Mistral, Garamond, Serif;
+	font-style	: italic;
+	font-size	: 50px;
+	font-weight	: normal;
 	transform	: rotate(-90deg);
 	-webkit-transform	: rotate(-90deg);
 	position	: absolute;
-	left	: -1em;	top	: 3em;
-	z-index	: -1;
+	width	: 600px;	text-align	: right;
+	left	: -350px;	top	: 300px;
+	margin	: 0;	z-index	: -1;
 }
 
 h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
 h2.solution {color : #0000C0; text-shadow : #60A0C0 2px 2px 3px;}
 h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
-
-div.caption
-{
-	margin		: 5px;
-	font-size	: x-large;
-	font-weight	: normal;
-	font-variant: small-caps;
-	text-shadow	: 0px 0px 2px Gray;
-}
-div.caption#comments {color: #A0A000;}
-div.caption#solutions {color: #80A0E0;}
 
 /* Formatierung von Links */
 a.button
@@ -101,6 +215,8 @@ a.button
 	box-shadow	: inset 0px 0px 1px #006000;
 	text-decoration	: none;
 	font-size	: medium;
+	display		: inline-block;
+	white-space	: nowrap;
 }
 a.button:hover
 {
@@ -124,19 +240,33 @@ a.danger:hover
 	background	: linear-gradient(to bottom, #FF0000, #C00000);
 }
 a.danger:active {box-shadow	: inset 2px 2px 1px #600000;}
-a.outer
+a.inner
 {
 	position	: absolute;
-	left		: 620px;
+	right	: 5px;	top	: 7px;
+	z-index	: 1;	opacity	: 0;
+	transition	: opacity 0.5s;
+}
+*:hover > a.inner {opacity:1;}
+@media (max-width: 600px)
+{
+	a.inner
+	{
+		opacity: 1;
+		position: static;
+		float: right;
+	}
+	a.button span {display:none;}
 }
 
 /* Aufgabenliste */
+div#tasklist { margin-bottom: 3em; }
 a.textbox
 {
 	text-decoration	: none;
 	color	: Black;
 }
-div.problem_list:hover {background: #FFE0A0;}
+a.textbox div.task:hover {background: #FFE0A0;}
 table.info td
 {
 	padding		: 0px 10px;
@@ -148,6 +278,7 @@ table.info td
 div.taglist
 {
 	margin	: 5px;
+	line-height	: 1.5em;
 }
 span.tag
 {
@@ -157,7 +288,7 @@ span.tag
 	font-family		: Sans-Serif;
 	font-weight		: bold;
 	font-size		: small;
-	text-decoration	: none;
+	white-space		: nowrap;
 }
 img.close
 {
@@ -186,7 +317,7 @@ div.task div.tags
 	float	: right;
 	font-style	: normal;
 }
-div.text {margin : 5px; padding : 5px;}
+div.text {margin : 10px;}
 div.text:before
 {
 	font-family	: Sans-Serif;
@@ -195,7 +326,7 @@ div.text:before
 	color		: Gray;
 }
 div.task div.text:before {content: "Aufgabe: ";}
-div.solution div.text:before {content: "L\00f6sung: ";}
+
 div.solution
 {
 	border	: 1px solid Gray;
@@ -204,6 +335,7 @@ div.solution
 	margin : 15px 5px; padding : 5px;
 	position	: relative;
 }
+div.solution div.text:before {content: "L\00f6sung: ";}
 
 div.published
 {
@@ -211,27 +343,63 @@ div.published
 	border-top	: 1px dotted Purple;
 	font-style	: italic;
 }
-form#publish { padding:0px; }
+form#publish
+{
+	position	: absolute; bottom : -5px;
+	left	: 10px;	right	: 150px;
+	padding	: 0px 5px;	margin	: 10px 0px;
+	border	: 1px solid Purple;
+	border-radius	: 5px;
+	background	: #E0A040;
+}
+@media (max-width: 599px) {
+	form#publish { right: 50px; }
+}
 
-table.comments
+h3#comments
 {
-	width	: 100%;
-	border-collapse	: collapse;
+	font-family	: Garamond, Serif;
+	font-size	: x-large;
+	font-weight	: normal;
+	margin	: 0.8em 1em 0.2em;
+	color	: #A0A000;
+	text-shadow	: 1px 1px 0px #808000;
 }
-table.comments tr
+div.comment
 {
-	border-top	: 1px dotted Gray;
-	background	: #FFFF60;
+	border	: 1px solid Gray;
+	border-radius : 5px;
+	margin : 15px 5px; padding : 5px 10px;
+	background	: #C0C020;
+	position	: relative;
 }
-table.comments tr.own {background: #D0D030;}
-table.comments tr.eval
+div.own {background: #E0E020;}
+div.comment div.author
 {
+	display		: inline;
+	margin		: 3px 10px 3px 0px;
+	font-family	: Sans-Serif;
+	font-size	: small;
+	font-style	: italic;
+	color	: #404040;
+}
+div.own div.author	{ display: none; }
+div.comment div.author a
+{
+	margin-left	: 3px;
+	font-size	: medium;
+	text-decoration	: none;
+}
+div.comment div.text
+{
+	display	: inline;
+	margin	: 3px;
+}
+div.comment div.eval
+{
+	clear	: right;
 	text-align	: center;
-	border-top	: none;
-	border-bottom	: 1px dotted Gray;
 }
-table.comments td {padding: 3px; vertical-align: baseline;}
-table.comments td.author {width: 20%;}
 
 /* Formulare */
 form
@@ -241,15 +409,10 @@ form
 }
 form.filter
 {
-	position: fixed; top: 9em; left: 750px;
 	background-image	: url("img/filter.png");
 	background-repeat	: repeat;
 	border-radius	: 10px;
 	box-shadow	: 3px 3px 5px Gray;
-}
-form.filter table tr td
-{
-	padding		: 0px 3px;
 }
 form#tageditor
 {
@@ -257,27 +420,41 @@ form#tageditor
 	border-radius	: 10px;
 	box-shadow	: 3px 3px 5px #208080;
 }
-form.task 
+form.task
 {
 	background-color: #FFA060;
 	box-shadow	: 3px 3px 5px #C08060;
 }
-form.solution 
+form.solution
 {
 	background-color: #A0C0FF;
 	box-shadow	: 3px 3px 5px #80A0C0;
 }
-form.eval 
+form.eval
 {
 	background-color: #D0D030;
 	box-shadow	: 3px 3px 5px #A0A020;
 }
 
+form.filter div#questions
+{
+	border-top		: 1px solid Gray;
+	border-bottom	: 1px solid Gray;
+}
 label.question
 {
 	font-family	: Sans-Serif;
 	font-size	: small;
 	color		: #A0A0A0;
+}
+label:first-child
+{
+	display		: inline-block;
+	width	: 4em;
+}
+span.evalspan
+{
+	white-space	: nowrap;
 }
 span.eval, label.eval
 {
@@ -294,7 +471,7 @@ form input[name="delete"]
 input, textarea, select {margin : 5px;}
 input.text {font-family	: Georgia;}
 input.text, textarea {border : 1px dashed #808080;}
-textarea {width:545px;}
+textarea {width: 100%; width: calc(100% - 10px);}
 form.task input.text, form.task textarea {background : #FFD080;}
 form.task input.text:hover, form.task textarea:hover {background : #FFE0A0;}
 form.solution input.text, form.solution textarea {background : #B0E0FF;}
@@ -344,11 +521,6 @@ img.star
 }
 
 /* Benutzer-Verwaltung */
-div.caption#users
-{
-	color	: #C00060;
-	text-shadow	: 0px 0px 2px #C00060;
-}
 table.users
 {
 	width	: 100%;
@@ -356,6 +528,10 @@ table.users
 	box-shadow	: 5px 5px 0px #C06060;
 	border-collapse	: collapse;
 	border-radius	: 5px;
+}
+table.users tbody tr:hover,
+table.users tfoot tr:hover {
+	background	: #FFC0C0;
 }
 table.users td, table.users th
 {

@@ -69,7 +69,7 @@
 		$tags = Array(TASKS_PER_PAGE);
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 			print "<a class='textbox' href='{$_SERVER["PBROOT"]}/{$problem['id']}/'>";
-			print '<div class="task problem_list">';
+			print '<div class="task">';
 			print '<div class="info">';
 			print "<div class='tags'></div>";
 			$tags[$problem_id] = $problem['tags'];

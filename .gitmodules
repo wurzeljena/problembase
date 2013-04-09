@@ -1,3 +1,6 @@
 [submodule "MathJax"]
 	path = MathJax
 	url = git://github.com/mathjax/MathJax.git
+[submodule "Font-Awesome"]
+	path = Font-Awesome
+	url = git://github.com/FortAwesome/Font-Awesome.git

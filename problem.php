@@ -27,6 +27,13 @@
 ?>
 <body>
 	<?php printheader(); ?>
+
+	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+		<iframe src="<?=$_SERVER["PBROOT"]?>/tagpanel.php" style="border:none;overflow:hidden" width="270" height="210"></iframe>
+	</div>
+
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>
 	<form class="task" id="task" title="Aufgabenformular" action="<?=$_SERVER["PBROOT"]?>/submit_problem.php" method="POST">
@@ -53,9 +60,6 @@
 		<?php } ?>
 	</form>
 	</div>
-
-	<div id="panel">
-		<iframe src="<?=$_SERVER["PBROOT"]?>/tagpanel.php" style="border:none;" width="270" height="270"></iframe>
 	</div>
 
 	<?php $pb->close(); ?>

@@ -16,6 +16,27 @@ function Trigger(id) {
 	};
 };
 
+function PopupTrigger(id) {
+	this.element = document.getElementById(id);
+	var self = this;
+
+	this.Show = function () {
+		this.element.style.display = "inherit";
+		document.body.addEventListener("click", Hide);
+	}
+
+	var Hide = function (event) {
+		var elem = event.target;
+		while (elem != self.element && elem != document.body)
+			elem = elem.parentNode;
+		if (elem == document.body) {
+			self.element.style.display = "none";
+			document.body.removeEventListener("click", Hide);
+			event.preventDefault();
+		}
+	}
+}
+
 // PREVIEW CODE
 // configure MathJax to accept $...$
 MathJax.Hub.Config({

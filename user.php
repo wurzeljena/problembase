@@ -16,17 +16,23 @@
 ?>
 <body>
 	<?php printheader(); ?>
+
+	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	</div>
+
 	<div class="content">
-		<div class="caption" id="users" style="margin-top:1.5em;">Benutzer</div>
 		<table class="users">
-			<tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr>
+			<thead><tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr></thead>
+		<tbody>
 		<?php
 			while ($user = $users->fetchArray(SQLITE3_ASSOC)) { ?>
 				<tr <?php print 'id='.$user['id']; ?>>
 					<td><?php print $user['name'] ?></td>
 					<?php
 					if ($user['id']==$user_id)
-						print '<td><a class="button" href="javascript:User.Trig();">Bearbeiten</a></td>	';
+						print '<td><a class="button" href="javascript:User.Trig();"><i class="icon-pencil"></i> Bearbeiten</a></td>	';
 					else
 						print '<td style="font-family:monospace;">'.$user['email'].'</td>';
 					?>
@@ -52,7 +58,7 @@
 				</tr>
 
 				<?php if ($user['id']==$user_id) { ?>
-				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan=5>
+				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan="5">
 				<form id="edit" action="edit_user.php" method="POST">
 					<input type="hidden" name="id" value="<?php print $user_id; ?>">
 					<input type="text" name="name" placeholder="Name" value="<?php print $user['name'] ?>">
@@ -69,8 +75,10 @@
 				</td></tr>
 				<?php } ?>
 			<?php } ?>
+			</tbody>
 
 			<?php if ($root) { ?>
+			<tfoot>
 				<tr><form id="newuser" action="<?=$_SERVER["PBROOT"]?>/edit_user.php" method="POST">
 					<td><input type="text" name="newname" style="width:100px;" placeholder="Name" required></td>
 					<td><input type="email" name="email" style="width:180px;" placeholder="E-Mail" required></td>
@@ -78,8 +86,10 @@
 					<td><input type="checkbox" name="editor"></td>
 					<td><input type="submit" value="Erstellen"></td>
 				</form></tr>
+			</tfoot>
 			<?php } ?>
 		</table>
+	</div>
 	</div>
 
 	<?php $pb->close(); ?>

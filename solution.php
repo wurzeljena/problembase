@@ -34,6 +34,12 @@
 ?>
 <body>
 	<?php printheader(); ?>
+
+	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	</div>
+
 	<div class="content">
 	<h2 class="solution">L&ouml;sung bearbeiten</h2>
 	<form class="solution" id="solution" title="L&ouml;sungsformular" action="<?=$_SERVER["PBROOT"]?>/submit_solution.php" method="POST">
@@ -47,7 +53,6 @@
 		<textarea class="text" name="remarks" id="textarea" rows="5" cols="65" placeholder="Anmerkungen"
 			style="height:70px;"><?php if (isset($id)) print $solution['remarks']; ?></textarea>
 		<label for="published">Ver&ouml;ffentlicht in:</label> <input type="text" class="text" name="published" id="published" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}" style="width:50px;" value="<?php if (isset($solution['month'])) print $solution['month']."/".($solution['year']%100); ?>"/>
-		<input type="button" value="Dummy" onclick="" style="visibility:hidden;"/>
 		<input type="submit" value="<?php if (isset($id)) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
 		<?php if (isset($id)) {?>
 		<input type="checkbox" name="delete"/>
@@ -55,6 +60,7 @@
 			onclick="if (confirm('L&ouml;sung wirklich l&ouml;schen?')) postDelete('solution');"/>
 		<?php } ?>
 	</form>
+	</div>
 	</div>
 
 	<?php $pb->close(); ?>

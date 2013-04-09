@@ -27,7 +27,6 @@ function incrPage(incr) {
 
 	// set info
 	document.getElementById("page").innerHTML = page + 1;
-	document.getElementById("pagetasks").innerHTML = (10 * page + 1) + "&mdash;" + 10 * (page + 1);
 };
 
 // dynamic tag list Ajax stuff
@@ -51,6 +50,7 @@ function TagList(form, init) {
 				var resp = JSON.parse(xmlhttp.responseText);
 				resp.id = newtag;
 				self.taglist.appendChild(writeTag(resp, self));
+				self.taglist.appendChild(document.createTextNode(" "));
 			}
 		}
 

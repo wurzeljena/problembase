@@ -25,6 +25,12 @@
 ?>
 <body>
 	<?php printheader(); ?>
+
+	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	</div>
+
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
 	<form class="eval" id="eval" title="Bewertungsformular" action="<?=$_SERVER["PBROOT"]?>/submit_eval.php" method="POST">
@@ -36,6 +42,7 @@
 			$critobj = array('Beauty', 'Diff', 'Know');
 			$critid = array('beauty', 'diff', 'know');
 			for ($crit=0; $crit<3; ++$crit) {
+				print "<span class='evalspan'>";
 				print "<label class='eval' for='{$critid[$crit]}stars'>{$critnames[$crit]}</label>";
 				print "<span id='{$critid[$crit]}stars' onmouseout='{$critobj[$crit]}.reset();'>";
 				for ($star=1; $star<=5; ++$star)
@@ -44,6 +51,7 @@
 				print "</span>";
 				print "<input type='hidden' name='{$critid[$crit]}' id='{$critid[$crit]}' value='".
 					(empty($comment) ? -1 : $comment[$critcols[$crit]])."'/>";
+				print "</span> ";
 			}
 		?>
 		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php
@@ -56,6 +64,7 @@
 			onclick="if (confirm('Kommentar wirklich l&ouml;schen?')) postDelete('eval');"/>
 		<?php } ?>
 	</form>
+	</div>
 	</div>
 
 	<script type="text/javascript">
