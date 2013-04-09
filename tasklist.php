@@ -97,7 +97,7 @@
 
 		print "<script id='tagscript'> (function () {";
 		print "var taglists = document.getElementsByClassName('tags');";
-		for (--$problem_id; $problem_id > 0; --$problem_id)		// go backwards
+		for (--$problem_id; $problem_id >= 0; --$problem_id)		// go backwards
 			tags($pb, $tags[$problem_id], "taglists[$problem_id]");
 		print "})();</script>";
 	}

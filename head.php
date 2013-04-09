@@ -12,7 +12,7 @@
 	<meta name="author" content="Wurzel e.V."/>
 	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="<?=$_SERVER["PBROOT"]?>/pb.css"/>
-	<link rel="stylesheet" type="text/css" href="<?=$_SERVER["PBROOT"]?>/Font-Awesome/css/Font-Awesome.css"/>
+	<link rel="stylesheet" type="text/css" href="<?=$_SERVER["PBROOT"]?>/Font-Awesome/css/font-awesome.css"/>
 	<link rel="icon" href="<?=$_SERVER["PBROOT"]?>/dw.ico"/>
 <?php	if ($ok): ?>
 	<script type="text/javascript"> var rootdir="<?=$_SERVER["PBROOT"]?>"; </script>

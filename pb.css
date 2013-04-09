@@ -447,7 +447,7 @@ label.question
 	font-size	: small;
 	color		: #A0A0A0;
 }
-label:first-child
+form#filter label:first-child
 {
 	display		: inline-block;
 	width	: 4em;

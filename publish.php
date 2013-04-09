@@ -19,7 +19,7 @@
 			$year += 1900;
 		if ($year <= 50)
 			$year += 2000;
-		$pb->exec("INSERT OR REPLACE INTO published VALUES ($id, '$letter', $number, $year, $month)");
+		$pb->exec("INSERT OR REPLACE INTO published (problem_id, letter, number, year, month) VALUES ($id, '$letter', $number, $year, $month)");
 	}
 
 	$pb->close();
