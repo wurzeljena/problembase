@@ -7,6 +7,13 @@
 ?>
 <body>
 	<?php printheader(); ?>
+
+	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	</div>
+	
+	<div class="center">
 	<div class="content">
 	<h3>Zugriff nicht gestattet</h3>
 	<p>Sie haben nicht die n&ouml;tigen Rechte, um die Seite anzusehen bzw. Operation auszuf&uuml;hren. Wenn Sie glauben, dass das ein Fehler ist, wenden Sie sich bitte an den
@@ -21,6 +28,7 @@
 
 	<hr/>
 	<p class="info"><?=$_SERVER['SERVER_SOFTWARE']?></p>
+	</div>
 	</div>
 </body>
 </html>

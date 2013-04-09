@@ -16,13 +16,19 @@
 ?>
 <body>
 	<?php printheader(); ?>
+
+	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	</div>
+
 	<div class="content">
 	<h3><?=$error?></h3>
 	<p>Sowas sollte eigentlich nicht passieren. Das tut uns leid.</p>
 
 	<ul>
 	<li <?= ($origin != -1) ? "class='alt'" : ""?>>Sind Sie durch einen Link von einer anderen Webseite hier gelandet? Dann kontaktieren sie bitte die Verantwortlichen dieser Seite und bitten sie, den Link zu korrigieren oder zu entfernen.</li>
-	<li <?= ($origin != 0) ? "class='alt'" : ""?>>Haben Sie einen falschen Link eingegeben? Dann gehen Sie zur <a href="<?=$_SERVER["PBROOT"]?>/">Hauptseite</a> und suchen von dort die gew&uuml;nschte Seite.</li>
+	<li <?= ($origin != 0) ? "class='alt'" : ""?>>Haben Sie eine falsche Adresse eingegeben? Dann gehen Sie zur <a href="<?=$_SERVER["PBROOT"]?>/">Hauptseite</a> und suchen von dort die gew&uuml;nschte Seite.</li>
 	<li <?= ($origin != 1) ? "class='alt'" : ""?>>Sind Sie durch einen internen Link hierher gekommen, schreiben Sie bitte dem
 	<a href="<?php
 		print "mailto:{$_SERVER['SERVER_ADMIN']}";
@@ -36,6 +42,7 @@
 
 	<hr/>
 	<p class="info"><?=$_SERVER['SERVER_SOFTWARE']?></p>
+	</div>
 	</div>
 </body>
 </html>
