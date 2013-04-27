@@ -59,13 +59,13 @@
 
 				<?php if ($user['id']==$user_id) { ?>
 				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan="5">
-				<form id="edit" action="edit_user.php" method="POST">
+				<form id="edit" action="<?=$_SERVER["PBROOT"]?>/edit_user.php" method="POST">
 					<input type="hidden" name="id" value="<?php print $user_id; ?>">
 					<input type="text" name="name" placeholder="Name" value="<?php print $user['name'] ?>">
 					<input type="email" name="email" style="width:200px;" placeholder="E-Mail" value="<?php print $user['email'] ?>">
 					<input type="submit" value="&Auml;ndern">
 				</form>
-				<form id="pw" action="edit_user.php" method="POST" onsubmit="return validate_password()">
+				<form id="pw" action="<?=$_SERVER["PBROOT"]?>/edit_user.php" method="POST" onsubmit="return validate_password()">
 					<input type="hidden" name="id" value="<?php print $user_id; ?>">
 					<input type="password" style="width:100px;" name="old_pw" placeholder="Altes Passwort">
 					<input type="password" style="width:100px;" name="new_pw" placeholder="Neues Passwort">

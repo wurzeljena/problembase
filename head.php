@@ -54,7 +54,6 @@ function drawMenu($id) { ?>
 	<a id="logo" href="<?=$_SERVER["PBROOT"]?>/">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
 	<?php drawMenu("headermenu"); ?>
 	<form id="login" action="<?=$_SERVER["PBROOT"]?>/logon.php" method="POST">
-	<input type="hidden" name="referer" value="<?php print $_SERVER['REQUEST_URI']; ?>">
 	<?php if (!isset($user_id)) { ?>
 		<input type="email" style="width:15em;" name="email" placeholder="E-Mail">
 		<input type="password" name="password" placeholder="Passwort">

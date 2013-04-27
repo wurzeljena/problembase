@@ -7,7 +7,7 @@
 		exit();
 	}
 
-	$id = (int)$_REQUEST['id'];
+	$id = (int)$_GET['id'];
 	$pb = new SQLite3('sqlite/problembase.sqlite');
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
 	$comment = $pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", true);

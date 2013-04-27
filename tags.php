@@ -38,10 +38,10 @@
 	}
 
 	// answer to Ajax queries for tags
-	if (isset($_REQUEST['taginfo'])) {
+	if (isset($_GET['taginfo'])) {
 		session_start();
 		$pb = new SQLite3('sqlite/problembase.sqlite');
-		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_REQUEST['id']."'")
+		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_GET['id']."'")
 			->fetchArray(SQLITE3_ASSOC);
 		$res['color'] = "#".substr("00000".dechex($res['color']),-6);
 		header("Content-Type: application/json");
@@ -50,7 +50,7 @@
 	}
 
 	// write tag from tag form
-	if (isset($_REQUEST['id']) && (isset($_REQUEST['name']) || isset($_REQUEST['delete']))) {
+	if (isset($_POST['id']) && isset($_POST['name'])) {
 		session_start();
 		if (!isset($_SESSION['user_id'])) {
 			include 'error403.php';
@@ -58,16 +58,16 @@
 		}
 
 		$pb = new SQLite3('sqlite/problembase.sqlite');
-		foreach ($_REQUEST as $key=>$value)
-			$$key = $pb->escapeString($value);
+		foreach(array("id", "name", "description", "color") as $key)
+			$$key = $pb->escapeString($_POST[$key]);
 
-		if (isset($_REQUEST['delete'])) {
+		if (isset($_POST['delete'])) {
 			$pb->exec("PRAGMA foreign_keys=on");
 			$pb->exec("DELETE FROM tags WHERE id=$id");
 		}
 		else {
 			$color = hexdec(substr($color, -6));
-			$hidden = isset($_REQUEST['hidden']) ? 1 : 0;
+			$hidden = isset($_POST['hidden']) ? 1 : 0;
 
 			if ($id == "")
 				$pb->exec("INSERT INTO tags (name, description, color, hidden) VALUES ('$name', '$description', $color, $hidden)");
@@ -76,6 +76,6 @@
 		}
 		$pb->close();
 
-		header("Location: {$_SERVER["PBROOT"]}/tagpanel.php");
+		header("Location: {$_SERVER['HTTP_REFERER']}");
 	}
 ?>

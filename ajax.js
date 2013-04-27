@@ -132,6 +132,7 @@ function setright(id, name) {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () { }
 
-	xmlhttp.open("POST", rootdir + "/edit_user.php?id=" + id + "&update&" + name + "=" + (+elem.checked), true);
-	xmlhttp.send();
+	xmlhttp.open("POST", rootdir + "/edit_user.php", true);
+	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xmlhttp.send("id=" + id + "&update=1&" + name + "=" + (+elem.checked));
 }

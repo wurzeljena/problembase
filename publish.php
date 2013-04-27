@@ -7,8 +7,8 @@
 	$pb = new SQLite3('sqlite/problembase.sqlite');
 
 	// read parameters
-	foreach ($_REQUEST as $key=>$value)
-		$$key = $pb->escapeString($value);
+	foreach(array("id", "letter", "number", "volume") as $key)
+		$$key = $pb->escapeString($_POST[$key]);
 
 	// write into db
 	if ($volume == "")
@@ -17,7 +17,7 @@
 		list($month, $year) = explode("/", $volume);
 		if ($year > 50)		// translate YY to 19JJ/20JJ
 			$year += 1900;
-		if ($year <= 50)
+		else
 			$year += 2000;
 		$pb->exec("INSERT OR REPLACE INTO published (problem_id, letter, number, year, month) VALUES ($id, '$letter', $number, $year, $month)");
 	}

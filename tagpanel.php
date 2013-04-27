@@ -9,7 +9,7 @@
 	include 'head.php';
 	printhead("Tag-Editor");
 
-	if (isset($_REQUEST['standalone'])) {
+	if (isset($_GET['standalone'])) {
 		print "<body>";
 		printheader();
 		print "<div class='center'><div class='content'>";
@@ -42,6 +42,6 @@
 			<span class="info" style="font-variant: small-caps; margin: 5px;">(Vorschau)</span><span id="result_tag"></span>
 		</div>
 	</form>
-	<?php if (isset($_REQUEST['standalone'])) print "</div></div>"; ?>
+	<?php if (isset($_GET['standalone'])) print "</div></div>"; ?>
 </body>
 </html>

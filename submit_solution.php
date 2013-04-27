@@ -8,11 +8,11 @@
 	$pb = new SQLite3('sqlite/problembase.sqlite');
 
 	// read parameters
-	$proposer = $proposer_id = $location = $country = [];
-	foreach ($_REQUEST as $key=>$value)
-		$$key = $value;
+	foreach(array("id", "problem_id", "propnums", "proposer", "proposer_id", "location", "country",
+			"tags", "solution", "remarks", "published") as $key)
+		$$key = $_POST[$key];
 
-	if (isset($delete)) {
+	if (isset($_POST["delete"])) {
 		$pb->exec("PRAGMA foreign_keys=on;");
 		$problem_id = $pb->querySingle("SELECT problem_id FROM solutions WHERE id=$id", false);
 		$pb->exec("DELETE FROM solutions WHERE id=$id");
