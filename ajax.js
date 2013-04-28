@@ -1,33 +1,38 @@
 // pager in index
-function incrPage(incr) {
-	var page = document.getElementById("page").innerHTML - 1;
-	var request = document.getElementById("request").value;
-
-	if (page + incr >= 0)
-		page += incr;
-
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function () {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			document.getElementById("tasklist").innerHTML = xmlhttp.responseText;
-
-			// show tags
-			eval(document.getElementById("tagscript").text);
-
-			// render math
-			for (var id = 0; document.getElementById("prob" + id); id++)
-				MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prob" + id]);
+var pageLoader = {
+	hash: null,
+	page: 0, max: 0,
+	set: function (hash, max) { this.hash = hash; this.max = max; },
+	incrPage: function (incr) {
+		var newpage = this.page + incr;
+		if (newpage >= 0 && newpage < this.max) {
+			this.page = newpage;
+			this.loadPage();
 		}
+	},
+
+	loadPage: function () {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function () {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				document.getElementById("tasklist").innerHTML = xmlhttp.responseText;
+
+				// show tags
+				eval(document.getElementById("tagscript").text);
+
+				// render math
+				for (var id = 0; document.getElementById("prob" + id); id++)
+					MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prob" + id]);
+			}
+		}
+
+		xmlhttp.open("GET", rootdir + "/tasklist.php?hash=" + this.hash + "&page=" + this.page, true);
+		xmlhttp.send();
+
+		// set info
+		document.getElementById("page").innerHTML = this.page + 1;
 	}
-
-	if (request.length > 0)
-		request += "&";
-	xmlhttp.open("GET", rootdir + "/tasklist.php?" + request + "page=" + page, true);
-	xmlhttp.send();
-
-	// set info
-	document.getElementById("page").innerHTML = page + 1;
-};
+}
 
 // dynamic tag list Ajax stuff
 function TagList(form, init) {

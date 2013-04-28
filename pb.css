@@ -156,7 +156,7 @@ div#pager
 	border	: 1px solid #c08040;
 	border-bottom	: none;
 	position: fixed;
-	width	: 200px;
+	width	: 230px;
 	bottom	: 0em;
 	padding	: 9px 5px 0px;
 	border-radius	: 10px 10px 0px 0px;
@@ -167,7 +167,7 @@ div#pager
 	div#pager
 	{
 		left	: 50%;
-		margin-left	: -105px;
+		margin-left	: -120px;
 	}
 }
 @media (min-width: 900px)
@@ -175,7 +175,7 @@ div#pager
 	div#pager
 	{
 		right	: 50%;
-		margin-right: -415px;
+		margin-right: -430px;
 	}
 }
 div#pager span#request

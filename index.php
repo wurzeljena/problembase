@@ -6,6 +6,14 @@
 
 	printhead();
 	$pb = new SQLite3('sqlite/problembase.sqlite');
+
+	// initialize cache if necessary
+	if (!isset($_SESSION['cache']))
+		$_SESSION['cache'] = array();
+
+	// do the filtering and save the result
+	$hash = taskfilter($pb);
+	$pages = ceil(count($_SESSION['cache'][$hash])/10);
 ?>
 <body>
 	<?php printheader(); ?>
@@ -63,17 +71,19 @@
 	<div class="content" id="tasklist"></div>
 
 	<div id="pager">
-		<a href="javascript:incrPage(-5);" class="button">&laquo;</a>
-		<a href="javascript:incrPage(-1);" class="button">&lsaquo;</a>
-		Seite <span id="page">1</span>
-		<input type="hidden" id="request" value="<?php print $_SERVER['QUERY_STRING']; ?>">
-		<a href="javascript:incrPage(1);" class="button">&rsaquo;</a>
-		<a href="javascript:incrPage(5);" class="button">&raquo;</a>
+		<a href="javascript:pageLoader.incrPage(-5);" class="button">&laquo;</a>
+		<a href="javascript:pageLoader.incrPage(-1);" class="button">&lsaquo;</a>
+		Seite <span id="page">1</span>/<?=$pages?>
+		<a href="javascript:pageLoader.incrPage(1);" class="button">&rsaquo;</a>
+		<a href="javascript:pageLoader.incrPage(5);" class="button">&raquo;</a>
 	</div>
 	</div>
 
 	<!-- show first page of content -->
-	<script>incrPage(0);</script>
+	<script>
+		pageLoader.set("<?=$hash?>", <?=$pages?>);
+		pageLoader.loadPage();
+	</script>
 
 	<?php $pb->close(); ?>
 </body>

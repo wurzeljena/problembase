@@ -2,14 +2,11 @@
 	define("TASKS_PER_PAGE", 10);
 
 	include 'tags.php';
-	
-	function taskquery($pb, $page) {
-		$query = "SELECT problems.id, files.content AS problem, problems.proposed, letter, number, month, year,"
-			."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
-			."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
-			."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
-			."FROM problems JOIN files ON problems.file_id=files.rowid "
-			."LEFT JOIN published ON problems.id=published.problem_id";
+
+	// filter tasks, save the result in the session cache and return the index
+	function taskfilter($pb) {
+		$query = "SELECT problems.id, problems.proposed, month, year "
+			."FROM problems LEFT JOIN published ON problems.id=published.problem_id";
 
 		// add filter constraints
 		if (isset($_GET['filter'])) {
@@ -58,12 +55,35 @@
 		// order entries
 		$query .= " ORDER BY year DESC, month DESC";
 
-		// show proper page
-		$query .= " LIMIT ".TASKS_PER_PAGE." OFFSET ".(TASKS_PER_PAGE*$page);
+		// write results to array
+		$res = $pb->query($query);
+		$array = array();
+		while ($problem = $res->fetchArray(SQLITE3_ASSOC))
+			$array[] = $problem['id'];
+
+		// save in session
+		$hash = md5($_SERVER['QUERY_STRING']);
+		$_SESSION['cache'][$hash] = $array;
+		return $hash;
+	}
+
+	// get the data for a specific task page
+	function taskquery($pb, $hash, $page) {
+		$ids = array_slice($_SESSION['cache'][$hash], TASKS_PER_PAGE*$page, TASKS_PER_PAGE);
+		$idstr = implode(",", $ids);
+
+		$query = "SELECT problems.id, files.content AS problem, problems.proposed, letter, number, month, year, "
+			."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
+			."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
+			."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
+			."FROM problems JOIN files ON problems.file_id=files.rowid "
+			."LEFT JOIN published ON problems.id=published.problem_id "
+			."WHERE problems.id IN ($idstr) ORDER BY year DESC, month DESC";
 
 		return $pb->query($query);
 	}
 
+	// print given tasks as HTML
 	function tasklist($pb, $problems) {
 		$problem_id=0;
 		$tags = Array(TASKS_PER_PAGE);
@@ -107,6 +127,6 @@
 		include 'proposers.php';
 		$pb = new SQLite3('sqlite/problembase.sqlite');
 		header("Content-Type: text/html; encoding=utf-8");
-		tasklist($pb, taskquery($pb, $_GET['page']));
+		tasklist($pb, taskquery($pb, $_GET['hash'], $_GET['page']));
 	}
 ?>
