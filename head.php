@@ -55,6 +55,7 @@ function drawMenu($id) { ?>
 	<?php drawMenu("headermenu"); ?>
 	<form id="login" action="<?=$_SERVER["PBROOT"]?>/logon.php" method="POST">
 	<?php if (!isset($user_id)) { ?>
+		<span id="wait"></span>
 		<input type="email" style="width:15em;" name="email" placeholder="E-Mail">
 		<input type="password" name="password" placeholder="Passwort">
 		<input type="submit" value="Login">
@@ -65,6 +66,10 @@ function drawMenu($id) { ?>
 		<input type="submit" value="Logout">
 	<?php } ?>
 	</form>
-	<script>var Login = new PopupTrigger("login");</script>
+	<script>
+		var Login = new PopupTrigger("login");
+<?php	if (isset($_SESSION['wait'])) { ?>
+		var Wait = new WaitTimer("<?=$_SESSION['wait']?>"); <?php } ?>
+	</script>
 </div></div>
 <?php } ?>

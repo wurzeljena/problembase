@@ -32,8 +32,10 @@
 		}
 		if (isset($_POST["old_pw"]) && isset($_POST["new_pw"])) {
 			$encr_pw = $pb->querySingle("SELECT encr_pw FROM users WHERE id=$id", false);
-			if ($encr_pw == "" || $encr_pw == hash("sha256", $_POST["old_pw"]))
-				$pb->exec("UPDATE users SET encr_pw='".hash("sha256", $_POST["new_pw"])."' WHERE id=$id");
+			if ($encr_pw == "" || $encr_pw == crypt($_POST["old_pw"], $encr_pw)) {
+				$salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+				$pb->exec("UPDATE users SET encr_pw='".crypt($_POST["new_pw"], '$6$rounds=5000$'.$salt.'$')."' WHERE id=$id");
+			}
 			header("Location: users/$id");
 		}
 	}

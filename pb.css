@@ -57,6 +57,13 @@ span#username
 	color  : #F06020;
 	margin	: 5px;
 }
+span#wait
+{
+	font-family	: Sans-Serif;
+	font-size	: small;
+	color	: Red;
+	margin	: 0px 10px;
+}
 
 /* Navigation im Seitenmenü bzw. Header */
 nav ul

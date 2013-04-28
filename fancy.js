@@ -289,3 +289,23 @@ function Stars(name) {
 
 	this.reset();
 };
+
+// wait timer for failed logins
+function WaitTimer(timestr) {
+	var self = this;
+	this.time = new Date(timestr)
+	this.span = document.getElementById("wait")
+
+	this.setWait = function () {
+		var d = new Date();
+		var diff = this.time - d;
+		if (diff > 0)
+			this.span.textContent = "Erneut in " + Math.round(diff / 1000) + " Sek.";
+		else {
+			this.span.textContent = "";
+			clearInterval(this.Timer);
+		}
+	}
+
+	this.Timer = setInterval(function () { self.setWait() }, 250)
+}

@@ -110,8 +110,8 @@ However, as authenticated user, you can do a lot. So please backup every once in
 admin. You won't regret. However, thorough security checks still have to be done. Feel free to
 analyse the code, I'll be happy about critical feedback.
 
-Passwords are stored as unsalted SHA-1 hash. This is propably not state-of-the-art, but seemed
-sufficient to me.
+Passwords are stored as salted SHA-512 hash. To prevent password guessing, one has to wait for 10
+seconds after a failed attempt.
 
 What's still missing
 --------------------
