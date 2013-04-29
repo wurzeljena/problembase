@@ -46,10 +46,10 @@
 				$tags = "";
 			tag_form($pb, "task", $tags);
 		?>
-		<textarea class="text" name="problem" id="textarea" rows="20" cols="65" placeholder="Aufgabentext"
+		<textarea class="text" name="problem" id="text" rows="20" cols="65" placeholder="Aufgabentext"
 			style="height:200px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $problem['problem']; ?></textarea>
 		<div class="preview" id="preview"></div>
-		<textarea class="text" name="remarks" id="textarea" rows="5" cols="65" placeholder="Anmerkungen"
+		<textarea class="text" name="remarks" rows="5" cols="65" placeholder="Anmerkungen"
 			style="height:70px;"><?php if (isset($id)) print $problem['remarks']; ?></textarea>
 		<label for="proposed">Vorgeschlagen am:</label> <input type="date" class="text" name="proposed" id="proposed" style="width:100px;" placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" value="<?php if (isset($id)) print $problem['proposed']; ?>"/>
 		<input type="submit" value="<?php if (isset($id)) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
@@ -65,7 +65,7 @@
 	<?php $pb->close(); ?>
 
 	<script type="text/javascript">
-		Preview.Init("textarea", "preview");
+		Preview.Init("text", "preview");
 	</script>
 </body>
 </html>

@@ -25,7 +25,7 @@
 	<form class="filter" id="filter" title="Filter" action="<?=$_SERVER["PBROOT"]?>/" method="GET">
 		<div><input type="text" name="filter" placeholder="Suchbegriff"
 			value="<?php if (isset($_GET['filter'])) print $_GET['filter']; ?>"/>
-		<input type="submit" value="Filtern"></div>
+		<input type="submit" value="Suchen"></div>
 		<div id="questions">
 		<div>
 			<label class="question" for="proposer">Wer?</label>

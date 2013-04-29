@@ -139,7 +139,6 @@ function PropForm(form, list) {
 		remove.type = "button";
 		remove.value = "entfernen";
 		remove.onclick = function () { self.removeProp(num); };
-		remove.placeholder = "Land";
 		prop.appendChild(remove);
 
 		var propsDiv = document.getElementById("proplist");
