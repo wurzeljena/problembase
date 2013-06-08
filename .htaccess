@@ -1,20 +1,47 @@
 # provide natural, clean URLs
 RewriteEngine On
-RewriteRule ^new$ problem.php [L]
-RewriteRule ^([0-9]+)/$ task.php?id=$1 [L]
-RewriteRule ^([0-9]+)/edit$ problem.php?id=$1 [L]
-RewriteRule ^([0-9]+)/evaluate$ eval.php?id=$1 [L]
-RewriteRule ^([0-9]+)/addsolution$ solution.php?problem_id=$1 [L]
-RewriteRule ^([0-9]+)/([0-9]+)$ solution.php?id=$2&problem_id=$1 [L]
-RewriteRule ^users/$ user.php [L]
-RewriteRule ^tags/$ tagpanel.php?standalone [L]
 
-# redirect to provisional implementations
-RewriteRule ^users/([0-9]+)$ %{ENV:PBROOT}/users/ [R,L]
-RewriteRule ^proposers/(.+)$ %{ENV:PBROOT}/index.php?filter=&proposer=$1&number=&start=&end=&tags= [R,L]
-RewriteRule ^issues/([0-9][0-9])/([01][0-9])$ %{ENV:PBROOT}/index.php?filter=&proposer=&number=$2/$1&start=&end=&tags= [R,L]
-RewriteRule ^tags/([0-9]+)$ %{ENV:PBROOT}/index.php?filter=&proposer=&number=&start=&end=&tags=$1 [R,L]
+# main page
+RewriteRule ^$ pages/index.php [L]
+RewriteRule ^problem$ pages/problem.php [L]
+RewriteRule ^logon$ lib/logon.php [L,QSA]
+RewriteRule ^tasks$ lib/tasklist.php [L,QSA]
 
-# redirect to canonical URLs
-RewriteRule ^users$ %{ENV:PBROOT}/users/ [R=301,L]
+# content pages and submitting
+RewriteRule ^([0-9]+)/$ pages/task.php?id=$1 [L]
 RewriteRule ^([0-9]+)$ %{ENV:PBROOT}/$1/ [R=301,L]
+RewriteRule ^([0-9]+)/edit$ pages/problem.php?id=$1 [L]
+RewriteRule ^([0-9]+)/evaluate$ pages/eval.php?id=$1 [L]
+RewriteRule ^([0-9]+)/addsolution$ pages/solution.php?problem_id=$1 [L]
+RewriteRule ^([0-9]+)/([0-9]+)$ pages/solution.php?id=$2&problem_id=$1 [L]
+RewriteRule ^([0-9]+)/publish$ lib/publish.php?id=$1 [L,QSA]
+RewriteRule ^submit/$ lib/submit_problem.php [L,QSA]
+RewriteRule ^submit/([0-9]+)$ lib/submit_problem.php?id=$1 [L,QSA]
+RewriteRule ^submit/([0-9]+)/$ lib/submit_solution.php?problem_id=$1 [L,QSA]
+RewriteRule ^submit/([0-9]+)/([0-9]+)$ lib/submit_solution.php?id=$2&problem_id=$1 [L,QSA]
+RewriteRule ^submit/([0-9]+)/eval$ lib/submit_eval.php?id=$1 [L,QSA]
+
+# user management
+RewriteRule ^users/$ pages/user.php [L]
+RewriteRule ^users$ %{ENV:PBROOT}/users/ [R=301,L]
+RewriteRule ^users/new$ lib/edit_user.php [L,QSA]
+RewriteRule ^users/([0-9]+)$ %{ENV:PBROOT}/users/ [R,L]
+RewriteRule ^users/([0-9]+)/edit$ lib/edit_user.php?id=$1 [L,QSA]
+RewriteRule ^users/([0-9]+)/changepw$ lib/edit_user.php?id=$1 [L,QSA]
+RewriteRule ^users/([0-9]+)/delete$ lib/edit_user.php?id=$1&delete [L,QSA]
+
+# tag management
+RewriteRule ^tagpanel$ pages/tagpanel.php [L]
+RewriteRule ^tags/$ pages/tagpanel.php?standalone [L]
+RewriteCond expr "%{HTTP_ACCEPT}='application/json'"
+RewriteRule ^tags/([0-9]+)$ lib/tags.php?taginfo&id=$1 [L,QSA]
+RewriteRule ^tags/([0-9]+)$ %{ENV:PBROOT}/?filter=&proposer=&number=&start=&end=&tags=$1 [R,L]
+RewriteRule ^tags/edit$ lib/tags.php [L,QSA]
+
+# proposer queries
+RewriteCond expr "%{HTTP_ACCEPT}='application/json'"
+RewriteRule ^proposers/(.*)$ lib/proposers.php?prop_query=$1 [L,QSA]
+RewriteRule ^proposers/(.+)$ %{ENV:PBROOT}/?filter=&proposer=$1&number=&start=&end=&tags= [R,L]
+
+# issue
+RewriteRule ^issues/([0-9][0-9])/([01][0-9])$ %{ENV:PBROOT}/?filter=&proposer=&number=$2/$1&start=&end=&tags= [R,L]

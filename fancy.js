@@ -173,7 +173,8 @@ function PropForm(form, list) {
 			}
 		}
 
-		xmlhttp.open("GET", rootdir + "/proposers.php?prop_query=" + encodeURIComponent(prop.value), async);
+		xmlhttp.open("GET", rootdir + "/proposers/" + encodeURIComponent(prop.value), async);
+		xmlhttp.setRequestHeader("Accept", "application/json");
 		xmlhttp.send();
 	}
 

@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 
 	if (isset($_POST["logout"]))
 		session_destroy();

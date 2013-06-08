@@ -35,7 +35,7 @@ function drawMenu($id) { ?>
 	<ul>
 		<li><a href="<?=$_SERVER["PBROOT"]?>/"><i class="icon-th-list"></i> <span>&Uuml;bersicht</span></a>
 </li><?php	if (isset($_SESSION['user_id'])): ?><li>
-		<a href="<?=$_SERVER["PBROOT"]?>/new"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
+		<a href="<?=$_SERVER["PBROOT"]?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
 </li><li>
 		<a href="<?=$_SERVER["PBROOT"]?>/users/"><i class="icon-group"></i> <span>Benutzerliste</span></a>
 </li><li>
@@ -53,7 +53,7 @@ function drawMenu($id) { ?>
 <div class="head"><div class="center">
 	<a id="logo" href="<?=$_SERVER["PBROOT"]?>/">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
 	<?php drawMenu("headermenu"); ?>
-	<form id="login" action="<?=$_SERVER["PBROOT"]?>/logon.php" method="POST">
+	<form id="login" action="<?=$_SERVER["PBROOT"]?>/logon" method="POST">
 	<?php if (!isset($user_id)) { ?>
 		<span id="wait"></span>
 		<input type="email" style="width:15em;" name="email" placeholder="E-Mail">

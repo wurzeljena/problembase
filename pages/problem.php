@@ -3,11 +3,11 @@
 
 	// if user isn't authenticated, throw a 403 error
 	if (!isset($_SESSION['user_id'])) {
-		include 'error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
 		exit();
 	}
 
-	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 	if (isset($_GET['id'])) {
 		$id = (int)$_GET['id'];
 		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
@@ -16,13 +16,13 @@
 	// if no such problem exists, throw a 404 error
 	if (isset($id) && empty($problem)) {
 		$error = "Aufgabe nicht gefunden";
-		include 'error404.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error404.php';
 		exit();
 	}
 
-	include 'head.php';
-	include 'tags.php';
-	include 'proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tags.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
 	printhead("Aufgabe ".(isset($id) ? "bearbeiten" : "erstellen"));
 ?>
 <body>
@@ -31,14 +31,13 @@
 	<div class="center">
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
-		<iframe src="<?=$_SERVER["PBROOT"]?>/tagpanel.php" style="border:none;overflow:hidden" width="270" height="210"></iframe>
+		<iframe src="<?=$_SERVER["PBROOT"]?>/tagpanel" style="border:none;overflow:hidden" width="270" height="210"></iframe>
 	</div>
 
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>
-	<form class="task" id="task" title="Aufgabenformular" action="<?=$_SERVER["PBROOT"]?>/submit_problem.php" method="POST">
+	<form class="task" id="task" title="Aufgabenformular" action="<?=$_SERVER["PBROOT"]?>/submit/<?= isset($id) ? $id:"" ?>" method="POST">
 		<?php
-			if (isset($id)) print "<input type='hidden' name='id' value='$id'>";
 			proposer_form($pb, "task", "problem", isset($id) ? $id : -1);
 			if (isset($id))
 				$tags = get_tags($pb, $problem['id']);

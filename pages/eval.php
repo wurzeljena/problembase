@@ -3,12 +3,12 @@
 
 	// if user isn't authenticated, throw a 403 error
 	if (!isset($_SESSION['user_id'])) {
-		include 'error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
 		exit();
 	}
 
 	$id = (int)$_GET['id'];
-	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
 	$comment = $pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", true);
 	$pb->close();
@@ -16,11 +16,11 @@
 	// if no such problem exists, throw a 404 error
 	if (empty($problem)) {
 		$error = "Aufgabe nicht gefunden";
-		include 'error404.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error404.php';
 		exit();
 	}
 
-	include 'head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
 	printhead("Aufgabe bewerten");
 ?>
 <body>
@@ -33,9 +33,8 @@
 
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
-	<form class="eval" id="eval" title="Bewertungsformular" action="<?=$_SERVER["PBROOT"]?>/submit_eval.php" method="POST">
+	<form class="eval" id="eval" title="Bewertungsformular" action="<?=$_SERVER["PBROOT"]?>/submit/<?php print $id?>/eval" method="POST">
 		<div class="problem" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
-		<input type="hidden" name="id" value="<?php print $id?>"/>
 		<?php
 			$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
 			$critcols = array('beauty', 'difficulty', 'knowledge_required');

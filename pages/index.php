@@ -1,11 +1,11 @@
 <?php
 	session_start();
-	include 'head.php';
-	include 'proposers.php';
-	include 'tasklist.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tasklist.php';
 
 	printhead();
-	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 
 	// initialize cache if necessary
 	if (!isset($_SESSION['cache']))

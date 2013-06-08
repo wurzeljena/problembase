@@ -70,7 +70,7 @@
 
 	// answer to Ajax queries for proposers
 	if (isset($_GET['prop_query'])) {
-		$pb = new SQLite3('sqlite/problembase.sqlite');
+		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 		$proposers = $pb->query("SELECT id, location, country FROM proposers WHERE name='{$pb->escapeString($_GET['prop_query'])}'");
 		header("Content-Type: application/json");
 		print "[";	$num = 0;

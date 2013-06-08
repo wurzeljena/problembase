@@ -1,7 +1,7 @@
 <?php
 	if (session_status() != PHP_SESSION_ACTIVE)
 		session_start();
-	include 'head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
 	header($_SERVER["SERVER_PROTOCOL"]." 403 Forbidden");
 	printhead("Zugriff nicht gestattet", false);
 ?>
@@ -12,7 +12,7 @@
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
 	</div>
-	
+
 	<div class="center">
 	<div class="content">
 	<h3>Zugriff nicht gestattet</h3>

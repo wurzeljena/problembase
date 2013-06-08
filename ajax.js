@@ -26,7 +26,7 @@ var pageLoader = {
 			}
 		}
 
-		xmlhttp.open("GET", rootdir + "/tasklist.php?hash=" + this.hash + "&page=" + this.page, true);
+		xmlhttp.open("GET", rootdir + "/tasks?hash=" + this.hash + "&page=" + this.page, true);
 		xmlhttp.send();
 
 		// set info
@@ -59,7 +59,8 @@ function TagList(form, init) {
 			}
 		}
 
-		xmlhttp.open("GET", rootdir + "/tags.php?taginfo&id=" + newtag, true);
+		xmlhttp.open("GET", rootdir + "/tags/" + newtag, true);
+		xmlhttp.setRequestHeader("Accept", "application/json");
 		xmlhttp.send();
 	}
 
@@ -96,7 +97,8 @@ function loadTag() {
 			}
 		}
 
-		xmlhttp.open("GET", rootdir + "/tags.php?taginfo&id=" + id, true);
+		xmlhttp.open("GET", rootdir + "/tags/" + id, true);
+		xmlhttp.setRequestHeader("Accept", "application/json");
 		xmlhttp.send();
 	}
 	else {
@@ -137,7 +139,7 @@ function setright(id, name) {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () { }
 
-	xmlhttp.open("POST", rootdir + "/edit_user.php", true);
+	xmlhttp.open("POST", rootdir + "/users/" + id + "/edit", true);
 	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xmlhttp.send("id=" + id + "&update=1&" + name + "=" + (+elem.checked));
+	xmlhttp.send("update=1&" + name + "=" + (+elem.checked));
 }

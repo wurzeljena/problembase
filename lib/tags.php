@@ -40,7 +40,7 @@
 	// answer to Ajax queries for tags
 	if (isset($_GET['taginfo'])) {
 		session_start();
-		$pb = new SQLite3('sqlite/problembase.sqlite');
+		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_GET['id']."'")
 			->fetchArray(SQLITE3_ASSOC);
 		$res['color'] = "#".substr("00000".dechex($res['color']),-6);
@@ -57,7 +57,7 @@
 			exit();
 		}
 
-		$pb = new SQLite3('sqlite/problembase.sqlite');
+		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 		foreach(array("id", "name", "description", "color") as $key)
 			$$key = $pb->escapeString($_POST[$key]);
 

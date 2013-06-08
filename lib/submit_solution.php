@@ -1,15 +1,18 @@
 <?php
 	session_start();
-	include 'proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
 	if (!isset($_SESSION['user_id'])) {
-		include 'error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
 		exit();
 	}
-	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 
 	// read parameters
-	foreach(array("id", "problem_id", "propnums", "proposer", "proposer_id", "location", "country",
-			"tags", "solution", "remarks", "published") as $key)
+	if (isset($_GET["id"]))
+		$id = $pb->escapeString($_GET["id"]);
+	$problem_id = $pb->escapeString($_GET["problem_id"]);
+	foreach(array("propnums", "proposer", "proposer_id", "location", "country",
+			"solution", "remarks", "published") as $key)
 		$$key = $_POST[$key];
 
 	if (isset($_POST["delete"])) {

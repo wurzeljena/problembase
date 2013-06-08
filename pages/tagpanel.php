@@ -2,11 +2,11 @@
 	session_start();
 
 	if (!isset($_SESSION['user_id'])) {
-		include 'error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
 		exit();
 	}
 
-	include 'head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
 	printhead("Tag-Editor");
 
 	if (isset($_GET['standalone'])) {
@@ -17,12 +17,12 @@
 	else
 		print "<body class='iframe'>"
 ?>
-	<form id="tageditor" action="<?=$_SERVER["PBROOT"]?>/tags.php" method="POST">
+	<form id="tageditor" action="<?=$_SERVER["PBROOT"]?>/tags/edit" method="POST">
 		<div>
 			<select name="id" onchange="loadTag();">
 				<option value="" selected>&mdash;Neuer Tag&mdash;</option>
 				<?php
-					$pb = new SQLite3('sqlite/problembase.sqlite');
+					$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 					$tags = $pb->query("SELECT id, name FROM tags");
 					while(list($id, $tag) = $tags->fetchArray(SQLITE3_NUM))
 						print "<option value='$id'>$tag</option>";

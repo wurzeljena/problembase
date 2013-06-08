@@ -1,7 +1,7 @@
 <?php
 	if (session_status() != PHP_SESSION_ACTIVE)
 		session_start();
-	include 'head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
 	header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
 	if (!isset($error))
 		$error = "Seite nicht gefunden";

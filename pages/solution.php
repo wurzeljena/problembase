@@ -3,11 +3,11 @@
 
 	// if user isn't authenticated, throw a 403 error
 	if (!isset($_SESSION['user_id'])) {
-		include 'error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
 		exit();
 	}
 
-	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 	$problem_id = (int)$_GET['problem_id'];
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$problem_id", true);
 	if (empty($problem))
@@ -24,12 +24,12 @@
 
 	// answer invalid requests properly
 	if (isset($error)) {
-		include 'error404.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error404.php';
 		exit();
 	}
 
-	include 'head.php';
-	include 'proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
 	printhead("L&ouml;sung ".(isset($id) ? "bearbeiten" : "erstellen"));
 ?>
 <body>
@@ -42,10 +42,9 @@
 
 	<div class="content">
 	<h2 class="solution">L&ouml;sung bearbeiten</h2>
-	<form class="solution" id="solution" title="L&ouml;sungsformular" action="<?=$_SERVER["PBROOT"]?>/submit_solution.php" method="POST">
+	<form class="solution" id="solution" title="L&ouml;sungsformular"
+		action="<?=$_SERVER["PBROOT"]?>/submit/<?php if (isset($id)) print $solution['problem_id']."/".$id; else print $problem_id."/"; ?>" method="POST">
 		<div class="problem"><?php print htmlspecialchars($problem['problem']); ?></div>
-		<?php if (isset($id)) print "<input type='hidden' name='id' value='$id'>"; ?>
-		<input type="hidden" name="problem_id" value="<?php if (isset($id)) print $solution['problem_id']; else print $problem_id; ?>">
 		<?php proposer_form($pb, "solution", "solution", isset($id) ? $id : -1); ?>
 		<textarea class="text" name="solution" id="text" rows="60" cols="80" placeholder="L&ouml;sungstext"
 			style="height:400px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $solution['solution']; ?></textarea> <br/>

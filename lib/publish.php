@@ -1,13 +1,14 @@
 <?php
 	session_start();
 	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
-		include 'error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
 		exit();
 	}
-	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 
 	// read parameters
-	foreach(array("id", "letter", "number", "volume") as $key)
+	$id = $pb->escapeString($_GET["id"]);
+	foreach(array("letter", "number", "volume") as $key)
 		$$key = $pb->escapeString($_POST[$key]);
 
 	// write into db

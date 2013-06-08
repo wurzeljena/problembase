@@ -2,19 +2,19 @@
 	session_start();
 
 	$id = (int)$_GET['id'];
-	$pb = new SQLite3('sqlite/problembase.sqlite');
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
 
 	// if no such problem exists, throw a 404 error
 	if (empty($problem)) {
 		$error = "Aufgabe nicht gefunden";
-		include 'error404.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error404.php';
 		exit();
 	}
 
-	include 'head.php';
-	include 'tags.php';
-	include 'proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tags.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
 
 	printhead("Aufgabe $id");
 ?>
@@ -62,8 +62,7 @@
 						print "<a class='button' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>Ver&ouml;ffentlichen</span></a>";
 				}
 			?>
-			<form id="publish" style="display:none;" action="<?=$_SERVER["PBROOT"]?>/publish.php" method="POST">
-				<input type="hidden" name="id" value="<?php print $id; ?>">
+			<form id="publish" style="display:none;" action="<?=$_SERVER["PBROOT"]?>/<?php print $id; ?>/publish" method="POST">
 				<input type="submit" style="float:right;" value="Speichern">
 				<div style="display:inline;white-space:nowrap;">
 				<label for="volume">Ausgabe:</label>

@@ -1,7 +1,7 @@
 <?php
 	define("TASKS_PER_PAGE", 10);
 
-	include 'tags.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tags.php';
 
 	// filter tasks, save the result in the session cache and return the index
 	function taskfilter($pb) {
@@ -124,8 +124,8 @@
 
 	if (isset($_GET['page'])) {
 		session_start();
-		include 'proposers.php';
-		$pb = new SQLite3('sqlite/problembase.sqlite');
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 		header("Content-Type: text/html; encoding=utf-8");
 		tasklist($pb, taskquery($pb, $_GET['hash'], $_GET['page']));
 	}
