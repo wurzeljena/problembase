@@ -282,7 +282,7 @@ table.info td
 }
 
 /* Tag-Formatierung */
-div.taglist
+div.taglist, span#taglist
 {
 	margin	: 5px;
 	line-height	: 1.5em;
@@ -400,7 +400,7 @@ div.comment div.author a
 div.comment div.text
 {
 	display	: inline;
-	margin	: 3px;
+	margin	: 3px 0px;
 }
 div.comment div.eval
 {
@@ -485,6 +485,7 @@ form.solution input.text, form.solution textarea {background : #B0E0FF;}
 form.solution input.text:hover, form.solution textarea:hover {background : #D0F0FF;}
 form.eval input.text, form.eval textarea {background : #F0F050;}
 form.eval input.text:hover, form.eval textarea:hover {background : #F0F080;}
+input.location {width : 100px;}
 
 /* TEX-Anzeigen */
 form div.problem

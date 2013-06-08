@@ -99,7 +99,8 @@ function PropForm(form, list) {
 		prop.id = "prop" + num;
 
 		var name = document.createElement("input");
-		name.type = name.className = "text";
+		name.type = "text";
+		name.className = "text name";
 		name.name = "proposer[" + num + "]";
 		name.setAttribute("list", "proposers");
 		name.autocomplete = "off";
@@ -120,7 +121,8 @@ function PropForm(form, list) {
 		this.datalists[num] = locationlist;
 
 		var location = document.createElement("input");
-		location.type = location.className = "text";
+		location.type = "text";
+		location.className = "text location";
 		location.name = "location[" + num + "]";
 		location.setAttribute("list", "propdata" + num);
 		location.autocomplete = "off";
@@ -130,7 +132,8 @@ function PropForm(form, list) {
 		prop.appendChild(location);
 
 		var country = document.createElement("input");
-		country.type = country.className = "text";
+		country.type = "text";
+		country.className = "text country";
 		country.name = "country[" + num + "]";
 		country.placeholder = "Land";
 		prop.appendChild(country);

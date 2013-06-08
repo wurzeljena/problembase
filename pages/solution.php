@@ -66,6 +66,7 @@
 
 	<script type="text/javascript">
 		Preview.Init("text", "preview");
+		Preview.Update();
 	</script>
 </body>
 </html>

@@ -28,7 +28,7 @@
 			print '<option value="'.$tag[0].'">'.$tag[1].'</option>'; ?>
 		</select>
 		<input type="hidden" name="tags"/>
-		<span id="taglist" style="margin:3px;"></span>
+		<span id="taglist"></span>
 		<script>var tagList = new TagList("<?=$form?>", [<?=$taglist?>]);</script>
  <?php }
 
