@@ -107,12 +107,11 @@
 		if (!isset($user_id))
 			print "<h3 id='comments'><i class='icon-comment-alt'></i> Kommentare</h3>";
 
-		$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id");
+		$cond = (isset($user_id) && $_SESSION['editor']) ? "" : " AND editorial=0";
+		$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id".$cond);
 		while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
-			if (isset($user_id) && $comment['user_id']==$user_id)
-				print '<div class="comment own">';
-			else
-				print '<div class="comment">';
+			print "<div class='comment".(isset($user_id) && $comment['user_id']==$user_id ? " own" : "")
+				.($comment['editorial'] ? " editorial" : "")."'>";
 			if (isset($user_id) && $comment['user_id']==$user_id)
 				print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			print "<div class='author'>{$comment['name']}";

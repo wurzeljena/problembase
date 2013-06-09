@@ -381,6 +381,7 @@ div.comment
 	position	: relative;
 }
 div.own {background: #E0E020;}
+div.editorial div.text:before	{content:"(intern) "; }
 div.comment div.author
 {
 	display		: inline;
@@ -390,7 +391,6 @@ div.comment div.author
 	font-style	: italic;
 	color	: #404040;
 }
-div.own div.author	{ display: none; }
 div.comment div.author a
 {
 	margin-left	: 3px;

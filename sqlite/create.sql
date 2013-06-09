@@ -115,6 +115,7 @@ CREATE TABLE comments (
   beauty TINYINT NULL,
   knowledge_required TINYINT NULL,
   comment TEXT NULL,
+  editorial BOOL NOT NULL,
   PRIMARY KEY (user_id, problem_id),
   FOREIGN KEY (user_id)
     REFERENCES users(id)
