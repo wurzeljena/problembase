@@ -12,6 +12,12 @@
 		exit();
 	}
 
+	// if the user isn't allowed to see it, throw a 403 error
+	if (!$problem['public'] && (!isset($_SESSION['user_id']) || !$_SESSION['editor'])) {
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
+		exit();
+	}
+
 	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
 	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tags.php';
 	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
@@ -84,9 +90,10 @@
 		</div>
 
 		<?php
+		$cond = (isset($user_id) && $_SESSION['editor']) ? "" : " AND public=1";
 		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year, solutions.public FROM solutions "
 			."LEFT JOIN files ON solutions.file_id=files.rowid "
-			."WHERE problem_id=$id");
+			."WHERE problem_id=$id".$cond);
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
 			print '<div class="solution '.($solution['public'] ? "" : "nonpublic").'">';
 			if (isset($user_id))

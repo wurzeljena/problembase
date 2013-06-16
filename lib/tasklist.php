@@ -9,9 +9,9 @@
 			."FROM problems LEFT JOIN published ON problems.id=published.problem_id";
 
 		// add filter constraints
+		$filter = array();
+		$public = !isset($_SESSION['user_id']) || !$_SESSION['editor'];
 		if (isset($_GET['filter'])) {
-			$filter = array();
-
 			if ($_GET['filter'] != "") {
 				$pb->exec("CREATE TEMPORARY TABLE filter AS "
 					."SELECT id AS problem_id FROM problems JOIN files ON files.rowid=problems.file_id "
@@ -37,7 +37,8 @@
 			}
 
 			if (isset($_GET['with_solution']))
-				$filter[] = "EXISTS (SELECT solutions.id FROM solutions WHERE problems.id=solutions.problem_id)";
+				$filter[] = "EXISTS (SELECT solutions.id FROM solutions WHERE problems.id=solutions.problem_id "
+					.($public ? " AND public=1" : "").")";
 
 			if ($_GET['start'] != "")
 				$filter[] = "proposed > '{$pb->escapeString($_GET['start'])}'";
@@ -47,10 +48,12 @@
 			$tags = array_filter(explode(',', $_GET['tags']));
 			foreach ($tags as $tag)
 				$filter[] = "EXISTS (SELECT rowid FROM tag_list WHERE problems.id=tag_list.problem_id and tag_list.tag_id={$pb->escapeString($tag)})";
-
-			if (count($filter))
-				$query .= " WHERE ".implode(" AND ", $filter);
 		}
+
+		if ($public)
+			$filter[] = "public=1";
+		if (count($filter))
+			$query .= " WHERE ".implode(" AND ", $filter);
 
 		// order entries
 		$query .= " ORDER BY year DESC, month DESC";
@@ -72,7 +75,7 @@
 		$ids = array_slice($_SESSION['cache'][$hash], TASKS_PER_PAGE*$page, TASKS_PER_PAGE);
 		$idstr = implode(",", $ids);
 
-		$query = "SELECT problems.id, files.content AS problem, problems.proposed, letter, number, month, year, "
+		$query = "SELECT problems.id, files.content AS problem, problems.proposed, public, letter, number, month, year, "
 			."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
 			."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
 			."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
@@ -89,7 +92,7 @@
 		$tags = Array(TASKS_PER_PAGE);
 		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
 			print "<a class='textbox' href='{$_SERVER["PBROOT"]}/{$problem['id']}/'>";
-			print '<div class="task">';
+			print '<div class="task '.($problem['public'] ? "" : "nonpublic").'">';
 			print '<div class="info">';
 			print "<div class='tags'></div>";
 			$tags[$problem_id] = $problem['tags'];
