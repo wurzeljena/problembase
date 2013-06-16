@@ -9,10 +9,28 @@
 
 	// new user
 	if (isset($_POST["newname"]) && !isset($_GET["id"]) && $_SESSION["root"]) {
-		$pb->exec("INSERT INTO users (name, email, root, editor) VALUES "
-			."('{$_POST["newname"]}', '{$_POST["email"]}', ".(int)isset($_POST["root"]).", ".(int)isset($_POST["editor"]).")");
+		// generate password
+		$salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+		$password = strtr(base64_encode(mcrypt_create_iv(6, MCRYPT_DEV_URANDOM)), '+', '.');
+		$salted_pw = crypt($password, '$6$rounds=5000$'.$salt.'$');
+
+		$pb->exec("INSERT INTO users (name, email, encr_pw, root, editor) VALUES "
+			."('{$_POST["newname"]}', '{$_POST["email"]}', '$salted_pw', "
+			.(int)isset($_POST["root"]).", ".(int)isset($_POST["editor"]).")");
+
+		// send message to user with his password
+		mail($_POST["email"], "Anmeldung zur Aufgabendatenbank",
+			"Lieber {$_POST["newname"]},\n\n".
+			"Sie wurden zur Aufgabendatenbank angemeldet. Sie können sich ab sofort\n".
+			"mit ihrer E-Mailadresse '{$_POST["email"]}' und folgendem\n".
+			"Passwort einloggen:\n\n".
+			$password.
+			"\n\nBitte ändern sie dieses Passwort sofort nach der ersten Anmeldung.\n\n".
+			"Viel Spaß beim Stöbern durch Aufgaben und Lösungen wünscht Ihnen\n".
+			"\tIhr Wurzel-Verein",
+			"From: info@wurzel.org\nContent-type: text/plain; charset=iso-8859-1");
+
 		header("Location: {$_SERVER["PBROOT"]}/users/".$pb->lastInsertRowID());
-		// maybe later: send message to user to login and set his password
 	}
 
 	// delete user
@@ -20,7 +38,6 @@
 		$pb->exec("PRAGMA foreign_keys=on;");
 		$pb->exec("DELETE FROM users WHERE id={$_GET["id"]}");
 		header("Location: {$_SERVER["PBROOT"]}/users/");
-		break;
 	}
 
 	// change name/email or password - user has to be logged in
