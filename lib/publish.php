@@ -23,6 +23,10 @@
 		$pb->exec("INSERT OR REPLACE INTO published (problem_id, letter, number, year, month) VALUES ($id, '$letter', $number, $year, $month)");
 	}
 
+	// write "public" flag
+	$public = isset($_POST['public']) ? 1 : 0;
+	$pb->exec("UPDATE problems SET public=$public WHERE id=$id");
+
 	$pb->close();
 
 	// redirect to task page

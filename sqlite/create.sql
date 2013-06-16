@@ -25,6 +25,7 @@ CREATE TABLE problems (
   file_id INTEGER NOT NULL,
   remarks TEXT NULL,
   proposed DATE NULL,
+  public BOOL NOT NULL,
   PRIMARY KEY (id ASC) );
 CREATE INDEX problem_file ON problems(file_id);
 CREATE INDEX problem_proposed ON problems(proposed);
@@ -61,6 +62,7 @@ CREATE TABLE solutions (
   remarks TEXT NULL,
   year YEAR NULL,
   month TINYINT NULL,
+  public BOOL NOT NULL,
   PRIMARY KEY (id ASC),
   FOREIGN KEY (problem_id)
     REFERENCES problems(id)

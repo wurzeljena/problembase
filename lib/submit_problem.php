@@ -32,8 +32,8 @@
 		else {
 			$pb->exec("INSERT INTO files(content) VALUES('{$pb->escapeString($problem)}')");
 			$file_id = $pb->lastInsertRowID();
-			$pb->exec("INSERT INTO problems(file_id, remarks, proposed) VALUES "
-				."($file_id, '{$pb->escapeString($remarks)}', date('$proposed'))");
+			$pb->exec("INSERT INTO problems(file_id, remarks, proposed, public) VALUES "
+				."($file_id, '{$pb->escapeString($remarks)}', date('$proposed'), 0)");
 			$id = $pb->lastInsertRowID();
 		}
 

@@ -14,6 +14,7 @@
 	foreach(array("propnums", "proposer", "proposer_id", "location", "country",
 			"solution", "remarks", "published") as $key)
 		$$key = $_POST[$key];
+	$public = isset($_POST['public']) ? 1 : 0;
 
 	if (isset($_POST["delete"])) {
 		$pb->exec("PRAGMA foreign_keys=on;");
@@ -37,13 +38,13 @@
 		if (isset($id)) {
 			$file_id = $pb->querySingle("SELECT file_id FROM solutions WHERE id=$id");
 			$pb->exec("UPDATE files SET content='{$pb->escapeString($solution)}' WHERE rowid=$file_id");
-			$pb->exec("UPDATE solutions SET remarks='{$pb->escapeString($remarks)}', year=$year, month=$month WHERE id=$id");
+			$pb->exec("UPDATE solutions SET remarks='{$pb->escapeString($remarks)}', year=$year, month=$month, public=$public WHERE id=$id");
 		}
 		else {
 			$pb->exec("INSERT INTO files(content) VALUES('{$pb->escapeString($solution)}')");
 			$file_id = $pb->lastInsertRowID();
-			$pb->exec("INSERT INTO solutions(problem_id, file_id, remarks, year, month) "
-				."VALUES ($problem_id, $file_id, '{$pb->escapeString($remarks)}', $year, $month)");
+			$pb->exec("INSERT INTO solutions(problem_id, file_id, remarks, year, month, public) "
+				."VALUES ($problem_id, $file_id, '{$pb->escapeString($remarks)}', $year, $month, $public)");
 			$id = $pb->lastInsertRowID();
 		}
 

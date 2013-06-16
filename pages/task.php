@@ -45,9 +45,7 @@
 					$volume = $pub['month']."/".str_pad($pub['year']%100, 2, "0", STR_PAD_LEFT);
 					$letter = $pub['letter'];
 					$number = $pub['number'];
-					print "Publiziert als $$letter\,$number$ im Heft $volume.";
-					if (isset($user_id) && $_SESSION['editor'])
-						print "<a class='button danger' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>";
+					print "Publiziert als $$letter\,$number$ im Heft $volume";
 				}
 				else {
 					$date = getdate();	++$date['mon'];
@@ -57,35 +55,40 @@
 					}
 					$volume = $date['mon']."/".str_pad($date['year']%100, 2, "0", STR_PAD_LEFT);
 					$number = $letter = "";
-					print "Noch nicht ver&ouml;ffentlicht.";
-					if (isset($user_id) && $_SESSION['editor'])
-						print "<a class='button' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>Ver&ouml;ffentlichen</span></a>";
+					print "Noch nicht publiziert";
 				}
+				print $problem['public'] ? "." : ", nicht &ouml;ffentlich.";
+				if (isset($user_id) && $_SESSION['editor'])
+					print "<a class='button danger' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>";
 			?>
 			<form id="publish" style="display:none;" action="<?=$_SERVER["PBROOT"]?>/<?php print $id; ?>/publish" method="POST">
 				<input type="submit" style="float:right;" value="Speichern">
 				<div style="display:inline;white-space:nowrap;">
-				<label for="volume">Ausgabe:</label>
-				<input type="text" id="volume" name="volume" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
+				Im <label for="volume">Heft</label>
+				<input type="text" class="text" id="volume" name="volume" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
 					style="width:40px;" value="<?php print $volume; ?>">
 				</div>
 				<div style="display:inline;white-space:nowrap;">
-				<label for="letter">Nummer:</label>
-				<input type="text" id="letter" name="letter" placeholder="xxx"
+				<label for="letter">als</label>
+				<input type="text" class="text" id="letter" name="letter" placeholder="Buchstabe"
 					style="width:50px;" value="<?php print $letter; ?>">
-				<input type="text" name="number" placeholder="NN" pattern="[1-9]|[0-5][0-9]|60"
-					style="width:20px;" value="<?php print $number; ?>">
+				<input type="text" class="text" name="number" placeholder="Nummer" pattern="[1-9]|[0-5][0-9]|60"
+					style="width:20px;" value="<?php print $number; ?>">,
+				</div>
+				<div style="display:inline;white-space:nowrap;">
+				<input type="checkbox" name="public" id="public" <?=$problem['public'] ? "checked" : "";?>>
+					<label for="public">&ouml;ffentlich</label>
 				</div>
 			</form>
 			</div>
 		</div>
 
 		<?php
-		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year FROM solutions "
+		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year, solutions.public FROM solutions "
 			."LEFT JOIN files ON solutions.file_id=files.rowid "
 			."WHERE problem_id=$id");
 		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
-			print '<div class="solution">';
+			print '<div class="solution '.($solution['public'] ? "" : "nonpublic").'">';
 			if (isset($user_id))
 				print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/{$solution['id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			print '<div class="info">';

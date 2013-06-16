@@ -343,22 +343,29 @@ div.solution
 	position	: relative;
 }
 div.solution div.text:before {content: "L\00f6sung: ";}
+div.nonpublic 
+{
+	border-style: dashed;
+	opacity	: 0.7;
+}
 
 div.published
 {
 	padding		: 10px;
 	border-top	: 1px dotted Purple;
 	font-style	: italic;
+	font-size	: small;
 }
 form#publish
 {
 	position	: absolute; bottom : -5px;
 	left	: 10px;	right	: 150px;
-	padding	: 0px 5px;	margin	: 10px 0px;
+	padding	: 3px 5px 0px;	margin	: 10px 0px;
 	border	: 1px solid Purple;
 	border-radius	: 5px;
 	background	: #E0A040;
 }
+form#publish input {margin: 2px;}
 @media (max-width: 599px) {
 	form#publish { right: 50px; }
 }
@@ -485,6 +492,8 @@ form.solution input.text, form.solution textarea {background : #B0E0FF;}
 form.solution input.text:hover, form.solution textarea:hover {background : #D0F0FF;}
 form.eval input.text, form.eval textarea {background : #F0F050;}
 form.eval input.text:hover, form.eval textarea:hover {background : #F0F080;}
+form#publish input.text {background : #FFC040;}
+form#publish input.text:hover {background : #FFD060;}
 input.location {width : 100px;}
 
 /* TEX-Anzeigen */
