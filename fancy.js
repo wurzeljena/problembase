@@ -244,13 +244,11 @@ function writeTag(taginfo, taglist) {
 
 	// if it's part of a tag list, show close button
 	if (taglist !== undefined) {
-		var image = document.createElement("img");
-		image.className = "close";
-		image.alt = "Tag \"" + taginfo.name + "\" entfernen";
-		image.src = rootdir + "/img/close.png";
-		image.style.cursor = "pointer";
-		image.onclick = function () { taglist.remove(taginfo.id, this.parentNode); };
-		tag.appendChild(image);
+		var close = document.createElement("i");
+		close.className = "icon-remove close";
+		close.style.cursor = "pointer";
+		close.onclick = function () { taglist.remove(taginfo.id, this.parentNode); };
+		tag.appendChild(close);
 	}
 
 	return tag;

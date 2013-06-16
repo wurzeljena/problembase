@@ -297,11 +297,12 @@ span.tag
 	font-size		: small;
 	white-space		: nowrap;
 }
-img.close
+i.close
 {
+	color	: #0080FF;
+	text-shadow: 0px 0px 1px Black;
 	margin-bottom	: -1px;
 	margin-left		: 3px;
-	border	: none;
 }
 
 /* Aufgabenseite */
