@@ -11,7 +11,7 @@ CREATE TABLE proposers (
 CREATE UNIQUE INDEX proposer_namelocation ON proposers(name, location);
 
 -- -----------------------------------------------------
--- Table `snippets`
+-- Table `files`
 -- -----------------------------------------------------
 CREATE VIRTUAL TABLE files USING fts4 (
   content TEXT,
@@ -169,5 +169,5 @@ CREATE TABLE published (
   FOREIGN KEY (problem_id)
     REFERENCES problems(id)
     ON UPDATE CASCADE);
-CREATE UNIQUE INDEX published_name ON published(letter, number);
+CREATE INDEX published_name ON published(letter, number);
 CREATE INDEX published_volume ON published(year, month);
