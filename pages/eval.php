@@ -55,7 +55,8 @@
 		?>
 		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php
 			if (!empty($comment)) print $comment['comment']?></textarea> <br/>
-		<input type="checkbox" name="editorial" id="editorial" <?=$comment['editorial']? "checked":""?>/><label for="editorial" style="font-size:small;">redaktionsintern</label>
+		<input type="checkbox" name="editorial" id="editorial" <?=(!empty($comment) && $comment['editorial']) ? "checked":""?>/>
+			<label for="editorial" style="font-size:small;">redaktionsintern</label>
 		<input type="submit" value="Speichern" style="float:right;"/>
 		<?php if (isset($id)) {?>
 		<input type="checkbox" name="delete"/>

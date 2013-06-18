@@ -50,7 +50,9 @@
 		<div class="preview" id="preview"></div>
 		<textarea class="text" name="remarks" rows="5" cols="65" placeholder="Anmerkungen"
 			style="height:70px;"><?php if (isset($id)) print $problem['remarks']; ?></textarea>
-		<label for="proposed">Vorgeschlagen am:</label> <input type="date" class="text" name="proposed" id="proposed" style="width:100px;" placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" value="<?php if (isset($id)) print $problem['proposed']; ?>"/>
+		<label for="proposed">Vorgeschlagen am:</label> <input type="date" class="text" name="proposed" id="proposed" style="width:100px;"
+			placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"
+			value="<?php if (isset($id)) print $problem['proposed']; else print date("Y-m-d"); ?>"/>
 		<input type="submit" value="<?php if (isset($id)) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
 		<?php if (isset($id)) {?>
 		<input type="checkbox" name="delete"/>
