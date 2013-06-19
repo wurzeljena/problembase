@@ -3,32 +3,60 @@
 
 	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tags.php';
 
-	// filter tasks, save the result in the session cache and return the index
-	function taskfilter($pb) {
-		$query = "SELECT problems.id, problems.proposed, month, year "
-			."FROM problems LEFT JOIN published ON problems.id=published.problem_id";
+	class Filter {
+		private $par;		// parameter list
+		private $hash;		// ... and its hash
+		private $query;		// SQLite query
+		public $array;		// result array
 
-		// add filter constraints
-		$filter = array();
-		$public = !isset($_SESSION['user_id']) || !$_SESSION['editor'];
-		if (isset($_GET['filter'])) {
-			if ($_GET['filter'] != "") {
+		function __construct($hash = null) {
+			$this->hash = $hash;
+			if ($hash) {
+				$cache = $_SESSION['cache'][$hash];
+				$this->par = $cache['filter'];
+				$this->array = $cache['data'];
+			}
+		}
+
+		// construct from given parameter list (could be a GET request)
+		function set_params($par) {
+			$names = array('filter', 'proposer', 'number',
+				'with_solution', 'start', 'end', 'tags');
+			$filter = array_intersect_key($par, array_fill_keys($names, 0));
+			$this->par = array_filter($filter);
+			$this->hash = md5(serialize($this->par));
+			return $this->hash;
+		}
+
+		// translate filter criterions to SQL
+		function construct_query($pb, $order = null) {
+			$query = "SELECT problems.id, problems.proposed, month, year "
+				."FROM problems LEFT JOIN published ON problems.id=published.problem_id";
+
+			// add filter constraints
+			$filter = array();
+
+			$public = !isset($_SESSION['user_id']) || !$_SESSION['editor'];
+			if ($public)
+				$filter[] = "public=1";
+
+			if (isset($this->par['filter'])) {
 				$pb->exec("CREATE TEMPORARY TABLE filter AS "
 					."SELECT id AS problem_id FROM problems JOIN files ON files.rowid=problems.file_id "
-					."WHERE content MATCH '{$pb->escapeString($_GET['filter'])}' "
+					."WHERE content MATCH '{$pb->escapeString($this->par['filter'])}' "
 					."UNION SELECT problem_id FROM solutions JOIN files ON files.rowid=solutions.file_id "
-					."WHERE content MATCH '{$pb->escapeString($_GET['filter'])}'");
+					."WHERE content MATCH '{$pb->escapeString($this->par['filter'])}'");
 				$filter[] = "problems.id IN filter";
 			}
 
-			if ($_GET['proposer'] != "") {
+			if (isset($this->par['proposer'])) {
 				$pb->exec("CREATE TEMPORARY TABLE propfilter AS "
-					."SELECT id AS problem_id FROM proposers WHERE name LIKE '%{$pb->escapeString($_GET['proposer'])}%'");
+					."SELECT id AS problem_id FROM proposers WHERE name LIKE '%{$pb->escapeString($this->par['proposer'])}%'");
 				$filter[] = "EXISTS (SELECT proposer_id FROM problemproposers WHERE problem_id=problems.id AND proposer_id IN propfilter)";
 			}
 
-			if ($_GET['number'] != "") {
-				list($month, $year) = explode("/", $_GET['number']);
+			if (isset($this->par['number'])) {
+				list($month, $year) = explode("/", $this->par['number']);
 				if ($year > 50)		// translate YY to 19JJ/20JJ
 					$year += 1900;
 				else
@@ -36,43 +64,48 @@
 				$filter[] = "month = $month AND year = $year";
 			}
 
-			if (isset($_GET['with_solution']))
+			if (isset($this->par['with_solution']))
 				$filter[] = "EXISTS (SELECT solutions.id FROM solutions WHERE problems.id=solutions.problem_id "
 					.($public ? " AND public=1" : "").")";
 
-			if ($_GET['start'] != "")
-				$filter[] = "proposed > '{$pb->escapeString($_GET['start'])}'";
-			if ($_GET['end'] != "")
-				$filter[] = "proposed < '{$pb->escapeString($_GET['end'])}'";
+			if (isset($this->par['start']))
+				$filter[] = "proposed > '{$pb->escapeString($this->par['start'])}'";
+			if (isset($this->par['end']))
+				$filter[] = "proposed < '{$pb->escapeString($this->par['end'])}'";
 
-			$tags = array_filter(explode(',', $_GET['tags']));
-			foreach ($tags as $tag)
-				$filter[] = "EXISTS (SELECT rowid FROM tag_list WHERE problems.id=tag_list.problem_id and tag_list.tag_id={$pb->escapeString($tag)})";
+			if (isset($this->par['tags'])) {
+				$tags = array_filter(explode(',', $this->par['tags']));
+				foreach ($tags as $tag)
+					$filter[] = "EXISTS (SELECT rowid FROM tag_list WHERE problems.id=tag_list.problem_id and tag_list.tag_id={$pb->escapeString($tag)})";
+			}
+
+			if (count($filter))
+				$query .= " WHERE ".implode(" AND ", $filter);
+
+			// order entries
+			if ($order)
+				$query .= " ORDER BY ".implode(", ", $order);
+
+			// prepare query
+			$this->query = $pb->prepare($query);
 		}
 
-		if ($public)
-			$filter[] = "public=1";
-		if (count($filter))
-			$query .= " WHERE ".implode(" AND ", $filter);
+		// filter tasks, save the result in the session cache and return the index
+		function filter() {
+			// write results to array
+			$res = $this->query->execute();
+			$this->array = array();
+			while ($problem = $res->fetchArray(SQLITE3_ASSOC))
+				$this->array[] = $problem['id'];
 
-		// order entries
-		$query .= " ORDER BY year DESC, month DESC";
-
-		// write results to array
-		$res = $pb->query($query);
-		$array = array();
-		while ($problem = $res->fetchArray(SQLITE3_ASSOC))
-			$array[] = $problem['id'];
-
-		// save in session
-		$hash = md5($_SERVER['QUERY_STRING']);
-		$_SESSION['cache'][$hash] = $array;
-		return $hash;
+			// save in session
+			$_SESSION['cache'][$this->hash] = array('filter' => $this->par, 'data' => $this->array);
+		}
 	}
 
 	// get the data for a specific task page
-	function taskquery($pb, $hash, $page) {
-		$ids = array_slice($_SESSION['cache'][$hash], TASKS_PER_PAGE*$page, TASKS_PER_PAGE);
+	function taskquery($pb, $array, $start, $length = TASKS_PER_PAGE) {
+		$ids = array_slice($array, $start, $length);
 		$idstr = implode(",", $ids);
 
 		$query = "SELECT problems.id, files.content AS problem, problems.proposed, public, letter, number, month, year, "
@@ -130,6 +163,8 @@
 		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
 		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 		header("Content-Type: text/html; encoding=utf-8");
-		tasklist($pb, taskquery($pb, $_GET['hash'], $_GET['page']));
+
+		$filter = new Filter($_GET['hash']);
+		tasklist($pb, taskquery($pb, $filter->array, $_GET['page'] * TASKS_PER_PAGE));
 	}
 ?>

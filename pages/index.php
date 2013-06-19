@@ -12,8 +12,11 @@
 		$_SESSION['cache'] = array();
 
 	// do the filtering and save the result
-	$hash = taskfilter($pb);
-	$pages = ceil(count($_SESSION['cache'][$hash])/10);
+	$filter = new Filter();
+	$hash = $filter->set_params($_GET);
+	$filter->construct_query($pb, array("year DESC", "month DESC"));
+	$filter->filter();
+	$pages = ceil(count($filter->array)/10);
 ?>
 <body>
 	<?php printheader(); ?>
