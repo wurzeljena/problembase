@@ -2,7 +2,7 @@
 	session_start();
 
 	// if user has no editor rights, throw a 403 error
-	if (!isset($_SESSION['editor'])) {
+	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
 		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
 		exit();
 	}

@@ -52,7 +52,7 @@
 	// write tag from tag form
 	if (isset($_POST['id']) && isset($_POST['name'])) {
 		session_start();
-		if (!isset($_SESSION['user_id'])) {
+		if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
 			include 'error403.php';
 			exit();
 		}

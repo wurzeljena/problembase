@@ -36,7 +36,7 @@
 	<div class="content">
 		<div class="task">
 			<?php
-				if (isset($user_id))
+				if (isset($user_id) && $_SESSION['editor'])
 					print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/edit'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			?>
 			<div class="info">
@@ -94,16 +94,16 @@
 		$sollist = new SolutionList($pb);
 		$sollist->idstr = $pb->querysingle("SELECT group_concat(id) FROM solutions WHERE problem_id=$id", false);
 		$sollist->query(isset($user_id) && $_SESSION['editor']);
-		$sollist->print_html(isset($user_id));
+		$sollist->print_html(isset($user_id) && $_SESSION['editor']);
 
 		// show buttons between solutions and comments
-		if (isset($user_id))
+		if (isset($user_id) && $_SESSION['editor'])
 			print "<a class='button' href='{$_SERVER["PBROOT"]}/$id/addsolution'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
 		if (isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
 			print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/$id/evaluate'><i class='icon-comments'></i> Kommentar schreiben</a>";
 
 		// if not logged in, separate comments from solutions with a lightweight header
-		if (!isset($user_id))
+		if (!isset($user_id) || !$_SESSION['editor'])
 			print "<h3 id='comments'><i class='icon-comment-alt'></i> Kommentare</h3>";
 
 		$cond = (isset($user_id) && $_SESSION['editor']) ? "" : " AND editorial=0";
