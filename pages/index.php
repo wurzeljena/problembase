@@ -15,7 +15,7 @@
 	$filter = new Filter();
 	$hash = $filter->set_params($_GET);
 	$filter->construct_query($pb, array("year DESC", "month DESC"));
-	$filter->filter();
+	$filter->filter(true);
 	$pages = ceil(count($filter->array)/10);
 ?>
 <body>

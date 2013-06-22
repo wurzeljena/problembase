@@ -91,7 +91,7 @@
 		}
 
 		// filter tasks, save the result in the session cache and return the index
-		function filter() {
+		function filter($cache = false) {
 			// write results to array
 			$res = $this->query->execute();
 			$this->array = array();
@@ -99,7 +99,8 @@
 				$this->array[] = $problem['id'];
 
 			// save in session
-			$_SESSION['cache'][$this->hash] = array('filter' => $this->par, 'data' => $this->array);
+			if ($cache)
+				$_SESSION['cache'][$this->hash] = array('filter' => $this->par, 'data' => $this->array);
 		}
 	}
 
