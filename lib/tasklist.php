@@ -103,59 +103,77 @@
 		}
 	}
 
-	// get the data for a specific task page
-	function taskquery($pb, $array, $start, $length = TASKS_PER_PAGE) {
-		$ids = array_slice($array, $start, $length);
-		$idstr = implode(",", $ids);
+	class TaskList {
+		private $pb;		// handle to the problembase
+		public $idstr;		// comma-separated string of problem ids
+		private $problems;	// corresponding data
 
-		$query = "SELECT problems.id, files.content AS problem, problems.proposed, public, letter, number, month, year, "
-			."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
-			."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
-			."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
-			."FROM problems JOIN files ON problems.file_id=files.rowid "
-			."LEFT JOIN published ON problems.id=published.problem_id "
-			."WHERE problems.id IN ($idstr) ORDER BY year DESC, month DESC";
-
-		return $pb->query($query);
-	}
-
-	// print given tasks as HTML
-	function tasklist($pb, $problems) {
-		$problem_id=0;
-		$tags = Array(TASKS_PER_PAGE);
-		while($problem = $problems->fetchArray(SQLITE3_ASSOC)) {
-			print "<a class='textbox' href='{$_SERVER["PBROOT"]}/{$problem['id']}/'>";
-			print '<div class="task '.($problem['public'] ? "" : "nonpublic").'">';
-			print '<div class="info">';
-			print "<div class='tags'></div>";
-			$tags[$problem_id] = $problem['tags'];
-			printproposers($pb, "problem", $problem['id']);
-			print '</div>';
-
-			print '<div class="text" id="prob'.($problem_id++).'">';
-			print htmlspecialchars($problem['problem']);
-			print '<table class="info" style="margin-top:1em;"><tr>';
-			print '<td style="width:70px; border:none;">'.$problem['proposed'].'</td>';
-
-			// find out if published
-			if (isset($problem['year']))
-				print '<td style="width:200px;">Heft '.$problem['month'].'/'.$problem['year'].
-					', Aufgabe $'.$problem['letter'].$problem['number'].'$</td>';
-			else
-				print '<td style="width:200px;">nicht publiziert</td>';
-
-			$solstr = ($problem['numsol'] <= 1) ? ($problem['numsol'] ? "" : "k")."eine L&ouml;sung" : $problem['numsol']." L&ouml;sungen";
-			$commstr = ($problem['numcomm'] <= 1) ? ($problem['numcomm'] ? "" : "k")."ein Kommentar" : $problem['numcomm']." Kommentare";
-			print '<td style="width:200px;">'.$commstr.', '.$solstr.'</td>';
-			print '</tr></table>';
-			print '</div></div></a>';
+		function __construct($pb) {
+			$this->pb = $pb;
 		}
 
-		print "<script id='tagscript'> (function () {";
-		print "var taglists = document.getElementsByClassName('tags');";
-		for (--$problem_id; $problem_id >= 0; --$problem_id)		// go backwards
-			tags($pb, $tags[$problem_id], "taglists[$problem_id]");
-		print "})();</script>";
+		// get the data for a specific task page
+		function slice($array, $start, $length = TASKS_PER_PAGE) {
+			$ids = array_slice($array, $start, $length);
+			$this->idstr = implode(",", $ids);
+		}
+
+		function query($order = null) {
+			$query = "SELECT problems.id, files.content AS problem, problems.proposed, public, letter, number, month, year, "
+				."(SELECT COUNT(solutions.id) FROM solutions WHERE problems.id=solutions.problem_id) AS numsol, "
+				."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.id=comments.problem_id) AS numcomm, "
+				."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.id=tag_list.problem_id) AS tags "
+				."FROM problems JOIN files ON problems.file_id=files.rowid "
+				."LEFT JOIN published ON problems.id=published.problem_id "
+				."WHERE problems.id IN ($this->idstr)";
+
+			// order entries
+			if ($order)
+				$query .= " ORDER BY ".implode(", ", $order);
+
+			$problems = $this->pb->query($query);
+			$this->problems = Array();
+			while($problem = $problems->fetchArray(SQLITE3_ASSOC))
+				$this->problems[] = $problem;
+		}
+
+		// print given tasks as HTML
+		function print_html() {
+			$taglists = Array(substr_count($this->idstr, ",") + 1);
+			foreach ($this->problems as $num=>$problem) {
+				print "<a class='textbox' href='{$_SERVER["PBROOT"]}/{$problem['id']}/'>";
+				print "<div class='task ".($problem['public'] ? "" : "nonpublic")."'>";
+				print "<div class='info'>";
+				print "<div class='tags'></div>";
+				$taglists[$num] = $problem['tags'];
+				printproposers($this->pb, "problem", $problem['id']);
+				print "</div>";
+
+				print "<div class='text' id='prob$num'>";
+				print htmlspecialchars($problem['problem']);
+				print "<table class='info' style='margin-top:1em;'><tr>";
+				print "<td style='width:70px; border:none;'>{$problem['proposed']}</td>";
+
+				// find out if published
+				if (isset($problem['year']))
+					print "<td style='width:200px;'>Heft {$problem['month']}/{$problem['year']}, "
+						."Aufgabe \${$problem['letter']}{$problem['number']}$</td>";
+				else
+					print "<td style='width:200px;'>nicht publiziert</td>";
+
+				$solstr = ($problem['numsol'] <= 1) ? ($problem['numsol'] ? "" : "k")."eine L&ouml;sung" : $problem['numsol']." L&ouml;sungen";
+				$commstr = ($problem['numcomm'] <= 1) ? ($problem['numcomm'] ? "" : "k")."ein Kommentar" : $problem['numcomm']." Kommentare";
+				print "<td style='width:200px;'>$commstr, $solstr</td>";
+				print "</tr></table>";
+				print "</div></div></a>";
+			}
+
+			print "<script id='tagscript'> (function () {";
+			print "var taglists = document.getElementsByClassName('tags');";
+			foreach ($taglists as $index=>$taglist)
+				tags($this->pb, $taglist, "taglists[$index]");
+			print "})();</script>";
+		}
 	}
 
 	if (isset($_GET['page'])) {
@@ -165,6 +183,9 @@
 		header("Content-Type: text/html; encoding=utf-8");
 
 		$filter = new Filter($_GET['hash']);
-		tasklist($pb, taskquery($pb, $filter->array, $_GET['page'] * TASKS_PER_PAGE));
+		$tasklist = new TaskList($pb);
+		$tasklist->slice($filter->array, $_GET['page'] * TASKS_PER_PAGE);
+		$tasklist->query(array("year DESC", "month DESC"));
+		$tasklist->print_html();
 	}
 ?>
