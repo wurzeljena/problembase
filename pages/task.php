@@ -115,7 +115,7 @@
 				print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			print "<div class='author'>{$comment['name']}";
 			if (isset($user_id))
-				print " <a href='mailto:{$comment['email']}'><i class='icon-envelope'></i></a>";
+				print " <a href='mailto:{$comment['email']}'><i class='icon-envelope-alt'></i></a>";
 			print '</div><div class="text">'.htmlspecialchars($comment['comment']).'</div>';
 
 			print '<div class="eval">';
