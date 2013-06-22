@@ -20,7 +20,7 @@
 
 		// construct from given parameter list (could be a GET request)
 		function set_params($par) {
-			$names = array('filter', 'proposer', 'number',
+			$names = array('filter', 'proposer', 'number', 'month', 'year',
 				'with_solution', 'start', 'end', 'tags');
 			$filter = array_intersect_key($par, array_fill_keys($names, 0));
 			$this->par = array_filter($filter);
@@ -30,7 +30,7 @@
 
 		// translate filter criterions to SQL
 		function construct_query($pb, $order = null) {
-			$query = "SELECT problems.id, problems.proposed, month, year "
+			$query = "SELECT problems.id, problems.proposed, letter, number, month, year "
 				."FROM problems LEFT JOIN published ON problems.id=published.problem_id";
 
 			// add filter constraints
@@ -63,6 +63,11 @@
 					$year += 2000;
 				$filter[] = "month = $month AND year = $year";
 			}
+
+			if (isset($this->par['year']))
+				$filter[] = "year = {$pb->escapeString($this->par['year'])}";
+			if (isset($this->par['month']))
+				$filter[] = "month = {$pb->escapeString($this->par['month'])}";
 
 			if (isset($this->par['with_solution']))
 				$filter[] = "EXISTS (SELECT solutions.id FROM solutions WHERE problems.id=solutions.problem_id "
@@ -111,6 +116,11 @@
 
 		function __construct($pb) {
 			$this->pb = $pb;
+		}
+
+		// get the data for an array
+		function set($array) {
+			$this->idstr = implode(",", $array);
 		}
 
 		// get the data for a specific task page

@@ -209,6 +209,30 @@ h2
 h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
 h2.solution {color : #0000C0; text-shadow : #60A0C0 2px 2px 3px;}
 h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
+h2.issue {color : #008080; text-shadow : #4080A0 2px 2px 3px;}
+
+h3
+{
+	font-family	: Garamond, Serif;
+	font-size	: x-large;
+	font-weight	: normal;
+	margin	: 0em 1em;
+}
+h3#problems
+{
+	color	: #D08040;
+	text-shadow	: 1px 1px 0px #B06050;
+}
+h3#solutions
+{
+	color	: #4080C0;
+	text-shadow	: 1px 1px 0px #5060B0;
+}
+h3#comments
+{
+	color	: #A0A000;
+	text-shadow	: 1px 1px 0px #808000;
+}
 
 /* Formatierung von Links */
 a.button
@@ -371,15 +395,6 @@ form#publish input {margin: 2px;}
 	form#publish { right: 50px; }
 }
 
-h3#comments
-{
-	font-family	: Garamond, Serif;
-	font-size	: x-large;
-	font-weight	: normal;
-	margin	: 0em 1em;
-	color	: #A0A000;
-	text-shadow	: 1px 1px 0px #808000;
-}
 div.comment
 {
 	border	: 1px solid Gray;

@@ -1,0 +1,51 @@
+<?php
+	session_start();
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tasklist.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/solutionlist.php';
+
+	$month = $_GET['month']; $year = $_GET['year'];
+	if ($year > 50)	$year += 1900;
+	else	$year += 2000;
+	printhead("Heft $month/$year");
+	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+
+	// find problems
+	$filter = new Filter();
+	$hash = $filter->set_params(array("year" => $year, "month" => $month));
+	$filter->construct_query($pb, array("number ASC"));
+	$filter->filter(false);
+
+	// generate list
+	$tasklist = new TaskList($pb);
+	$tasklist->set($filter->array);
+	$tasklist->query(array("number ASC"));
+
+	// generate solution list
+	$sollist = new SolutionList($pb);
+	$sollist->idstr = $pb->querysingle("SELECT group_concat(id) FROM solutions WHERE year=$year AND month=$month", false);
+	$sollist->query(isset($user_id) && $_SESSION['editor']);
+?>
+<body>
+	<?php printheader(); ?>
+
+	<div class="center">
+	<div id="panel">
+	<?php drawMenu("sidemenu"); ?>
+	<!-- TeX output buttons? -->
+	</div>
+
+	<div class="content" id="tasklist">
+		<h2 class="issue">Heft <?=$month?>/<?=$year?></h2>
+		<h3 id="problems"><i class="icon-file-alt"></i> Aufgaben</h3>
+		<?=$tasklist->print_html()?>
+
+		<h3 id="solutions"><i class="icon-file-alt"></i> L&ouml;sungen</h3>
+		<?=$sollist->print_html(false, true)?>
+	</div>
+	</div>
+
+	<?php $pb->close(); ?>
+</body>
+</html>
