@@ -21,6 +21,7 @@
 	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
 	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tags.php';
 	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/solutionlist.php';
 
 	printhead("Aufgabe $id");
 ?>
@@ -90,22 +91,10 @@
 		</div>
 
 		<?php
-		$cond = (isset($user_id) && $_SESSION['editor']) ? "" : " AND public=1";
-		$solutions = $pb->query("SELECT solutions.id, files.content AS solution, solutions.remarks, solutions.month, solutions.year, solutions.public FROM solutions "
-			."LEFT JOIN files ON solutions.file_id=files.rowid "
-			."WHERE problem_id=$id".$cond);
-		while($solution = $solutions->fetchArray(SQLITE3_ASSOC)) {
-			print '<div class="solution '.($solution['public'] ? "" : "nonpublic").'">';
-			if (isset($user_id))
-				print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/{$solution['id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
-			print '<div class="info">';
-			printproposers($pb, "solution", $solution['id']);
-			print '</div>';
-
-			print '<div class="text" id="soln">';
-			print htmlspecialchars($solution['solution']);
-			print '</div></div>';
-		};
+		$sollist = new SolutionList($pb);
+		$sollist->idstr = $pb->querysingle("SELECT group_concat(id) FROM solutions WHERE problem_id=$id", false);
+		$sollist->query(isset($user_id) && $_SESSION['editor']);
+		$sollist->print_html(isset($user_id));
 
 		// show buttons between solutions and comments
 		if (isset($user_id))
