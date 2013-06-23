@@ -260,6 +260,76 @@ function postDelete(form) {
 	document.forms[form].submit();
 }
 
+// interactive calendar
+var calendar = {
+	decade: null,	// current decade
+	year: null,		// current year
+
+	years: null,	// div containing the years
+	months: null,	// deiv containing the months
+
+	month_names: ["Jan", "Feb", "Mar+Apr", "Mai", "Jun", "Jul", "Aug", "Sep+Okt", "Nov", "Dez"],
+	month_numbers: [1, 2, 3, 5, 6, 7, 8, 9, 11, 12],
+
+	set_decade: function (decade) {
+		this.decade = decade;
+
+		// delete everything in "years"
+		var year;
+		while (year = years.firstChild)
+			years.removeChild(year);
+
+		// create new nodes and put them in "years"
+		for (var i = 0; i < 10; i++) {
+			var year = document.createElement("a");
+			year.id = year.textContent = 10 * decade + i;
+			year.setAttribute("href", "javascript:calendar.set_year(" + (10 * decade + i) + ")");
+			years.appendChild(year);
+			years.appendChild(document.createTextNode(" "));
+		}
+	},
+
+	incr_decade: function (incr) {
+		this.set_decade(this.decade + incr);
+	},
+
+	set_year: function (year) {
+		// update year links
+		if (document.getElementById(this.year))
+			document.getElementById(this.year).setAttribute("href", "javascript:calendar.set_year(" + this.year + ")");
+		this.year = year;
+		document.getElementById(this.year).removeAttribute("href");
+
+
+		// delete everything in "months"
+		var month;
+		while (month = months.firstChild)
+			months.removeChild(month);
+
+		// create new nodes and put them in "months"
+		for (var i = 0; i < this.month_names.length; i++) {
+			var month = document.createElement("a");
+			month.textContent = this.month_names[i];
+			if ((i % 5) == 2) month.className = "long";
+			month.setAttribute("href", rootdir + "/issues/" + year + "/" + this.month_numbers[i]);
+			months.appendChild(month);
+			months.appendChild(document.createTextNode(" "));
+		}
+	},
+
+	init: function () {
+		this.years = document.getElementById("years");
+		this.months = document.getElementById("months");
+
+		// get current date
+		var date = new Date();
+
+		// write links
+		this.set_decade(Math.floor(date.getFullYear() / 10));
+		this.set_year(date.getFullYear());
+	}
+};
+
 // starring mechanism
 function Stars(name) {
 	this.input = document.getElementById(name);

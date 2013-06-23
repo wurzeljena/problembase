@@ -148,6 +148,44 @@ div#panel { max-width: 340px; }
 	div#panel iframe { display: none; }
 }
 
+/* Kalender */
+div#calendar
+{
+	background	: #E060A0;
+	border-radius	: 5px;
+	padding		: 10px;
+	margin	: 15px 5px;
+	font-size	: small;
+}
+div#calendar div#years
+{
+	display	: inline-block;
+	vertical-align	: middle;
+	max-width	: 175px;
+	text-align	: center;
+}
+div#calendar div#months
+{
+	display	: inline-block;
+	vertical-align	: middle;
+	margin	: 10px 10px 5px 10px;
+	max-width	: 180px;
+}
+div#calendar i.icon-calendar
+{
+	color	: #800040;
+	font-size	: x-large;
+	display	: inline-block;
+	vertical-align	: middle;
+	margin	: 10px 5px 5px 10px;
+}
+div#calendar div#months a
+{
+	width	: 2em;
+	display	: inline-block;
+}
+div#calendar div#months a.long {width: 4.5em;}
+
 /* Pager zum Seitenwechseln */
 div#pager
 {

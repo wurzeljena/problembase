@@ -68,6 +68,15 @@
 			?>
 		</div>
 	</form>
+
+	<div id="calendar">
+		<div><a class="button icon-chevron-sign-left" href="javascript:calendar.incr_decade(-1)"></a><div id="years"></div>
+			<a class="button icon-chevron-sign-right" href="javascript:calendar.incr_decade(1)"></a>
+		</div>
+		<div><i class="icon-calendar"></i>
+			<div id="months"></div>
+		</div>
+	</div>
 	</div>
 
 	<div class="content" id="tasklist"></div>
@@ -83,6 +92,7 @@
 
 	<!-- show first page of content -->
 	<script>
+		calendar.init();
 		pageLoader.set("<?=$hash?>", <?=$pages?>);
 		pageLoader.loadPage();
 	</script>
