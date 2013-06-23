@@ -6,8 +6,6 @@
 	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/solutionlist.php';
 
 	$month = $_GET['month']; $year = $_GET['year'];
-	if ($year > 50)	$year += 1900;
-	else	$year += 2000;
 	printhead("Heft $month/$year");
 	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 
@@ -33,15 +31,18 @@
 	<div class="center">
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
-	<!-- TeX output buttons? -->
 	</div>
 
 	<div class="content" id="tasklist">
 		<h2 class="issue">Heft <?=$month?>/<?=$year?></h2>
-		<h3 id="problems"><i class="icon-file-alt"></i> Aufgaben</h3>
+		<h3 id="problems"><i class="icon-file-alt"></i> Aufgaben
+			<a class='button' style='float:right;' href='<?=$_SERVER["PBROOT"]?>/issues/<?=$year?>/<?=$month?>/problems'><i class='icon-cloud-download'></i> T<div class="tex">E</div>X</a>
+		</h3>
 		<?=$tasklist->print_html()?>
 
-		<h3 id="solutions"><i class="icon-file-alt"></i> L&ouml;sungen</h3>
+		<h3 id="solutions"><i class="icon-file-alt"></i> L&ouml;sungen
+			<a class='button' style='float:right;' href='<?=$_SERVER["PBROOT"]?>/issues/<?=$year?>/<?=$month?>/solutions'><i class='icon-cloud-download'></i> T<div class="tex">E</div>X</a>
+		</h3>
 		<?=$sollist->print_html(false, true)?>
 	</div>
 	</div>

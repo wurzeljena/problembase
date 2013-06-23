@@ -185,9 +185,24 @@
 				tags($this->pb, $taglist, "taglists[$index]");
 			print "})();</script>";
 		}
+
+		// print published tasks as TeX
+		function print_tex() {
+			print "\\documentclass[exercises]{wurzel2008}\n\\title{\\Wurzel-Aufgaben}\n\n"
+				."\\begin{document}\n\\maketitle\n";
+
+			foreach ($this->problems as $num=>$problem) {
+				print "\\aufbox{\${$problem['letter']}\,{$problem['number']}$}{";
+				printproposers($this->pb, "problem", $problem['id']);
+				print "}{%\n{$problem['problem']}}\n\n";
+			}
+
+			print "\\end{document}\n";
+		}
 	}
 
-	if (isset($_GET['page'])) {
+	// answer to page requests from index
+	if (isset($_GET['hash'])) {
 		session_start();
 		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
 		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
@@ -198,5 +213,24 @@
 		$tasklist->slice($filter->array, $_GET['page'] * TASKS_PER_PAGE);
 		$tasklist->query(array("year DESC", "month DESC"));
 		$tasklist->print_html();
+	}
+
+	// answer to TeX requests from issue pages
+	if (isset($_GET['tex'])) {
+		session_start();
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+		header("Content-Type: application/x-tex; encoding=utf-8");
+		header("Content-Disposition: attachment; filename=aufg"
+			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");
+
+		$filter = new Filter();
+		$hash = $filter->set_params($_GET);
+		$filter->construct_query($pb, array("number ASC"));
+		$filter->filter(false);
+		$tasklist = new TaskList($pb);
+		$tasklist->set($filter->array);
+		$tasklist->query(array("number ASC"));
+		$tasklist->print_tex();
 	}
 ?>

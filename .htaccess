@@ -44,4 +44,6 @@ RewriteRule ^proposers/(.*)$ lib/proposers.php?prop_query=$1 [L,QSA]
 RewriteRule ^proposers/(.+)$ %{ENV:PBROOT}/?filter=&proposer=$1&number=&start=&end=&tags= [R,L]
 
 # issue
-RewriteRule ^issues/([0-9][0-9])/(([1-9]|0[1-9]|1[0-2]))$ pages/issue.php?year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))$ pages/issue.php?year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/problems$ lib/tasklist.php?tex&year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/solutions$ lib/solutionlist.php?tex&year=$1&month=$2 [L]
