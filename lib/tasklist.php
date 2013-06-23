@@ -21,7 +21,7 @@
 		// construct from given parameter list (could be a GET request)
 		function set_params($par) {
 			$names = array('filter', 'proposer', 'number', 'month', 'year',
-				'with_solution', 'start', 'end', 'tags');
+				'with_solution', 'not_published', 'start', 'end', 'tags');
 			$filter = array_intersect_key($par, array_fill_keys($names, 0));
 			$this->par = array_filter($filter);
 			$this->hash = md5(serialize($this->par));
@@ -72,6 +72,9 @@
 			if (isset($this->par['with_solution']))
 				$filter[] = "EXISTS (SELECT solutions.id FROM solutions WHERE problems.id=solutions.problem_id "
 					.($public ? " AND public=1" : "").")";
+
+			if (isset($this->par['not_published']))
+				$filter[] = "public=0";
 
 			if (isset($this->par['start']))
 				$filter[] = "proposed > '{$pb->escapeString($this->par['start'])}'";

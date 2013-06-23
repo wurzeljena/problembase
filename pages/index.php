@@ -29,6 +29,12 @@
 		<div><input type="text" name="filter" placeholder="Suchbegriff"
 			value="<?php if (isset($_GET['filter'])) print $_GET['filter']; ?>"/>
 		<input type="submit" value="Suchen"></div>
+		<div style="margin-bottom:5px;">
+			<input type="checkbox" name="not_published" id="not_published" <?php if (isset($_GET['not_published'])) print "checked"; ?>/>
+				<label class="info" for="not_published">nicht ver&ouml;ffentlicht</label>
+			<input type="checkbox" name="with_solution" id="with_solution" <?php if (isset($_GET['with_solution'])) print "checked"; ?>/>
+				<label class="info" for="with_solution">mit L&ouml;sung</label>
+		</div>
 		<div id="questions">
 		<div>
 			<label class="question" for="proposer">Wer?</label>
@@ -39,13 +45,6 @@
 		<div>
 			<label class="question" for="evaluation">Wie?</label>
 			<span id="evaluation">{Bewertungsbereich}</span>
-		</div>
-		<div>
-			<label class="question" for="number">Wann?</label>
-			<input type="text" name="number" id="number" placeholder="MM/JJ" style="width:45px;"
-				pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}" value="<?php if (isset($_GET['number'])) print $_GET['number']; ?>"/>
-			<input type="checkbox" name="with_solution" id="with_solution" <?php if (isset($_GET['with_solution'])) print "checked"; ?>/>
-				<label class="info" for="with_solution">mit L&ouml;sung</label>
 		</div>
 		<div>
 			<label class="info" for="start">nach</label>
