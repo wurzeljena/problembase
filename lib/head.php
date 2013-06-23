@@ -33,14 +33,15 @@
 function drawMenu($id) { ?>
 	<nav id="<?=$id?>">
 	<ul>
-		<li><a href="<?=$_SERVER["PBROOT"]?>/"><i class="icon-th-list"></i> <span>&Uuml;bersicht</span></a>
+		<li><a href="<?=$_SERVER["PBROOT"]?>/"><i class="icon-home"></i> <span>&Uuml;bersicht</span></a>
 </li><?php	if (isset($_SESSION['user_id'])): ?><li>
 		<a href="<?=$_SERVER["PBROOT"]?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
 </li><li>
 		<a href="<?=$_SERVER["PBROOT"]?>/users/"><i class="icon-group"></i> <span>Benutzerliste</span></a>
-</li><li>
+</li><?php	if ($_SESSION['editor']): ?><li>
 		<a href="<?=$_SERVER["PBROOT"]?>/tags/"><i class="icon-tags"></i> <span>Tag-Editor</span></a>
 </li><?php	endif;
+		endif;
 		if ($id == "headermenu"): ?><li>
 		<a href="javascript:Login.Show();"><i class="icon-signin"></i></a>
 </li><?php endif; ?>
