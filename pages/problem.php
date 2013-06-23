@@ -49,6 +49,8 @@
 			style="height:200px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $problem['problem']; ?></textarea>
 		<div class="preview" id="preview"></div>
 		<textarea class="text" name="remarks" rows="5" cols="65" placeholder="Anmerkungen"
+			title="Wenn keine Autoren angegeben sind, wird stattdessen diese Anmerkung gezeigt.
+Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wird anstatt der Tilde eingef&uuml;gt."
 			style="height:70px;"><?php if (isset($id)) print $problem['remarks']; ?></textarea>
 		<label for="proposed">Vorgeschlagen am:</label> <input type="date" class="text" name="proposed" id="proposed" style="width:100px;"
 			placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"

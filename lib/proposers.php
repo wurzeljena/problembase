@@ -29,24 +29,26 @@
 
 	function printproposers($pb, $type, $id)
 	{
-		// get proposers
+		// get proposers (and remarks)
 		$proposers = $pb->query("SELECT name, location, country FROM {$type}proposers "
 			."JOIN proposers ON {$type}proposers.proposer_id=proposers.id WHERE {$type}_id=$id");
+		$remarks = $pb->querySingle("SELECT remarks FROM {$type}s WHERE id=$id", false);
 
-		// print their list - or remarks, if there are none
-		$first = true;
-		while(list($name, $location, $country) = $proposers->fetchArray(SQLITE3_NUM)) {
-			if (!$first)
-				print " und ";
+		// create their list
+		$props = array();
+		while(list($name, $location, $country) = $proposers->fetchArray(SQLITE3_NUM))
+			$props[] = "$name, $location".(isset($country) ? " ($country)" : "");
+		$props = implode(" und ", $props);
+
+		if ($props) {
+			// if there is a ~ in the remarks, they serve as template
+			if (strpos($remarks, "~") !== false)
+				print str_replace("~", $props, $remarks);
 			else
-				$first = false;
-			print "$name, $location";
-			if (isset($country))
-				print " ($country)";
+				print $props;
 		}
-
-		if ($first)
-			print $pb->querySingle("SELECT remarks FROM {$type}s WHERE id=$id", false);
+		else		// print just the remarks, if there are no proposers
+			print $remarks;
 	}
 
 	function writeproposers($pb, $nums, $proposer, $proposer_id, $location, $country) {
