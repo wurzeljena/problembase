@@ -65,6 +65,6 @@
 		if (isset($_POST["editor"]) && $_SESSION['root'])
 			$pb->exec("UPDATE users SET editor={$_POST["editor"]} WHERE id=$id");
 	}
-	
+
 	$pb->close();
 ?>

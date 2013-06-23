@@ -5,6 +5,7 @@
 		exit();
 	}
 	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+	$pb->exec("BEGIN TRANSACTION");
 
 	// read parameters
 	$id = $pb->escapeString($_GET["id"]);
@@ -27,6 +28,7 @@
 	$public = isset($_POST['public']) ? 1 : 0;
 	$pb->exec("UPDATE problems SET public=$public WHERE id=$id");
 
+	$pb->exec("END TRANSACTION");
 	$pb->close();
 
 	// redirect to task page

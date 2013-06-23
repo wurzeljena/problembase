@@ -6,6 +6,7 @@
 		exit();
 	}
 	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+	$pb->exec("BEGIN TRANSACTION");
 
 	// read parameters
 	if (isset($_GET["id"]))
@@ -59,5 +60,6 @@
 		header("Location: {$_SERVER["PBROOT"]}/$id/");
 	}
 
+	$pb->exec("END TRANSACTION");
 	$pb->close();
 ?>
