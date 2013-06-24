@@ -157,12 +157,21 @@ div#calendar
 	margin	: 15px 5px;
 	font-size	: small;
 }
+a.dirbutton
+{
+	font-size	: x-large;
+	color	: #800040;
+	vertical-align	: middle;
+}
+a.dirbutton:hover
+{
+	color	: #C00060;
+}
 div#calendar div#years
 {
 	display	: inline-block;
 	vertical-align	: middle;
 	max-width	: 175px;
-	text-align	: center;
 }
 div#calendar div#months
 {
@@ -247,7 +256,7 @@ h2
 h2.task {color : #C00000; text-shadow : #C060A0 2px 2px 3px;}
 h2.solution {color : #0000C0; text-shadow : #60A0C0 2px 2px 3px;}
 h2.eval {color : #D0C000; text-shadow : #60A080 2px 2px 3px;}
-h2.issue {color : #008080; text-shadow : #4080A0 2px 2px 3px;}
+h2.issue {color : #C00060; text-shadow : #800040 2px 2px 3px;}
 
 h3
 {
@@ -605,14 +614,14 @@ img.star
 table.users
 {
 	width	: 100%;
-	background	: #FFA0A0;
-	box-shadow	: 5px 5px 0px #C06060;
+	background	: #60C0F0;
+	box-shadow	: 5px 5px 0px #4080A0;
 	border-collapse	: collapse;
 	border-radius	: 5px;
 }
 table.users tbody tr:hover,
 table.users tfoot tr:hover {
-	background	: #FFC0C0;
+	background	: #80D0FF;
 }
 table.users td, table.users th
 {
@@ -620,7 +629,7 @@ table.users td, table.users th
 }
 table.users tr#forms td
 {
-	background	: #F04080;
+	background	: #40A0E0;
 }
 form#edit, form#pw, form#newuser
 {

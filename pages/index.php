@@ -70,8 +70,8 @@
 	</form>
 
 	<div id="calendar">
-		<div><a class="button icon-chevron-sign-left" href="javascript:calendar.incr_decade(-1)"></a><div id="years"></div>
-			<a class="button icon-chevron-sign-right" href="javascript:calendar.incr_decade(1)"></a>
+		<div style="text-align:center;"><a class="dirbutton icon-chevron-sign-left" href="javascript:calendar.incr_decade(-1)"></a><div id="years"></div>
+			<a class="dirbutton icon-chevron-sign-right" href="javascript:calendar.incr_decade(1)"></a>
 		</div>
 		<div><i class="icon-calendar"></i>
 			<div id="months"></div>
@@ -82,11 +82,11 @@
 	<div class="content" id="tasklist"></div>
 
 	<div id="pager">
-		<a href="javascript:pageLoader.incrPage(-5);" class="button">&laquo;</a>
-		<a href="javascript:pageLoader.incrPage(-1);" class="button">&lsaquo;</a>
+		<a href="javascript:pageLoader.incrPage(-5);" class="button"><i class="icon-double-angle-left"></i></a>
+		<a href="javascript:pageLoader.incrPage(-1);" class="button"><i class="icon-angle-left"></i></a>
 		Seite <span id="page">1</span>/<?=$pages?>
-		<a href="javascript:pageLoader.incrPage(1);" class="button">&rsaquo;</a>
-		<a href="javascript:pageLoader.incrPage(5);" class="button">&raquo;</a>
+		<a href="javascript:pageLoader.incrPage(1);" class="button"><i class="icon-angle-right"></i></a>
+		<a href="javascript:pageLoader.incrPage(5);" class="button"><i class="icon-double-angle-right"></i></a>
 	</div>
 	</div>
 
