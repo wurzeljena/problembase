@@ -59,7 +59,7 @@
 				printproposers($this->pb, "problem", $solution['problem_id']);
 				print "}{%\n{$solution['problem']}}{L\xC3\xB6sung von ";
 				printproposers($this->pb, "solution", $solution['id']);
-				print "}{%\n{$solution['solution']}}\n\n";
+				print ":}{%\n{$solution['solution']}}\n\n";
 			}
 
 			print "\\end{document}\n";

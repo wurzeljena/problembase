@@ -214,7 +214,7 @@
 		$filter = new Filter($_GET['hash']);
 		$tasklist = new TaskList($pb);
 		$tasklist->slice($filter->array, $_GET['page'] * TASKS_PER_PAGE);
-		$tasklist->query(array("year DESC", "month DESC"));
+		$tasklist->query(array("proposed DESC", "year DESC", "month DESC"));
 		$tasklist->print_html();
 	}
 

@@ -14,7 +14,7 @@
 	// do the filtering and save the result
 	$filter = new Filter();
 	$hash = $filter->set_params($_GET);
-	$filter->construct_query($pb, array("year DESC", "month DESC"));
+	$filter->construct_query($pb, array("proposed DESC", "year DESC", "month DESC"));
 	$filter->filter(true);
 	$pages = ceil(count($filter->array)/10);
 ?>

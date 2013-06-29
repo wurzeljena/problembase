@@ -35,12 +35,12 @@
 
 	<div class="content" id="tasklist">
 		<h2 class="issue">Heft <?=$month?>/<?=$year?></h2>
-		<h3 id="problems"><i class="icon-file-alt"></i> Aufgaben
+		<h3 id="problems">Aufgaben
 			<a class='button' style='float:right;' href='<?=$_SERVER["PBROOT"]?>/issues/<?=$year?>/<?=$month?>/problems'><i class='icon-cloud-download'></i> T<div class="tex">E</div>X</a>
 		</h3>
 		<?=$tasklist->print_html()?>
 
-		<h3 id="solutions"><i class="icon-file-alt"></i> L&ouml;sungen
+		<h3 id="solutions">L&ouml;sungen
 			<a class='button' style='float:right;' href='<?=$_SERVER["PBROOT"]?>/issues/<?=$year?>/<?=$month?>/solutions'><i class='icon-cloud-download'></i> T<div class="tex">E</div>X</a>
 		</h3>
 		<?=$sollist->print_html(false, true)?>
