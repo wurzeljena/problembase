@@ -45,7 +45,7 @@
 	<form class="solution" id="solution" title="L&ouml;sungsformular"
 		action="<?=$_SERVER["PBROOT"]?>/submit/<?php if (isset($id)) print $solution['problem_id']."/".$id; else print $problem_id."/"; ?>" method="POST">
 		<div class="problem"><?php print htmlspecialchars($problem['problem']); ?></div>
-		<?php proposer_form($pb, "solution", "solution", isset($id) ? $id : -1); ?>
+		<?php proposer_form($pb, "solution", isset($id) ? $id : -1); ?>
 		<textarea class="text" name="solution" id="text" rows="60" cols="80" placeholder="L&ouml;sungstext"
 			style="height:400px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $solution['solution']; ?></textarea> <br/>
 		<div class="preview" id="preview"></div>

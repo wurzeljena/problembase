@@ -38,7 +38,7 @@
 	<h2 class="task">Aufgabe bearbeiten</h2>
 	<form class="task" id="task" title="Aufgabenformular" action="<?=$_SERVER["PBROOT"]?>/submit/<?= isset($id) ? $id:"" ?>" method="POST">
 		<?php
-			proposer_form($pb, "task", "problem", isset($id) ? $id : -1);
+			proposer_form($pb, "task", isset($id) ? $id : -1);
 			if (isset($id))
 				$tags = get_tags($pb, $problem['id']);
 			else

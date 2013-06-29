@@ -10,10 +10,10 @@
 		print '</datalist>';
 	}
 
-	function proposer_form($pb, $form, $type, $type_id)
+	function proposer_form($pb, $form, $file_id)
 	{
-		$proposers = $pb->query("SELECT id, name, location, country FROM {$type}proposers "
-			."JOIN proposers ON {$type}proposers.proposer_id=proposers.id WHERE {$type}_id=$type_id");
+		$proposers = $pb->query("SELECT id, name, location, country FROM fileproposers "
+			."JOIN proposers ON fileproposers.proposer_id=proposers.id WHERE file_id=$file_id");
 
 		proposers_datalist($pb);
 		print "<div id='proplist'><input type='hidden' name='propnums'/></div>";
@@ -30,9 +30,9 @@
 	function printproposers($pb, $type, $id)
 	{
 		// get proposers (and remarks)
-		$proposers = $pb->query("SELECT name, location, country FROM {$type}proposers "
-			."JOIN proposers ON {$type}proposers.proposer_id=proposers.id WHERE {$type}_id=$id");
-		$remarks = $pb->querySingle("SELECT remarks FROM {$type}s WHERE id=$id", false);
+		$proposers = $pb->query("SELECT name, location, country FROM fileproposers "
+			."JOIN proposers ON fileproposers.proposer_id=proposers.id WHERE file_id=$id");
+		$remarks = $pb->querySingle("SELECT remarks FROM {$type}s WHERE file_id=$id", false);
 
 		// create their list
 		$props = array();
