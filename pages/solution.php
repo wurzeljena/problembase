@@ -9,13 +9,13 @@
 
 	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 	$problem_id = (int)$_GET['problem_id'];
-	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$problem_id", true);
+	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$problem_id", true);
 	if (empty($problem))
 		$error = "Aufgabe nicht gefunden";
 
 	if (isset($_GET['id'])) {
 		$id = (int)$_GET['id'];
-		$solution = $pb->querySingle("SELECT solutions.*, files.content AS solution FROM solutions JOIN files ON solutions.file_id=files.rowid WHERE id=$id", true);
+		$solution = $pb->querySingle("SELECT solutions.*, files.content AS solution FROM solutions JOIN files ON solutions.file_id=files.rowid WHERE file_id=$id", true);
 		if (!isset($solution['problem_id']))
 			$error = "L&ouml;sung nicht gefunden";
 		if (isset($solution['problem_id']) && $solution['problem_id'] != $_GET['problem_id'])

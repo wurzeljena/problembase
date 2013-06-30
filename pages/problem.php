@@ -10,7 +10,7 @@
 	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 	if (isset($_GET['id'])) {
 		$id = (int)$_GET['id'];
-		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
+		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
 	}
 
 	// if no such problem exists, throw a 404 error
@@ -40,7 +40,7 @@
 		<?php
 			proposer_form($pb, "task", isset($id) ? $id : -1);
 			if (isset($id))
-				$tags = get_tags($pb, $problem['id']);
+				$tags = get_tags($pb, $problem['file_id']);
 			else
 				$tags = "";
 			tag_form($pb, "task", $tags);

@@ -22,7 +22,7 @@
 
 	// generate solution list
 	$sollist = new SolutionList($pb);
-	$sollist->idstr = $pb->querysingle("SELECT group_concat(id) FROM solutions WHERE year=$year AND month=$month", false);
+	$sollist->idstr = $pb->querysingle("SELECT group_concat(file_id) FROM solutions WHERE year=$year AND month=$month", false);
 	$sollist->query(isset($user_id) && $_SESSION['editor']);
 ?>
 <body>
