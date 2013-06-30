@@ -83,6 +83,16 @@ CREATE TRIGGER delete_solutionproposers
   END;
 
 -- -----------------------------------------------------
+-- Table `pictures`
+-- -----------------------------------------------------
+CREATE TABLE pictures (
+  file_id INTEGER NOT NULL,
+  id INTEGER NOT NULL,
+  content TEXT NOT NULL,
+  public BOOL NOT NULL,
+  PRIMARY KEY (file_id ASC, id ASC) );
+
+-- -----------------------------------------------------
 -- Table `users`
 -- -----------------------------------------------------
 CREATE TABLE users (
