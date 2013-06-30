@@ -19,8 +19,8 @@
 
 	if (isset($_POST["delete"])) {
 		$pb->exec("PRAGMA foreign_keys=on;");
-		$problem_id = $pb->querySingle("SELECT problem_id FROM solutions WHERE id=$id", false);
-		$pb->exec("DELETE FROM solutions WHERE id=$id");
+		$problem_id = $pb->querySingle("SELECT problem_id FROM solutions WHERE file_id=$id", false);
+		$pb->exec("DELETE FROM solutions WHERE file_id=$id");
 	}
 	else {
 		// write proposer
@@ -37,22 +37,20 @@
 		else
 			$month = $year = "NULL";
 		if (isset($id)) {
-			$file_id = $pb->querySingle("SELECT file_id FROM solutions WHERE id=$id");
-			$pb->exec("UPDATE files SET content='{$pb->escapeString($solution)}' WHERE rowid=$file_id");
-			$pb->exec("UPDATE solutions SET remarks='{$pb->escapeString($remarks)}', year=$year, month=$month, public=$public WHERE id=$id");
+			$pb->exec("UPDATE files SET content='{$pb->escapeString($solution)}' WHERE rowid=$id");
+			$pb->exec("UPDATE solutions SET remarks='{$pb->escapeString($remarks)}', year=$year, month=$month, public=$public WHERE file_id=$id");
 		}
 		else {
 			$pb->exec("INSERT INTO files(content) VALUES('{$pb->escapeString($solution)}')");
-			$file_id = $pb->lastInsertRowID();
-			$pb->exec("INSERT INTO solutions(problem_id, file_id, remarks, year, month, public) "
-				."VALUES ($problem_id, $file_id, '{$pb->escapeString($remarks)}', $year, $month, $public)");
 			$id = $pb->lastInsertRowID();
+			$pb->exec("INSERT INTO solutions(file_id, problem_id, remarks, year, month, public) "
+				."VALUES ($id, $problem_id, '{$pb->escapeString($remarks)}', $year, $month, $public)");
 		}
 
 		// write proposers
 		if (isset($id))
-			$pb->exec("DELETE FROM solutionproposers WHERE solution_id=$id");
-		$stmt = $pb->prepare("INSERT OR REPLACE INTO solutionproposers (solution_id, proposer_id) VALUES ($id, :proposer)");
+			$pb->exec("DELETE FROM fileproposers WHERE file_id=$id");
+		$stmt = $pb->prepare("INSERT OR REPLACE INTO fileproposers (file_id, proposer_id) VALUES ($id, :proposer)");
 		foreach ($proposer_id as $value) {
 			$stmt->bindValue(":proposer", $value, SQLITE3_INTEGER);
 			$stmt->execute();

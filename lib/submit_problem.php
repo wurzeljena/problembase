@@ -17,7 +17,7 @@
 
 	if (isset($_POST["delete"])) {
 		$pb->exec("PRAGMA foreign_keys=on;");
-		$pb->exec("DELETE FROM problems WHERE id=$id");
+		$pb->exec("DELETE FROM problems WHERE file_id=$id");
 		header("Location: {$_SERVER["PBROOT"]}/");
 	}
 	else {
@@ -26,21 +26,19 @@
 
 		// write into db
 		if (isset($id)) {
-			$file_id = $pb->querySingle("SELECT file_id FROM problems WHERE id=$id");
-			$pb->exec("UPDATE files SET content='{$pb->escapeString($problem)}' WHERE rowid=$file_id");
+			$pb->exec("UPDATE files SET content='{$pb->escapeString($problem)}' WHERE rowid=$id");
 			$pb->exec("UPDATE problems SET remarks='{$pb->escapeString($remarks)}', proposed=date('$proposed') WHERE id=$id");
 		}
 		else {
 			$pb->exec("INSERT INTO files(content) VALUES('{$pb->escapeString($problem)}')");
-			$file_id = $pb->lastInsertRowID();
-			$pb->exec("INSERT INTO problems(file_id, remarks, proposed, public) VALUES "
-				."($file_id, '{$pb->escapeString($remarks)}', date('$proposed'), 0)");
 			$id = $pb->lastInsertRowID();
+			$pb->exec("INSERT INTO problems(file_id, remarks, proposed, public) VALUES "
+				."($id, '{$pb->escapeString($remarks)}', date('$proposed'), 0)");
 		}
 
 		// write proposers
-		$pb->exec("DELETE FROM problemproposers WHERE problem_id=$id");
-		$stmt = $pb->prepare("INSERT OR REPLACE INTO problemproposers (problem_id, proposer_id) VALUES ($id, :proposer)");
+		$pb->exec("DELETE FROM fileproposers WHERE file_id=$id");
+		$stmt = $pb->prepare("INSERT OR REPLACE INTO fileproposers (file_id, proposer_id) VALUES ($id, :proposer)");
 		foreach ($proposer_id as $value) {
 			$stmt->bindValue(":proposer", $value, SQLITE3_INTEGER);
 			$stmt->execute();
