@@ -3,7 +3,7 @@
 
 	$id = (int)$_GET['id'];
 	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
-	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE id=$id", true);
+	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
 
 	// if no such problem exists, throw a 404 error
 	if (empty($problem)) {
@@ -92,7 +92,7 @@
 
 		<?php
 		$sollist = new SolutionList($pb);
-		$sollist->idstr = $pb->querysingle("SELECT group_concat(id) FROM solutions WHERE problem_id=$id", false);
+		$sollist->idstr = $pb->querysingle("SELECT group_concat(file_id) FROM solutions WHERE problem_id=$id", false);
 		$sollist->query(isset($user_id) && $_SESSION['editor']);
 		$sollist->print_html(isset($user_id) && $_SESSION['editor']);
 

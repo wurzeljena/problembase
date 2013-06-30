@@ -10,11 +10,11 @@
 
 		function query($nonpublic) {
 			$cond = $nonpublic ? "" : " AND problems.public AND solutions.public=1";
-			$query = "SELECT solutions.id, solutions.problem_id, files.content AS solution, solutions.remarks, solutions.month, solutions.year, "
+			$query = "SELECT solutions.file_id, solutions.problem_id, files.content AS solution, solutions.remarks, solutions.month, solutions.year, "
 				."solutions.public, problemfiles.content AS problem, published.letter, published.number "
 				."FROM solutions INNER JOIN files ON solutions.file_id=files.rowid "
-				."INNER JOIN problems ON solutions.problem_id=problems.id INNER JOIN files AS problemfiles ON problems.file_id=problemfiles.rowid "
-				."LEFT JOIN published ON published.problem_id = solutions.problem_id WHERE solutions.id IN ($this->idstr)".$cond;
+				."INNER JOIN problems ON solutions.problem_id=problems.file_id INNER JOIN files AS problemfiles ON problems.file_id=problemfiles.rowid "
+				."LEFT JOIN published ON published.problem_id = solutions.problem_id WHERE solutions.file_id IN ($this->idstr)".$cond;
 
 			$solutions = $this->pb->query($query);
 			$this->solutions = Array();
@@ -27,11 +27,11 @@
 			foreach ($this->solutions as $solution) {
 				print '<div class="solution '.($solution['public'] ? "" : "nonpublic").'">';
 				if ($edit)
-					print "<a class='button inner' href='{$_SERVER["PBROOT"]}/{$solution['problem_id']}/{$solution['id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+					print "<a class='button inner' href='{$_SERVER["PBROOT"]}/{$solution['problem_id']}/{$solution['file_id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 				if ($linkback)
 					print "<a class='button inner' href='{$_SERVER["PBROOT"]}/{$solution['problem_id']}/'><i class='icon-hand-right '></i> <span>Zur Aufgabe</span></a>";
 				print '<div class="info">';
-				printproposers($this->pb, "solution", $solution['id']);
+				printproposers($this->pb, "solution", $solution['file_id']);
 				print '</div>';
 
 				print '<div class="text" id="soln">';
@@ -58,7 +58,7 @@
 				print "\\losbox{\${$solution['letter']}\,{$solution['number']}$}{";
 				printproposers($this->pb, "problem", $solution['problem_id']);
 				print "}{%\n{$solution['problem']}}{L\xC3\xB6sung von ";
-				printproposers($this->pb, "solution", $solution['id']);
+				printproposers($this->pb, "solution", $solution['file_id']);
 				print ":}{%\n{$solution['solution']}}\n\n";
 			}
 
@@ -74,12 +74,12 @@
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=loes"
 			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");
-		
+
 		if ($_GET['month']<7)	{ $year = $_GET['year'] - 1;	$period = 1;	}
 		else					{ $year = $_GET['year'];		$period = 2;	}
 
 		$sollist = new SolutionList($pb);
-		$sollist->idstr = $pb->querysingle("SELECT group_concat(id) FROM solutions WHERE year={$_GET['year']} AND month={$_GET['month']}", false);
+		$sollist->idstr = $pb->querysingle("SELECT group_concat(file_id) FROM solutions WHERE year={$_GET['year']} AND month={$_GET['month']}", false);
 		$sollist->query(isset($_SESSION['user_id']) && $_SESSION['editor']);
 		$sollist->print_tex($year, $period);
 	}
