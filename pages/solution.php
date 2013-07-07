@@ -73,13 +73,19 @@ Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wi
 	<a class="button" href="javascript:picForm.addPic();"><i class="icon-plus-sign"></i> Grafik hinzuf&uuml;gen</a>
 	</div>
 
-	<?php $pb->close(); ?>
-
 	<script type="text/javascript">
 		Preview.Init("text", "preview");
 		Preview.Update();
 
-		var picForm = new Pictures("solution", []);
+		var picForm = new Pictures("solution", [<?php
+		if (isset($id)) {
+			$num = 0;
+			$pics = $pb->query("SELECT * FROM pictures WHERE file_id=$id");
+			while($pic = $pics->fetchArray(SQLITE3_ASSOC))
+				print (($num++ > 0) ? ", " : "").json_encode($pic);
+		}	?>]);
 	</script>
+
+	<?php $pb->close(); ?>
 </body>
 </html>
