@@ -31,7 +31,7 @@
 	<div class="center">
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
-		<iframe src="<?=$_SERVER["PBROOT"]?>/tagpanel" style="border:none;overflow:hidden" width="270" height="210"></iframe>
+		<iframe src="<?=$_SERVER["PBROOT"]?>/tagpanel" style="border:none;overflow:hidden" width="270" height="230"></iframe>
 	</div>
 
 	<div class="content">

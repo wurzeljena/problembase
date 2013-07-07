@@ -334,6 +334,88 @@ var calendar = {
 	}
 };
 
+// pictures
+function Pictures(form, list) {
+	this.form = form;
+	this.nums = Array();
+	this.datalists = Array();
+	this.data = Array();
+	var self = this;
+
+	this.addPic = function () {
+		var max = Math.max.apply(Math, this.nums);
+		var num = (max < 0) ? 0 : max + 1;
+
+		var pic = document.createElement("div");
+		pic.id = "pic" + num;
+		pic.className = "picform";
+
+		var header = document.createElement("h4");
+		header.className = "icon-picture";
+		pic.appendChild(header);
+
+		var numfield = document.createElement("input");
+		numfield.type = "text";
+		numfield.className = "text id";
+		numfield.name = "id[" + num + "]";
+		numfield.setAttribute("form", this.form);
+		numfield.required = true;
+		numfield.placeholder = "No.";
+		pic.appendChild(numfield);
+
+		var public = document.createElement("input");
+		public.type = "checkbox";
+		public.id = "public" + num;
+		public.name = "public[" + num + "]";
+		public.setAttribute("form", this.form);
+		pic.appendChild(public);
+
+		var label = document.createElement("label");
+		label.setAttribute("for", "public" + num);
+		label.textContent = "\u00f6ffentlich";
+		pic.appendChild(label);
+
+		var remove = document.createElement("input");
+		remove.type = "button";
+		remove.value = "entfernen";
+		remove.style = "float:right;";
+		remove.onclick = function () { self.removePic(num); };
+		pic.appendChild(remove);
+
+		var content = document.createElement("textarea");
+		content.className = "text";
+		content.name = "content[" + num + "]";
+		content.setAttribute("form", this.form);
+		content.rows = 10;
+		content.cols = 65;
+		content.placeholder = "METAPOST-Code";
+		pic.appendChild(content);
+
+		var doccont = document.getElementsByClassName("content");
+		doccont[0].appendChild(pic);
+
+		this.nums.push(num);
+	}
+
+	this.removePic = function (num) {
+		this.nums.splice(this.nums.indexOf(num), 1);
+		var picDiv = document.getElementById("pic" + num);
+		picDiv.parentNode.removeChild(picDiv);
+	}
+
+	// on sending form: write nums to an hidden input field
+	document.forms[form].addEventListener("submit",
+		function () { document.forms[form].elements["picnums"].value = self.nums.toString(); });
+
+	// write initial data
+	for (var num = 0; num < list.length; num++) {
+		this.addPic();
+		document.forms[form].elements["id[" + num + "]"].value = list[num].id;
+		document.forms[form].elements["public[" + num + "]"].checked = list[num].public;
+		document.forms[form].elements["content[" + num + "]"].textContent = list[num].content;
+	}
+}
+
 // starring mechanism
 function Stars(name) {
 	this.input = document.getElementById(name);

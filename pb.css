@@ -543,7 +543,7 @@ form#edit, form#pw, form#newuser
 form
 {
 	padding			: 15px;
-	margin			: 5px;
+	margin			: 20px 5px;
 }
 input, textarea, select {margin : 5px;}
 input.text {font-family	: Georgia;}
@@ -626,6 +626,22 @@ span.eval, label.eval
 	font-style	: italic;
 	padding		: 0.5em;
 }
+
+/* PICTURE FORMS */
+div.picform
+{
+	margin	: 15px 5px;
+	padding	: 5px;
+	background	: #80C0C0;
+	box-shadow	: 3px 3px 5px #60A0A0;
+}
+h4.icon-picture
+{
+	color		: #206060;
+}
+div.picform input.text, div.picform textarea {background : #B0E0E0;}
+div.picform input.text:hover, div.picform textarea:hover {background : #C0F0F0;}
+input.id {width: 50px;}
 
 /* proposer form */
 input.location {width : 100px;}
