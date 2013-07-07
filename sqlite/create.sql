@@ -92,6 +92,12 @@ CREATE TABLE pictures (
   public BOOL NOT NULL,
   PRIMARY KEY (file_id ASC, id ASC) );
 
+CREATE TRIGGER delete_solutionpictures
+  BEFORE DELETE ON solutions FOR EACH ROW
+  BEGIN
+    DELETE FROM pictures WHERE file_id=OLD.file_id;
+  END;
+
 -- -----------------------------------------------------
 -- Table `users`
 -- -----------------------------------------------------

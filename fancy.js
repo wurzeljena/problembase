@@ -357,7 +357,7 @@ function Pictures(form, list) {
 		var numfield = document.createElement("input");
 		numfield.type = "text";
 		numfield.className = "text id";
-		numfield.name = "id[" + num + "]";
+		numfield.name = "pic_id[" + num + "]";
 		numfield.setAttribute("form", this.form);
 		numfield.required = true;
 		numfield.placeholder = "No.";
@@ -366,7 +366,7 @@ function Pictures(form, list) {
 		var public = document.createElement("input");
 		public.type = "checkbox";
 		public.id = "public" + num;
-		public.name = "public[" + num + "]";
+		public.name = "pic_public[" + num + "]";
 		public.setAttribute("form", this.form);
 		pic.appendChild(public);
 
@@ -384,7 +384,7 @@ function Pictures(form, list) {
 
 		var content = document.createElement("textarea");
 		content.className = "text";
-		content.name = "content[" + num + "]";
+		content.name = "pic_content[" + num + "]";
 		content.setAttribute("form", this.form);
 		content.rows = 10;
 		content.cols = 65;
@@ -410,9 +410,9 @@ function Pictures(form, list) {
 	// write initial data
 	for (var num = 0; num < list.length; num++) {
 		this.addPic();
-		document.forms[form].elements["id[" + num + "]"].value = list[num].id;
-		document.forms[form].elements["public[" + num + "]"].checked = list[num].public;
-		document.forms[form].elements["content[" + num + "]"].textContent = list[num].content;
+		document.forms[form].elements["pic_id[" + num + "]"].value = list[num].id;
+		document.forms[form].elements["pic_public[" + num + "]"].checked = list[num].public;
+		document.forms[form].elements["pic_content[" + num + "]"].textContent = list[num].content;
 	}
 }
 

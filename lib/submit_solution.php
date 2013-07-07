@@ -7,15 +7,18 @@
 	}
 	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
 	$pb->exec("BEGIN TRANSACTION");
+	
+	print_r($_POST);
 
 	// read parameters
 	if (isset($_GET["id"]))
 		$id = $pb->escapeString($_GET["id"]);
 	$problem_id = $pb->escapeString($_GET["problem_id"]);
 	foreach(array("propnums", "proposer", "proposer_id", "location", "country",
-			"solution", "remarks", "published") as $key)
+			"solution", "remarks", "published", "picnums") as $key)
 		$$key = $_POST[$key];
 	$public = isset($_POST['public']) ? 1 : 0;
+	$picnums = array_filter(explode(",", $picnums), "strlen");
 
 	if (isset($_POST["delete"])) {
 		$pb->exec("PRAGMA foreign_keys=on;");
@@ -53,6 +56,17 @@
 		$stmt = $pb->prepare("INSERT OR REPLACE INTO fileproposers (file_id, proposer_id) VALUES ($id, :proposer)");
 		foreach ($proposer_id as $value) {
 			$stmt->bindValue(":proposer", $value, SQLITE3_INTEGER);
+			$stmt->execute();
+		}
+
+		// write pictures
+		if (isset($id))
+			$pb->exec("DELETE FROM pictures WHERE file_id=$id");
+		$stmt = $pb->prepare("INSERT OR REPLACE INTO pictures (file_id, id, public, content) VALUES ($id, :id, :public, :content)");
+		foreach ($picnums as $value) {
+			$stmt->bindValue(":id", $_POST['pic_id'][$value], SQLITE3_INTEGER);
+			$stmt->bindValue(":public", isset($_POST['pic_public'][$value]) ? 1 : 0, SQLITE3_INTEGER);
+			$stmt->bindValue(":content", $_POST['pic_content'][$value], SQLITE3_TEXT);
 			$stmt->execute();
 		}
 	}
