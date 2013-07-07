@@ -11,8 +11,10 @@
 	// read parameters
 	if (isset($_GET["id"]))
 		$id = $pb->escapeString($_GET["id"]);
-	foreach(array("propnums", "proposer", "proposer_id", "location", "country",
-			"tags", "problem", "remarks", "proposed") as $key)
+	$propnums = array_filter(explode(",", $_POST['propnums']), "strlen");
+	$params = array_merge(array("solution", "remarks", "published"),
+		(count($propnums) ? array("proposer", "proposer_id", "location", "country") : array()));
+	foreach($params as $key)
 		$$key = $_POST[$key];
 
 	if (isset($_POST["delete"])) {
@@ -21,8 +23,9 @@
 		header("Location: {$_SERVER["PBROOT"]}/");
 	}
 	else {
-		// write proposer
-		$proposer_id = writeproposers($pb, explode(",", $propnums), $proposer, $proposer_id, $location, $country);
+		// write proposers
+		if (count($propnums))
+			$proposer_id = writeproposers($pb, $propnums, $proposer, $proposer_id, $location, $country);
 
 		// write into db
 		if (isset($id)) {
@@ -39,8 +42,8 @@
 		// write proposers
 		$pb->exec("DELETE FROM fileproposers WHERE file_id=$id");
 		$stmt = $pb->prepare("INSERT OR REPLACE INTO fileproposers (file_id, proposer_id) VALUES ($id, :proposer)");
-		foreach ($proposer_id as $value) {
-			$stmt->bindValue(":proposer", $value, SQLITE3_INTEGER);
+		foreach ($propnums as $value) {
+			$stmt->bindValue(":proposer", $proposer_id[$value], SQLITE3_INTEGER);
 			$stmt->execute();
 		}
 
