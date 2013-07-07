@@ -30,7 +30,8 @@
 
 	<div class="center">
 	<div id="panel">
-	<?php drawMenu("sidemenu"); ?>
+	<?php drawMenu("sidemenu");
+		printcalendar($year, $month); ?>
 	</div>
 
 	<div class="content" id="tasklist">

@@ -262,11 +262,12 @@ function postDelete(form) {
 
 // interactive calendar
 var calendar = {
-	decade: null,	// current decade
-	year: null,		// current year
+	decade: null,	// decade showed
+	year: null,		// year showed
+	date: null,		// current date
 
 	years: null,	// div containing the years
-	months: null,	// deiv containing the months
+	months: null,	// div containing the months
 
 	month_names: ["Jan", "Feb", "Mar+Apr", "Mai", "Jun", "Jul", "Aug", "Sep+Okt", "Nov", "Dez"],
 	month_numbers: [1, 2, 3, 5, 6, 7, 8, 9, 11, 12],
@@ -283,7 +284,8 @@ var calendar = {
 		for (var i = 0; i < 10; i++) {
 			var year = document.createElement("a");
 			year.id = year.textContent = 10 * decade + i;
-			year.setAttribute("href", "javascript:calendar.set_year(" + (10 * decade + i) + ")");
+			if (10 * decade + i != this.year)
+				year.setAttribute("href", "javascript:calendar.set_year(" + (10 * decade + i) + ")");
 			years.appendChild(year);
 			years.appendChild(document.createTextNode(" "));
 		}
@@ -311,22 +313,24 @@ var calendar = {
 			var month = document.createElement("a");
 			month.textContent = this.month_names[i];
 			if ((i % 5) == 2) month.className = "long";
-			month.setAttribute("href", rootdir + "/issues/" + year + "/" + this.month_numbers[i]);
+			if (this.date === null || year != this.date.year || this.month_numbers[i] != this.date.month)
+				month.setAttribute("href", rootdir + "/issues/" + year + "/" + this.month_numbers[i]);
 			months.appendChild(month);
 			months.appendChild(document.createTextNode(" "));
 		}
 	},
 
-	init: function () {
+	init: function (year, month) {
 		this.years = document.getElementById("years");
 		this.months = document.getElementById("months");
 
-		// get current date
-		var date = new Date();
+		// save date, if set
+		if (month != -1)
+			this.date = {year: year, month: month};
 
 		// write links
-		this.set_decade(Math.floor(date.getFullYear() / 10));
-		this.set_year(date.getFullYear());
+		this.set_decade(Math.floor(year / 10));
+		this.set_year(year);
 	}
 };
 

@@ -73,4 +73,17 @@ function drawMenu($id) { ?>
 		var Wait = new WaitTimer("<?=$_SESSION['wait']?>"); <?php } ?>
 	</script>
 </div></div>
-<?php } ?>
+<?php }
+
+	function printcalendar($year, $month) { ?>
+	<div id="calendar">
+		<div style="text-align:center;"><a class="dirbutton icon-circle-arrow-left" href="javascript:calendar.incr_decade(-1)"></a><div id="years"></div>
+			<a class="dirbutton icon-circle-arrow-right" href="javascript:calendar.incr_decade(1)"></a>
+		</div>
+		<div><h4 class="icon-calendar"></h4>
+			<div id="months"></div>
+		</div>
+	</div>
+	<script> calendar.init(<?=$year?>, <?=$month?>); </script> <?php
+	}
+?>

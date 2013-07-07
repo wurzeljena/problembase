@@ -153,6 +153,7 @@ nav ul li a
 }
 
 /* HEADER FORMATTING */
+/* huge script headers turned to the left */
 h2
 {
 	font-family : Mistral, Garamond, Serif;
@@ -167,12 +168,20 @@ h2
 	margin	: 0;	z-index	: -1;
 }
 
+/* small subheaders in overviews */
 h3
 {
 	font-family	: Garamond, Serif;
 	font-size	: x-large;
 	font-weight	: normal;
 	margin	: 0em 0.5em 0em 1em;
+}
+
+/* pseudo-headers for small boxes*/
+h4 {
+	font-size	: xx-large;
+	vertical-align	: middle !important;
+	margin	: 10px 5px 5px 10px;
 }
 
 /* LINK FORMATTING */
@@ -328,13 +337,9 @@ div#calendar div#months
 	margin	: 10px 10px 5px 10px;
 	max-width	: 180px;
 }
-div#calendar i.icon-calendar
+h4.icon-calendar
 {
 	color	: #800040;
-	font-size	: x-large;
-	display	: inline-block;
-	vertical-align	: middle;
-	margin	: 10px 5px 5px 10px;
 }
 div#calendar div#months a
 {
