@@ -46,6 +46,7 @@
 		action="<?=$_SERVER["PBROOT"]?>/submit/<?php if (isset($id)) print $solution['problem_id']."/".$id; else print $problem_id."/"; ?>" method="POST">
 		<div class="problem"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<?php proposer_form($pb, "solution", isset($id) ? $id : -1); ?>
+
 		<textarea class="text" name="solution" id="text" rows="60" cols="80" placeholder="L&ouml;sungstext"
 			style="height:400px;" onkeyup="Preview.Update()"><?php if (isset($id)) print $solution['solution']; ?></textarea> <br/>
 		<div class="preview" id="preview"></div>
@@ -53,6 +54,7 @@
 			title="Wenn keine Autoren angegeben sind, wird stattdessen diese Anmerkung gezeigt.
 Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wird anstatt der Tilde eingef&uuml;gt."
 			style="height:70px;"><?php if (isset($id)) print $solution['remarks']; ?></textarea>
+
 		<label for="published">Ver&ouml;ffentlicht in:</label> <input type="text" class="text" name="published" id="published" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}" style="width:50px;" value="<?php if (isset($solution['month'])) print $solution['month']."/".($solution['year']%100); ?>"/>
 		<input type="checkbox" name="public" id="public" <?php if (isset($id) && $solution['public']) print "checked"; ?>/>
 			<label for="public">&ouml;ffentlich</label>
@@ -63,14 +65,27 @@ Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wi
 			onclick="if (confirm('L&ouml;sung wirklich l&ouml;schen?')) postDelete('solution');"/>
 		<?php } ?>
 	</form>
-	</div>
+
+	<input type="hidden" name="picnums" form="solution">
+	<!-- here come the figure forms... -->
 	</div>
 
-	<?php $pb->close(); ?>
+	<a class="button" href="javascript:picForm.addPic();"><i class="icon-plus-sign"></i> Grafik hinzuf&uuml;gen</a>
+	</div>
 
 	<script type="text/javascript">
 		Preview.Init("text", "preview");
 		Preview.Update();
+
+		var picForm = new Pictures("solution", [<?php
+		if (isset($id)) {
+			$num = 0;
+			$pics = $pb->query("SELECT * FROM pictures WHERE file_id=$id");
+			while($pic = $pics->fetchArray(SQLITE3_ASSOC))
+				print (($num++ > 0) ? ", " : "").json_encode($pic);
+		}	?>]);
 	</script>
+
+	<?php $pb->close(); ?>
 </body>
 </html>
