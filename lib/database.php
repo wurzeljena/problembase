@@ -109,6 +109,6 @@
 	}
 
 	function Problembase() {
-		return new SQLiteDB($_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/sqlite/problembase.sqlite');
+		return new SQLiteDB($_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/problembase.sqlite');
 	}
 ?>
