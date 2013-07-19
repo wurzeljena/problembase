@@ -1,11 +1,12 @@
 <?php
 	session_start();
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 	if (!isset($_SESSION['user_id'])) {
 		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
 		exit();
 	}
 	$user_id = $_SESSION['user_id'];
-	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+	$pb = Problembase();
 
 	// new user
 	if (isset($_POST["newname"]) && !isset($_GET["id"]) && $_SESSION["root"]) {
@@ -30,12 +31,11 @@
 			"\tIhr Wurzel-Verein",
 			"From: info@wurzel.org\nContent-type: text/plain; charset=iso-8859-1");
 
-		header("Location: {$_SERVER["PBROOT"]}/users/".$pb->lastInsertRowID());
+		header("Location: {$_SERVER["PBROOT"]}/users/".$pb->lastInsertRowID("users", "id"));
 	}
 
 	// delete user
 	if (isset($_GET["id"]) && isset($_GET["delete"]) && $_SESSION['root']) {
-		$pb->exec("PRAGMA foreign_keys=on;");
 		$pb->exec("DELETE FROM users WHERE id={$_GET["id"]}");
 		header("Location: {$_SERVER["PBROOT"]}/users/");
 	}
@@ -59,7 +59,7 @@
 
 	// change rights - user has to be root
 	if (isset($_POST["update"])) {
-		$id = $pb->escapeString($_GET["id"]);
+		$id = $pb->escape($_GET["id"]);
 		if (isset($_POST["root"]) && $_SESSION['root'])
 			$pb->exec("UPDATE users SET root={$_POST["root"]} WHERE id=$id");
 		if (isset($_POST["editor"]) && $_SESSION['root'])

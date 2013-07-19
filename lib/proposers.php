@@ -4,7 +4,7 @@
 		$proposers = $pb->query("SELECT DISTINCT name FROM proposers");
 
 		print '<datalist id="proposers">';
-		while($proposer = $proposers->fetchArray(SQLITE3_NUM)) {
+		while($proposer = $proposers->fetchArray()) {
 			print '<option value="'.htmlspecialchars($proposer[0]).'">';
 		}
 		print '</datalist>';
@@ -22,7 +22,7 @@
 		print "<script type='text/javascript'>";
 		print "var propForm = new PropForm('$form', [";
 		$num = 0;
-		while($proposer = $proposers->fetchArray(SQLITE3_ASSOC))
+		while($proposer = $proposers->fetchAssoc())
 			print (($num++ > 0) ? ", " : "").json_encode($proposer);
 		print "]);</script>";
 	}
@@ -36,7 +36,7 @@
 
 		// create their list
 		$props = array();
-		while(list($name, $location, $country) = $proposers->fetchArray(SQLITE3_NUM))
+		while(list($name, $location, $country) = $proposers->fetchArray())
 			$props[] = "$name, $location".(isset($country) ? " ($country)" : "");
 		$props = implode(" und ", $props);
 
@@ -57,13 +57,13 @@
 				$insert = "INSERT INTO proposers (name, location";
 				if ($country[$num] != "")
 					$insert .= ", country";
-				$insert .= ") VALUES ('{$pb->escapeString($proposer[$num])}', '{$pb->escapeString($location[$num])}'";
+				$insert .= ") VALUES ('{$pb->escape($proposer[$num])}', '{$pb->escape($location[$num])}'";
 				if ($country[$num] != "")
-					$insert .= ", '{$pb->escapeString($country[$num])}'";
+					$insert .= ", '{$pb->escape($country[$num])}'";
 				$insert .= ")";
 
 				$pb->exec($insert);
-				$proposer_id[$num] = $pb->lastInsertRowID();
+				$proposer_id[$num] = $pb->lastInsertRowID("proposers", "id");
 			}
 		}
 
@@ -72,11 +72,12 @@
 
 	// answer to Ajax queries for proposers
 	if (isset($_GET['prop_query'])) {
-		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
-		$proposers = $pb->query("SELECT id, location, country FROM proposers WHERE name='{$pb->escapeString($_GET['prop_query'])}'");
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
+		$pb = Problembase();
+		$proposers = $pb->query("SELECT id, location, country FROM proposers WHERE name='{$pb->escape($_GET['prop_query'])}'");
 		header("Content-Type: application/json");
 		print "[";	$num = 0;
-		while($proposer = $proposers->fetchArray(SQLITE3_ASSOC))
+		while($proposer = $proposers->fetchAssoc())
 			print (($num++ > 0) ? ", " : "").json_encode($proposer);
 		print "]";
 		$pb->close();

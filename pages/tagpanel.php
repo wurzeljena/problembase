@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 
 	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
 		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
@@ -22,9 +23,9 @@
 			<select name="id" onchange="loadTag();">
 				<option value="" selected>&mdash;Neuer Tag&mdash;</option>
 				<?php
-					$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+					$pb = Problembase();
 					$tags = $pb->query("SELECT id, name FROM tags");
-					while(list($id, $tag) = $tags->fetchArray(SQLITE3_NUM))
+					while(list($id, $tag) = $tags->fetchArray())
 						print "<option value='$id'>$tag</option>";
 					$pb->close();
 				?>

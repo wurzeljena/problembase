@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 
 	// if user has no editor rights, throw a 403 error
 	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
@@ -7,7 +8,7 @@
 		exit();
 	}
 
-	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+	$pb = Problembase();
 	$problem_id = (int)$_GET['problem_id'];
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$problem_id", true);
 	if (empty($problem))
@@ -81,7 +82,7 @@ Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wi
 		if (isset($id)) {
 			$num = 0;
 			$pics = $pb->query("SELECT * FROM pictures WHERE file_id=$id");
-			while($pic = $pics->fetchArray(SQLITE3_ASSOC))
+			while($pic = $pics->fetchAssoc())
 				print (($num++ > 0) ? ", " : "").json_encode($pic);
 		}	?>]);
 	</script>

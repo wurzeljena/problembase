@@ -1,8 +1,9 @@
 <?php
 	session_start();
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 
 	$id = (int)$_GET['id'];
-	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+	$pb = Problembase();
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
 
 	// if no such problem exists, throw a 404 error
@@ -48,7 +49,7 @@
 			<div class="published">
 			<?php
 				$pub = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$id, true);
-				if (count($pub)) {
+				if ($pub && count($pub)) {
 					$volume = $pub['month']."/".str_pad($pub['year']%100, 2, "0", STR_PAD_LEFT);
 					$letter = $pub['letter'];
 					$number = $pub['number'];
@@ -108,7 +109,7 @@
 
 		$cond = (isset($user_id) && $_SESSION['editor']) ? "" : " AND editorial=0";
 		$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id".$cond);
-		while($comment=$comments->fetchArray(SQLITE3_ASSOC)) {
+		while($comment=$comments->fetchAssoc()) {
 			print "<div class='comment".(isset($user_id) && $comment['user_id']==$user_id ? " own" : "")
 				.($comment['editorial'] ? " editorial" : "")."'>";
 			if (isset($user_id) && $comment['user_id']==$user_id)

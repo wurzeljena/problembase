@@ -9,7 +9,12 @@
 		}
 
 		function query($nonpublic) {
-			$cond = $nonpublic ? "" : " AND problems.public AND solutions.public=1";
+			if (!$this->idstr) {
+				$this->solutions = array();
+				return;
+			}
+
+			$cond = $nonpublic ? "" : " AND problems.public=1 AND solutions.public=1";
 			$query = "SELECT solutions.file_id, solutions.problem_id, files.content AS solution, solutions.remarks, solutions.month, solutions.year, "
 				."solutions.public, problemfiles.content AS problem, published.letter, published.number "
 				."FROM solutions INNER JOIN files ON solutions.file_id=files.rowid "
@@ -18,7 +23,7 @@
 
 			$solutions = $this->pb->query($query);
 			$this->solutions = Array();
-			while($solution = $solutions->fetchArray(SQLITE3_ASSOC))
+			while($solution = $solutions->fetchAssoc())
 				$this->solutions[] = $solution;
 		}
 
@@ -69,8 +74,9 @@
 	// answer to TeX requests from issue pages
 	if (isset($_GET['tex'])) {
 		session_start();
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
-		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+		$pb = Problembase();
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=loes"
 			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");

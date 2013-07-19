@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 
 	// if user isn't authenticated, throw a 403 error
 	if (!isset($_SESSION['user_id'])) {
@@ -7,7 +8,7 @@
 		exit();
 	}
 
-	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+	$pb = Problembase();
 	$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
 	$root = $_SESSION['root'];
 
@@ -27,7 +28,7 @@
 			<thead><tr><th>Name</th><th>E-Mail</th><th>root</th><th>editor</th><th>Kommentare</th></tr></thead>
 		<tbody>
 		<?php
-			while ($user = $users->fetchArray(SQLITE3_ASSOC)) { ?>
+			while ($user = $users->fetchAssoc()) { ?>
 				<tr <?php print 'id='.$user['id']; ?>>
 					<td><?php print $user['name'] ?></td>
 					<?php

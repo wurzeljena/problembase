@@ -1,28 +1,33 @@
 <?php
 	session_start();
-	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
+	$pb = Problembase();
 
 	if (isset($_POST["logout"]))
 		session_destroy();
 	else {
 		// look up user ID and password hash
-		$user = $pb->querySingle("SELECT id, name, encr_pw, root, editor, strftime('%s','now')-strftime('%s',wait_till) AS wait "
-			."FROM users WHERE email='{$pb->escapeString($_POST["email"])}'", true);
+		$user = $pb->querySingle("SELECT id, name, encr_pw, root, editor, wait_till "
+			."FROM users WHERE email='{$pb->escape($_POST["email"])}'", true);
+
+		$now = new DateTime("now");
+		$wait_till = new DateTime($user['wait_till']);
 
 		// check if we don't have to wait and for correct password
-		if ($user['wait'] >= 0 && ($user['encr_pw'] == "" || $user['encr_pw'] == crypt($_POST["password"], $user['encr_pw']))) {
+		if ($now >= $wait_till && ($user['encr_pw'] == "" || $user['encr_pw'] == crypt($_POST["password"], $user['encr_pw']))) {
 			$_SESSION['user_id'] = $user['id'];
 			$_SESSION['user_name'] = $user['name'];
 			$_SESSION['email'] = $_POST["email"];
 			$_SESSION['root'] = $user['root'];
 			$_SESSION['editor'] = $user['editor'];
 
-			$pb->exec("UPDATE users SET wait_till=null WHERE email='{$pb->escapeString($_POST["email"])}'");
+			$pb->exec("UPDATE users SET wait_till=null WHERE email='{$pb->escape($_POST["email"])}'");
 			unset($_SESSION['wait']);
 		}
-		else if ($user['wait'] >= 0) {
-			$pb->exec("UPDATE users SET wait_till=datetime('now', '+10 seconds') WHERE email='{$pb->escapeString($_POST["email"])}'");
-			$_SESSION['wait'] = date(DATE_ATOM, strtotime("+10 seconds"));
+		else if ($now >= $wait_till) {
+			$wait_till = date_add($now, new DateInterval('PT10S'));
+			$pb->exec("UPDATE users SET wait_till='{$wait_till->format('H:i:s')}' WHERE email='{$pb->escape($_POST["email"])}'");
+			$_SESSION['wait'] = $wait_till->format(DATE_ATOM);
 		}
 	}
 

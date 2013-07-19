@@ -43,15 +43,15 @@
 			if (isset($this->par['filter'])) {
 				$pb->exec("CREATE TEMPORARY TABLE filter AS "
 					."SELECT file_id AS problem_id FROM problems JOIN files ON files.rowid=problems.file_id "
-					."WHERE content MATCH '{$pb->escapeString($this->par['filter'])}' "
+					."WHERE content MATCH '{$pb->escape($this->par['filter'])}' "
 					."UNION SELECT problem_id FROM solutions JOIN files ON files.rowid=solutions.file_id "
-					."WHERE content MATCH '{$pb->escapeString($this->par['filter'])}'");
+					."WHERE content MATCH '{$pb->escape($this->par['filter'])}'");
 				$filter[] = "problems.file_id IN filter";
 			}
 
 			if (isset($this->par['proposer'])) {
 				$pb->exec("CREATE TEMPORARY TABLE propfilter AS "
-					."SELECT id AS proposer_id FROM proposers WHERE name LIKE '%{$pb->escapeString($this->par['proposer'])}%'");
+					."SELECT id AS proposer_id FROM proposers WHERE name LIKE '%{$pb->escape($this->par['proposer'])}%'");
 				$filter[] = "EXISTS (SELECT proposer_id FROM fileproposers WHERE file_id=problems.file_id AND proposer_id IN propfilter)";
 			}
 
@@ -65,9 +65,9 @@
 			}
 
 			if (isset($this->par['year']))
-				$filter[] = "year = {$pb->escapeString($this->par['year'])}";
+				$filter[] = "year = {$pb->escape($this->par['year'])}";
 			if (isset($this->par['month']))
-				$filter[] = "month = {$pb->escapeString($this->par['month'])}";
+				$filter[] = "month = {$pb->escape($this->par['month'])}";
 
 			if (isset($this->par['with_solution']))
 				$filter[] = "EXISTS (SELECT solutions.file_id FROM solutions WHERE problems.file_id=solutions.problem_id "
@@ -77,14 +77,14 @@
 				$filter[] = "public=0";
 
 			if (isset($this->par['start']))
-				$filter[] = "proposed > '{$pb->escapeString($this->par['start'])}'";
+				$filter[] = "proposed > '{$pb->escape($this->par['start'])}'";
 			if (isset($this->par['end']))
-				$filter[] = "proposed < '{$pb->escapeString($this->par['end'])}'";
+				$filter[] = "proposed < '{$pb->escape($this->par['end'])}'";
 
 			if (isset($this->par['tags'])) {
 				$tags = array_filter(explode(',', $this->par['tags']));
 				foreach ($tags as $tag)
-					$filter[] = "EXISTS (SELECT rowid FROM tag_list WHERE problems.file_id=tag_list.problem_id and tag_list.tag_id={$pb->escapeString($tag)})";
+					$filter[] = "EXISTS (SELECT rowid FROM tag_list WHERE problems.file_id=tag_list.problem_id and tag_list.tag_id={$pb->escape($tag)})";
 			}
 
 			if (count($filter))
@@ -101,9 +101,9 @@
 		// filter tasks, save the result in the session cache and return the index
 		function filter($cache = false) {
 			// write results to array
-			$res = $this->query->execute();
+			$res = $this->query->exec();
 			$this->array = array();
-			while ($problem = $res->fetchArray(SQLITE3_ASSOC))
+			while ($problem = $res->fetchAssoc())
 				$this->array[] = $problem['file_id'];
 
 			// save in session
@@ -133,6 +133,11 @@
 		}
 
 		function query($order = null) {
+			if (!$this->idstr) {
+				$this->problems = Array();
+				return;
+			}
+
 			$query = "SELECT problems.file_id, files.content AS problem, problems.proposed, public, letter, number, month, year, "
 				."(SELECT COUNT(solutions.file_id) FROM solutions WHERE problems.file_id=solutions.problem_id) AS numsol, "
 				."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.file_id=comments.problem_id) AS numcomm, "
@@ -147,7 +152,7 @@
 
 			$problems = $this->pb->query($query);
 			$this->problems = Array();
-			while($problem = $problems->fetchArray(SQLITE3_ASSOC))
+			while($problem = $problems->fetchAssoc())
 				$this->problems[] = $problem;
 		}
 
@@ -207,8 +212,9 @@
 	// answer to page requests from index
 	if (isset($_GET['hash'])) {
 		session_start();
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
-		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+		$pb = Problembase();
 		header("Content-Type: text/html; encoding=utf-8");
 
 		$filter = new Filter($_GET['hash']);
@@ -221,8 +227,9 @@
 	// answer to TeX requests from issue pages
 	if (isset($_GET['tex'])) {
 		session_start();
+		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
-		$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+		$pb = Problembase();
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=aufg"
 			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");

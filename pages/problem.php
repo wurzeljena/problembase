@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
 
 	// if user has no editor rights, throw a 403 error
 	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
@@ -7,7 +8,7 @@
 		exit();
 	}
 
-	$pb = new SQLite3($_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/sqlite/problembase.sqlite');
+	$pb = Problembase();
 	if (isset($_GET['id'])) {
 		$id = (int)$_GET['id'];
 		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
