@@ -26,7 +26,7 @@
 
 	// write "public" flag
 	$public = isset($_POST['public']) ? 1 : 0;
-	$pb->exec("UPDATE problems SET public=$public WHERE id=$id");
+	$pb->exec("UPDATE problems SET public=$public WHERE file_id=$id");
 
 	$pb->exec("END TRANSACTION");
 	$pb->close();

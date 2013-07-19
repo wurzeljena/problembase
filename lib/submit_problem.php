@@ -12,7 +12,7 @@
 	if (isset($_GET["id"]))
 		$id = $pb->escapeString($_GET["id"]);
 	$propnums = array_filter(explode(",", $_POST['propnums']), "strlen");
-	$params = array_merge(array("solution", "remarks", "published"),
+	$params = array_merge(array("problem", "remarks", "proposed", "tags"),
 		(count($propnums) ? array("proposer", "proposer_id", "location", "country") : array()));
 	foreach($params as $key)
 		$$key = $_POST[$key];
@@ -30,7 +30,7 @@
 		// write into db
 		if (isset($id)) {
 			$pb->exec("UPDATE files SET content='{$pb->escapeString($problem)}' WHERE rowid=$id");
-			$pb->exec("UPDATE problems SET remarks='{$pb->escapeString($remarks)}', proposed=date('$proposed') WHERE id=$id");
+			$pb->exec("UPDATE problems SET remarks='{$pb->escapeString($remarks)}', proposed=date('$proposed') WHERE file_id=$id");
 		}
 		else {
 			$pb->exec("INSERT INTO files(content) VALUES('{$pb->escapeString($problem)}')");

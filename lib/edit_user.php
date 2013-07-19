@@ -41,8 +41,8 @@
 	}
 
 	// change name/email or password - user has to be logged in
-	if (isset($_POST["id"]) && $_POST["id"]==$user_id) {
-		$id = $pb->escapeString($_GET["id"]);
+	if (isset($_GET["id"]) && $_GET["id"]==$user_id) {
+		$id = $pb->escape($_GET["id"]);
 		if (isset($_POST["name"]) && isset($_POST["email"])) {
 			$pb->exec("UPDATE users SET name='{$_POST["name"]}', email='{$_POST["email"]}' WHERE id=$id");
 			header("Location: {$_SERVER["PBROOT"]}/users/$id");
