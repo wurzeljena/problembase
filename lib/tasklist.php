@@ -1,7 +1,7 @@
 <?php
 	define("TASKS_PER_PAGE", 10);
 
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tags.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/tags.php';
 
 	class Filter {
 		private $par;		// parameter list
@@ -212,8 +212,8 @@
 	// answer to page requests from index
 	if (isset($_GET['hash'])) {
 		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
 		$pb = Problembase();
 		header("Content-Type: text/html; encoding=utf-8");
 
@@ -227,8 +227,8 @@
 	// answer to TeX requests from issue pages
 	if (isset($_GET['tex'])) {
 		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
 		$pb = Problembase();
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=aufg"

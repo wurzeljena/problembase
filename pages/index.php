@@ -1,9 +1,9 @@
 <?php
 	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tasklist.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/tasklist.php';
 
 	printhead();
 	$pb = Problembase();

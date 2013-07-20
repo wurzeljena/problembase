@@ -42,7 +42,7 @@
 	// answer to Ajax queries for tags
 	if (isset($_GET['taginfo'])) {
 		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
 
 		$pb = Problembase();
 		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_GET['id']."'")
@@ -56,7 +56,7 @@
 	// write tag from tag form
 	if (isset($_POST['id']) && isset($_POST['name'])) {
 		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
 		if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
 			include 'error403.php';
 			exit();

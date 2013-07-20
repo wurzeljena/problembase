@@ -1,10 +1,10 @@
 <?php
 	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
 
 	// if user has no editor rights, throw a 403 error
 	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
 		exit();
 	}
 
@@ -25,12 +25,12 @@
 
 	// answer invalid requests properly
 	if (isset($error)) {
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error404.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error404.php';
 		exit();
 	}
 
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
 	printhead("L&ouml;sung ".(isset($id) ? "bearbeiten" : "erstellen"));
 ?>
 <body>

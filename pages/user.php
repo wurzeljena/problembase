@@ -1,10 +1,10 @@
 <?php
 	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
 
 	// if user isn't authenticated, throw a 403 error
 	if (!isset($_SESSION['user_id'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
 		exit();
 	}
 
@@ -12,7 +12,7 @@
 	$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
 	$root = $_SESSION['root'];
 
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
 	printhead("Benutzerliste");
 ?>
 <body>

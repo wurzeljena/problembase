@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
 	$pb = Problembase();
 
 	if (isset($_POST["logout"]))

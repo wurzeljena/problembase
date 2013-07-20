@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
 
 	$id = (int)$_GET['id'];
 	$pb = Problembase();
@@ -9,20 +9,20 @@
 	// if no such problem exists, throw a 404 error
 	if (empty($problem)) {
 		$error = "Aufgabe nicht gefunden";
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error404.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error404.php';
 		exit();
 	}
 
 	// if the user isn't allowed to see it, throw a 403 error
 	if (!$problem['public'] && (!isset($_SESSION['user_id']) || !$_SESSION['editor'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/pages/error403.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
 		exit();
 	}
 
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/tags.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/solutionlist.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/tags.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/solutionlist.php';
 
 	printhead("Aufgabe $id");
 ?>

@@ -74,8 +74,8 @@
 	// answer to TeX requests from issue pages
 	if (isset($_GET['tex'])) {
 		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/database.php';
-		include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/proposers.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
 		$pb = Problembase();
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=loes"

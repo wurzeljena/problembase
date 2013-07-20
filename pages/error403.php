@@ -1,7 +1,7 @@
 <?php
 	if (session_status() != PHP_SESSION_ACTIVE)
 		session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_SERVER['PBROOT'].'/lib/head.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
 	header($_SERVER["SERVER_PROTOCOL"]." 403 Forbidden");
 	printhead("Zugriff nicht gestattet", false);
 ?>

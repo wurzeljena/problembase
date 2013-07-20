@@ -49,11 +49,7 @@ PHP 5.3.0 or newer is required. Get a clone by
 	git clone --recursive git://github.com/wurzeljena/problembase.git
 
 You can either clone into the document root or a subdirectory. In this case,
-add
-
-	SetEnvIf always_match ^ PBROOT=/path/to/problembase
-
-and in either case
+add an environment variable `PBROOT=/path/to/problembase`. Also, add
 
 	ErrorDocument 403 /path/to/problembase/error403.php
 	ErrorDocument 404 /path/to/problembase/error404.php
@@ -79,8 +75,6 @@ Usage
 -----
 Although the UI should be straightforward and intuitive, some remarks:
 
-*	after creating a user, he can login without password. *Please remember users to set their
-	password on the users page.*
 *	we rely on JavaScript. Don't deactivate it.
 *	users can do (almost) anything: edit and delete problems, solutions, write comments.
 	So be careful! But only a `root` user can add users and grant (or revoke) rights.
