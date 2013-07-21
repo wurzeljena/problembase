@@ -108,7 +108,89 @@
 		}
 	}
 
+	// POSTGRESQL IMPLEMENTATION
+	class PostgresDB implements SQLDatabase {
+		public $conn;
+
+		function __construct($desc) {
+			$this->conn = pg_connect($desc);
+		}
+
+		function query($stmt) {
+			return new PostgresResult(pg_query($this->conn, $stmt));
+		}
+
+		function querySingle($stmt, $entire_row) {
+			$res = $this->query($stmt);
+			if ($entire_row)
+				return $res->fetchAssoc();
+			else
+				return $res->fetchArray()[0];
+		}
+
+		function prepare($stmt) {
+			$hash = md5($stmt);
+			pg_prepare($this->conn, $hash, $stmt);
+			return new PostgresStmt($this->conn, $hash);
+		}
+
+		function exec($stmt) {
+			pg_exec($this->conn, $stmt);
+		}
+
+		function lastInsertRowID($table, $col) {
+			$res = pg_query("SELECT currval(pg_get_serial_sequence('$table', '$col'))");
+			return pg_fetch_row($res)[0];
+		}
+
+		function escape($val) {
+			return pg_escape_string($val);
+		}
+
+		function close() {
+			pg_close($this->conn);
+		}
+	}
+
+	class PostgresStmt implements SQLStmt {
+		private $conn;
+		private $name;
+		private $params = Array();
+
+		function __construct($conn, $name) {
+			$this->conn = $conn;
+			$this->name = $name;
+		}
+
+		function bind($param, $value, $type) {
+			$this->params[$param] = $value;
+		}
+
+		function exec() {
+			return new PostgresResult(pg_execute($this->conn, $this->name, $this->params));
+		}
+	}
+
+	class PostgresResult implements SQLResult {
+		private $result;
+
+		function __construct($result) {
+			$this->result = $result;
+		}
+
+		function fetchArray() {
+			return pg_fetch_row($this->result);
+		}
+
+		function fetchAssoc() {
+			return pg_fetch_assoc($this->result);
+		}
+	}
+
 	function Problembase() {
-		return new SQLiteDB($_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/problembase.sqlite');
+		if (isset($_ENV['DB_NAME']))
+			return new PostgresDB("host={$_ENV['DB_HOST']} dbname={$_ENV['DB_NAME']} port=5432 user={$_ENV['DB_USER']} password={$_ENV['DB_PASSWORD']}");
+		else
+			return new SQLiteDB("{$_SERVER['DOCUMENT_ROOT']}{$_ENV['PBROOT']}/problembase.sqlite");
 	}
 ?>
