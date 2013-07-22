@@ -26,15 +26,16 @@
 			$proposer_id = writeproposers($pb, $propnums, $proposer, $proposer_id, $location, $country);
 
 		// write into db
+		$proposed = $proposed ? "date('$proposed')" : "null";	// convert to date if not empty
 		if (isset($id)) {
 			$pb->exec("UPDATE files SET content='{$pb->escape($problem)}' WHERE rowid=$id");
-			$pb->exec("UPDATE problems SET remarks='{$pb->escape($remarks)}', proposed=date('$proposed') WHERE file_id=$id");
+			$pb->exec("UPDATE problems SET remarks='{$pb->escape($remarks)}', proposed=$proposed WHERE file_id=$id");
 		}
 		else {
 			$pb->exec("INSERT INTO files(content) VALUES('{$pb->escape($problem)}')");
 			$id = $pb->lastInsertRowID("files", "rowid");
 			$pb->exec("INSERT INTO problems(file_id, remarks, proposed, public) VALUES "
-				."($id, '{$pb->escape($remarks)}', date('$proposed'), 0)");
+				."($id, '{$pb->escape($remarks)}', $proposed, 0)");
 		}
 
 		// write proposers

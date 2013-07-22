@@ -11,6 +11,8 @@
 		function lastInsertRowid($table, $col);
 		function escape($val);
 
+		function ftsCond($col, $search);
+
 		function close();
 	}
 
@@ -63,6 +65,10 @@
 
 		function escape($val) {
 			return $this->db->escapeString($val);
+		}
+		
+		function ftsCond($col, $search) {
+			return "$col MATCH '$search'";
 		}
 
 		function close() {
@@ -148,6 +154,10 @@
 
 		function escape($val) {
 			return pg_escape_string($val);
+		}
+		
+		function ftsCond($col, $search) {
+			return "to_tsvector('german', $col) @@ to_tsquery('german', '$search')";
 		}
 
 		function close() {

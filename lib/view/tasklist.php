@@ -38,18 +38,15 @@
 			if ($public)
 				$filter[] = "public=1";
 
-			if (isset($this->par['filter'])) {
+			if (isset($this->par['filter']))
 				$filter[] = "problems.file_id IN (SELECT file_id AS problem_id FROM problems JOIN files ON files.rowid=problems.file_id "
-					."WHERE to_tsvector('german', content) @@ to_tsquery('german', '{$pb->escape($this->par['filter'])}') "
-					."UNION SELECT problem_id FROM solutions JOIN files ON files.rowid=solutions.file_id "
-					."WHERE to_tsvector('german', content) @@ to_tsquery('german', '{$pb->escape($this->par['filter'])}') )";
-			}
+					."WHERE ".$pb->ftsCond("content", $pb->escape($this->par['filter']))
+					." UNION SELECT problem_id FROM solutions JOIN files ON files.rowid=solutions.file_id "
+					."WHERE ".$pb->ftsCond("content", $pb->escape($this->par['filter']))." )";
 
-			if (isset($this->par['proposer'])) {
-				$pb->exec("CREATE TEMPORARY TABLE propfilter AS "
-					."SELECT id AS proposer_id FROM proposers WHERE name LIKE '%{$pb->escape($this->par['proposer'])}%'");
-				$filter[] = "EXISTS (SELECT proposer_id FROM fileproposers WHERE file_id=problems.file_id AND proposer_id IN propfilter)";
-			}
+			if (isset($this->par['proposer']))
+				$filter[] = "EXISTS (SELECT proposer_id FROM fileproposers WHERE file_id=problems.file_id AND proposer_id IN "
+					."(SELECT id AS proposer_id FROM proposers WHERE name LIKE '%{$pb->escape($this->par['proposer'])}%'))";
 
 			if (isset($this->par['number'])) {
 				list($month, $year) = explode("/", $this->par['number']);
@@ -80,7 +77,7 @@
 			if (isset($this->par['tags'])) {
 				$tags = array_filter(explode(',', $this->par['tags']));
 				foreach ($tags as $tag)
-					$filter[] = "EXISTS (SELECT rowid FROM tag_list WHERE problems.file_id=tag_list.problem_id and tag_list.tag_id={$pb->escape($tag)})";
+					$filter[] = "EXISTS (SELECT tag_id FROM tag_list WHERE problems.file_id=tag_list.problem_id and tag_list.tag_id={$pb->escape($tag)})";
 			}
 
 			if (count($filter))
