@@ -66,7 +66,7 @@
 		</div>
 	</form>
 
-	<?php printcalendar(getdate()['year'], -1); ?>
+	<?php $date = getdate(); printcalendar($date['year'], -1); ?>
 	</div>
 
 	<div class="content" id="tasklist"></div>

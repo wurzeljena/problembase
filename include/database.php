@@ -40,7 +40,7 @@
 		}
 
 		function query($stmt) {
-			return new SQLiteResult($this->db->query($stmt));
+			return new SQLiteRes($this->db->query($stmt));
 		}
 
 		function querySingle($stmt, $entire_row) {
@@ -88,11 +88,11 @@
 		}
 
 		function exec() {
-			return new SQLiteResult($this->stmt->execute());
+			return new SQLiteRes($this->stmt->execute());
 		}
 	}
 
-	class SQLiteResult implements SQLResult {
+	class SQLiteRes implements SQLResult {
 		private $result;
 
 		function __construct($result) {
@@ -124,8 +124,10 @@
 			$res = $this->query($stmt);
 			if ($entire_row)
 				return $res->fetchAssoc();
-			else
-				return $res->fetchArray()[0];
+			else {
+				$array = $res->fetchArray();
+				return $array[0];
+			}
 		}
 
 		function prepare($stmt) {
@@ -140,7 +142,8 @@
 
 		function lastInsertRowID($table, $col) {
 			$res = pg_query("SELECT currval(pg_get_serial_sequence('$table', '$col'))");
-			return pg_fetch_row($res)[0];
+			$row = pg_fetch_row($res);
+			return $row[0];
 		}
 
 		function escape($val) {
