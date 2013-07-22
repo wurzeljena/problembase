@@ -48,8 +48,8 @@ function drawMenu($id) { ?>
 
 	function printheader() { ?>
 <div class="head"><div class="center">
-	<a id="logo" href="<?=$_SERVER["PBROOT"]?>/">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
 	<?php drawMenu("headermenu"); ?>
+	<a id="logo" href="<?=$_SERVER["PBROOT"]?>/">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
 	<form id="login" action="<?=$_SERVER["PBROOT"]?>/logon" method="POST">
 	<?php if ($_SESSION['user_id'] == -1) { ?>
 		<span id="wait"></span>

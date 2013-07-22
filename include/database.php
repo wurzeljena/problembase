@@ -119,7 +119,7 @@
 		public $conn;
 
 		function __construct($desc) {
-			$this->conn = pg_connect($desc);
+			$this->conn = pg_connect($desc) or die("Could not connect: " . pg_last_error());
 		}
 
 		function query($stmt) {
@@ -202,7 +202,8 @@
 
 	function Problembase() {
 		if (isset($_ENV['DB_NAME']))
-			return new PostgresDB("host={$_ENV['DB_HOST']} dbname={$_ENV['DB_NAME']} port=5432 user={$_ENV['DB_USER']} password={$_ENV['DB_PASSWORD']}");
+			return new PostgresDB("host={$_ENV['DB_HOST']} dbname={$_ENV['DB_NAME']} port=5432 user={$_ENV['DB_USER']} "
+				."password={$_ENV['DB_PASSWORD']}".($_ENV['DB_HOST']=="localhost" ? "" : " sslmode=require")." options='--client_encoding=UTF8'");
 		else
 			return new SQLiteDB("{$_SERVER['DOCUMENT_ROOT']}{$_ENV['PBROOT']}/sql/problembase.sqlite");
 	}

@@ -26,7 +26,7 @@
 			"\n\nBitte ändern sie dieses Passwort sofort nach der ersten Anmeldung.\n\n".
 			"Viel Spaß beim Stöbern durch Aufgaben und Lösungen wünscht Ihnen\n".
 			"\tIhr Wurzel-Verein",
-			"From: info@wurzel.org\nContent-type: text/plain; charset=iso-8859-1");
+			"Content-type: text/plain; charset=iso-8859-1");
 
 		header("Location: {$_SERVER["PBROOT"]}/users/".$pb->lastInsertRowID("users", "id"));
 	}
