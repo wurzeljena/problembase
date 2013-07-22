@@ -1,14 +1,9 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/tasklist.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/solutionlist.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB | INC_HEAD | INC_PROPOSERS | INC_TAGS | INC_TASKLIST | INC_SOLLIST);
 
 	$month = $_GET['month']; $year = $_GET['year'];
 	printhead("Heft $month/$year");
-	$pb = Problembase();
 
 	// find problems
 	$filter = new Filter();
@@ -24,7 +19,7 @@
 	// generate solution list
 	$sollist = new SolutionList($pb);
 	$sollist->idstr = $pb->querysingle("SELECT group_concat(file_id) FROM solutions WHERE year=$year AND month=$month", false);
-	$sollist->query(isset($user_id) && $_SESSION['editor']);
+	$sollist->query($_SESSION['editor']);
 ?>
 <body>
 	<?php printheader(); ?>

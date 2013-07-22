@@ -73,10 +73,8 @@
 
 	// answer to TeX requests from issue pages
 	if (isset($_GET['tex'])) {
-		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
-		$pb = Problembase();
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		$pb = load(LOAD_DB | INC_PROPOSERS);
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=loes"
 			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");
@@ -86,7 +84,7 @@
 
 		$sollist = new SolutionList($pb);
 		$sollist->idstr = $pb->querysingle("SELECT group_concat(file_id) FROM solutions WHERE year={$_GET['year']} AND month={$_GET['month']}", false);
-		$sollist->query(isset($_SESSION['user_id']) && $_SESSION['editor']);
+		$sollist->query($_SESSION['editor']);
 		$sollist->print_tex($year, $period);
 	}
 ?>

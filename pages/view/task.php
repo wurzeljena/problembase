@@ -1,28 +1,17 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_SOLLIST);
 
 	$id = (int)$_GET['id'];
-	$pb = Problembase();
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
 
 	// if no such problem exists, throw a 404 error
-	if (empty($problem)) {
-		$error = "Aufgabe nicht gefunden";
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error404.php';
-		exit();
-	}
+	if (empty($problem))
+		http_error(404, "Aufgabe nicht gefunden");
 
 	// if the user isn't allowed to see it, throw a 403 error
-	if (!$problem['public'] && (!isset($_SESSION['user_id']) || !$_SESSION['editor'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
-		exit();
-	}
-
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/tags.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/solutionlist.php';
+	if (!$problem['public'] && !$_SESSION['editor'])
+		http_error(403);
 
 	printhead("Aufgabe $id");
 ?>
@@ -37,7 +26,7 @@
 	<div class="content">
 		<div class="task">
 			<?php
-				if (isset($user_id) && $_SESSION['editor'])
+				if ($_SESSION['editor'])
 					print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/edit'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			?>
 			<div class="info">
@@ -66,7 +55,7 @@
 					print "Noch nicht publiziert";
 				}
 				print $problem['public'] ? "." : ", nicht &ouml;ffentlich.";
-				if (isset($user_id) && $_SESSION['editor'])
+				if ($_SESSION['editor'])
 					print "<a class='button danger' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>";
 			?>
 			<form id="publish" style="display:none;" action="<?=$_SERVER["PBROOT"]?>/<?php print $id; ?>/publish" method="POST">
@@ -94,28 +83,28 @@
 		<?php
 		$sollist = new SolutionList($pb);
 		$sollist->idstr = $pb->querysingle("SELECT group_concat(file_id) FROM solutions WHERE problem_id=$id", false);
-		$sollist->query(isset($user_id) && $_SESSION['editor']);
-		$sollist->print_html(isset($user_id) && $_SESSION['editor']);
+		$sollist->query($_SESSION['editor']);
+		$sollist->print_html($_SESSION['editor']);
 
 		// show buttons between solutions and comments
-		if (isset($user_id) && $_SESSION['editor'])
+		if ($_SESSION['editor'])
 			print "<a class='button' href='{$_SERVER["PBROOT"]}/$id/addsolution'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
-		if (isset($user_id) && !$pb->querySingle("SELECT * FROM comments WHERE user_id=$user_id AND problem_id=$id", false))
+		if ($_SESSION['user_id'] != -1 && !$pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", false))
 			print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/$id/evaluate'><i class='icon-comments'></i> Kommentar schreiben</a>";
 
 		// if not logged in, separate comments from solutions with a lightweight header
-		if (!isset($user_id) || !$_SESSION['editor'])
+		if (!$_SESSION['editor'])
 			print "<h3 id='comments'><i class='icon-comment-alt'></i> Kommentare</h3>";
 
-		$cond = (isset($user_id) && $_SESSION['editor']) ? "" : " AND editorial=0";
+		$cond = $_SESSION['editor'] ? "" : " AND editorial=0";
 		$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id".$cond);
 		while($comment=$comments->fetchAssoc()) {
-			print "<div class='comment".(isset($user_id) && $comment['user_id']==$user_id ? " own" : "")
+			print "<div class='comment".($comment['user_id']==$_SESSION['user_id'] ? " own" : "")
 				.($comment['editorial'] ? " editorial" : "")."'>";
-			if (isset($user_id) && $comment['user_id']==$user_id)
+			if ($comment['user_id']==$_SESSION['user_id'])
 				print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			print "<div class='author'>{$comment['name']}";
-			if (isset($user_id))
+			if ($_SESSION['user_id'] != -1)
 				print " <a href='mailto:{$comment['email']}'><i class='icon-envelope-alt'></i></a>";
 			print '</div><div class="text">'.htmlspecialchars($comment['comment']).'</div>';
 

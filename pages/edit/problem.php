@@ -1,29 +1,20 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS);
 
 	// if user has no editor rights, throw a 403 error
-	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
-		exit();
-	}
+	if (!$_SESSION['editor'])
+		http_error(403);
 
-	$pb = Problembase();
 	if (isset($_GET['id'])) {
 		$id = (int)$_GET['id'];
 		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
 	}
 
 	// if no such problem exists, throw a 404 error
-	if (isset($id) && empty($problem)) {
-		$error = "Aufgabe nicht gefunden";
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error404.php';
-		exit();
-	}
+	if (isset($id) && empty($problem))
+		http_error(404, "Aufgabe nicht gefunden");
 
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/tags.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
 	printhead("Aufgabe ".(isset($id) ? "bearbeiten" : "erstellen"));
 ?>
 <body>

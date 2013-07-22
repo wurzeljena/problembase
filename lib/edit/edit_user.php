@@ -1,12 +1,9 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-	if (!isset($_SESSION['user_id'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
-		exit();
-	}
-	$user_id = $_SESSION['user_id'];
-	$pb = Problembase();
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB);
+
+	if ($_SESSION['user_id'] == -1)
+		http_error(403);
 
 	// new user
 	if (isset($_POST["newname"]) && !isset($_GET["id"]) && $_SESSION["root"]) {
@@ -41,7 +38,7 @@
 	}
 
 	// change name/email or password - user has to be logged in
-	if (isset($_GET["id"]) && $_GET["id"]==$user_id) {
+	if (isset($_GET["id"]) && $_GET["id"]==$_SESSION['user_id']) {
 		$id = $pb->escape($_GET["id"]);
 		if (isset($_POST["name"]) && isset($_POST["email"])) {
 			$pb->exec("UPDATE users SET name='{$_POST["name"]}', email='{$_POST["email"]}' WHERE id=$id");

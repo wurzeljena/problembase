@@ -8,7 +8,7 @@
 <?php	endif;
 
 		// get tag data from db
-		$restr = isset($_SESSION['user_id']) ? "" : " AND hidden=0";
+		$restr = ($_SESSION['user_id'] != -1) ? "" : " AND hidden=0";
 		$tags = $pb->query("SELECT * FROM tags WHERE id IN (".$tags.")".$restr);
 		while($tag_info = $tags->fetchAssoc()) {
 			$tag_info['color'] = "#".substr("00000".dechex($tag_info['color']),-6);
@@ -22,7 +22,7 @@
 
 	function tag_form($pb, $form, $taglist)
 	{
-		$restr = isset($_SESSION['user_id']) ? "" : " WHERE hidden=0";
+		$restr = ($_SESSION['user_id'] != -1) ? "" : " WHERE hidden=0";
 		$tags = $pb->query("SELECT id, name FROM tags".$restr); ?>
 		<select name="tag" id="tag_select" onchange="tagList.add(parseInt(this.value)); this.value=0;">
 		<option selected value="0">&mdash;Tag hinzuf&uuml;gen&mdash;</option>
@@ -41,10 +41,8 @@
 
 	// answer to Ajax queries for tags
 	if (isset($_GET['taginfo'])) {
-		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-
-		$pb = Problembase();
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		$pb = load(LOAD_DB);
 		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_GET['id']."'")
 			->fetchAssoc();
 		$res['color'] = "#".substr("00000".dechex($res['color']),-6);
@@ -55,9 +53,9 @@
 
 	// write tag from tag form
 	if (isset($_POST['id']) && isset($_POST['name'])) {
-		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-		if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		$pb = load(LOAD_DB);
+		if (!$_SESSION['editor']) {
 			include 'error403.php';
 			exit();
 		}

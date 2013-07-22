@@ -1,7 +1,4 @@
 <?php
-	if (isset($_SESSION['user_id']))
-		$user_id = $_SESSION['user_id'];
-
 	function printhead($title = "", $ok = true) {
 ?>
 <!DOCTYPE html>
@@ -34,7 +31,7 @@ function drawMenu($id) { ?>
 	<nav id="<?=$id?>">
 	<ul>
 		<li><a href="<?=$_SERVER["PBROOT"]?>/"><i class="icon-home"></i> <span>&Uuml;bersicht</span></a>
-</li><?php	if (isset($_SESSION['user_id'])): ?><li>
+</li><?php	if ($_SESSION['user_id'] != -1): ?><li>
 		<a href="<?=$_SERVER["PBROOT"]?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
 </li><li>
 		<a href="<?=$_SERVER["PBROOT"]?>/users/"><i class="icon-group"></i> <span>Benutzerliste</span></a>
@@ -49,13 +46,12 @@ function drawMenu($id) { ?>
 	</nav>
 <?php }
 
-	function printheader() {
-		global $user_id; ?>
+	function printheader() { ?>
 <div class="head"><div class="center">
 	<a id="logo" href="<?=$_SERVER["PBROOT"]?>/">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
 	<?php drawMenu("headermenu"); ?>
 	<form id="login" action="<?=$_SERVER["PBROOT"]?>/logon" method="POST">
-	<?php if (!isset($user_id)) { ?>
+	<?php if ($_SESSION['user_id'] == -1) { ?>
 		<span id="wait"></span>
 		<input type="email" style="width:15em;" name="email" placeholder="E-Mail">
 		<input type="password" name="password" placeholder="Passwort">

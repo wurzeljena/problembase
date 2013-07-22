@@ -2,48 +2,48 @@
 RewriteEngine On
 
 # main page
-RewriteRule ^$ pages/index.php [L]
-RewriteRule ^problem$ pages/problem.php [L]
+RewriteRule ^$ index.php [L]
+RewriteRule ^problem$ pages/edit/problem.php [L]
 RewriteRule ^logon$ lib/logon.php [L,QSA]
-RewriteRule ^tasks$ lib/tasklist.php [L,QSA]
+RewriteRule ^tasks$ lib/view/tasklist.php [L,QSA]
 
 # content pages and submitting
-RewriteRule ^([0-9]+)/$ pages/task.php?id=$1 [L]
+RewriteRule ^([0-9]+)/$ pages/view/task.php?id=$1 [L]
 RewriteRule ^([0-9]+)$ %{ENV:PBROOT}/$1/ [R=301,L]
-RewriteRule ^([0-9]+)/edit$ pages/problem.php?id=$1 [L]
-RewriteRule ^([0-9]+)/evaluate$ pages/eval.php?id=$1 [L]
-RewriteRule ^([0-9]+)/addsolution$ pages/solution.php?problem_id=$1 [L]
-RewriteRule ^([0-9]+)/([0-9]+)$ pages/solution.php?id=$2&problem_id=$1 [L]
-RewriteRule ^([0-9]+)/publish$ lib/publish.php?id=$1 [L,QSA]
-RewriteRule ^submit/$ lib/submit_problem.php [L,QSA]
-RewriteRule ^submit/([0-9]+)$ lib/submit_problem.php?id=$1 [L,QSA]
-RewriteRule ^submit/([0-9]+)/$ lib/submit_solution.php?problem_id=$1 [L,QSA]
-RewriteRule ^submit/([0-9]+)/([0-9]+)$ lib/submit_solution.php?id=$2&problem_id=$1 [L,QSA]
-RewriteRule ^submit/([0-9]+)/eval$ lib/submit_eval.php?id=$1 [L,QSA]
+RewriteRule ^([0-9]+)/edit$ pages/edit/problem.php?id=$1 [L]
+RewriteRule ^([0-9]+)/evaluate$ pages/edit/eval.php?id=$1 [L]
+RewriteRule ^([0-9]+)/addsolution$ pages/edit/solution.php?problem_id=$1 [L]
+RewriteRule ^([0-9]+)/([0-9]+)$ pages/edit/solution.php?id=$2&problem_id=$1 [L]
+RewriteRule ^([0-9]+)/publish$ lib/edit/publish.php?id=$1 [L,QSA]
+RewriteRule ^submit/$ lib/edit/submit_problem.php [L,QSA]
+RewriteRule ^submit/([0-9]+)$ lib/edit/submit_problem.php?id=$1 [L,QSA]
+RewriteRule ^submit/([0-9]+)/$ lib/edit/submit_solution.php?problem_id=$1 [L,QSA]
+RewriteRule ^submit/([0-9]+)/([0-9]+)$ lib/edit/submit_solution.php?id=$2&problem_id=$1 [L,QSA]
+RewriteRule ^submit/([0-9]+)/eval$ lib/edit/submit_eval.php?id=$1 [L,QSA]
 
 # user management
-RewriteRule ^users/$ pages/user.php [L]
+RewriteRule ^users/$ pages/view/user.php [L]
 RewriteRule ^users$ %{ENV:PBROOT}/users/ [R=301,L]
-RewriteRule ^users/new$ lib/edit_user.php [L,QSA]
+RewriteRule ^users/new$ lib/edit/edit_user.php [L,QSA]
 RewriteRule ^users/([0-9]+)$ %{ENV:PBROOT}/users/ [R,L]
-RewriteRule ^users/([0-9]+)/edit$ lib/edit_user.php?id=$1 [L,QSA]
-RewriteRule ^users/([0-9]+)/changepw$ lib/edit_user.php?id=$1 [L,QSA]
-RewriteRule ^users/([0-9]+)/delete$ lib/edit_user.php?id=$1&delete [L,QSA]
+RewriteRule ^users/([0-9]+)/edit$ lib/edit/edit_user.php?id=$1 [L,QSA]
+RewriteRule ^users/([0-9]+)/changepw$ lib/edit/edit_user.php?id=$1 [L,QSA]
+RewriteRule ^users/([0-9]+)/delete$ lib/edit/edit_user.php?id=$1&delete [L,QSA]
 
 # tag management
-RewriteRule ^tagpanel$ pages/tagpanel.php [L]
-RewriteRule ^tags/$ pages/tagpanel.php?standalone [L]
+RewriteRule ^tagpanel$ pages/edit/tagpanel.php [L]
+RewriteRule ^tags/$ pages/view/tagpanel.php?standalone [L]
 RewriteCond expr "%{HTTP_ACCEPT}='application/json'"
-RewriteRule ^tags/([0-9]+)$ lib/tags.php?taginfo&id=$1 [L,QSA]
+RewriteRule ^tags/([0-9]+)$ include/tags.php?taginfo&id=$1 [L,QSA]
 RewriteRule ^tags/([0-9]+)$ %{ENV:PBROOT}/?filter=&proposer=&number=&start=&end=&tags=$1 [R,L]
-RewriteRule ^tags/edit$ lib/tags.php [L,QSA]
+RewriteRule ^tags/edit$ include/tags.php [L,QSA]
 
 # proposer queries
 RewriteCond expr "%{HTTP_ACCEPT}='application/json'"
-RewriteRule ^proposers/(.*)$ lib/proposers.php?prop_query=$1 [L,QSA]
+RewriteRule ^proposers/(.*)$ include/proposers.php?prop_query=$1 [L,QSA]
 RewriteRule ^proposers/(.+)$ %{ENV:PBROOT}/?filter=&proposer=$1&number=&start=&end=&tags= [R,L]
 
 # issue
-RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))$ pages/issue.php?year=$1&month=$2 [L]
-RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/problems$ lib/tasklist.php?tex&year=$1&month=$2 [L]
-RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/solutions$ lib/solutionlist.php?tex&year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))$ pages/view/issue.php?year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/problems$ lib/view/tasklist.php?tex&year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/solutions$ lib/view/solutionlist.php?tex&year=$1&month=$2 [L]

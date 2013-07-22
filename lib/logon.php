@@ -1,10 +1,11 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-	$pb = Problembase();
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB);
 
-	if (isset($_POST["logout"]))
-		session_destroy();
+	if (isset($_POST["logout"])) {
+		$_SESSION['user_id'] = -1;
+		$_SESSION['root'] = $_SESSION['editor'] = 0;
+	}
 	else {
 		// look up user ID and password hash
 		$user = $pb->querySingle("SELECT id, name, encr_pw, root, editor, wait_till "

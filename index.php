@@ -1,12 +1,8 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/tasklist.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB | INC_HEAD | INC_PROPOSERS | INC_TAGS | INC_TASKLIST);
 
 	printhead();
-	$pb = Problembase();
 
 	// initialize cache if necessary
 	if (!isset($_SESSION['cache']))

@@ -1,11 +1,10 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
-		exit();
-	}
-	$pb = Problembase();
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB);
+
+	if (!$_SESSION['editor'])
+		http_error(403);
+
 	$pb->exec("BEGIN");
 
 	// read parameters

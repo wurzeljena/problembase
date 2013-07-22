@@ -1,27 +1,20 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB | INC_HEAD);
 
 	// if user isn't authenticated, throw a 403 error
-	if (!isset($_SESSION['user_id'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
-		exit();
-	}
+	if ($_SESSION['user_id'] == -1)
+		http_error(403);
 
 	$id = (int)$_GET['id'];
-	$pb = Problembase();
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
 	$comment = $pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", true);
 	$pb->close();
 
 	// if no such problem exists, throw a 404 error
-	if (empty($problem)) {
-		$error = "Aufgabe nicht gefunden";
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error404.php';
-		exit();
-	}
+	if (empty($problem))
+		http_error(404, "Aufgabe nicht gefunden");
 
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
 	printhead("Aufgabe bewerten");
 ?>
 <body>

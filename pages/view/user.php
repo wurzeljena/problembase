@@ -1,18 +1,14 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB | INC_HEAD);
 
 	// if user isn't authenticated, throw a 403 error
-	if (!isset($_SESSION['user_id'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
-		exit();
-	}
+	if ($_SESSION['user_id'] == -1)
+		http_error(403);
 
-	$pb = Problembase();
 	$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
 	$root = $_SESSION['root'];
 
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
 	printhead("Benutzerliste");
 ?>
 <body>
@@ -32,7 +28,7 @@
 				<tr <?php print 'id='.$user['id']; ?>>
 					<td><?php print $user['name'] ?></td>
 					<?php
-					if ($user['id']==$user_id)
+					if ($user['id']==$_SESSION['user_id'])
 						print '<td><a class="button" href="javascript:User.Trig();"><i class="icon-pencil"></i> Bearbeiten</a></td>	';
 					else
 						print '<td style="font-family:monospace;">'.$user['email'].'</td>';
@@ -41,7 +37,7 @@
 						print 'id="root'.$user['id'].'" ';
 						if ($user['root'])
 							print "checked ";
-						if ($root && $user['id']!=$user_id)
+						if ($root && $user['id']!=$_SESSION['user_id'])
 							print "onclick='setright(".$user['id'].", \"root\")'";
 						else
 							print "disabled";
@@ -58,14 +54,14 @@
 					<td><?php print $user['numcomm'] ?></td>
 				</tr>
 
-				<?php if ($user['id']==$user_id) { ?>
+				<?php if ($user['id']==$_SESSION['user_id']) { ?>
 				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan="5">
-				<form id="edit" action="<?=$_SERVER["PBROOT"]?>/users/<?=$user_id?>/edit" method="POST">
+				<form id="edit" action="<?=$_SERVER["PBROOT"]?>/users/<?=$_SESSION['user_id']?>/edit" method="POST">
 					<input type="text" name="name" placeholder="Name" value="<?php print $user['name'] ?>">
 					<input type="email" name="email" style="width:200px;" placeholder="E-Mail" value="<?php print $user['email'] ?>">
 					<input type="submit" value="&Auml;ndern">
 				</form>
-				<form id="pw" action="<?=$_SERVER["PBROOT"]?>/users/<?=$user_id?>/changepw" method="POST" onsubmit="return validate_password()">
+				<form id="pw" action="<?=$_SERVER["PBROOT"]?>/users/<?=$_SESSION['user_id']?>/changepw" method="POST" onsubmit="return validate_password()">
 					<input type="password" style="width:100px;" name="old_pw" placeholder="Altes Passwort">
 					<input type="password" style="width:100px;" name="new_pw" placeholder="Neues Passwort">
 					<input type="password" style="width:100px;" name="new_pw_check" placeholder="Best&auml;tigen">

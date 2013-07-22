@@ -1,14 +1,11 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB | INC_HEAD | INC_PROPOSERS);
 
 	// if user has no editor rights, throw a 403 error
-	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
-		exit();
-	}
+	if (!$_SESSION['editor'])
+		http_error(403);
 
-	$pb = Problembase();
 	$problem_id = (int)$_GET['problem_id'];
 	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$problem_id", true);
 	if (empty($problem))
@@ -24,13 +21,9 @@
 	}
 
 	// answer invalid requests properly
-	if (isset($error)) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error404.php';
-		exit();
-	}
+	if (isset($error))
+		http_error(404, $error);
 
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
 	printhead("L&ouml;sung ".(isset($id) ? "bearbeiten" : "erstellen"));
 ?>
 <body>

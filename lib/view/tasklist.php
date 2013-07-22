@@ -1,8 +1,6 @@
 <?php
 	define("TASKS_PER_PAGE", 10);
 
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/tags.php';
-
 	class Filter {
 		private $par;		// parameter list
 		private $hash;		// ... and its hash
@@ -36,7 +34,7 @@
 			// add filter constraints
 			$filter = array();
 
-			$public = !isset($_SESSION['user_id']) || !$_SESSION['editor'];
+			$public = !$_SESSION['editor'];
 			if ($public)
 				$filter[] = "public=1";
 
@@ -211,10 +209,8 @@
 
 	// answer to page requests from index
 	if (isset($_GET['hash'])) {
-		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
-		$pb = Problembase();
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS);
 		header("Content-Type: text/html; encoding=utf-8");
 
 		$filter = new Filter($_GET['hash']);
@@ -226,10 +222,8 @@
 
 	// answer to TeX requests from issue pages
 	if (isset($_GET['tex'])) {
-		session_start();
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/proposers.php';
-		$pb = Problembase();
+		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS);
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=aufg"
 			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");

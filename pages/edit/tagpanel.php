@@ -1,13 +1,10 @@
 <?php
-	session_start();
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/database.php';
+	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	$pb = load(LOAD_DB | INC_HEAD);
 
-	if (!isset($_SESSION['user_id']) || !$_SESSION['editor']) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/pages/error403.php';
-		exit();
-	}
+	if (!$_SESSION['editor'])
+		http_error(403);
 
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/head.php';
 	printhead("Tag-Editor");
 
 	if (isset($_GET['standalone'])) {
