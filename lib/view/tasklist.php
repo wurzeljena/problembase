@@ -39,12 +39,10 @@
 				$filter[] = "public=1";
 
 			if (isset($this->par['filter'])) {
-				$pb->exec("CREATE TEMPORARY TABLE filter AS "
-					."SELECT file_id AS problem_id FROM problems JOIN files ON files.rowid=problems.file_id "
-					."WHERE content MATCH '{$pb->escape($this->par['filter'])}' "
+				$filter[] = "problems.file_id IN (SELECT file_id AS problem_id FROM problems JOIN files ON files.rowid=problems.file_id "
+					."WHERE to_tsvector('german', content) @@ to_tsquery('german', '{$pb->escape($this->par['filter'])}') "
 					."UNION SELECT problem_id FROM solutions JOIN files ON files.rowid=solutions.file_id "
-					."WHERE content MATCH '{$pb->escape($this->par['filter'])}'");
-				$filter[] = "problems.file_id IN filter";
+					."WHERE to_tsvector('german', content) @@ to_tsquery('german', '{$pb->escape($this->par['filter'])}') )";
 			}
 
 			if (isset($this->par['proposer'])) {
