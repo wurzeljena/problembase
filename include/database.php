@@ -191,6 +191,6 @@
 		if (isset($_ENV['DB_NAME']))
 			return new PostgresDB("host={$_ENV['DB_HOST']} dbname={$_ENV['DB_NAME']} port=5432 user={$_ENV['DB_USER']} password={$_ENV['DB_PASSWORD']}");
 		else
-			return new SQLiteDB("{$_SERVER['DOCUMENT_ROOT']}{$_ENV['PBROOT']}/problembase.sqlite");
+			return new SQLiteDB("{$_SERVER['DOCUMENT_ROOT']}{$_ENV['PBROOT']}/sql/problembase.sqlite");
 	}
 ?>
