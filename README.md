@@ -43,8 +43,8 @@ different locations, and - originally - to be OS independent. We feature:
 
 Installation
 ------------
-The problem base runs on Apache+PHP. Since our backend is a Sqlite3 database,
-PHP 5.3.0 or newer is required. Get a clone by
+The problem base runs on Apache+PHP, supported by a SQLite or PostgreSQL data base.
+Get a clone by
 
 	git clone --recursive git://github.com/wurzeljena/problembase.git
 
@@ -55,12 +55,18 @@ add an environment variable `PBROOT=/path/to/problembase`. Also, add
 	ErrorDocument 404 /path/to/problembase/error404.php
 
 to your `httpd.conf`. You might also want to "compile" the `.htaccess` files
-into your `httpd.conf` using [htaccessConverter](https://github.com/preinheimer/htaccessConverter).
+into your `httpd.conf`. (e.g, by using [htaccessConverter]
+(https://github.com/preinheimer/htaccessConverter))
 This speeds up your server a bit. Don't forget to adapt the `RewriteRule`s to
-your needs. Now create the database:
+your needs.
 
-	cd sqlite
-	sqlite3 -init create.sql problembase.sqlite
+### SQLite
+
+Since we are likely dealing with a small number of users, a SQLite database is sufficient. It
+also makes backups easy. Create the database as follows:
+
+	cd sql
+	sqlite3 -init sqlite.sql problembase.sqlite
 
 In the opening prompt, create a root user:
 
@@ -70,6 +76,17 @@ INSERT INTO users (name, email, root, editor) VALUES ("Your name", "your@email.c
 
 And we're done: open `http://localhost/path/to/problembase` (which might just be `http://localhost/`)
 and enjoy! Don't forget to set a password for your first user.
+
+### PostgreSQL
+
+If you expect more users or want to use a separate database server for some other reason,
+[PostgreSQL](http://www.postgresql.org/) is also supported. Create the tables etc. by
+executing `sql/postgres.sql`. Since we frequently use `group_concat`, you have to set that
+up using this [code](https://gist.github.com/aaronpuchert/6049219). Create an initial user
+as above.
+
+To set up the connection, simply set environment variables `DB_HOST`, `DB_NAME`, `DB_USER`,
+`DB_PASSWORD` to the appropriate values.
 
 Usage
 -----
@@ -86,7 +103,7 @@ Find out how it works
 Yeah, whatever. I could as well explain it, maybe later.
 
 1.	Play with it,
-2.	take a look at [sqlite/create.sql](https://github.com/wurzeljena/problembase/blob/master/sqlite/create.sql).
+2.	take a look at [sql/sqlite.sql](https://github.com/wurzeljena/problembase/blob/master/sql/sqlite.sql).
 3.	Read the source. It's not that much.
 
 Compatibility
