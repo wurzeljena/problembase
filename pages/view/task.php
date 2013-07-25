@@ -58,19 +58,19 @@
 				if ($_SESSION['editor'])
 					print "<a class='button danger' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>";
 			?>
-			<form id="publish" style="display:none;" action="<?=$_SERVER["PBROOT"]?>/<?php print $id; ?>/publish" method="POST">
+			<form id="publish" style="display:none;" action="<?=$_SERVER["PBROOT"]?>/<?=$id?>/publish" method="POST">
 				<input type="submit" style="float:right;" value="Speichern">
 				<div style="display:inline;white-space:nowrap;">
 				Im <label for="volume">Heft</label>
 				<input type="text" class="text" id="volume" name="volume" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
-					style="width:40px;" value="<?php print $volume; ?>">
+					style="width:40px;" value="<?=$volume?>">
 				</div>
 				<div style="display:inline;white-space:nowrap;">
 				<label for="letter">als</label>
 				<input type="text" class="text" id="letter" name="letter" placeholder="Buchstabe"
-					style="width:50px;" value="<?php print $letter; ?>">
+					style="width:50px;" value="<?=$letter?>">
 				<input type="text" class="text" name="number" placeholder="Nummer" pattern="[1-9]|[0-5][0-9]|60"
-					style="width:20px;" value="<?php print $number; ?>">,
+					style="width:20px;" value="<?=$number?>">,
 				</div>
 				<div style="display:inline;white-space:nowrap;">
 				<input type="checkbox" name="public" id="public" <?=$problem['public'] ? "checked" : "";?>>

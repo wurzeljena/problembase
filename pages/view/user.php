@@ -25,8 +25,8 @@
 		<tbody>
 		<?php
 			while ($user = $users->fetchAssoc()) { ?>
-				<tr <?php print 'id='.$user['id']; ?>>
-					<td><?php print $user['name'] ?></td>
+				<tr id=<?=$user['id']?>>
+					<td><?=$user['name']?></td>
 					<?php
 					if ($user['id']==$_SESSION['user_id'])
 						print '<td><a class="button" href="javascript:User.Trig();"><i class="icon-pencil"></i> Bearbeiten</a></td>	';
@@ -51,14 +51,14 @@
 						else
 							print "disabled";
 						?>></td>
-					<td><?php print $user['numcomm'] ?></td>
+					<td><?=$user['numcomm']?></td>
 				</tr>
 
 				<?php if ($user['id']==$_SESSION['user_id']) { ?>
 				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan="5">
 				<form id="edit" action="<?=$_SERVER["PBROOT"]?>/users/<?=$_SESSION['user_id']?>/edit" method="POST">
-					<input type="text" name="name" placeholder="Name" value="<?php print $user['name'] ?>">
-					<input type="email" name="email" style="width:200px;" placeholder="E-Mail" value="<?php print $user['email'] ?>">
+					<input type="text" name="name" placeholder="Name" value="<?=$user['name']?>">
+					<input type="email" name="email" style="width:200px;" placeholder="E-Mail" value="<?=$user['email']?>">
 					<input type="submit" value="&Auml;ndern">
 				</form>
 				<form id="pw" action="<?=$_SERVER["PBROOT"]?>/users/<?=$_SESSION['user_id']?>/changepw" method="POST" onsubmit="return validate_password()">
