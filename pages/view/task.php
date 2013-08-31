@@ -45,13 +45,7 @@
 					print "Publiziert als $$letter\,$number$ im Heft $volume";
 				}
 				else {
-					$date = getdate();	++$date['mon'];
-					if ($date['mon'] > 12) {
-						$date['mon'] -= 12;
-						++$date['year'];
-					}
-					$volume = $date['mon']."/".str_pad($date['year']%100, 2, "0", STR_PAD_LEFT);
-					$number = $letter = "";
+					$volume = $number = $letter = "";
 					print "Noch nicht publiziert";
 				}
 				print $problem['public'] ? "." : ", nicht &ouml;ffentlich.";
