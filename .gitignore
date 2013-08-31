@@ -4,4 +4,4 @@
 *.phpproj
 *.phpproj.user
 .project
-sqlite/*.sqlite
+sql/*.sqlite
