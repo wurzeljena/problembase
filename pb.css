@@ -548,7 +548,12 @@ form
 input, textarea, select {margin : 5px;}
 input.text {font-family	: Georgia;}
 input.text, textarea {border : 1px dashed #808080;}
-textarea {width: 100%; width: calc(100% - 10px);}
+textarea
+{
+	width: 100%;
+	width: calc(100% - 10px);
+	resize: vertical;
+}
 
 form input[name="delete"]
 {
