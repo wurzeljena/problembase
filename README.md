@@ -85,8 +85,9 @@ executing `sql/postgres.sql`. Since we frequently use `group_concat`, you have t
 up using this [code](https://gist.github.com/aaronpuchert/6049219). Create an initial user
 as above.
 
-To set up the connection, simply set environment variables `DB_HOST`, `DB_NAME`, `DB_USER`,
-`DB_PASSWORD` to the appropriate values.
+To set up the connection, simply set environment variable `DATABASE_URL` to
+
+	postgres://username:password@host:port/dbname
 
 Usage
 -----

@@ -201,9 +201,12 @@
 	}
 
 	function Problembase() {
-		if (isset($_ENV['DB_NAME']))
-			return new PostgresDB("host={$_ENV['DB_HOST']} dbname={$_ENV['DB_NAME']} port=5432 user={$_ENV['DB_USER']} "
-				."password={$_ENV['DB_PASSWORD']}".($_ENV['DB_HOST']=="localhost" ? "" : " sslmode=require")." options='--client_encoding=UTF8'");
+		if (isset($_ENV['DATABASE_URL'])) {
+			$cred = parse_url($_ENV['DATABASE_URL']);
+			$db_name = basename($cred['path']);
+			return new PostgresDB("host={$cred['host']} dbname=$db_name port=5432 user={$cred['user']} "
+				."password={$cred['pass']}".($cred['host']=="localhost" ? "" : " sslmode=require")." options='--client_encoding=UTF8'");
+		}
 		else
 			return new SQLiteDB("{$_SERVER['DOCUMENT_ROOT']}{$_ENV['PBROOT']}/sql/problembase.sqlite");
 	}
