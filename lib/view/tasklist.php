@@ -153,7 +153,7 @@
 		function print_html() {
 			$taglists = Array(substr_count($this->idstr, ",") + 1);
 			foreach ($this->problems as $num=>$problem) {
-				print "<a class='textbox' href='{$_SERVER["PBROOT"]}/{$problem['file_id']}/'>";
+				print "<a class='textbox' href='{$_ENV["PBROOT"]}/{$problem['file_id']}/'>";
 				print "<div class='task ".($problem['public'] ? "" : "nonpublic")."'>";
 				print "<div class='info'>";
 				print "<div class='tags'></div>";

@@ -15,7 +15,7 @@
 	else
 		print "<body class='iframe'>"
 ?>
-	<form id="tageditor" action="<?=$_SERVER["PBROOT"]?>/tags/edit" method="POST">
+	<form id="tageditor" action="<?=$_ENV["PBROOT"]?>/tags/edit" method="POST">
 		<div>
 			<select name="id" onchange="loadTag();">
 				<option value="" selected>&mdash;Neuer Tag&mdash;</option>

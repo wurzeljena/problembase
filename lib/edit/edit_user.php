@@ -28,13 +28,13 @@
 			"\tIhr Wurzel-Verein",
 			"Content-type: text/plain; charset=iso-8859-1");
 
-		header("Location: {$_SERVER["PBROOT"]}/users/".$pb->lastInsertRowID("users", "id"));
+		header("Location: {$_ENV["PBROOT"]}/users/".$pb->lastInsertRowID("users", "id"));
 	}
 
 	// delete user
 	if (isset($_GET["id"]) && isset($_GET["delete"]) && $_SESSION['root']) {
 		$pb->exec("DELETE FROM users WHERE id={$_GET["id"]}");
-		header("Location: {$_SERVER["PBROOT"]}/users/");
+		header("Location: {$_ENV["PBROOT"]}/users/");
 	}
 
 	// change name/email or password - user has to be logged in
@@ -42,7 +42,7 @@
 		$id = $pb->escape($_GET["id"]);
 		if (isset($_POST["name"]) && isset($_POST["email"])) {
 			$pb->exec("UPDATE users SET name='{$_POST["name"]}', email='{$_POST["email"]}' WHERE id=$id");
-			header("Location: {$_SERVER["PBROOT"]}/users/$id");
+			header("Location: {$_ENV["PBROOT"]}/users/$id");
 		}
 		if (isset($_POST["old_pw"]) && isset($_POST["new_pw"])) {
 			$encr_pw = $pb->querySingle("SELECT encr_pw FROM users WHERE id=$id", false);
@@ -50,7 +50,7 @@
 				$salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
 				$pb->exec("UPDATE users SET encr_pw='".crypt($_POST["new_pw"], '$6$rounds=5000$'.$salt.'$')."' WHERE id=$id");
 			}
-			header("Location: {$_SERVER["PBROOT"]}/users/$id");
+			header("Location: {$_ENV["PBROOT"]}/users/$id");
 		}
 	}
 

@@ -56,12 +56,12 @@
 
 				<?php if ($user['id']==$_SESSION['user_id']) { ?>
 				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan="5">
-				<form id="edit" action="<?=$_SERVER["PBROOT"]?>/users/<?=$_SESSION['user_id']?>/edit" method="POST">
+				<form id="edit" action="<?=$_ENV["PBROOT"]?>/users/<?=$_SESSION['user_id']?>/edit" method="POST">
 					<input type="text" name="name" placeholder="Name" value="<?=$user['name']?>">
 					<input type="email" name="email" style="width:200px;" placeholder="E-Mail" value="<?=$user['email']?>">
 					<input type="submit" value="&Auml;ndern">
 				</form>
-				<form id="pw" action="<?=$_SERVER["PBROOT"]?>/users/<?=$_SESSION['user_id']?>/changepw" method="POST" onsubmit="return validate_password()">
+				<form id="pw" action="<?=$_ENV["PBROOT"]?>/users/<?=$_SESSION['user_id']?>/changepw" method="POST" onsubmit="return validate_password()">
 					<input type="password" style="width:100px;" name="old_pw" placeholder="Altes Passwort">
 					<input type="password" style="width:100px;" name="new_pw" placeholder="Neues Passwort">
 					<input type="password" style="width:100px;" name="new_pw_check" placeholder="Best&auml;tigen">
@@ -74,7 +74,7 @@
 
 			<?php if ($root) { ?>
 			<tfoot>
-				<tr><form id="newuser" action="<?=$_SERVER["PBROOT"]?>/users/new" method="POST">
+				<tr><form id="newuser" action="<?=$_ENV["PBROOT"]?>/users/new" method="POST">
 					<td><input type="text" name="newname" style="width:100px;" placeholder="Name" required></td>
 					<td><input type="email" name="email" style="width:180px;" placeholder="E-Mail" required></td>
 					<td><input type="checkbox" name="root"></td>

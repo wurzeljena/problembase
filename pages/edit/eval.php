@@ -27,7 +27,7 @@
 
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
-	<form class="eval" id="eval" title="Bewertungsformular" action="<?=$_SERVER["PBROOT"]?>/submit/<?=$id?>/eval" method="POST">
+	<form class="eval" id="eval" title="Bewertungsformular" action="<?=$_ENV["PBROOT"]?>/submit/<?=$id?>/eval" method="POST">
 		<div class="problem" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<?php
 			$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');

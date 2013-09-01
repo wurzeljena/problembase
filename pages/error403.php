@@ -26,7 +26,7 @@
 			print "&body={$_SESSION['user_name']}%20({$_SESSION['email']})%20hat%20keinen%20Zugriff%20auf%20die%20Seite%20{$_SERVER['REQUEST_URI']}.";
 		?>">Administrator</a>.</p>
 
-	<p>Zur&uuml;ck zur <a href="javascript:history.back();">vorhergehenden</a> oder zur <a href="<?=$_SERVER["PBROOT"]?>/">Hauptseite</a>.</p>
+	<p>Zur&uuml;ck zur <a href="javascript:history.back();">vorhergehenden</a> oder zur <a href="<?=$_ENV["PBROOT"]?>/">Hauptseite</a>.</p>
 
 	<hr/>
 	<p class="info"><?=$_SERVER['SERVER_SOFTWARE']?></p>

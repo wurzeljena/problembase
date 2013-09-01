@@ -37,7 +37,7 @@
 	<div class="content">
 	<h2 class="solution">L&ouml;sung bearbeiten</h2>
 	<form class="solution" id="solution" title="L&ouml;sungsformular"
-		action="<?=$_SERVER["PBROOT"]?>/submit/<?php if (isset($id)) print $solution['problem_id']."/".$id; else print $problem_id."/"; ?>" method="POST">
+		action="<?=$_ENV["PBROOT"]?>/submit/<?php if (isset($id)) print $solution['problem_id']."/".$id; else print $problem_id."/"; ?>" method="POST">
 		<div class="problem"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<?php proposer_form($pb, "solution", isset($id) ? $id : -1); ?>
 

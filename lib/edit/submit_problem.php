@@ -18,7 +18,7 @@
 
 	if (isset($_POST["delete"])) {
 		$pb->exec("DELETE FROM problems WHERE file_id=$id");
-		header("Location: {$_SERVER["PBROOT"]}/");
+		header("Location: {$_ENV["PBROOT"]}/");
 	}
 	else {
 		// write proposers
@@ -57,7 +57,7 @@
 		}
 
 		// redirect to task page
-		header("Location: {$_SERVER["PBROOT"]}/$id/");
+		header("Location: {$_ENV["PBROOT"]}/$id/");
 	}
 
 	$pb->exec("END");

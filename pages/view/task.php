@@ -27,7 +27,7 @@
 		<div class="task">
 			<?php
 				if ($_SESSION['editor'])
-					print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/edit'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+					print "<a class='button inner' href='{$_ENV["PBROOT"]}/$id/edit'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			?>
 			<div class="info">
 			<div class="tags"></div>
@@ -52,7 +52,7 @@
 				if ($_SESSION['editor'])
 					print "<a class='button danger' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>";
 			?>
-			<form id="publish" style="display:none;" action="<?=$_SERVER["PBROOT"]?>/<?=$id?>/publish" method="POST">
+			<form id="publish" style="display:none;" action="<?=$_ENV["PBROOT"]?>/<?=$id?>/publish" method="POST">
 				<input type="submit" style="float:right;" value="Speichern">
 				<div style="display:inline;white-space:nowrap;">
 				Im <label for="volume">Heft</label>
@@ -82,9 +82,9 @@
 
 		// show buttons between solutions and comments
 		if ($_SESSION['editor'])
-			print "<a class='button' href='{$_SERVER["PBROOT"]}/$id/addsolution'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
+			print "<a class='button' href='{$_ENV["PBROOT"]}/$id/addsolution'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
 		if ($_SESSION['user_id'] != -1 && !$pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", false))
-			print "<a class='button' style='float:right;' href='{$_SERVER["PBROOT"]}/$id/evaluate'><i class='icon-comments'></i> Kommentar schreiben</a>";
+			print "<a class='button' style='float:right;' href='{$_ENV["PBROOT"]}/$id/evaluate'><i class='icon-comments'></i> Kommentar schreiben</a>";
 
 		// if not logged in, separate comments from solutions with a lightweight header
 		if (!$_SESSION['editor'])
@@ -96,7 +96,7 @@
 			print "<div class='comment".($comment['user_id']==$_SESSION['user_id'] ? " own" : "")
 				.($comment['editorial'] ? " editorial" : "")."'>";
 			if ($comment['user_id']==$_SESSION['user_id'])
-				print "<a class='button inner' href='{$_SERVER["PBROOT"]}/$id/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+				print "<a class='button inner' href='{$_ENV["PBROOT"]}/$id/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			print "<div class='author'>{$comment['name']}";
 			if ($_SESSION['user_id'] != -1)
 				print " <a href='mailto:{$comment['email']}'><i class='icon-envelope-alt'></i></a>";
@@ -110,8 +110,8 @@
 				print '<span class="eval">'.$critnames[$crit].'</span> ';
 				for ($star=1; $star<=5; ++$star)
 					print ($star<=$comment[$critcols[$crit]]) ?
-						"<img class='star' src='{$_SERVER["PBROOT"]}/img/mandstar.png' alt='*'> " :
-						"<img class='star' src='{$_SERVER["PBROOT"]}/img/mand.png' alt='o'> ";
+						"<img class='star' src='{$_ENV["PBROOT"]}/img/mandstar.png' alt='*'> " :
+						"<img class='star' src='{$_ENV["PBROOT"]}/img/mand.png' alt='o'> ";
 				print '</span> ';
 			}
 			print '</div></div>';

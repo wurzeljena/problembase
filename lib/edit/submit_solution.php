@@ -74,5 +74,5 @@
 	$pb->close();
 
 	// redirect to task page
-	header("Location: {$_SERVER["PBROOT"]}/$problem_id/");
+	header("Location: {$_ENV["PBROOT"]}/$problem_id/");
 ?>

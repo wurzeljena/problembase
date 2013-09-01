@@ -19,5 +19,5 @@
 	$pb->close();
 
 	// redirect to task page
-	header("Location: {$_SERVER["PBROOT"]}/$id/");
+	header("Location: {$_ENV["PBROOT"]}/$id/");
 ?>

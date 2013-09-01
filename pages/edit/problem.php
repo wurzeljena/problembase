@@ -23,12 +23,12 @@
 	<div class="center">
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
-		<iframe src="<?=$_SERVER["PBROOT"]?>/tagpanel" style="border:none;overflow:hidden" width="270" height="230"></iframe>
+		<iframe src="<?=$_ENV["PBROOT"]?>/tagpanel" style="border:none;overflow:hidden" width="270" height="230"></iframe>
 	</div>
 
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>
-	<form class="task" id="task" title="Aufgabenformular" action="<?=$_SERVER["PBROOT"]?>/submit/<?= isset($id) ? $id:"" ?>" method="POST">
+	<form class="task" id="task" title="Aufgabenformular" action="<?=$_ENV["PBROOT"]?>/submit/<?= isset($id) ? $id:"" ?>" method="POST">
 		<?php
 			proposer_form($pb, "task", isset($id) ? $id : -1);
 			if (isset($id))
