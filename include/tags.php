@@ -41,7 +41,7 @@
 
 	// answer to Ajax queries for tags
 	if (isset($_GET['taginfo'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		include '../lib/master.php';
 		$pb = load(LOAD_DB);
 		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_GET['id']."'")
 			->fetchAssoc();
@@ -53,7 +53,7 @@
 
 	// write tag from tag form
 	if (isset($_POST['id']) && isset($_POST['name'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		include '../lib/master.php';
 		$pb = load(LOAD_DB);
 		if (!$_SESSION['editor']) {
 			include 'error403.php';

@@ -8,14 +8,14 @@
 	<meta charset="UTF-8">
 	<meta name="author" content="Wurzel e.V."/>
 	<meta name="viewport" content="user-scalable=no,width=device-width">
-	<link rel="stylesheet" type="text/css" href="<?=$_ENV["PBROOT"]?>/pb.css"/>
-	<link rel="stylesheet" type="text/css" href="<?=$_ENV["PBROOT"]?>/Font-Awesome/css/font-awesome.css"/>
-	<link rel="icon" href="<?=$_ENV["PBROOT"]?>/dw.ico"/>
+	<link rel="stylesheet" type="text/css" href="<?=WEBROOT?>/pb.css"/>
+	<link rel="stylesheet" type="text/css" href="<?=WEBROOT?>/Font-Awesome/css/font-awesome.css"/>
+	<link rel="icon" href="<?=WEBROOT?>/dw.ico"/>
 <?php	if ($ok): ?>
-	<script type="text/javascript"> var rootdir="<?=$_ENV["PBROOT"]?>"; </script>
-	<script type="text/javascript" src="<?=$_ENV["PBROOT"]?>/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
-	<script type="text/javascript" src="<?=$_ENV["PBROOT"]?>/fancy.js"></script>
-	<script type="text/javascript" src="<?=$_ENV["PBROOT"]?>/ajax.js"></script>
+	<script type="text/javascript"> var rootdir="<?=WEBROOT?>"; </script>
+	<script type="text/javascript" src="<?=WEBROOT?>/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+	<script type="text/javascript" src="<?=WEBROOT?>/fancy.js"></script>
+	<script type="text/javascript" src="<?=WEBROOT?>/ajax.js"></script>
 <?php	else: ?>
 	<style type="text/css">
 		li.alt {color: Gray;}
@@ -30,13 +30,13 @@
 function drawMenu($id) { ?>
 	<nav id="<?=$id?>">
 	<ul>
-		<li><a href="<?=$_ENV["PBROOT"]?>/"><i class="icon-home"></i> <span>&Uuml;bersicht</span></a>
+		<li><a href="<?=WEBROOT?>/"><i class="icon-home"></i> <span>&Uuml;bersicht</span></a>
 </li><?php	if ($_SESSION['user_id'] != -1): ?><li>
-		<a href="<?=$_ENV["PBROOT"]?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
+		<a href="<?=WEBROOT?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
 </li><li>
-		<a href="<?=$_ENV["PBROOT"]?>/users/"><i class="icon-group"></i> <span>Benutzerliste</span></a>
+		<a href="<?=WEBROOT?>/users/"><i class="icon-group"></i> <span>Benutzerliste</span></a>
 </li><?php	if ($_SESSION['editor']): ?><li>
-		<a href="<?=$_ENV["PBROOT"]?>/tags/"><i class="icon-tags"></i> <span>Tag-Editor</span></a>
+		<a href="<?=WEBROOT?>/tags/"><i class="icon-tags"></i> <span>Tag-Editor</span></a>
 </li><?php	endif;
 		endif;
 		if ($id == "headermenu"): ?><li>
@@ -49,8 +49,8 @@ function drawMenu($id) { ?>
 	function printheader() { ?>
 <div class="head"><div class="center">
 	<?php drawMenu("headermenu"); ?>
-	<a id="logo" href="<?=$_ENV["PBROOT"]?>/">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
-	<form id="login" action="<?=$_ENV["PBROOT"]?>/logon" method="POST">
+	<a id="logo" href="<?=WEBROOT?>/">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
+	<form id="login" action="<?=WEBROOT?>/logon" method="POST">
 	<?php if ($_SESSION['user_id'] == -1) { ?>
 		<span id="wait"></span>
 		<input type="email" style="width:15em;" name="email" placeholder="E-Mail">

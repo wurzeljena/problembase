@@ -1,5 +1,5 @@
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	include '../../lib/master.php';
 	$pb = load(LOAD_DB);
 
 	if ($_SESSION['user_id'] == -1)
@@ -19,5 +19,5 @@
 	$pb->close();
 
 	// redirect to task page
-	header("Location: {$_ENV["PBROOT"]}/$id/");
+	header("Location: ".WEBROOT."/$id/");
 ?>

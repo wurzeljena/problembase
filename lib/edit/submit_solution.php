@@ -1,5 +1,5 @@
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	include '../../lib/master.php';
 	$pb = load(LOAD_DB | INC_PROPOSERS);
 
 	if (!$_SESSION['editor'])
@@ -74,5 +74,5 @@
 	$pb->close();
 
 	// redirect to task page
-	header("Location: {$_ENV["PBROOT"]}/$problem_id/");
+	header("Location: ".WEBROOT."/$problem_id/");
 ?>

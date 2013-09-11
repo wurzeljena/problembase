@@ -72,7 +72,7 @@
 
 	// answer to Ajax queries for proposers
 	if (isset($_GET['prop_query'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		include '../lib/master.php';
 		$pb = load(LOAD_DB);
 		$proposers = $pb->query("SELECT id, location, country FROM proposers WHERE name='{$pb->escape($_GET['prop_query'])}'");
 		header("Content-Type: application/json");

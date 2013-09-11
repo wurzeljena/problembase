@@ -153,7 +153,7 @@
 		function print_html() {
 			$taglists = Array(substr_count($this->idstr, ",") + 1);
 			foreach ($this->problems as $num=>$problem) {
-				print "<a class='textbox' href='{$_ENV["PBROOT"]}/{$problem['file_id']}/'>";
+				print "<a class='textbox' href='".WEBROOT."/{$problem['file_id']}/'>";
 				print "<div class='task ".($problem['public'] ? "" : "nonpublic")."'>";
 				print "<div class='info'>";
 				print "<div class='tags'></div>";
@@ -204,7 +204,7 @@
 
 	// answer to page requests from index
 	if (isset($_GET['hash'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		include '../../lib/master.php';
 		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS);
 		header("Content-Type: text/html; encoding=utf-8");
 
@@ -217,7 +217,7 @@
 
 	// answer to TeX requests from issue pages
 	if (isset($_GET['tex'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		include '../../lib/master.php';
 		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS);
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=aufg"

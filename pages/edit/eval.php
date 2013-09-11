@@ -1,5 +1,5 @@
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	include '../../lib/master.php';
 	$pb = load(LOAD_DB | INC_HEAD);
 
 	// if user isn't authenticated, throw a 403 error
@@ -27,7 +27,7 @@
 
 	<div class="content">
 	<h2 class="eval">Aufgabe bewerten</h2>
-	<form class="eval" id="eval" title="Bewertungsformular" action="<?=$_ENV["PBROOT"]?>/submit/<?=$id?>/eval" method="POST">
+	<form class="eval" id="eval" title="Bewertungsformular" action="<?=WEBROOT?>/submit/<?=$id?>/eval" method="POST">
 		<div class="problem" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
 		<?php
 			$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');

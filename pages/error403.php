@@ -1,6 +1,6 @@
 <?php
 	if (!defined("MASTER_LOADED")) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		include '../lib/master.php';
 		load(INC_HEAD);
 	}
 
@@ -26,7 +26,7 @@
 			print "&body={$_SESSION['user_name']}%20({$_SESSION['email']})%20hat%20keinen%20Zugriff%20auf%20die%20Seite%20{$_SERVER['REQUEST_URI']}.";
 		?>">Administrator</a>.</p>
 
-	<p>Zur&uuml;ck zur <a href="javascript:history.back();">vorhergehenden</a> oder zur <a href="<?=$_ENV["PBROOT"]?>/">Hauptseite</a>.</p>
+	<p>Zur&uuml;ck zur <a href="javascript:history.back();">vorhergehenden</a> oder zur <a href="<?=WEBROOT?>/">Hauptseite</a>.</p>
 
 	<hr/>
 	<p class="info"><?=$_SERVER['SERVER_SOFTWARE']?></p>

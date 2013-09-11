@@ -208,6 +208,6 @@
 				."password={$cred['pass']}".($cred['host']=="localhost" ? "" : " sslmode=require")." options='--client_encoding=UTF8'");
 		}
 		else
-			return new SQLiteDB("{$_SERVER['DOCUMENT_ROOT']}{$_ENV['PBROOT']}/sql/problembase.sqlite");
+			return new SQLiteDB(DOCROOT."/sql/problembase.sqlite");
 	}
 ?>

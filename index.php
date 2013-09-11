@@ -1,5 +1,5 @@
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	include 'lib/master.php';
 	$pb = load(LOAD_DB | INC_HEAD | INC_PROPOSERS | INC_TAGS | INC_TASKLIST);
 
 	printhead();
@@ -22,7 +22,7 @@
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
 
-	<form class="filter" id="filter" title="Filter" action="<?=$_ENV["PBROOT"]?>/" method="GET">
+	<form class="filter" id="filter" title="Filter" action="<?=WEBROOT?>/" method="GET">
 		<div><input type="text" name="filter" placeholder="Suchbegriff"
 			value="<?php if (isset($_GET['filter'])) print $_GET['filter']; ?>"/>
 		<input type="submit" value="Suchen"></div>

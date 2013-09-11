@@ -1,5 +1,5 @@
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	include '../lib/master.php';
 	$pb = load(LOAD_DB);
 
 	if (isset($_POST["logout"])) {

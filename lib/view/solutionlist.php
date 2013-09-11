@@ -32,9 +32,9 @@
 			foreach ($this->solutions as $solution) {
 				print '<div class="solution '.($solution['public'] ? "" : "nonpublic").'">';
 				if ($edit)
-					print "<a class='button inner' href='{$_ENV["PBROOT"]}/{$solution['problem_id']}/{$solution['file_id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+					print "<a class='button inner' href='".WEBROOT."/{$solution['problem_id']}/{$solution['file_id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 				if ($linkback)
-					print "<a class='button inner' href='{$_ENV["PBROOT"]}/{$solution['problem_id']}/'><i class='icon-hand-right '></i> <span>Zur Aufgabe</span></a>";
+					print "<a class='button inner' href='".WEBROOT."/{$solution['problem_id']}/'><i class='icon-hand-right '></i> <span>Zur Aufgabe</span></a>";
 				print '<div class="info">';
 				printproposers($this->pb, "solution", $solution['file_id']);
 				print '</div>';
@@ -73,7 +73,7 @@
 
 	// answer to TeX requests from issue pages
 	if (isset($_GET['tex'])) {
-		include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+		include '../../lib/master.php';
 		$pb = load(LOAD_DB | INC_PROPOSERS);
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=loes"

@@ -1,5 +1,5 @@
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	include '../../lib/master.php';
 	$pb = load(LOAD_DB | INC_HEAD);
 
 	if (!$_SESSION['editor'])
@@ -15,7 +15,7 @@
 	else
 		print "<body class='iframe'>"
 ?>
-	<form id="tageditor" action="<?=$_ENV["PBROOT"]?>/tags/edit" method="POST">
+	<form id="tageditor" action="<?=WEBROOT?>/tags/edit" method="POST">
 		<div>
 			<select name="id" onchange="loadTag();">
 				<option value="" selected>&mdash;Neuer Tag&mdash;</option>

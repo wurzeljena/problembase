@@ -1,5 +1,5 @@
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].$_ENV['PBROOT'].'/lib/master.php';
+	include '../../lib/master.php';
 	$pb = load(LOAD_DB | INC_PROPOSERS);
 
 	if (!$_SESSION['editor'])
@@ -18,7 +18,7 @@
 
 	if (isset($_POST["delete"])) {
 		$pb->exec("DELETE FROM problems WHERE file_id=$id");
-		header("Location: {$_ENV["PBROOT"]}/");
+		header("Location: ".WEBROOT."/");
 	}
 	else {
 		// write proposers
@@ -57,7 +57,7 @@
 		}
 
 		// redirect to task page
-		header("Location: {$_ENV["PBROOT"]}/$id/");
+		header("Location: ".WEBROOT."/$id/");
 	}
 
 	$pb->exec("END");
