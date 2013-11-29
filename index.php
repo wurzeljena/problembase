@@ -28,7 +28,7 @@
 		<input type="submit" value="Suchen"></div>
 		<div style="margin-bottom:5px;">
 			<input type="checkbox" name="not_published" id="not_published" <?php if (isset($_GET['not_published'])) print "checked"; ?>/>
-				<label class="info" for="not_published">nicht ver&ouml;ffentlicht</label>
+				<label class="info" for="not_published">unver&ouml;ffentlicht</label>
 			<input type="checkbox" name="with_solution" id="with_solution" <?php if (isset($_GET['with_solution'])) print "checked"; ?>/>
 				<label class="info" for="with_solution">mit L&ouml;sung</label>
 		</div>

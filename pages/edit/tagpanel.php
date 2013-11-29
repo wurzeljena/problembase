@@ -35,7 +35,7 @@
 			<input type="text" name="name" style="width:120px;" placeholder="Name" required onkeyup="tagPreview();">
 			<input type="color" name="color" style="width:60px;" placeholder="Farbe" pattern="#[a-fA-F0-9]{6}$" required onkeyup="tagPreview();" title="#hhhhhh"> <br/>
 			<input type="text" name="description" style="width:200px;" placeholder="Beschreibung" onkeyup="tagPreview();"> <br/>
-			<input type="checkbox" name="hidden" id="hidden" style="margin:10px 5px;"><label class="info" for="hidden">nicht &ouml;ffentlich</label>
+			<input type="checkbox" name="hidden" id="hidden" style="margin:10px 5px;"><label class="info" for="hidden">redaktionell</label>
 			<input type="submit" id="submit_tag" style="margin:1em;" value="Hinzuf&uuml;gen"> <br/>
 			<span class="info" style="font-variant: small-caps; margin: 5px;">(Vorschau)</span><span id="result_tag"></span>
 		</div>
