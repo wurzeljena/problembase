@@ -19,7 +19,7 @@
 	define("WEBROOT", isset($_ENV['WEBROOT']) ? $_ENV['WEBROOT'] : "");
 
 	function load($what) {
-		define("MASTER_LOADED", true);;
+		define("MASTER_LOADED", true);
 
 		if ($what & INC_HEAD)		include DOCROOT."/include/head.php";
 		if ($what & INC_PROPOSERS)	include DOCROOT."/include/proposers.php";

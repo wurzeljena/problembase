@@ -56,7 +56,7 @@
 		include '../lib/master.php';
 		$pb = load(LOAD_DB);
 		if (!$_SESSION['editor']) {
-			include 'error403.php';
+			http_error(403);
 			exit();
 		}
 
