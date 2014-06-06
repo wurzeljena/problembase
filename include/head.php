@@ -18,9 +18,7 @@
 	<script type="text/javascript" src="<?=WEBROOT?>/ajax.js"></script>
 <?php	else: ?>
 	<style type="text/css">
-		li.alt {color: Gray;}
-		li.alt:before {content: "[";}
-		li.alt:after {content: "]";}
+		li.alt {color: Gray; font-style: italic;}
 		li.alt a {color: Gray;}
 	</style>
 <?php	endif; ?>
@@ -49,7 +47,7 @@ function drawMenu($id) { ?>
 	function printheader() { ?>
 <div class="head"><div class="center">
 	<?php drawMenu("headermenu"); ?>
-	<a id="logo" href="<?=WEBROOT?>/">&#x221A;<span style="text-decoration:overline">WURZEL</span></a>
+	<a id="logo" style="letter-spacing:-2px;" href="<?=WEBROOT?>/"><span style="font-size:115%;">&#x221A;</span><span style="text-decoration:overline">WURZEL</span></a>
 	<form id="login" action="<?=WEBROOT?>/logon" method="POST">
 	<?php if ($_SESSION['user_id'] == -1) { ?>
 		<span id="wait"></span>

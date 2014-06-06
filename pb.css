@@ -6,7 +6,7 @@ body
 	background-color	: #FFFFC0;
 	font-family	: Georgia;
 	margin	: 0;
-	padding-top	: 50px;
+	padding-top	: 45px;
 }
 body.iframe { padding-top: 0; }
 
@@ -37,6 +37,7 @@ div#panel { max-width: 340px; }
 		left	: 50%;
 		margin-left	: 170px;
 		width	: 280px;
+		z-index	: 1;
 	}
 }
 @media (max-width: 899px)
@@ -52,8 +53,7 @@ div.head
 	width	: 100%;	width	: calc(100% - 14px);
 	background: #F0B070;
 	background: linear-gradient(to bottom, #F0B060, #FFC070 50%, #F8C880 80%, #D0B070);
-	padding	: 7px;
-	padding-top	: 5px;
+	padding	: 3px 7px;
 }
 div.head a#logo
 {
@@ -68,7 +68,7 @@ div.head a#logo:hover {color: #FF4000;}
 div.head form#login
 {
 	padding	: 0px;
-	margin	: -5px 0px;
+	margin	: 0px;
 }
 @media (max-width: 899px) {
 	div.head form#login
@@ -358,6 +358,7 @@ div#pager
 	position: fixed;
 	width	: 230px;
 	bottom	: 0em;
+	z-index	: 2;
 	padding	: 9px 5px 0px;
 	border-radius	: 10px 10px 0px 0px;
 	box-shadow	: 0px 0px 5px #c0a080;
@@ -578,6 +579,7 @@ form.filter div#questions
 	border-bottom	: 1px solid Gray;
 }
 form.filter input[name="filter"]	{width: 120px;}
+form.filter div#questions input		{width: 150px;}
 label.question
 {
 	font-family	: Sans-Serif;
