@@ -1,7 +1,17 @@
-
+# IDE Files
 *.sln
 *.suo
 *.phpproj
 *.phpproj.user
 .project
+*.kdev4
+.kdev4/
+
+# Database files
 sql/*.sqlite
+
+# Local configuration
+conf/*.conf
+
+# Local logs
+logs/*
