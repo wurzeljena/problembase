@@ -1,4 +1,6 @@
 <?php
+	// Print commands writing certain tags into the element given by the
+	// JavaScript variable named $taglist
 	function tags($pb, $tags, $taglist = "taglist") {
 		if (!$tags)
 			return;
@@ -20,6 +22,7 @@
 <?php	endif;
 	}
 
+	// Print the tag form
 	function tag_form($pb, $form, $taglist)
 	{
 		$restr = ($_SESSION['user_id'] != -1) ? "" : " WHERE hidden=0";
@@ -34,12 +37,13 @@
 		<script>var tagList = new TagList("<?=$form?>", [<?=$taglist?>]);</script>
  <?php }
 
+	// Get the tags for a problem
 	function get_tags($pb, $problem_id)
 	{
 		return $pb->querySingle("SELECT group_concat(tag_id) FROM tag_list WHERE problem_id=$problem_id", false);
 	}
 
-	// answer to Ajax queries for tags
+	// Answer to Ajax queries for tags
 	if (isset($_GET['taginfo'])) {
 		include '../lib/master.php';
 		$pb = load(LOAD_DB);
@@ -51,7 +55,7 @@
 		$pb->close();
 	}
 
-	// write tag from tag form
+	// Write tag from tag form
 	if (isset($_POST['id']) && isset($_POST['name'])) {
 		include '../lib/master.php';
 		$pb = load(LOAD_DB);

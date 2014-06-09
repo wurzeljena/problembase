@@ -1,4 +1,5 @@
 <?php
+	// Print a datalist containing all names of proposers from the past
 	function proposers_datalist($pb)
 	{
 		$proposers = $pb->query("SELECT DISTINCT name FROM proposers");
@@ -10,6 +11,7 @@
 		print '</datalist>';
 	}
 
+	// Print the proposer form for the problems and solutions pages
 	function proposer_form($pb, $form, $file_id)
 	{
 		$proposers = $pb->query("SELECT id, name, location, country FROM fileproposers "
@@ -27,6 +29,7 @@
 		print "]);</script>";
 	}
 
+	// Print the proposer line before a problem or solution
 	function printproposers($pb, $type, $id)
 	{
 		// get proposers (and remarks)
@@ -51,6 +54,7 @@
 			print $remarks;
 	}
 
+	// Write proposers to database from POST request
 	function writeproposers($pb, $nums, $proposer, $proposer_id, $location, $country) {
 		foreach ($nums as $num) {
 			if ($proposer_id[$num] == "-1") {
@@ -70,7 +74,7 @@
 		return $proposer_id;
 	}
 
-	// answer to Ajax queries for proposers
+	// Answer to Ajax queries for proposers
 	if (isset($_GET['prop_query'])) {
 		include '../lib/master.php';
 		$pb = load(LOAD_DB);
