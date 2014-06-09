@@ -31,7 +31,10 @@
 			?>
 			<div class="info">
 			<div class="tags"></div>
-			<?php tags($pb, get_tags($pb, $id)); ?>
+			<script> (function () {
+				var taglist = document.getElementsByClassName("tags")[0];
+				<?php tags($pb, get_tags($pb, $id), "taglist"); ?>
+			})();</script>
 			<?php printproposers($pb, "problem", $id); ?>
 			</div>
 			<div class="text" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>

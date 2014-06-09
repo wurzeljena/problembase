@@ -1,13 +1,9 @@
 <?php
 	// Print commands writing certain tags into the element given by the
 	// JavaScript variable named $taglist
-	function tags($pb, $tags, $taglist = "taglist") {
+	function tags($pb, $tags, $taglist) {
 		if (!$tags)
 			return;
-		if ($taglist === "taglist"): ?>
-		<script> (function () {
-			var taglist = document.getElementsByClassName("tags")[0];
-<?php	endif;
 
 		// get tag data from db
 		$restr = ($_SESSION['user_id'] != -1) ? "" : " AND hidden=0";
@@ -16,10 +12,6 @@
 			$tag_info['color'] = "#".substr("00000".dechex($tag_info['color']),-6);
 			print "$taglist.appendChild(writeTag(".json_encode($tag_info)."));";
 		}
-
-		if ($taglist === "taglist"): ?>
-		})();</script>
-<?php	endif;
 	}
 
 	// Print the tag form
