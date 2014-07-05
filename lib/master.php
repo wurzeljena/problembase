@@ -18,6 +18,7 @@
 	define("DOCROOT", $_SERVER['DOCUMENT_ROOT'].(isset($_ENV['PBROOT']) ? $_ENV['PBROOT'] : ""));
 	define("WEBROOT", isset($_ENV['WEBROOT']) ? $_ENV['WEBROOT'] : "");
 
+	// load includes, when needed
 	function load($what) {
 		define("MASTER_LOADED", true);
 
@@ -32,7 +33,13 @@
 			return Problembase();
 		}
 	}
-	
+
+	// define access rights
+	define("ACCESS_READ", 1);		// just reading something
+	define("ACCESS_MODIFY", 2);		// modifying an existing object
+	define("ACCESS_WRITE", 4);		// writing a new object
+
+	// throw a HTTP error
 	function http_error($code, $msg = null) {
 		switch ($code) {
 			case 403:

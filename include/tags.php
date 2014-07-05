@@ -1,4 +1,27 @@
 <?php
+	// (Extra) condition to select only tags the current user is allowed to see
+	function tag_restr($rights) {
+		$cond = array();
+		if (($rights & ACCESS_READ) && !$_SESSION['editor'])
+			$cond[] = "hidden=0";
+		if (($rights & ACCESS_MODIFY) && !$_SESSION['editor'])
+			$cond[] = "0";		// = false
+
+		// return collapsed conditions
+		if (count($cond))
+			return " AND ".implode(" AND ", $cond);
+		else
+			return "";
+	}
+
+	// Is the current user allowed to access the tag $id?
+	function tag_access($pb, $id, $rights) {
+		if ($rights == ACCESS_WRITE)
+			return $_SESSION['editor'];
+		else
+			return $pb->querySingle("SELECT COUNT(id) FROM tags WHERE id=$id".tag_restr($rights), true);
+	}
+
 	// Print commands writing certain tags into the element given by the
 	// JavaScript variable named $taglist
 	function tags($pb, $tags, $taglist) {
@@ -6,8 +29,7 @@
 			return;
 
 		// get tag data from db
-		$restr = ($_SESSION['user_id'] != -1) ? "" : " AND hidden=0";
-		$tags = $pb->query("SELECT * FROM tags WHERE id IN (".$tags.")".$restr);
+		$tags = $pb->query("SELECT * FROM tags WHERE id IN (".$tags.")".tag_restr(ACCESS_READ));
 		while($tag_info = $tags->fetchAssoc()) {
 			$tag_info['color'] = "#".substr("00000".dechex($tag_info['color']),-6);
 			print "$taglist.appendChild(writeTag(".json_encode($tag_info)."));";
@@ -17,8 +39,7 @@
 	// Print the tag form
 	function tag_form($pb, $form, $taglist)
 	{
-		$restr = ($_SESSION['user_id'] != -1) ? "" : " WHERE hidden=0";
-		$tags = $pb->query("SELECT id, name FROM tags".$restr); ?>
+		$tags = $pb->query("SELECT id, name FROM tags WHERE 1".tag_restr(ACCESS_READ)); ?>
 		<select name="tag" id="tag_select" onchange="tagList.add(parseInt(this.value)); this.value=0;">
 		<option selected value="0">&mdash;Tag hinzuf&uuml;gen&mdash;</option>
 <?php	while($tag = $tags->fetchArray())
@@ -39,11 +60,15 @@
 	if (isset($_GET['taginfo'])) {
 		include '../lib/master.php';
 		$pb = load(LOAD_DB);
-		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_GET['id']."'")
+		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_GET['id']."'".tag_restr(ACCESS_READ))
 			->fetchAssoc();
-		$res['color'] = "#".substr("00000".dechex($res['color']),-6);
-		header("Content-Type: application/json");
-		print json_encode($res);
+		if ($res) {
+			$res['color'] = "#".substr("00000".dechex($res['color']),-6);
+			header("Content-Type: application/json");
+			print json_encode($res);
+		}
+		else
+			http_error(404, "Tag nicht gefunden");
 		$pb->close();
 	}
 
@@ -51,12 +76,12 @@
 	if (isset($_POST['id']) && isset($_POST['name'])) {
 		include '../lib/master.php';
 		$pb = load(LOAD_DB);
-		if (!$_SESSION['editor']) {
+		$right = ($_POST['id'] == "") ? ACCESS_WRITE : ACCESS_MODIFY;
+		if (!tag_access($pb, (int)$_POST['id'], $right)) {
 			http_error(403);
 			exit();
 		}
 
-		$pb = Problembase();
 		foreach(array("id", "name", "description", "color") as $key)
 			$$key = $pb->escape($_POST[$key]);
 
