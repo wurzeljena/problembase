@@ -5,17 +5,28 @@
 	if (!$_SESSION['editor'])
 		http_error(403);
 
-	$pb->exec("BEGIN");
-
 	// read parameters
 	if (isset($_GET["id"]))
 		$id = $pb->escape($_GET["id"]);
+
+	// post from tag selector?
+	if (isset($_POST["tag"])) {
+		if ($_POST["set"])
+			$pb->exec("INSERT INTO tag_list(problem_id, tag_id) VALUES ($id, {$_POST["tag"]})");
+		else
+			$pb->exec("DELETE FROM tag_list WHERE problem_id=$id AND tag_id={$_POST["tag"]}");
+		$pb->close();
+		exit();
+	}
+
+	// otherwise, posting from the problem form
 	$propnums = array_filter(explode(",", $_POST['propnums']), "strlen");
 	$params = array_merge(array("problem", "remarks", "proposed", "tags"),
 		(count($propnums) ? array("proposer", "proposer_id", "location", "country") : array()));
 	foreach($params as $key)
 		$$key = $_POST[$key];
 
+	$pb->exec("BEGIN");
 	if (isset($_POST["delete"])) {
 		$pb->exec("DELETE FROM problems WHERE file_id=$id");
 		header("Location: ".WEBROOT."/");

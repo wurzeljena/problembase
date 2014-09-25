@@ -112,6 +112,16 @@ function loadTag() {
 	}
 }
 
+// tag selector
+function setTag(problem, tag, set) {
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function () {}
+
+	xmlhttp.open("POST", rootdir + "/submit/" + problem, true);
+	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xmlhttp.send("tag=" + tag + "&set=" + set);
+}
+
 function tagPreview() {
 	var taginfo = {
 		name: document.forms['tageditor'].elements['name'].value,

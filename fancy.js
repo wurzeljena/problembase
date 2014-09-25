@@ -218,6 +218,7 @@ function PropForm(form, list) {
 // tag creation
 function writeTag(taginfo, taglist) {
 	var tag = document.createElement("span");
+	tag.id = taginfo.id;
 	tag.textContent = taginfo.name;
 	tag.title = taginfo.description;
 	tag.className = "tag";
@@ -249,6 +250,29 @@ function writeTag(taginfo, taglist) {
 		close.style.cursor = "pointer";
 		close.onclick = function () { taglist.remove(taginfo.id, this.parentNode); };
 		tag.appendChild(close);
+	}
+
+	// if it's part of a tag selector, add click handler
+	if (taginfo.hasOwnProperty("active")) {
+		if (taginfo.active)
+			tag.style.opacity = 1;
+		else
+			tag.style.opacity = 0.3;
+
+		if (taginfo.enabled) {
+			tag.style.cursor = "pointer";
+			tag.onclick = function ()
+			{
+				if (this.style.opacity == 1) {
+					this.style.opacity = 0.3;
+					setTag(taginfo.problem, taginfo.id, 0);
+				}
+				else {
+					this.style.opacity = 1;
+					setTag(taginfo.problem, taginfo.id, 1);
+				}
+			}
+		}
 	}
 
 	return tag;

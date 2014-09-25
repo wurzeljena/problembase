@@ -21,6 +21,11 @@
 	<div class="center">
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
+	<?php
+		$tags = get_tags($pb, $id);
+		if ($_SESSION['editor'])
+			tag_selector($pb, $tags, $id);
+	?>
 	</div>
 
 	<div class="content">
@@ -33,7 +38,7 @@
 			<div class="tags"></div>
 			<script> (function () {
 				var taglist = document.getElementsByClassName("tags")[0];
-				<?php tags($pb, get_tags($pb, $id), "taglist"); ?>
+				<?php tags($pb, $tags, "taglist"); ?>
 			})();</script>
 			<?php printproposers($pb, "problem", $id); ?>
 			</div>

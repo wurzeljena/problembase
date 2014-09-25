@@ -429,6 +429,22 @@ form#publish input {margin: 2px;}
 form#publish input.text {background : #FFC040;}
 form#publish input.text:hover {background : #FFD060;}
 
+/* tag selector */
+div.tag_selector
+{
+	background	: #D0D0A0;
+	border-radius	: 5px;
+	margin		: 5px 5px 1em;
+	padding		: 5px;
+	line-height	: 1.5em;
+}
+div.tag_selector i.icon-tags
+{
+	font-size	: x-large;
+	color		: #A0A080;
+	padding		: 5px;
+}
+
 /* comments */
 h3#comments
 {

@@ -23,7 +23,7 @@
 	}
 
 	// Print commands writing certain tags into the element given by the
-	// JavaScript variable named $taglist
+	// JavaScript variable named $taglist. $tags==ALL_TAGS means: write all tags.
 	function tags($pb, $tags, $taglist) {
 		if (!$tags)
 			return;
@@ -40,7 +40,7 @@
 	function tag_form($pb, $form, $taglist)
 	{
 		$tags = $pb->query("SELECT id, name FROM tags WHERE 1".tag_restr(ACCESS_READ)); ?>
-		<select name="tag" id="tag_select" onchange="tagList.add(parseInt(this.value)); this.value=0;">
+		<select id="tag_select" onchange="tagList.add(parseInt(this.value)); this.value=0;">
 		<option selected value="0">&mdash;Tag hinzuf&uuml;gen&mdash;</option>
 <?php	while($tag = $tags->fetchArray())
 			print '<option value="'.$tag[0].'">'.$tag[1].'</option>'; ?>
@@ -54,6 +54,22 @@
 	function get_tags($pb, $problem_id)
 	{
 		return $pb->querySingle("SELECT group_concat(tag_id) FROM tag_list WHERE problem_id=$problem_id", false);
+	}
+
+	function tag_selector($pb, $tags, $problem_id) {
+		// create empty div for tags
+		print "<div class='tag_selector'><i class='icon-tags'></i></div>";
+
+		// initial script to print and mark the right ones
+		print "<script> var tagSelector = document.getElementsByClassName('tag_selector')[0];";
+		$tags = $pb->query("SELECT *, (id IN ($tags)) AS active, 1 AS enabled, $problem_id as problem FROM tags WHERE 1".tag_restr(ACCESS_READ));
+		// display only tags the user is allowed to add/remove
+		while($tag_info = $tags->fetchAssoc()) {
+			$tag_info['color'] = "#".substr("00000".dechex($tag_info['color']),-6);
+			print "tagSelector.appendChild(writeTag(".json_encode($tag_info)."));";
+			print "tagSelector.appendChild(document.createTextNode(' '));";
+		}
+		print "</script>";
 	}
 
 	// Answer to Ajax queries for tags
