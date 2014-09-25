@@ -141,7 +141,11 @@ nav ul li a
 {
 	text-decoration	: none;
 	color	: Teal;
-	font-variant	: small-caps;
+}
+nav ul li a span
+{
+	text-transform	: uppercase;
+	font-size	: small;
 }
 @media (max-width: 899px)
 {
@@ -248,7 +252,7 @@ div.taglist, span#taglist
 }
 span.tag
 {
-	padding			: 3px 5px;
+	padding			: 2px 5px;
 	margin			: 2px;
 	border-radius	: 3px;
 	font-family		: Sans-Serif;
@@ -391,7 +395,7 @@ div.task
 }
 div.info
 {
-	border-bottom	: 1px solid Teal;
+	border-bottom	: 1px solid Gray;
 	padding		: 5px;
 	font-style	: italic;
 }
@@ -407,7 +411,6 @@ div.task div.text:before {content: "Aufgabe: ";}
 div.published
 {
 	padding		: 10px;
-	border-top	: 1px dotted Purple;
 	font-style	: italic;
 	font-size	: small;
 }
@@ -650,7 +653,7 @@ span.evalspan
 }
 span.eval, label.eval
 {
-	font-family	: Garamond;
+	font-size	: small;
 	font-style	: italic;
 	padding		: 0.5em;
 }
