@@ -76,7 +76,8 @@
 	if (isset($_GET['taginfo'])) {
 		include '../lib/master.php';
 		$pb = load(LOAD_DB);
-		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='".$_GET['id']."'".tag_restr(ACCESS_READ))
+		$id = $pb->escape($_GET['id']);
+		$res = $pb->query("SELECT name, description, color, hidden FROM tags WHERE id='$id'".tag_restr(ACCESS_READ))
 			->fetchAssoc();
 		if ($res) {
 			$res['color'] = "#".substr("00000".dechex($res['color']),-6);
