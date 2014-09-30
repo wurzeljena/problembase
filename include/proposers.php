@@ -122,11 +122,12 @@
 	}
 
 	// Answer to Ajax queries for proposers
-	if (isset($_GET['prop_query'])) {
+	if (isset($_GET['prop_query']) && $_GET['prop_query']) {
 		include '../lib/master.php';
 		$pb = load(LOAD_DB);
 		$proposers = new ProposerList;
-		$proposers->get($pb, array("id", "location", "country"), $_GET["prop_query"]);
+		$name = str_replace("_", " ", $_GET["prop_query"]);
+		$proposers->get($pb, array("id", "location", "country"), $name);
 		header("Content-Type: application/json");
 		print $proposers->json_encode();
 		$pb->close();

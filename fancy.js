@@ -176,7 +176,8 @@ function PropForm(form, list) {
 			}
 		}
 
-		xmlhttp.open("GET", rootdir + "/proposers/" + encodeURIComponent(prop.value), async);
+		var name = encodeURIComponent(prop.value.replace(" ", "_", "g"));
+		xmlhttp.open("GET", rootdir + "/proposers/" + name, async);
 		xmlhttp.setRequestHeader("Accept", "application/json");
 		xmlhttp.send();
 	}
