@@ -25,8 +25,11 @@
 	}
 	else {
 		// write proposers
-		if (count($propnums))
-			$proposer_id = writeproposers($pb, $propnums, $proposer, $proposer_id, $location, $country);
+		$proposers = new ProposerList;
+		if (count($propnums)) {
+			$proposers->fromserialdata($propnums, $proposer, $proposer_id, $location, $country);
+			$proposers->write($pb);
+		}
 
 		// write into db
 		if ($published != "") {
@@ -50,17 +53,10 @@
 		}
 
 		// write proposers
-		if (isset($id))
-			$pb->exec("DELETE FROM fileproposers WHERE file_id=$id");
-		$stmt = $pb->prepare("INSERT INTO fileproposers (file_id, proposer_id) VALUES ($id, $1)");
-		foreach ($propnums as $value) {
-			$stmt->bind(1, $proposer_id[$value], SQLTYPE_INTEGER);
-			$stmt->exec();
-		}
+		$proposers->set_for_file($pb, $id);
 
 		// write pictures
-		if (isset($id))
-			$pb->exec("DELETE FROM pictures WHERE file_id=$id");
+		$pb->exec("DELETE FROM pictures WHERE file_id=$id");
 		$stmt = $pb->prepare("INSERT INTO pictures (file_id, id, public, content) VALUES ($id, $1, $2, $3)");
 		foreach ($picnums as $value) {
 			$stmt->bind(1, $_POST['pic_id'][$value], SQLTYPE_INTEGER);

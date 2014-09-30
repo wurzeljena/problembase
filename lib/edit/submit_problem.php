@@ -33,8 +33,11 @@
 	}
 	else {
 		// write proposers
-		if (count($propnums))
-			$proposer_id = writeproposers($pb, $propnums, $proposer, $proposer_id, $location, $country);
+		$proposers = new ProposerList;
+		if (count($propnums)) {
+			$proposers->fromserialdata($propnums, $proposer, $proposer_id, $location, $country);
+			$proposers->write($pb);
+		}
 
 		// write into db
 		$proposed = $proposed ? "date('$proposed')" : "null";	// convert to date if not empty
@@ -50,12 +53,7 @@
 		}
 
 		// write proposers
-		$pb->exec("DELETE FROM fileproposers WHERE file_id=$id");
-		$stmt = $pb->prepare("INSERT INTO fileproposers (file_id, proposer_id) VALUES ($id, $1)");
-		foreach ($propnums as $value) {
-			$stmt->bind(1, $proposer_id[$value], SQLTYPE_INTEGER);
-			$stmt->exec();
-		}
+		$proposers->set_for_file($pb, $id);
 
 		// write tags
 		$pb->exec("DELETE FROM tag_list WHERE problem_id=$id");
