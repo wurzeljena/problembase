@@ -42,7 +42,7 @@ function TagList(form, init) {
 
 	this.add = function (newtag) {
 		// if there's nothing to add, exit
-		if (newtag == 0 || this.list.indexOf(newtag) >= 0)
+		if (newtag.length == 0 || this.list.indexOf(newtag) >= 0)
 			return;
 
 		// add tag
@@ -53,7 +53,6 @@ function TagList(form, init) {
 		xmlhttp.onreadystatechange = function () {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 				var resp = JSON.parse(xmlhttp.responseText);
-				resp.id = newtag;
 				self.taglist.appendChild(writeTag(resp, self));
 				self.taglist.appendChild(document.createTextNode(" "));
 			}
@@ -64,14 +63,17 @@ function TagList(form, init) {
 		xmlhttp.send();
 	}
 
-	this.remove = function (id, elem) {
-		this.list.splice(this.list.indexOf(id), 1);
+	this.remove = function (name, elem) {
+		this.list.splice(this.list.indexOf(name), 1);
 		elem.parentNode.removeChild(elem);
 	}
 
 	// add initial tags
-	for (var i = 0; i < init.length; i++)
-		this.add(init[i]);
+	for (var i = 0; i < init.length; i++) {
+		this.list.push(init[i].name.replace(/ /g, "_"));
+		this.taglist.appendChild(writeTag(init[i], this));
+		this.taglist.appendChild(document.createTextNode(" "));
+	}
 
 	// function to write result on form submit
 	document.forms[form].addEventListener("submit",
@@ -80,9 +82,9 @@ function TagList(form, init) {
 
 // tag editor functions
 function loadTag() {
-	var id = document.forms['tageditor'].elements['id'].value;
+	var name = document.forms['tageditor'].elements['old_name'].value;
 
-	if (id != "") {
+	if (name != "") {
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function () {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -97,7 +99,7 @@ function loadTag() {
 			}
 		}
 
-		xmlhttp.open("GET", rootdir + "/tags/" + id, true);
+		xmlhttp.open("GET", rootdir + "/tags/" + name, true);
 		xmlhttp.setRequestHeader("Accept", "application/json");
 		xmlhttp.send();
 	}

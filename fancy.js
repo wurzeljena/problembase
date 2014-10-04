@@ -176,7 +176,7 @@ function PropForm(form, list) {
 			}
 		}
 
-		var name = encodeURIComponent(prop.value.replace(" ", "_", "g"));
+		var name = encodeURIComponent(prop.value.replace(/ /g, "_"));
 		xmlhttp.open("GET", rootdir + "/proposers/" + name, async);
 		xmlhttp.setRequestHeader("Accept", "application/json");
 		xmlhttp.send();
@@ -219,8 +219,7 @@ function PropForm(form, list) {
 // tag creation
 function writeTag(taginfo, taglist) {
 	var tag = document.createElement("span");
-	tag.id = taginfo.id;
-	tag.textContent = taginfo.name;
+	tag.id = tag.textContent = taginfo.name;
 	tag.title = taginfo.description;
 	tag.className = "tag";
 
@@ -249,7 +248,7 @@ function writeTag(taginfo, taglist) {
 		var close = document.createElement("i");
 		close.className = "icon-remove close";
 		close.style.cursor = "pointer";
-		close.onclick = function () { taglist.remove(taginfo.id, this.parentNode); };
+		close.onclick = function () { taglist.remove(taginfo.name, this.parentNode); };
 		tag.appendChild(close);
 	}
 
@@ -266,11 +265,11 @@ function writeTag(taginfo, taglist) {
 			{
 				if (this.style.opacity == 1) {
 					this.style.opacity = 0.3;
-					setTag(taginfo.problem, taginfo.id, 0);
+					setTag(taginfo.problem, taginfo.name, 0);
 				}
 				else {
 					this.style.opacity = 1;
-					setTag(taginfo.problem, taginfo.id, 1);
+					setTag(taginfo.problem, taginfo.name, 1);
 				}
 			}
 		}

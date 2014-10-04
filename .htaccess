@@ -34,9 +34,9 @@ RewriteRule ^users/([0-9]+)/delete$ lib/edit/edit_user.php?id=$1&delete [L,QSA]
 RewriteRule ^tagpanel$ pages/edit/tagpanel.php [L]
 RewriteRule ^tags/$ pages/edit/tagpanel.php?standalone [L]
 RewriteCond %{HTTP_ACCEPT} =application/json
-RewriteRule ^tags/([0-9]+)$ include/tags.php?taginfo&id=$1 [L,QSA]
-RewriteRule ^tags/([0-9]+)$ %{ENV:PBROOT}/?filter=&proposer=&number=&start=&end=&tags=$1 [R,L]
-RewriteRule ^tags/edit$ include/tags.php [L,QSA]
+RewriteRule ^tags/([_0-9A-Za-z]+)$ include/tags.php?name=$1 [L,QSA]
+RewriteRule ^tags/([_0-9A-Za-z]+)$ %{ENV:PBROOT}/tags/ [R,L]
+RewriteRule ^tags$ include/tags.php [L,QSA]
 
 # proposer queries
 RewriteCond %{HTTP_ACCEPT} =application/json

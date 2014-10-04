@@ -13,6 +13,9 @@
 	if (!$problem['public'] && !$_SESSION['editor'])
 		http_error(403);
 
+	$tags = new TagList;
+	$tags->from_file($pb, $id);
+
 	printhead("Aufgabe $id");
 ?>
 <body>
@@ -20,10 +23,9 @@
 
 	<div class="center">
 	<div id="panel">
-	<?php drawMenu("sidemenu"); ?>
 	<?php
-		$tags = get_tags($pb, $id);
-		if ($_SESSION['editor'])
+		drawMenu("sidemenu");
+		if ($_SESSION['user_id'] != -1)
 			tag_selector($pb, $tags, $id);
 	?>
 	</div>
@@ -38,7 +40,7 @@
 			<div class="tags"></div>
 			<script> (function () {
 				var taglist = document.getElementsByClassName("tags")[0];
-				<?php tags($pb, $tags, "taglist"); ?>
+				<?php print $tags->js("taglist"); ?>
 			})();</script>
 			<?php printproposers($pb, "problem", $id); ?>
 			</div>

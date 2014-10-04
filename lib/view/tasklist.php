@@ -75,9 +75,9 @@
 				$filter[] = "proposed < '{$pb->escape($this->par['end'])}'";
 
 			if (isset($this->par['tags'])) {
-				$tags = array_filter(explode(',', $this->par['tags']));
-				foreach ($tags as $tag)
-					$filter[] = "EXISTS (SELECT tag_id FROM tag_list WHERE problems.file_id=tag_list.problem_id and tag_list.tag_id={$pb->escape($tag)})";
+				$tags = new TagList;
+				$tags->from_list($pb, str_replace("_", " ", $this->par['tags']));
+				$filter[] = $tags->filter_condition();
 			}
 
 			if (count($filter))
@@ -133,8 +133,7 @@
 
 			$query = "SELECT problems.file_id, files.content AS problem, problems.proposed, public, letter, number, month, year, "
 				."(SELECT COUNT(solutions.file_id) FROM solutions WHERE problems.file_id=solutions.problem_id) AS numsol, "
-				."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.file_id=comments.problem_id) AS numcomm, "
-				."(SELECT group_concat(tag_id) FROM tag_list WHERE problems.file_id=tag_list.problem_id) AS tags "
+				."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.file_id=comments.problem_id) AS numcomm "
 				."FROM problems JOIN files ON problems.file_id=files.rowid "
 				."LEFT JOIN published ON problems.file_id=published.problem_id "
 				."WHERE problems.file_id IN ($this->idstr)";
@@ -151,13 +150,14 @@
 
 		// print given tasks as HTML
 		function print_html() {
-			$taglists = Array(substr_count($this->idstr, ",") + 1);
+			// Code for writing tags
+			$tag_code = "(function () {var taglists = document.getElementsByClassName('tags');";
+
 			foreach ($this->problems as $num=>$problem) {
 				print "<a class='textbox' href='".WEBROOT."/{$problem['file_id']}/'>";
 				print "<div class='task ".($problem['public'] ? "" : "nonpublic")."'>";
 				print "<div class='info'>";
 				print "<div class='tags'></div>";
-				$taglists[$num] = $problem['tags'];
 				printproposers($this->pb, "problem", $problem['file_id']);
 				print "</div>";
 
@@ -178,13 +178,15 @@
 				print "<td style='width:200px;'>$commstr, $solstr</td>";
 				print "</tr></table>";
 				print "</div></div></a>";
+
+				// Create code for tags
+				$tags = new TagList;
+				$tags->from_file($this->pb, $problem["file_id"]);
+				$tag_code .= $tags->js("taglists[$num]");
 			}
 
-			print "<script id='tagscript'> (function () {";
-			print "var taglists = document.getElementsByClassName('tags');";
-			foreach ($taglists as $index=>$taglist)
-				tags($this->pb, $taglist, "taglists[$index]");
-			print "})();</script>";
+			$tag_code .= "})();";
+			print "<script id='tagscript'>$tag_code</script>";
 		}
 
 		// print published tasks as TeX

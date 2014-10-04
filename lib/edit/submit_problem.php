@@ -1,20 +1,20 @@
 <?php
 	include '../../lib/master.php';
-	$pb = load(LOAD_DB | INC_PROPOSERS);
+	$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS);
 
 	if (!$_SESSION['editor'])
 		http_error(403);
 
 	// read parameters
 	if (isset($_GET["id"]))
-		$id = $pb->escape($_GET["id"]);
+		$id = (int)$_GET["id"];
 
 	// post from tag selector?
 	if (isset($_POST["tag"])) {
-		if ($_POST["set"])
-			$pb->exec("INSERT INTO tag_list(problem_id, tag_id) VALUES ($id, {$_POST["tag"]})");
-		else
-			$pb->exec("DELETE FROM tag_list WHERE problem_id=$id AND tag_id={$_POST["tag"]}");
+		$tag = new Tag;
+		Tag::prepare_name_query($pb);
+		$tag->from_name($_POST["tag"]);
+		$tag->set_for_file($pb, $id, $_POST["set"]);
 		$pb->close();
 		exit();
 	}
@@ -56,14 +56,9 @@
 		$proposers->set_for_file($pb, $id);
 
 		// write tags
-		$pb->exec("DELETE FROM tag_list WHERE problem_id=$id");
-		if ($tags != "") {
-			$stmt = $pb->prepare("INSERT INTO tag_list (problem_id, tag_id) VALUES ($id, $1)");
-			foreach (explode(",", $tags) as $value) {
-				$stmt->bind(1, $value, SQLTYPE_INTEGER);
-				$stmt->exec();
-			}
-		}
+		$taglist = new TagList;
+		$taglist->from_list($pb, $tags);
+		$taglist->set_for_file($pb, $id);
 
 		// redirect to task page
 		header("Location: ".WEBROOT."/$id/");

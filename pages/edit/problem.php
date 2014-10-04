@@ -6,9 +6,11 @@
 	if (!$_SESSION['editor'])
 		http_error(403);
 
+	$tags = new TagList;
 	if (isset($_GET['id'])) {
 		$id = (int)$_GET['id'];
 		$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
+		$tags->from_file($pb, $id);
 	}
 
 	// if no such problem exists, throw a 404 error
@@ -31,10 +33,6 @@
 	<form class="task" id="task" title="Aufgabenformular" action="<?=WEBROOT?>/submit/<?= isset($id) ? $id:"" ?>" method="POST">
 		<?php
 			proposer_form($pb, "task", isset($id) ? $id : -1);
-			if (isset($id))
-				$tags = get_tags($pb, $problem['file_id']);
-			else
-				$tags = "";
 			tag_form($pb, "task", $tags);
 		?>
 		<textarea class="text" name="problem" id="text" rows="20" cols="65" placeholder="Aufgabentext"

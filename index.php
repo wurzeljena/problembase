@@ -57,10 +57,9 @@
 		<div class="taglist">
 			<label class="question" for="tag_select">Was?</label>
 			<?php
+				$tags = new TagList;
 				if (isset($_GET['tags']))
-					$tags = $_GET['tags'];
-				else
-					$tags = "";
+					$tags->from_list($pb, str_replace("_", " ", $_GET['tags']));
 				tag_form($pb, "filter", $tags);
 			?>
 		</div>

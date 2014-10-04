@@ -9,7 +9,7 @@
 		function exec($stmt);
 
 		function lastInsertRowid($table, $col);
-		function escape($val);
+		static function escape($val);
 
 		function ftsCond($col, $search);
 
@@ -63,8 +63,8 @@
 			return $this->db->lastInsertRowID();
 		}
 
-		function escape($val) {
-			return $this->db->escapeString($val);
+		static function escape($val) {
+			return SQLite3::escapeString($val);
 		}
 		
 		function ftsCond($col, $search) {
@@ -152,7 +152,7 @@
 			return $row[0];
 		}
 
-		function escape($val) {
+		static function escape($val) {
 			return pg_escape_string($val);
 		}
 		
