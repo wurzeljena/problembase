@@ -1,17 +1,36 @@
-// pager in index
-var pageLoader = {
-	hash: null,
-	page: 0, max: 0,
-	set: function (hash, max) { this.hash = hash; this.max = max; },
+/**
+ * Pager in index. Create object with hash, total number of pages and current page.
+ * Pages will be written to the element with id="tasklist".
+ */
+function PageLoader(hash, max_pages, page) {
+	// find base URL
+	var match = document.URL.match(/\?.*/);
 
-	setPage: function (page) {
-		if (page >= 0 && page < this.max) {
-			this.page = page;
-			this.loadPage();
+	// If we have a page argument, cut it out
+	var base_url = match ? match[0].replace(/page=[0-9]*&/, "").replace(/[\?&]page=[0-9]*/, "") : null;
+
+	this.getPage = function () {return page;}
+
+	this.setPage = function (new_page) {
+		if (new_page >= 0 && new_page < max_pages) {
+			page = new_page;
+			loadPage();
+
+			// add to history
+			var state = {page: page};
+			var title = "Suchergebnisse (Seite " + (page+1) + ")";
+			var arg = "page=" + (page+1);
+			var url = base_url ? (base_url + "&" + arg) : "?" + arg;
+			if (startup) {
+				history.replaceState(state, title, url);
+				startup = false;
+			}
+			else
+				history.pushState(state, title, url);
 		}
-	},
+	}
 
-	loadPage: function () {
+	var loadPage = function () {
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function () {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -26,13 +45,22 @@ var pageLoader = {
 			}
 		}
 
-		xmlhttp.open("GET", rootdir + "/tasks?hash=" + this.hash + "&page=" + this.page, true);
+		xmlhttp.open("GET", rootdir + "/tasks?hash=" + hash + "&page=" + page, true);
 		xmlhttp.send();
 
 		// show current page number and scroll to the top
-		document.getElementById("page").innerHTML = this.page + 1;
+		document.getElementById("page").innerHTML = page + 1;
 		window.scroll(0,0);
 	}
+
+	window.onpopstate = function (event) {
+		page = event.state.page;
+		loadPage();
+	}
+
+	// load given page
+	var startup = true;
+	this.setPage(page);
 }
 
 // dynamic tag list Ajax stuff

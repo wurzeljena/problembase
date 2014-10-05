@@ -14,6 +14,9 @@
 	$filter->construct_query($pb, array("proposed DESC", "year DESC", "month DESC"));
 	$filter->filter(true);
 	$pages = ceil(count($filter->array)/10);
+	$page = isset($_GET['page']) ? (int)($_GET['page']-1) : 0;
+	if ($page < 0 || $page >= $pages)
+		$page = 0;
 ?>
 <body>
 	<?php printheader(); ?>
@@ -72,17 +75,16 @@
 
 	<div id="pager">
 		<a href="javascript:pageLoader.setPage(0);" class="button"><i class="icon-double-angle-left"></i></a>
-		<a href="javascript:pageLoader.setPage(pageLoader.page - 1);" class="button"><i class="icon-angle-left"></i></a>
-		Seite <span id="page">1</span>/<?=$pages?>
-		<a href="javascript:pageLoader.setPage(pageLoader.page + 1);" class="button"><i class="icon-angle-right"></i></a>
-		<a href="javascript:pageLoader.setPage(pageLoader.max - 1);" class="button"><i class="icon-double-angle-right"></i></a>
+		<a href="javascript:pageLoader.setPage(pageLoader.getPage() - 1);" class="button"><i class="icon-angle-left"></i></a>
+		Seite <span id="page"><?=($page+1)?></span>/<?=$pages?>
+		<a href="javascript:pageLoader.setPage(pageLoader.getPage() + 1);" class="button"><i class="icon-angle-right"></i></a>
+		<a href="javascript:pageLoader.setPage(<?=($pages-1)?>);" class="button"><i class="icon-double-angle-right"></i></a>
 	</div>
 	</div>
 
 	<!-- show first page of content -->
 	<script>
-		pageLoader.set("<?=$hash?>", <?=$pages?>);
-		pageLoader.loadPage();
+		pageLoader = new PageLoader("<?=$hash?>", <?=$pages?>, <?=$page?>);
 	</script>
 
 	<?php $pb->close(); ?>
