@@ -3,10 +3,10 @@ var pageLoader = {
 	hash: null,
 	page: 0, max: 0,
 	set: function (hash, max) { this.hash = hash; this.max = max; },
-	incrPage: function (incr) {
-		var newpage = this.page + incr;
-		if (newpage >= 0 && newpage < this.max) {
-			this.page = newpage;
+
+	setPage: function (page) {
+		if (page >= 0 && page < this.max) {
+			this.page = page;
 			this.loadPage();
 		}
 	},
