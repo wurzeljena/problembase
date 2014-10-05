@@ -81,7 +81,7 @@
 		}
 
 		// (Extra) condition to select only tags the current user is allowed to see
-		static function tag_restr($rights) {
+		static function tag_restr($rights, $standalone = false) {
 			$cond = array();
 			if (($rights & ACCESS_READ) && !$_SESSION['editor'])
 				$cond[] = "hidden=0";
@@ -90,7 +90,7 @@
 
 			// return collapsed conditions
 			if (count($cond))
-				return " AND ".implode(" AND ", $cond);
+				return ($standalone ? " WHERE " : " AND ").implode(" AND ", $cond);
 			else
 				return "";
 		}
@@ -118,7 +118,7 @@
 		}
 
 		function get(SQLDatabase $pb, array $fields) {
-			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags WHERE 1".Tag::tag_restr(ACCESS_READ));
+			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags".Tag::tag_restr(ACCESS_READ, true));
 			while($tag = $tags->fetchAssoc())
 				$this->data[] = new Tag($tag);
 		}
