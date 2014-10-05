@@ -29,8 +29,9 @@ var pageLoader = {
 		xmlhttp.open("GET", rootdir + "/tasks?hash=" + this.hash + "&page=" + this.page, true);
 		xmlhttp.send();
 
-		// set info
+		// show current page number and scroll to the top
 		document.getElementById("page").innerHTML = this.page + 1;
+		window.scroll(0,0);
 	}
 }
 
