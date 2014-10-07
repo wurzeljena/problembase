@@ -42,15 +42,15 @@ function PageLoader(hash, max_pages, page) {
 				// render math
 				for (var id = 0; document.getElementById("prob" + id); id++)
 					MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prob" + id]);
+
+				// show current page number and scroll to the top
+				document.getElementById("page").innerHTML = page + 1;
+				window.scroll(0,0);
 			}
 		}
 
 		xmlhttp.open("GET", rootdir + "/tasks?hash=" + hash + "&page=" + page, true);
 		xmlhttp.send();
-
-		// show current page number and scroll to the top
-		document.getElementById("page").innerHTML = page + 1;
-		window.scroll(0,0);
 	}
 
 	window.onpopstate = function (event) {
