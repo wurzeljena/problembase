@@ -191,18 +191,6 @@
 		print "<script>var tagList = new TagList('$form', {$taglist->json_encode()});</script>";
 	}
 
-	function tag_selector(SQLDatabase $pb, TagList $tags, $problem_id) {
-		// create empty div for tags
-		print "<div class='tag_selector'><i class='icon-tags'></i></div>";
-
-		// initial script to print and mark the right ones
-		print "<script> var tagSelector = document.getElementsByClassName('tag_selector')[0];";
-		$all_tags = new TagList;
-		$all_tags->get($pb, array("*", "(name IN ({$tags->print_names()})) AS active", "1 AS enabled", "$problem_id as problem"));
-		print $all_tags->js("tagSelector", true);
-		print "</script>";
-	}
-
 	// Answer to Ajax queries for tags
 	if (isset($_GET['name'])) {
 		include '../lib/master.php';

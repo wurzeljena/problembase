@@ -12,9 +12,7 @@
 	$filter->filter(false);
 
 	// generate list
-	$tasklist = new TaskList($pb);
-	$tasklist->set($filter->array);
-	$tasklist->query(array("number ASC"));
+	$tasklist = new TaskList($pb, $filter->array);
 
 	// generate solution list
 	$sollist = new SolutionList($pb);

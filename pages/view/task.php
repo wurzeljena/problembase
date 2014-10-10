@@ -1,20 +1,17 @@
 <?php
 	include '../../lib/master.php';
-	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_SOLLIST);
+	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_TASKLIST | INC_SOLLIST);
 
 	$id = (int)$_GET['id'];
-	$problem = $pb->querySingle("SELECT problems.*, files.content AS problem FROM problems JOIN files ON problems.file_id=files.rowid WHERE file_id=$id", true);
+	$problem = new Task($pb, $id);
 
 	// if no such problem exists, throw a 404 error
-	if (empty($problem))
+	if (!$problem->is_valid())
 		http_error(404, "Aufgabe nicht gefunden");
 
 	// if the user isn't allowed to see it, throw a 403 error
-	if (!$problem['public'] && !$_SESSION['editor'])
+	if (!$problem->access(ACCESS_READ))
 		http_error(403);
-
-	$tags = new TagList;
-	$tags->from_file($pb, $id);
 
 	printhead("Aufgabe $id");
 ?>
@@ -25,64 +22,22 @@
 	<div id="panel">
 	<?php
 		drawMenu("sidemenu");
-		if ($_SESSION['user_id'] != -1)
-			tag_selector($pb, $tags, $id);
+		if ($_SESSION['user_id'] == -1)
+			$problem->tag_selector($pb);
 	?>
 	</div>
 
 	<div class="content">
-		<div class="task">
-			<?php
-				if ($_SESSION['editor'])
-					print "<a class='button inner' href='".WEBROOT."/$id/edit'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
-			?>
-			<div class="info">
-			<div class="tags"></div>
-			<script> (function () {
-				var taglist = document.getElementsByClassName("tags")[0];
-				<?php print $tags->js("taglist"); ?>
-			})();</script>
-			<?php printproposers($pb, "problem", $id); ?>
-			</div>
-			<div class="text" id="prob"><?php print htmlspecialchars($problem['problem']); ?></div>
-			<div class="published">
-			<?php
-				$pub = $pb->querySingle("SELECT * FROM published WHERE problem_id=".$id, true);
-				if ($pub && count($pub)) {
-					$volume = $pub['month']."/".str_pad($pub['year']%100, 2, "0", STR_PAD_LEFT);
-					$letter = $pub['letter'];
-					$number = $pub['number'];
-					print "Publiziert als $$letter\,$number$ im Heft $volume";
-				}
-				else {
-					$volume = $number = $letter = "";
-					print "Noch nicht publiziert";
-				}
-				print $problem['public'] ? "." : ", nicht &ouml;ffentlich.";
-				if ($_SESSION['editor'])
-					print "<a class='button danger' style='float:right' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>";
-			?>
-			<form id="publish" style="display:none;" action="<?=WEBROOT?>/<?=$id?>/publish" method="POST">
-				<input type="submit" style="float:right;" value="Speichern">
-				<div style="display:inline;white-space:nowrap;">
-				Im <label for="volume">Heft</label>
-				<input type="text" class="text" id="volume" name="volume" placeholder="MM/JJ" pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}"
-					style="width:40px;" value="<?=$volume?>">
-				</div>
-				<div style="display:inline;white-space:nowrap;">
-				<label for="letter">als</label>
-				<input type="text" class="text" id="letter" name="letter" placeholder="Buchstabe"
-					style="width:50px;" value="<?=$letter?>">
-				<input type="text" class="text" name="number" placeholder="Nummer" pattern="[1-9]|[0-5][0-9]|60"
-					style="width:20px;" value="<?=$number?>">,
-				</div>
-				<div style="display:inline;white-space:nowrap;">
-				<input type="checkbox" name="public" id="public" <?=$problem['public'] ? "checked" : "";?>>
-					<label for="public">&ouml;ffentlich</label>
-				</div>
-			</form>
-			</div>
-		</div>
+		<?php
+			$tag_code = "";
+			$problem->print_html($tag_code);
+			if ($_SESSION['editor'])
+				$problem->publish_form();
+		?>
+		<script> (function () {
+			var taglist = document.getElementsByClassName("tags")[0];
+			<?php print $tag_code; ?>
+		})();</script>
 
 		<?php
 		$sollist = new SolutionList($pb);
@@ -131,9 +86,5 @@
 		<?php $pb->close(); ?>
 	</div>
 	</div>
-
-	<script type="text/javascript">
-		var Publ = new PopupTrigger("publish");
-	</script>
 </body>
 </html>

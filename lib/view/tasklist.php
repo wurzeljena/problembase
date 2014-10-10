@@ -1,11 +1,9 @@
 <?php
-	define("TASKS_PER_PAGE", 10);
-
 	class Filter {
-		private $par;		// parameter list
-		private $hash;		// ... and its hash
-		private $query;		// SQLite query
-		public $array;		// result array
+		private $par;       // parameter list
+		private $hash;      // ... and its hash
+		private $query;     // SQLite query
+		public $array;      // result array
 
 		function __construct($hash = null) {
 			$this->hash = $hash;
@@ -105,47 +103,149 @@
 		}
 	}
 
-	class TaskList {
-		private $pb;		// handle to the problembase
-		public $idstr;		// comma-separated string of problem ids
-		private $problems;	// corresponding data
+	class Task {
+		private $data;      // Named array containing the properties
+		private $proposers; // ProposerList for the problem
+		private $tags;      // TagList for the problem
+		private static $query = null;   // Constructor query
 
-		function __construct($pb) {
-			$this->pb = $pb;
-		}
-
-		// get the data for an array
-		function set($array) {
-			$this->idstr = implode(",", $array);
-		}
-
-		// get the data for a specific task page
-		function slice($array, $start, $length = TASKS_PER_PAGE) {
-			$ids = array_slice($array, $start, $length);
-			$this->idstr = implode(",", $ids);
-		}
-
-		function query($order = null) {
-			if (!$this->idstr) {
-				$this->problems = Array();
-				return;
-			}
-
-			$query = "SELECT problems.file_id, files.content AS problem, problems.proposed, public, letter, number, month, year, "
+		// Prepare query
+		private static function prepareQuery(SQLDatabase $pb) {
+			self::$query = $pb->prepare("SELECT problems.*, files.content AS problem, "
 				."(SELECT COUNT(solutions.file_id) FROM solutions WHERE problems.file_id=solutions.problem_id) AS numsol, "
-				."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.file_id=comments.problem_id) AS numcomm "
-				."FROM problems JOIN files ON problems.file_id=files.rowid "
-				."LEFT JOIN published ON problems.file_id=published.problem_id "
-				."WHERE problems.file_id IN ($this->idstr)";
+				."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.file_id=comments.problem_id) AS numcomm, "
+				."letter, number, month, year FROM problems JOIN files ON problems.file_id=files.rowid "
+				."LEFT JOIN published ON problems.file_id=published.problem_id WHERE file_id=$1");
+		}
 
-			// order entries
-			if ($order)
-				$query .= " ORDER BY ".implode(", ", $order);
+		// Construct from file id
+		function __construct(SQLDatabase $pb, $id) {
+			if (!self::$query)
+				self::prepareQuery($pb);
+			self::$query->bind(1, $id, SQLTYPE_INTEGER);
+			$data = self::$query->exec()->fetchAssoc();
+			if ($data) {
+				$this->data = $data;
+				$this->proposers = new ProposerList;
+				$this->proposers->from_file($pb, $this->data["file_id"]);
+				$this->tags = new TagList;
+				$this->tags->from_file($pb, $this->data["file_id"]);
+			}
+		}
 
-			$problems = $this->pb->query($query);
+		// Print problem as HTML, write tag code in string
+		function print_html(&$tag_code, $num = -1) {
+			print "<div class='task ".($this->data['public'] ? "" : "nonpublic")."'"
+				.($num != -1 ? " id='prob$num'" : "").">\n";
+			print "<div class='info top'>";
+			print "<div class='tags'></div>\n";
+			// Create code for tags
+			$tag_code .= $this->tags->js($num != -1 ? "taglists[$num]" : "taglist");
+			$this->proposers->print_list($this->data["remarks"]);
+			if (isset($this->data['proposed']))
+				print " <span class='proposed'>{$this->data['proposed']}</span>";
+
+			print "</div>\n<div class='text'>";
+			print htmlspecialchars($this->data['problem']);
+			print "</div>\n";
+
+			if ($num != -1)
+				print "<a class='button inner bottom' href='".WEBROOT."/{$this->data['file_id']}/'>"
+					."<i class='icon-hand-right'></i> <span>Lösungen/Kommentare</span></a>\n";
+			if ($num == -1 && $_SESSION['editor'])
+				print "<a class='button inner bottom' href='".WEBROOT."/{$this->data['file_id']}/edit'>"
+					."<i class='icon-pencil'></i> <span>Bearbeiten</span></a>\n";
+
+			print "<div class='info'>";
+			// find out if published
+			if (isset($this->data['year']))
+				print "Heft {$this->data['month']}/{$this->data['year']}, "
+					."Aufgabe \${$this->data['letter']}{$this->data['number']}$";
+			else
+				print "Nicht publiziert";
+
+			if (isset($this->data['numsol']))
+				print " | <i class='icon-book' title='Lösungen'></i> {$this->data['numsol']}";
+			if (isset($this->data['numcomm']))
+				print " | <i class='icon-comments' title='Kommentare'></i> {$this->data['numcomm']}";
+			print "</div></div>\n\n";
+		}
+
+		// Print problem as TeX code
+		function print_tex() {
+			print "\\aufbox{\${$this->data['letter']}\,{$this->data['number']}$}{";
+			$this->proposers->print_list($this->data["remarks"]);
+			print "}{%\n{$this->data['problem']}}\n\n";
+		}
+
+		// Print the tag selector for the problem
+		function tag_selector(SQLDatabase $pb) {
+			// create empty div for tags
+			print "<div class='tag_selector'><i class='icon-tags'></i></div>";
+
+			// initial script to print and mark the right ones
+			print "<script> var tagSelector = document.getElementsByClassName('tag_selector')[0];";
+			$all_tags = new TagList;
+			$all_tags->get($pb, array("*", "(name IN ({$this->tags->print_names()})) AS active",
+				"1 AS enabled", "{$this->data["file_id"]} as problem"));
+			print $all_tags->js("tagSelector", true);
+			print "</script>";
+		}
+
+		// print the publishing form
+		function publish_form() {
+			if (isset($this->data["year"]))
+				$volume = $this->data["month"]."/".
+					str_pad($this->data["year"]%100, 2, "0", STR_PAD_LEFT);
+			else
+				$volume = "";
+?>			<a class='button danger' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>
+			<form id="publish" style="display:none;" action="<?=WEBROOT?>/<?=$this->data["file_id"]?>/publish" method="POST">
+				Im <label for="volume">Heft</label>
+				<input type="text" class="text" id="volume" name="volume" placeholder="MM/JJ"
+					pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}" style="width:40px;" value="<?=$volume?>">
+				<label for="letter">als</label>
+				<input type="text" class="text" id="letter" name="letter" placeholder="Buchstabe"
+					style="width:50px;" value="<?=$this->data["letter"]?>">
+				<input type="text" class="text" name="number" placeholder="Nummer" pattern="[1-9]|[0-5][0-9]|60"
+					style="width:20px;" value="<?=$this->data["number"]?>">,
+				<input type="checkbox" name="public" id="public" <?=$this->data["public"] ? "checked" : "";?>>
+					<label for="public">&ouml;ffentlich</label>
+				<input type="submit" value="Speichern">
+			</form>
+
+			<script type="text/javascript">
+				var Publ = new PopupTrigger("publish");
+			</script>
+<?php	}
+
+		// Do we have valid data? (i.e. any data at all)
+		function is_valid() { return (bool)$this->data; }
+
+		// Is the current user allowed to see the problem?
+		function access($right) {
+			if ($right == ACCESS_READ)
+				return $this->data['public'] || $_SESSION['editor'];
+			else    // write or modify
+				return $_SESSION['editor'];
+		}
+	}
+
+	class TaskList {
+		private $ids;       // array of problem ids
+		private $problems;  // corresponding data
+
+		function __construct(SQLDatabase $pb, array $array, $start=0, $length=0) {
+			// get ids
+			if ($length)
+				$this->ids = array_slice($array, $start, $length);
+			else
+				$this->ids = $array;
+
+			// get problems
 			$this->problems = Array();
-			while($problem = $problems->fetchAssoc())
-				$this->problems[] = $problem;
+			foreach ($this->ids AS $id)
+				$this->problems[] = new Task($pb, $id);
 		}
 
 		// print given tasks as HTML
@@ -153,37 +253,8 @@
 			// Code for writing tags
 			$tag_code = "(function () {var taglists = document.getElementsByClassName('tags');";
 
-			foreach ($this->problems as $num=>$problem) {
-				print "<a class='textbox' href='".WEBROOT."/{$problem['file_id']}/'>";
-				print "<div class='task ".($problem['public'] ? "" : "nonpublic")."'>";
-				print "<div class='info'>";
-				print "<div class='tags'></div>";
-				printproposers($this->pb, "problem", $problem['file_id']);
-				print "</div>";
-
-				print "<div class='text' id='prob$num'>";
-				print htmlspecialchars($problem['problem']);
-				print "<table class='info' style='margin-top:1em;'><tr>";
-				print "<td style='width:70px; border:none;'>{$problem['proposed']}</td>";
-
-				// find out if published
-				if (isset($problem['year']))
-					print "<td style='width:200px;'>Heft {$problem['month']}/{$problem['year']}, "
-						."Aufgabe \${$problem['letter']}{$problem['number']}$</td>";
-				else
-					print "<td style='width:200px;'>nicht publiziert</td>";
-
-				$solstr = ($problem['numsol'] <= 1) ? ($problem['numsol'] ? "" : "k")."eine L&ouml;sung" : $problem['numsol']." L&ouml;sungen";
-				$commstr = ($problem['numcomm'] <= 1) ? ($problem['numcomm'] ? "" : "k")."ein Kommentar" : $problem['numcomm']." Kommentare";
-				print "<td style='width:200px;'>$commstr, $solstr</td>";
-				print "</tr></table>";
-				print "</div></div></a>";
-
-				// Create code for tags
-				$tags = new TagList;
-				$tags->from_file($this->pb, $problem["file_id"]);
-				$tag_code .= $tags->js("taglists[$num]");
-			}
+			foreach ($this->problems as $num=>$problem)
+				$problem->print_html($tag_code, $num);
 
 			$tag_code .= "})();";
 			print "<script id='tagscript'>$tag_code</script>";
@@ -194,11 +265,8 @@
 			print "\\documentclass[exercises]{wurzel2008}\n\\title{\\Wurzel-Aufgaben}\n\n"
 				."\\begin{document}\n\\maketitle\n";
 
-			foreach ($this->problems as $num=>$problem) {
-				print "\\aufbox{\${$problem['letter']}\,{$problem['number']}$}{";
-				printproposers($this->pb, "problem", $problem['file_id']);
-				print "}{%\n{$problem['problem']}}\n\n";
-			}
+			foreach ($this->problems as $problem)
+				$problem->print_tex();
 
 			print "\\end{document}\n";
 		}
@@ -211,9 +279,8 @@
 		header("Content-Type: text/html; encoding=utf-8");
 
 		$filter = new Filter($_GET['hash']);
-		$tasklist = new TaskList($pb);
-		$tasklist->slice($filter->array, $_GET['page'] * TASKS_PER_PAGE);
-		$tasklist->query(array("proposed DESC", "year DESC", "month DESC"));
+		$tasklist = new TaskList($pb, $filter->array,
+			$_GET['page'] * TASKS_PER_PAGE, TASKS_PER_PAGE);
 		$tasklist->print_html();
 	}
 
@@ -223,15 +290,14 @@
 		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS);
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=aufg"
-			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");
+			.str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)
+			.str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");
 
 		$filter = new Filter();
 		$hash = $filter->set_params($_GET);
 		$filter->construct_query($pb, array("number ASC"));
 		$filter->filter(false);
-		$tasklist = new TaskList($pb);
-		$tasklist->set($filter->array);
-		$tasklist->query(array("number ASC"));
+		$tasklist = new TaskList($pb, $filter->array);
 		$tasklist->print_tex();
 	}
 ?>

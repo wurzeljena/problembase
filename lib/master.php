@@ -39,6 +39,9 @@
 	define("ACCESS_MODIFY", 2);		// modifying an existing object
 	define("ACCESS_WRITE", 4);		// writing a new object
 
+	// some parameters
+	define("TASKS_PER_PAGE", 10);
+
 	// throw a HTTP error
 	function http_error($code, $msg = null) {
 		switch ($code) {

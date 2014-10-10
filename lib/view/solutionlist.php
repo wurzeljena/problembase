@@ -34,8 +34,8 @@
 				if ($edit)
 					print "<a class='button inner' href='".WEBROOT."/{$solution['problem_id']}/{$solution['file_id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 				if ($linkback)
-					print "<a class='button inner' href='".WEBROOT."/{$solution['problem_id']}/'><i class='icon-hand-right '></i> <span>Zur Aufgabe</span></a>";
-				print '<div class="info">';
+					print "<a class='button inner' href='".WEBROOT."/{$solution['problem_id']}/'><i class='icon-hand-right'></i> <span>Zur Aufgabe</span></a>";
+				print '<div class="info top">';
 				printproposers($this->pb, "solution", $solution['file_id']);
 				print '</div>';
 
