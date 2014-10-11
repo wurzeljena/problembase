@@ -22,7 +22,7 @@
 	<div id="panel">
 	<?php
 		drawMenu("sidemenu");
-		if ($_SESSION['user_id'] == -1)
+		if ($_SESSION['user_id'] != -1)
 			$problem->tag_selector($pb);
 	?>
 	</div>

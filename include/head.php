@@ -49,17 +49,17 @@ function drawMenu($id) { ?>
 	<?php drawMenu("headermenu"); ?>
 	<a id="logo" style="letter-spacing:-2px;" href="<?=WEBROOT?>/"><span style="font-size:115%;">&#x221A;</span><span style="text-decoration:overline">WURZEL</span></a>
 	<form id="login" action="<?=WEBROOT?>/logon" method="POST">
-	<?php if ($_SESSION['user_id'] == -1) { ?>
+	<?php if ($_SESSION['user_id'] == -1): ?>
 		<span id="wait"></span>
 		<input type="email" style="width:15em;" name="email" placeholder="E-Mail">
 		<input type="password" name="password" placeholder="Passwort">
 		<input type="submit" value="Login">
-	<?php } else {
+	<?php else:
 			print "<span id='username'>{$_SESSION['user_name']}</span>";
 		?>
 		<input type="hidden" name="logout" value="1">
 		<input type="submit" value="Logout">
-	<?php } ?>
+	<?php endif; ?>
 	</form>
 	<script>
 		var Login = new PopupTrigger("login");
