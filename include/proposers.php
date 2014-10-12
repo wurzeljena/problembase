@@ -109,18 +109,6 @@
 		print ");</script>";
 	}
 
-	// Print the proposer line before a problem or solution
-	function printproposers(SQLDatabase $pb, $type, $id)
-	{
-		// get proposers
-		$proposers = new ProposerList;
-		$proposers->from_file($pb, $id);
-
-		// print them using the remarks
-		$remarks = $pb->querySingle("SELECT remarks FROM {$type}s WHERE file_id=$id", false);
-		$proposers->print_list($remarks);
-	}
-
 	// Answer to Ajax queries for proposers
 	if (isset($_GET['prop_query']) && $_GET['prop_query']) {
 		include '../lib/master.php';

@@ -40,9 +40,7 @@
 		})();</script>
 
 		<?php
-		$sollist = new SolutionList($pb);
-		$sollist->idstr = $pb->querysingle("SELECT group_concat(file_id) FROM solutions WHERE problem_id=$id", false);
-		$sollist->query($_SESSION['editor']);
+		$sollist = new SolutionList($pb, array("problem_id=$id"));
 		$sollist->print_html($_SESSION['editor']);
 
 		// show buttons between solutions and comments

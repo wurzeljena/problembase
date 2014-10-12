@@ -15,9 +15,7 @@
 	$tasklist = new TaskList($pb, $filter->array);
 
 	// generate solution list
-	$sollist = new SolutionList($pb);
-	$sollist->idstr = $pb->querysingle("SELECT group_concat(file_id) FROM solutions WHERE year=$year AND month=$month", false);
-	$sollist->query($_SESSION['editor']);
+	$sollist = new SolutionList($pb, array("year=$year", "month=$month"));
 ?>
 <body>
 	<?php printheader(); ?>
