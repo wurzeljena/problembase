@@ -74,10 +74,14 @@
 
 		// Set or unset for problem
 		function set_for_file(SQLDatabase $pb, $id, $set) {
+			// are we allowed to set the tag?
+			if (!$_SESSION['editor'])
+				return false;
 			if ($set)
 				$pb->exec("INSERT INTO tag_list(problem_id, tag_id) VALUES ($id, {$this->data["id"]})");
 			else
 				$pb->exec("DELETE FROM tag_list WHERE problem_id=$id AND tag_id={$this->data["id"]}");
+			return true;
 		}
 
 		// (Extra) condition to select only tags the current user is allowed to see
@@ -189,34 +193,5 @@
 		print "<input type='hidden' name='tags'/>";
 		print "<span id='taglist'></span>";
 		print "<script>var tagList = new TagList('$form', {$taglist->json_encode()});</script>";
-	}
-
-	// Write tag from tag form
-	if (isset($_POST['old_name'])) {
-		include '../lib/master.php';
-		$pb = load(LOAD_DB);
-
-		$tag = new Tag;
-		Tag::prepare_name_query($pb);
-		if ($_POST["old_name"] != "")
-			$tag->from_name(str_replace("_", " ", $_POST["old_name"]));
-
-		if (isset($_POST['delete']))
-			$success = $tag->delete($pb);
-		else {
-			// Get parameters from POST request and write them into $tag
-			$names = array("name", "description", "color");
-			$par = array_intersect_key($_POST, array_fill_keys($names, 0));
-			$par["hidden"] = isset($_POST["hidden"]) ? 1 : 0;
-			$tag->set($par);
-
-			$success = $tag->write($pb);
-		}
-		$pb->close();
-
-		if ($success)
-			header("Location: {$_SERVER['HTTP_REFERER']}");
-		else
-			http_error(403);
 	}
 ?>

@@ -9,17 +9,6 @@
 	if (isset($_GET["id"]))
 		$id = (int)$_GET["id"];
 
-	// post from tag selector?
-	if (isset($_POST["tag"])) {
-		$tag = new Tag;
-		Tag::prepare_name_query($pb);
-		$tag->from_name($_POST["tag"]);
-		$tag->set_for_file($pb, $id, $_POST["set"]);
-		$pb->close();
-		exit();
-	}
-
-	// otherwise, posting from the problem form
 	$propnums = array_filter(explode(",", $_POST['propnums']), "strlen");
 	$params = array_merge(array("problem", "remarks", "proposed", "tags"),
 		(count($propnums) ? array("proposer", "proposer_id", "location", "country") : array()));

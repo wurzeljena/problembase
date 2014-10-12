@@ -13,6 +13,7 @@ RewriteRule ^([0-9]+)$ %{ENV:PBROOT}/$1/ [R=301,L]
 RewriteRule ^([0-9]+)/edit$ pages/edit/problem.php?id=$1 [L]
 RewriteRule ^([0-9]+)/evaluate$ pages/edit/eval.php?id=$1 [L]
 RewriteRule ^([0-9]+)/addsolution$ pages/edit/solution.php?problem_id=$1 [L]
+RewriteRule ^([0-9]+)/settag$ lib/edit/misc.php?write=problemtag&id=$1 [L]
 RewriteRule ^([0-9]+)/([0-9]+)$ pages/edit/solution.php?id=$2&problem_id=$1 [L]
 RewriteRule ^([0-9]+)/publish$ lib/edit/publish.php?id=$1 [L,QSA]
 RewriteRule ^submit/$ lib/edit/submit_problem.php [L,QSA]
@@ -36,7 +37,7 @@ RewriteRule ^tags/$ pages/edit/tagpanel.php?standalone [L]
 RewriteCond %{HTTP_ACCEPT} =application/json
 RewriteRule ^tags/([_0-9A-Za-z]+)$ lib/ajax.php?query=tag&name=$1 [L,QSA]
 RewriteRule ^tags/([_0-9A-Za-z]+)$ %{ENV:PBROOT}/tags/ [R,L]
-RewriteRule ^tags$ include/tags.php [L,QSA]
+RewriteRule ^tags$ lib/edit/misc.php?write=tag [L,QSA]
 
 # proposer queries
 RewriteCond %{HTTP_ACCEPT} =application/json
