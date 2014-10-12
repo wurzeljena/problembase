@@ -19,14 +19,14 @@
 		// send message to user with his password
 		mail($_POST["email"], "Anmeldung zur Aufgabendatenbank",
 			"Lieber {$_POST["newname"]},\n\n".
-			"Sie wurden zur Aufgabendatenbank angemeldet. Sie können sich ab sofort\n".
+			"Sie wurden zur Aufgabendatenbank angemeldet. Sie kÃ¶nnen sich ab sofort\n".
 			"mit ihrer E-Mailadresse '{$_POST["email"]}' und folgendem\n".
 			"Passwort einloggen:\n\n".
 			$password.
-			"\n\nBitte ändern sie dieses Passwort sofort nach der ersten Anmeldung.\n\n".
-			"Viel Spaß beim Stöbern durch Aufgaben und Lösungen wünscht Ihnen\n".
+			"\n\nBitte Ã¤ndern sie dieses Passwort sofort nach der ersten Anmeldung.\n\n".
+			"Viel SpaÃŸ beim StÃ¶bern durch Aufgaben und LÃ¶sungen wÃ¼nscht Ihnen\n".
 			"\tIhr Wurzel-Verein",
-			"Content-type: text/plain; charset=iso-8859-1");
+			"Content-type: text/plain; charset=utf-8");
 
 		header("Location: ".WEBROOT."/users/".$pb->lastInsertRowID("users", "id"));
 	}
