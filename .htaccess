@@ -5,7 +5,7 @@ RewriteEngine On
 RewriteRule ^$ index.php [L]
 RewriteRule ^problem$ pages/edit/problem.php [L]
 RewriteRule ^logon$ lib/logon.php [L,QSA]
-RewriteRule ^tasks$ lib/view/tasklist.php [L,QSA]
+RewriteRule ^tasks$ lib/ajax.php?query=tasklist [L,QSA]
 
 # content pages and submitting
 RewriteRule ^([0-9]+)/$ pages/view/task.php?id=$1 [L]
@@ -34,16 +34,16 @@ RewriteRule ^users/([0-9]+)/delete$ lib/edit/edit_user.php?id=$1&delete [L,QSA]
 RewriteRule ^tagpanel$ pages/edit/tagpanel.php [L]
 RewriteRule ^tags/$ pages/edit/tagpanel.php?standalone [L]
 RewriteCond %{HTTP_ACCEPT} =application/json
-RewriteRule ^tags/([_0-9A-Za-z]+)$ include/tags.php?name=$1 [L,QSA]
+RewriteRule ^tags/([_0-9A-Za-z]+)$ lib/ajax.php?query=tag&name=$1 [L,QSA]
 RewriteRule ^tags/([_0-9A-Za-z]+)$ %{ENV:PBROOT}/tags/ [R,L]
 RewriteRule ^tags$ include/tags.php [L,QSA]
 
 # proposer queries
 RewriteCond %{HTTP_ACCEPT} =application/json
-RewriteRule ^proposers/(.*)$ include/proposers.php?prop_query=$1 [L,QSA]
+RewriteRule ^proposers/(.*)$ lib/ajax.php?query=proposer&name=$1 [L,QSA]
 RewriteRule ^proposers/(.+)$ %{ENV:PBROOT}/?filter=&proposer=$1&number=&start=&end=&tags= [R,L]
 
 # issue
 RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))$ pages/view/issue.php?year=$1&month=$2 [L]
-RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/problems$ lib/view/tasklist.php?tex&year=$1&month=$2 [L]
-RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/solutions$ lib/view/solutionlist.php?tex&year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/problems$ lib/ajax.php?query=issue_tasks&year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/solutions$ llib/ajax.php?query=issue_solutions&year=$1&month=$2 [L]

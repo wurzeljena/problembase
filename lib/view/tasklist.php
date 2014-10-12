@@ -271,33 +271,4 @@
 			print "\\end{document}\n";
 		}
 	}
-
-	// answer to page requests from index
-	if (isset($_GET['hash'])) {
-		include '../../lib/master.php';
-		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS);
-		header("Content-Type: text/html; encoding=utf-8");
-
-		$filter = new Filter($_GET['hash']);
-		$tasklist = new TaskList($pb, $filter->array,
-			$_GET['page'] * TASKS_PER_PAGE, TASKS_PER_PAGE);
-		$tasklist->print_html();
-	}
-
-	// answer to TeX requests from issue pages
-	if (isset($_GET['tex'])) {
-		include '../../lib/master.php';
-		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS);
-		header("Content-Type: application/x-tex; encoding=utf-8");
-		header("Content-Disposition: attachment; filename=aufg"
-			.str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)
-			.str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");
-
-		$filter = new Filter();
-		$hash = $filter->set_params($_GET);
-		$filter->construct_query($pb, array("number ASC"));
-		$filter->filter(false);
-		$tasklist = new TaskList($pb, $filter->array);
-		$tasklist->print_tex();
-	}
 ?>

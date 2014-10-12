@@ -191,25 +191,6 @@
 		print "<script>var tagList = new TagList('$form', {$taglist->json_encode()});</script>";
 	}
 
-	// Answer to Ajax queries for tags
-	if (isset($_GET['name'])) {
-		include '../lib/master.php';
-		$pb = load(LOAD_DB);
-
-		$tag = new Tag;
-		Tag::prepare_name_query($pb);
-		$tag->from_name(str_replace("_", " ", $_GET['name']));
-		$res = $tag->json_encode();
-		if ($res) {
-			header("Content-Type: application/json");
-			print $res;
-		}
-		else
-			http_error(404, "Tag nicht gefunden");
-
-		$pb->close();
-	}
-
 	// Write tag from tag form
 	if (isset($_POST['old_name'])) {
 		include '../lib/master.php';

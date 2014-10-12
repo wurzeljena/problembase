@@ -98,19 +98,4 @@
 			print "\\end{document}\n";
 		}
 	}
-
-	// answer to TeX requests from issue pages
-	if (isset($_GET['tex'])) {
-		include '../../lib/master.php';
-		$pb = load(LOAD_DB | INC_PROPOSERS);
-		header("Content-Type: application/x-tex; encoding=utf-8");
-		header("Content-Disposition: attachment; filename=loes"
-			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");
-
-		if ($_GET['month']<7)	{ $year = $_GET['year'] - 1;	$period = 1;	}
-		else					{ $year = $_GET['year'];		$period = 2;	}
-
-		$sollist = new SolutionList($pb, array("year={$_GET['year']}", "month={$_GET['month']}"));
-		$sollist->print_tex($year, $period);
-	}
 ?>
