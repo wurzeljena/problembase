@@ -25,8 +25,8 @@
 		if ($what & INC_HEAD)		include DOCROOT."/include/head.php";
 		if ($what & INC_PROPOSERS)	include DOCROOT."/include/proposers.php";
 		if ($what & INC_TAGS)		include DOCROOT."/include/tags.php";
-		if ($what & INC_TASKLIST)	include DOCROOT."/lib/view/tasklist.php";
-		if ($what & INC_SOLLIST)	include DOCROOT."/lib/view/solutionlist.php";
+		if ($what & INC_TASKLIST)	include DOCROOT."/lib/view/tasks.php";
+		if ($what & INC_SOLLIST)	include DOCROOT."/lib/view/solutions.php";
 
 		if ($what & LOAD_DB) {
 			include DOCROOT."/include/database.php";
