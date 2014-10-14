@@ -1,6 +1,58 @@
 <?php
+	class Proposer {
+		// Named array containing the data
+		private $data;
+
+		// Construct from array
+		function __construct(array $data) {
+			$this->data = $data;
+		}
+
+		// Print Name
+		function get_name() {
+			return htmlspecialchars($this->data["name"]);
+		}
+
+		// Print Name and Location
+		function to_string() {
+			return "{$this->data['name']}, {$this->data['location']}"
+				.(isset($this->data['country']) ? " ({$this->data['country']})" : "");
+		}
+
+		// Return JSON
+		function json_encode() { return json_encode($this->data); }
+
+		// Write to database
+		function write(SQLDatabase $pb) {
+			// prepare data
+			$data = array_map(function($par) use ($pb) {return $pb->escape($par);}, $this->data);
+
+			// Update or insert?
+			if (isset($data["id"])) {
+				$update = "UPDATE proposers name='{$data["name"]}', location='{$data["location"]}'"
+					.($data["country"] != "" ? ", country='{$data["country"]}'": "")." WHERE id={$data["id"]}";
+
+				$pb->exec($update);
+			}
+			else {
+				$insert = "INSERT INTO proposers (name, location, country) VALUES "
+					."('{$data["name"]}', '{$data["location"]}', "
+					.($data["country"] != "" ? "'{$data["country"]}'": "null").")";
+
+				$pb->exec($insert);
+				$this->data["id"] = $pb->lastInsertRowID("proposers", "id");
+			}
+		}
+
+		// execute statement for proposer
+		function exec(SQLStmt $stmt) {
+			$stmt->bind(1, $this->data["id"], SQLTYPE_INTEGER);
+			$stmt->exec();
+		}
+	}
+
 	class ProposerList {
-		// Array consisting of named arrays which represent the proposers.
+		// Array consisting of Proposer objects.
 		private $data = array();
 
 		function fromserialdata(array $nums, array $proposer, array $proposer_id,
@@ -10,7 +62,7 @@
 					"location" => $location[$num], "country" => $country[$num]);
 				if ($proposer_id[$num] != "-1")
 					$cur["id"] = $proposer_id[$num];
-				$this->data[] = $cur;
+				$this->data[] = new Proposer($cur);
 			}
 		}
 
@@ -19,33 +71,30 @@
 				.($name ? " WHERE name='{$pb->escape($name)}'" : ""));
 
 			while($proposer = $proposers->fetchAssoc())
-				$this->data[] = $proposer;
+				$this->data[] = new Proposer($proposer);
 		}
 
 		function from_file(SQLDatabase $pb, $id) {
 			$proposers = $pb->query("SELECT id, name, location, country FROM fileproposers "
 				."JOIN proposers ON fileproposers.proposer_id=proposers.id WHERE file_id=$id");
 			while($proposer = $proposers->fetchAssoc())
-				$this->data[] = $proposer;
+				$this->data[] = new Proposer($proposer);
 		}
 
 		function print_datalist() {
-			print '<datalist id="proposers">';
+			print "<datalist id='proposers'>";
 			foreach ($this->data as $proposer)
-				print '<option value="'.htmlspecialchars($proposer["name"]).'">';
-			print '</datalist>';
+				print "<option value='{$proposer->get_name()}'>";
+			print "</datalist>";
 		}
 
 		function json_encode() {
-			$json = array_map("json_encode", $this->data);
+			$json = array_map(function(Proposer $prop) {return $prop->json_encode();}, $this->data);
 			return "[".implode(", ", $json)."]";
 		}
 
 		function print_list($remarks) {
-			$props = array();
-			foreach ($this->data as $proposer)
-				$props[] = "{$proposer['name']}, {$proposer['location']}"
-					.(isset($proposer['country']) ? " ({$proposer['country']})" : "");
+			$props = array_map(function(Proposer $prop) {return $prop->to_string();}, $this->data);
 			$props = implode(" und ", $props);
 
 			if ($props) {
@@ -60,29 +109,15 @@
 		}
 
 		function write(SQLDatabase $pb) {
-			foreach ($this->data as &$proposer) {
-				if (!isset($proposer["id"])) {
-					$insert = "INSERT INTO proposers (name, location";
-					if ($proposer["country"] != "")
-						$insert .= ", country";
-					$insert .= ") VALUES ('{$pb->escape($proposer['name'])}', '{$pb->escape($proposer['location'])}'";
-					if ($country[$num] != "")
-						$insert .= ", '{$pb->escape($proposer['country'])}'";
-					$insert .= ")";
-
-					$pb->exec($insert);
-					$proposer["id"] = $pb->lastInsertRowID("proposers", "id");
-				}
-			}
+			foreach ($this->data as &$proposer)
+				$proposer->write($pb);
 		}
 
 		function set_for_file(SQLDatabase $pb, $id) {
 			$pb->exec("DELETE FROM fileproposers WHERE file_id=$id");
 			$stmt = $pb->prepare("INSERT INTO fileproposers (file_id, proposer_id) VALUES ($id, $1)");
-			foreach ($this->data as $proposer) {
-				$stmt->bind(1, $proposer["id"], SQLTYPE_INTEGER);
-				$stmt->exec();
-			}
+			foreach ($this->data as $proposer)
+				$proposer->exec($stmt);
 		}
 	}
 
