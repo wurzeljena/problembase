@@ -1,3 +1,9 @@
+# Access control
+<FilesMatch "\.(ht|git).*">
+	Order deny,allow
+	Deny from all
+</FilesMatch>
+
 # provide natural, clean URLs
 RewriteEngine On
 
