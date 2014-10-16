@@ -218,10 +218,15 @@ function PropForm(form, list) {
 
 // tag creation
 function writeTag(taginfo, taglist) {
-	var tag = document.createElement("span");
+	// If it's not part of a tag list or a tag selector, it's a link
+	var link = (taglist === undefined) && !taginfo.hasOwnProperty("active");
+
+	var tag = document.createElement(link ? "a" : "span");
 	tag.id = tag.textContent = taginfo.name;
 	tag.title = taginfo.description;
 	tag.className = "tag";
+	if (link)
+		tag.href = "/tags/" + taginfo.name.replace(/ /g, "_");
 
 	// compute other color
 	var clr = taginfo.color.split("");

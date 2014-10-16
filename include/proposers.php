@@ -49,11 +49,21 @@
 			$stmt->bind(1, $this->data["id"], SQLTYPE_INTEGER);
 			$stmt->exec();
 		}
+
+		// get count
+		function count() { return $this->data["count_problems"]; }
 	}
 
 	class ProposerList {
 		// Array consisting of Proposer objects.
 		private $data = array();
+
+		// Construct from SQL query
+		function __construct(SQLResult $res = null) {
+			if ($res)
+				while($proposer = $res->fetchAssoc())
+					$this->data[] = new Proposer($proposer);
+		}
 
 		function fromserialdata(array $nums, array $proposer, array $proposer_id,
 				array $location, array $country) {
@@ -70,15 +80,14 @@
 			$proposers = $pb->query("SELECT ".implode(", ", $fields)." FROM proposers"
 				.($name ? " WHERE name='{$pb->escape($name)}'" : ""));
 
-			while($proposer = $proposers->fetchAssoc())
-				$this->data[] = new Proposer($proposer);
+			$this->__construct($proposers);
 		}
 
 		function from_file(SQLDatabase $pb, $id) {
 			$proposers = $pb->query("SELECT id, name, location, country FROM fileproposers "
 				."JOIN proposers ON fileproposers.proposer_id=proposers.id WHERE file_id=$id");
-			while($proposer = $proposers->fetchAssoc())
-				$this->data[] = new Proposer($proposer);
+
+			$this->__construct($proposers);
 		}
 
 		function print_datalist() {
@@ -106,6 +115,21 @@
 			}
 			else    // print just the remarks, if there are no proposers
 				print $remarks;
+		}
+
+		// Print proposer statistic
+		function print_statistic() {
+			$props = array_map(
+				function(Proposer $prop) {
+					$first = "<td>".$prop->to_string()."</td>";
+					$second = "<td>".$prop->count()."</td>";
+					return $first.$second;
+				}, $this->data);
+
+			print "<table class='stat'>\n<thead><tr><th>Autor</th><th>Aufgaben</th></tr></thead>\n<tbody>\n<tr>";
+			$props = implode("</tr><tr>", $props);
+			print $props;
+			print "</tr></tbody></table>";
 		}
 
 		function write(SQLDatabase $pb) {

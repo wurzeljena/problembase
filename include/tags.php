@@ -12,6 +12,11 @@
 				$this->data['color'] = "#".substr("00000".dechex($this->data['color']),-6);
 		}
 
+		// Is it valid?
+		function is_valid() {
+			return (bool)$this->data;
+		}
+
 		// Overwrite certain parameters
 		function set(array $new_data) {
 			$this->data = array_merge($this->data, $new_data);
@@ -103,6 +108,18 @@
 		function filter_condition() {
 			return "EXISTS (SELECT tag_id FROM tag_list WHERE problems.file_id=tag_list.problem_id "
 				."and tag_list.tag_id={$this->data["id"]})";
+		}
+
+		// Get proposer statistic
+		function proposer_statistic(SQLDatabase $pb, $limit = 5) {
+			$res = $pb->query("SELECT name, location, country, count(fileproposers.file_id) AS count_problems "
+				."FROM proposers JOIN fileproposers ON proposers.id=fileproposers.proposer_id "
+				."JOIN problems ON fileproposers.file_id=problems.file_id WHERE EXISTS "
+				."(SELECT tag_id FROM tag_list WHERE tag_list.problem_id=problems.file_id AND tag_id={$this->data["id"]}) "
+				."GROUP BY name ORDER BY count_problems DESC LIMIT 5");
+
+			// make ProposerList
+			return new ProposerList($res);
 		}
 	}
 

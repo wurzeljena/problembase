@@ -175,10 +175,10 @@ h2
 /* small subheaders in overviews */
 h3
 {
-	font-family	: Garamond, Serif;
+	font-family	: sans-serif;
 	font-size	: x-large;
-	font-weight	: normal;
-	margin	: 0em 0.5em 0em 1em;
+	font-weight	: bold;
+	margin		: 0em 0.5em 0em 1em;
 }
 
 /* pseudo-headers for small boxes*/
@@ -246,7 +246,7 @@ div.taglist, span#taglist
 	margin	: 5px;
 	line-height	: 1.5em;
 }
-span.tag
+*.tag
 {
 	padding			: 2px 5px;
 	margin			: 2px;
@@ -254,6 +254,7 @@ span.tag
 	font-family		: Sans-Serif;
 	font-weight		: bold;
 	font-size		: small;
+	text-decoration	: none;
 	white-space		: nowrap;
 }
 i.close
@@ -267,6 +268,11 @@ div.task div.tags
 {
 	float	: right;
 	font-style	: normal;
+}
+h3 > *.tag
+{
+	font-size	: inherit;
+	border-radius	: 5px;
 }
 
 /* MISCELLANEOUS */
@@ -432,11 +438,7 @@ div.tag_selector i.icon-tags
 }
 
 /* comments */
-h3#comments
-{
-	color	: #A0A000;
-	text-shadow	: 1px 1px 0px #808000;
-}
+h3#comments {color: #A0A000;}
 div.comment
 {
 	border	: 1px solid Gray;
@@ -492,16 +494,8 @@ div.nonpublic
 /* ISSUE PAGE */
 h2.issue {color : #C00060; text-shadow : #800040 2px 2px 3px;}
 
-h3#problems
-{
-	color	: #D08040;
-	text-shadow	: 1px 1px 0px #B06050;
-}
-h3#solutions
-{
-	color	: #4080C0;
-	text-shadow	: 1px 1px 0px #5060B0;
-}
+h3#problems {color: #D08040;}
+h3#solutions {color: #4080C0;}
 
 /* e in TeX */
 div.tex
@@ -540,6 +534,27 @@ form#edit, form#pw, form#newuser
 	margin-top	: 5px;
 }
 
+/* STATISTIC TABLES */
+table.stat
+{
+	margin	: 1em 5px;
+	background	: #E06060;
+	border-collapse	: collapse;
+	border-radius	: 5px;
+}
+@media (min-width:600px)
+{ table.stat {width: 80%;} }
+@media (max-width:599px)
+{ h3 span.extra {display: none;} }
+table.stat tbody {font-size:small;}
+table.stat td + td {text-align:right;}
+table.stat tbody tr:hover {
+	background	: #F07070;
+}
+table.stat td, table.stat th
+{
+	padding	: 5px 10px;
+}
 /**************************
 		CONTENT FORMS
 **************************/
