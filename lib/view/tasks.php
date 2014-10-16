@@ -164,9 +164,11 @@
 
 			print "<div class='info'>";
 			// find out if published
-			if (isset($this->data['year']))
-				print "Heft {$this->data['month']}/{$this->data['year']}, "
+			if (isset($this->data['year'])) {
+				print "<a href='".WEBROOT."/issues/{$this->data['year']}/{$this->data['month']}'>"
+					."Heft {$this->data['month']}/{$this->data['year']}</a>, "
 					."Aufgabe \${$this->data['letter']}{$this->data['number']}$";
+			}
 			else
 				print "Nicht publiziert";
 
