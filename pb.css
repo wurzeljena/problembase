@@ -6,7 +6,7 @@ body
 	background-color	: #FFFFC0;
 	font-family	: Georgia;
 	margin	: 0;
-	padding-top	: 45px;
+	padding-top	: 40px;
 }
 body.iframe { padding-top: 0; }
 
@@ -24,7 +24,8 @@ div.center {margin: 0 auto;}
 
 div.content
 {
-	position:	relative;
+	position	: relative;
+	margin-top	: 20px;
 }
 
 /* side panel right to div.content */
@@ -107,7 +108,7 @@ nav ul
 {
 	list-style	: none outside;
 	padding		: 0px;
-	margin		: 5px;
+	margin		: 0px;
 	margin-bottom	: 1em;
 	border-radius	: 5px;
 	border		: 1px solid #C08040;
@@ -561,7 +562,7 @@ table.stat td, table.stat th
 form
 {
 	padding			: 10px;
-	margin			: 20px 5px;
+	margin			: 1em 5px;
 }
 input, textarea, select {margin : 5px;}
 input.text
@@ -659,7 +660,7 @@ span.eval, label.eval
 /* PICTURE FORMS */
 div.picform
 {
-	margin	: 15px 5px;
+	margin	: 1em 5px;
 	padding	: 5px;
 	background	: #80C0C0;
 	box-shadow	: 3px 3px 5px #60A0A0;
