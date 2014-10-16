@@ -121,11 +121,21 @@
 			// make ProposerList
 			return new ProposerList($res);
 		}
+
+		// get count
+		function problem_count() { return $this->data["count_problems"]; }
 	}
 
 	class TagList {
 		// Array consisting of Tags
 		private $data = array();
+
+		// Construct from query
+		function __construct(SQLResult $res = null) {
+			if ($res)
+				while($tag = $res->fetchAssoc())
+					$this->data[] = new Tag($tag);
+		}
 
 		// Construct from a comma-separated list of names
 		function from_list(SQLDatabase $pb, $list) {
@@ -140,15 +150,13 @@
 
 		function get(SQLDatabase $pb, array $fields) {
 			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags".Tag::tag_restr(ACCESS_READ, true));
-			while($tag = $tags->fetchAssoc())
-				$this->data[] = new Tag($tag);
+			$this->__construct($tags);
 		}
 
 		function from_file(SQLDatabase $pb, $id) {
 			$tags = $pb->query("SELECT name, description, color, hidden FROM tag_list JOIN tags"
 				." ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
-			while($tag = $tags->fetchAssoc())
-				$this->data[] = new Tag($tag);
+			$this->__construct($tags);
 		}
 
 		function json_encode() {
@@ -199,6 +207,28 @@
 			foreach ($this->data as $tag)
 				$cond[] = $tag->filter_condition();
 			return implode(" AND ", $cond);
+		}
+
+		// Print tag statistic
+		function print_statistic() {
+			if (!count($this->data))
+				return;
+
+			print "<div class='stat'>";
+			$rows = array_map(
+				function(Tag $tag) {
+					return "<span class='stat_tag'></span>&times;{$tag->problem_count()}";
+				}, $this->data);
+
+			print implode(" ", $rows);
+
+			// print script
+			$count = -1;
+			$js = array_map(function(Tag $tag) use (&$count)
+				{ ++$count; return $tag->js("stat_tags[$count]"); }, $this->data);
+			print "</div><script> var stat_tags = document.getElementsByClassName('stat_tag');";
+			print implode("", $js);
+			print "</script>";
 		}
 	}
 

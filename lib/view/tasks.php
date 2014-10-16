@@ -16,8 +16,8 @@
 
 		// construct from given parameter list (could be a GET request)
 		function set_params($par) {
-			$names = array('filter', 'proposer', 'number', 'month', 'year',
-				'with_solution', 'not_published', 'start', 'end', 'tags');
+			$names = array('filter', 'proposer', 'name', 'location', 'number', 'month',
+				'year', 'with_solution', 'not_published', 'start', 'end', 'tags');
 			$filter = array_intersect_key($par, array_fill_keys($names, 0));
 			$this->par = array_filter($filter);
 			$this->hash = md5(serialize($this->par));
@@ -45,6 +45,12 @@
 			if (isset($this->par['proposer']))
 				$filter[] = "EXISTS (SELECT proposer_id FROM fileproposers WHERE file_id=problems.file_id AND proposer_id IN "
 					."(SELECT id AS proposer_id FROM proposers WHERE name LIKE '%{$pb->escape($this->par['proposer'])}%'))";
+
+			if (isset($this->par['name'])) {
+				$extra = isset($this->par['location']) ? " AND location='{$pb->escape($this->par['location'])}'" : "";
+				$filter[] = "EXISTS (SELECT proposer_id FROM fileproposers WHERE file_id=problems.file_id AND proposer_id IN "
+					."(SELECT id AS proposer_id FROM proposers WHERE name='{$pb->escape($this->par['name'])}'$extra))";
+			}
 
 			if (isset($this->par['number'])) {
 				list($month, $year) = explode("/", $this->par['number']);

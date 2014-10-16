@@ -8,6 +8,9 @@
 			$this->data = $data;
 		}
 
+		// Get ID
+		function get_id() { return $this->data["id"]; }
+
 		// Print Name
 		function get_name() {
 			return htmlspecialchars($this->data["name"]);
@@ -15,7 +18,10 @@
 
 		// Print Name and Location
 		function to_string() {
-			return "{$this->data['name']}, {$this->data['location']}"
+			$urlname = str_replace(" ", "_", $this->data['name']);
+			$urllocation = str_replace(" ", "_", $this->data['location']);
+			return "<a href='".WEBROOT."/proposers/$urlname'>{$this->data['name']}</a>, "
+				."<a href='".WEBROOT."/proposers/$urlname/$urllocation'>{$this->data['location']}</a>"
 				.(isset($this->data['country']) ? " ({$this->data['country']})" : "");
 		}
 
@@ -51,7 +57,7 @@
 		}
 
 		// get count
-		function count() { return $this->data["count_problems"]; }
+		function problem_count() { return $this->data["count_problems"]; }
 	}
 
 	class ProposerList {
@@ -76,9 +82,10 @@
 			}
 		}
 
-		function get(SQLDatabase $pb, array $fields, $name=null) {
+		function get(SQLDatabase $pb, array $fields, $name=null, $location=null) {
 			$proposers = $pb->query("SELECT ".implode(", ", $fields)." FROM proposers"
-				.($name ? " WHERE name='{$pb->escape($name)}'" : ""));
+				.($name ? " WHERE name='{$pb->escape($name)}'" : "")
+				.($location ? " AND location='{$pb->escape($location)}'" : ""));
 
 			$this->__construct($proposers);
 		}
@@ -122,13 +129,12 @@
 			$props = array_map(
 				function(Proposer $prop) {
 					$first = "<td>".$prop->to_string()."</td>";
-					$second = "<td>".$prop->count()."</td>";
+					$second = "<td>".$prop->problem_count()."</td>";
 					return $first.$second;
 				}, $this->data);
 
 			print "<table class='stat'>\n<thead><tr><th>Autor</th><th>Aufgaben</th></tr></thead>\n<tbody>\n<tr>";
-			$props = implode("</tr><tr>", $props);
-			print $props;
+			print implode("</tr><tr>", $props);
 			print "</tr></tbody></table>";
 		}
 
@@ -143,6 +149,25 @@
 			foreach ($this->data as $proposer)
 				$proposer->exec($stmt);
 		}
+
+		// Make tag statistic
+		function tag_statistic(SQLDatabase $pb, $limit = 5) {
+			$ids = array_map(function(Proposer $prop) {return $prop->get_id();}, $this->data);
+			$res = $pb->query("SELECT tags.*, count(problems.file_id) AS count_problems "
+				."FROM tag_list LEFT JOIN tags ON tags.id=tag_list.tag_id "
+				."LEFT JOIN problems ON tag_list.problem_id=problems.file_id "
+				."WHERE EXISTS (SELECT file_id FROM fileproposers "
+				."WHERE fileproposers.file_id=problems.file_id AND "
+				."fileproposers.proposer_id IN (".implode(",", $ids)."))"
+				.Tag::tag_restr(ACCESS_READ)
+				." GROUP BY name ORDER BY count_problems DESC LIMIT $limit");
+
+			// create TagList
+			return new TagList($res);
+		}
+
+		// How many are we?
+		function count() { return count($this->data); }
 	}
 
 	// Print a datalist containing all names of proposers from the past

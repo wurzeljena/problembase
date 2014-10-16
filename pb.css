@@ -299,6 +299,13 @@ img.star
 /* INDEX PAGE */
 /* task list */
 div#tasklist { margin-bottom: 3em; }
+div.info a, table.stat a
+{
+	color	: inherit;
+	text-decoration	: none;
+}
+div.info a:hover, table.stat a:hover
+{text-decoration: underline;}
 
 /* calendar to browse through issues */
 div#calendar
@@ -486,7 +493,7 @@ div.solution
 	position	: relative;
 }
 div.solution div.text:before {content: "L\00f6sung: ";}
-div.nonpublic 
+div.nonpublic
 {
 	border-style: dashed;
 	opacity	: 0.7;
@@ -535,14 +542,15 @@ form#edit, form#pw, form#newuser
 	margin-top	: 5px;
 }
 
-/* STATISTIC TABLES */
-table.stat
+/* STATISTIC DIVS & TABLES */
+*.stat
 {
 	margin	: 1em 5px;
 	background	: #E06060;
-	border-collapse	: collapse;
 	border-radius	: 5px;
 }
+div.stat {padding: 5px; line-height:1.5em;}
+table.stat {border-collapse: collapse;}
 @media (min-width:600px)
 { table.stat {width: 80%;} }
 @media (max-width:599px)
@@ -556,6 +564,7 @@ table.stat td, table.stat th
 {
 	padding	: 5px 10px;
 }
+
 /**************************
 		CONTENT FORMS
 **************************/

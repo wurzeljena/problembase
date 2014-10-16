@@ -226,7 +226,7 @@ function writeTag(taginfo, taglist) {
 	tag.title = taginfo.description;
 	tag.className = "tag";
 	if (link)
-		tag.href = "/tags/" + taginfo.name.replace(/ /g, "_");
+		tag.href = rootdir + "/tags/" + taginfo.name.replace(/ /g, "_");
 
 	// compute other color
 	var clr = taginfo.color.split("");

@@ -41,8 +41,9 @@ RewriteRule ^tags$ lib/edit/misc.php?write=tag [L,QSA]
 
 # proposer queries
 RewriteCond %{HTTP_ACCEPT} =application/json
-RewriteRule ^proposers/(.*)$ lib/ajax.php?query=proposer&name=$1 [L,QSA]
-RewriteRule ^proposers/(.+)$ %{ENV:PBROOT}/?filter=&proposer=$1&number=&start=&end=&tags= [R,L]
+RewriteRule ^proposers/([^/]+)$ lib/ajax.php?query=proposer&name=$1 [L,QSA]
+RewriteRule ^proposers/([^/]+)$ pages/view/proposer.php?name=$1 [L,QSA]
+RewriteRule ^proposers/([^/]+)/([^/]+)$ pages/view/proposer.php?name=$1&location=$2 [L,QSA]
 
 # issue
 RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))$ pages/view/issue.php?year=$1&month=$2 [L]
