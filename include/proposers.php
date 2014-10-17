@@ -159,8 +159,8 @@
 				."WHERE EXISTS (SELECT file_id FROM fileproposers "
 				."WHERE fileproposers.file_id=problems.file_id AND "
 				."fileproposers.proposer_id IN (".implode(",", $ids)."))"
-				.Tag::tag_restr(ACCESS_READ)
-				." GROUP BY name ORDER BY count_problems DESC LIMIT $limit");
+				.Tag::tag_restr(ACCESS_READ)." GROUP BY id, name, description, "
+				."color, hidden ORDER BY count_problems DESC LIMIT $limit");
 
 			// create TagList
 			return new TagList($res);
