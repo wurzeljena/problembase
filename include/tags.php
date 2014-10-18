@@ -23,7 +23,8 @@
 		}
 
 		static function prepare_name_query(SQLDatabase $pb) {
-			self::$name_stmt = $pb->prepare("SELECT * FROM tags WHERE name=$1".self::tag_restr(ACCESS_READ));
+			if (!self::$name_stmt)
+				self::$name_stmt = $pb->prepare("SELECT * FROM tags WHERE name=$1".self::tag_restr(ACCESS_READ));
 		}
 
 		function from_name($name) {
