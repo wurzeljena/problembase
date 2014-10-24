@@ -46,7 +46,7 @@
 
 		// write tags
 		$taglist = new TagList;
-		$taglist->from_list($pb, $tags);
+		$taglist->from_list($pb, str_replace("_", " ", $tags));
 		$taglist->set_for_file($pb, $id);
 
 		// redirect to task page
