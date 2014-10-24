@@ -195,7 +195,7 @@
 			print "<script> var tagSelector = document.getElementsByClassName('tag_selector')[0];";
 			$all_tags = new TagList;
 			$all_tags->get($pb, array("*", "(name IN ({$this->tags->print_names()})) AS active",
-				"1 AS enabled", "{$this->data["file_id"]} as problem"));
+				"1 AS enabled", "{$this->data["file_id"]} as problem"), ACCESS_MODIFY);
 			print $all_tags->js("tagSelector", true);
 			print "</script>";
 		}

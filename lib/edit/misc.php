@@ -4,12 +4,12 @@
 	// What shall we write?
 	switch ($_GET["write"]) {
 	case "tag":                    // Write tag from tag form
-		$pb = load(LOAD_DB | INC_TAGS);
+		$pb = load(LOAD_DB | INC_HEAD | INC_TAGS);
 
 		$tag = new Tag;
 		Tag::prepare_name_query($pb);
 		if ($_POST["old_name"] != "")
-			$tag->from_name(str_replace("_", " ", $_POST["old_name"]));
+			$tag->from_name(str_replace("_", " ", $_POST["old_name"]), ACCESS_MODIFY);
 
 		if (isset($_POST['delete']))
 			$success = $tag->delete($pb);
@@ -18,10 +18,18 @@
 			$names = array("name", "description", "color");
 			$par = array_intersect_key($_POST, array_fill_keys($names, 0));
 			$par["hidden"] = isset($_POST["hidden"]) ? 1 : 0;
-			$tag->set($par);
+			if (isset($_POST["private"]))
+				$par["private_user"] =  $_SESSION["user_id"];
+			else
+				$par["private_user"] =  null;
 
-			$success = $tag->write($pb);
+			$success = true;
+			if ($tag->set($par))
+				$tag->write($pb);
+			else
+				$success = false;
 		}
+
 		$pb->close();
 
 		if ($success)
