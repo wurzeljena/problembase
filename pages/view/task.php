@@ -1,6 +1,6 @@
 <?php
 	include '../../lib/master.php';
-	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_TASKLIST | INC_SOLLIST);
+	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_TASKLIST | INC_SOLLIST | INC_EVALLIST);
 
 	$id = (int)$_GET['id'];
 	$problem = new Task($pb, $id);
@@ -39,7 +39,7 @@
 			<?php print $tag_code; ?>
 		})();</script>
 
-		<?php
+	<?php
 		$sollist = new SolutionList($pb, array("problem_id=$id"));
 		$sollist->print_html($_SESSION['editor']);
 
@@ -53,33 +53,10 @@
 		if (!$_SESSION['editor'])
 			print "<h3 id='comments'><i class='icon-comment-alt'></i> Kommentare</h3>";
 
-		$cond = $_SESSION['editor'] ? "" : " AND editorial=0";
-		$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$id".$cond);
-		while($comment=$comments->fetchAssoc()) {
-			print "<div class='comment".($comment['user_id']==$_SESSION['user_id'] ? " own" : "")
-				.($comment['editorial'] ? " editorial" : "")."'>";
-			if ($comment['user_id']==$_SESSION['user_id'])
-				print "<a class='button inner' href='".WEBROOT."/problem/$id/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
-			print "<div class='author'>{$comment['name']}";
-			if ($_SESSION['user_id'] != -1)
-				print " <a href='mailto:{$comment['email']}'><i class='icon-envelope-alt'></i></a>";
-			print '</div><div class="text">'.htmlspecialchars($comment['comment']).'</div>';
-
-			print '<div class="eval">';
-			$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
-			$critcols = array('beauty', 'difficulty', 'knowledge_required');
-			for ($crit=0; $crit<3; ++$crit) {
-				print '<span class="evalspan">';
-				print '<span class="eval">'.$critnames[$crit].'</span> ';
-				for ($star=1; $star<=5; ++$star)
-					print ($star<=$comment[$critcols[$crit]]) ?
-						"<img class='star' src='".WEBROOT."/img/mandstar.png' alt='*'> " :
-						"<img class='star' src='".WEBROOT."/img/mand.png' alt='o'> ";
-				print '</span> ';
-			}
-			print '</div></div>';
-		};
-		?>
+		$evals = new EvalList;
+		$evals->get($pb, $id);
+		$evals->print_html();
+	?>
 
 		<?php $pb->close(); ?>
 	</div>

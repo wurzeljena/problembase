@@ -13,6 +13,7 @@
 	define("INC_TAGS",		8);
 	define("INC_TASKLIST",	16);
 	define("INC_SOLLIST",	32);
+	define("INC_EVALLIST",	64);
 
 	// define root directories
 	define("DOCROOT", $_SERVER['DOCUMENT_ROOT'].(isset($_ENV['PBROOT']) ? $_ENV['PBROOT'] : ""));
@@ -27,6 +28,7 @@
 		if ($what & INC_TAGS)		include DOCROOT."/include/tags.php";
 		if ($what & INC_TASKLIST)	include DOCROOT."/lib/view/tasks.php";
 		if ($what & INC_SOLLIST)	include DOCROOT."/lib/view/solutions.php";
+		if ($what & INC_EVALLIST)	include DOCROOT."/lib/view/evaluations.php";
 
 		if ($what & LOAD_DB) {
 			include DOCROOT."/include/database.php";

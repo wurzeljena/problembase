@@ -287,10 +287,10 @@ img.star
 {
 	margin	: 3px -3px -6px -3px;
 	padding	: 0;
-	cursor	: pointer;
 	transform	: rotate(60deg);
 	-webkit-transform	: rotate(60deg);
 }
+form img.star {cursor: pointer;}
 
 /**************************
 	CONTENT FORMATTING
