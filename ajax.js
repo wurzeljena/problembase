@@ -148,7 +148,7 @@ function setTag(problem, tag, set) {
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () {}
 
-	xmlhttp.open("POST", rootdir + "/" + problem + "/settag", true);
+	xmlhttp.open("POST", rootdir + "/problem/" + problem + "/settag", true);
 	xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xmlhttp.send("tag=" + tag + "&set=" + set);
 }

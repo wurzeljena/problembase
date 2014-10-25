@@ -38,9 +38,9 @@
 		function print_html($edit, $linkback) {
 			print '<div class="solution '.($this->data['public'] ? "" : "nonpublic").'">';
 			if ($edit)
-				print "<a class='button inner' href='".WEBROOT."/{$this->data['problem_id']}/{$this->data['file_id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>\n";
+				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/solution/{$this->data['file_id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>\n";
 			if ($linkback)
-				print "<a class='button inner' href='".WEBROOT."/{$this->data['problem_id']}/'><i class='icon-hand-right'></i> <span>Zur Aufgabe</span></a>\n";
+				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}'><i class='icon-hand-right'></i> <span>Zur Aufgabe</span></a>\n";
 			print "<div class='info top'>";
 			$this->proposers->print_list($this->data["remarks"]);
 			print "</div>\n";

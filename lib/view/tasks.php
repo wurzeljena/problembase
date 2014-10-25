@@ -156,10 +156,10 @@
 			print "</div>\n";
 
 			if ($num != -1)
-				print "<a class='button inner bottom' href='".WEBROOT."/{$this->data['file_id']}/'>"
+				print "<a class='button inner bottom' href='".WEBROOT."/problem/{$this->data['file_id']}'>"
 					."<i class='icon-hand-right'></i> <span>Lösungen/Kommentare</span></a>\n";
 			if ($num == -1 && $_SESSION['editor'])
-				print "<a class='button inner bottom' href='".WEBROOT."/{$this->data['file_id']}/edit'>"
+				print "<a class='button inner bottom' href='".WEBROOT."/problem/{$this->data['file_id']}/edit'>"
 					."<i class='icon-pencil'></i> <span>Bearbeiten</span></a>\n";
 
 			print "<div class='info'>";
@@ -208,7 +208,7 @@
 			else
 				$volume = "";
 ?>			<a class='button danger' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>
-			<form id="publish" style="display:none;" action="<?=WEBROOT?>/<?=$this->data["file_id"]?>/publish" method="POST">
+			<form id="publish" style="display:none;" action="<?=WEBROOT?>/problem/<?=$this->data["file_id"]?>/publish" method="POST">
 				Im <label for="volume">Heft</label>
 				<input type="text" class="text" id="volume" name="volume" placeholder="MM/JJ"
 					pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}" style="width:40px;" value="<?=$volume?>">

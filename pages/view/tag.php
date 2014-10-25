@@ -32,7 +32,7 @@
 			drawMenu("sidemenu");
 			if ($_SESSION["editor"]):
 		?>
-		<iframe src="<?=WEBROOT?>/tagpanel" style="border:none;overflow:hidden" width="270" height="270"></iframe>
+		<iframe src="<?=WEBROOT?>/tags?iframe" style="border:none;overflow:hidden" width="270" height="270"></iframe>
 		<?php endif; ?>
 	</div>
 

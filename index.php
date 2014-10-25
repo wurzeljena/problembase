@@ -25,7 +25,7 @@
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
 
-	<form class="filter" id="filter" title="Filter" action="<?=WEBROOT?>/" method="GET">
+	<form class="filter" id="filter" title="Filter" action="<?=WEBROOT?>/browse" method="GET">
 		<div><input type="text" name="filter" placeholder="Suchbegriff"
 			value="<?php if (isset($_GET['filter'])) print $_GET['filter']; ?>"/>
 		<input type="submit" value="Suchen"></div>

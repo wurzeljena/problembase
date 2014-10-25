@@ -70,5 +70,5 @@
 	$pb->close();
 
 	// redirect to task page
-	header("Location: ".WEBROOT."/$problem_id/");
+	header("Location: ".WEBROOT."/problem/$problem_id");
 ?>

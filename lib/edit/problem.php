@@ -18,7 +18,7 @@
 	$pb->exec("BEGIN");
 	if (isset($_POST["delete"])) {
 		$pb->exec("DELETE FROM problems WHERE file_id=$id");
-		header("Location: ".WEBROOT."/");
+		header("Location: ".WEBROOT."/browse");
 	}
 	else {
 		// write proposers
@@ -50,7 +50,7 @@
 		$taglist->set_for_file($pb, $id);
 
 		// redirect to task page
-		header("Location: ".WEBROOT."/$id/");
+		header("Location: ".WEBROOT."/problem/$id");
 	}
 
 	$pb->exec("END");

@@ -45,9 +45,9 @@
 
 		// show buttons between solutions and comments
 		if ($_SESSION['editor'])
-			print "<a class='button' href='".WEBROOT."/$id/addsolution'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
+			print "<a class='button' href='".WEBROOT."/problem/$id/solution'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
 		if ($_SESSION['user_id'] != -1 && !$pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", false))
-			print "<a class='button' style='float:right;' href='".WEBROOT."/$id/evaluate'><i class='icon-comments'></i> Kommentar schreiben</a>";
+			print "<a class='button' style='float:right;' href='".WEBROOT."/problem/$id/evaluate'><i class='icon-comments'></i> Kommentar schreiben</a>";
 
 		// if not logged in, separate comments from solutions with a lightweight header
 		if (!$_SESSION['editor'])
@@ -59,7 +59,7 @@
 			print "<div class='comment".($comment['user_id']==$_SESSION['user_id'] ? " own" : "")
 				.($comment['editorial'] ? " editorial" : "")."'>";
 			if ($comment['user_id']==$_SESSION['user_id'])
-				print "<a class='button inner' href='".WEBROOT."/$id/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+				print "<a class='button inner' href='".WEBROOT."/problem/$id/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
 			print "<div class='author'>{$comment['name']}";
 			if ($_SESSION['user_id'] != -1)
 				print " <a href='mailto:{$comment['email']}'><i class='icon-envelope-alt'></i></a>";

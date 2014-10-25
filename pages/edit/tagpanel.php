@@ -11,7 +11,7 @@
 
 	printhead("Tag-Editor");
 
-	if (isset($_GET['standalone'])) {
+	if (!isset($_GET['iframe'])) {
 		print "<body>";
 		printheader();
 		print "<div class='center'><div class='content'>";
@@ -19,7 +19,7 @@
 	else
 		print "<body class='iframe'>"
 ?>
-	<form id="tageditor" action="<?=WEBROOT?>/tags" method="POST">
+	<form id="tageditor" action="<?=WEBROOT?>/tag" method="POST">
 		<div>
 			<?php $tags->print_select("loadTag();", "Neuer Tag", "old_name"); ?>
 			<input type="checkbox" name="delete"/>
@@ -35,6 +35,6 @@
 			<span class="info" style="font-variant: small-caps; margin: 5px;">(Vorschau)</span><span id="result_tag"></span>
 		</div>
 	</form>
-	<?php if (isset($_GET['standalone'])) print "</div></div>"; ?>
+	<?php if (!isset($_GET['iframe'])) print "</div></div>"; ?>
 </body>
 </html>

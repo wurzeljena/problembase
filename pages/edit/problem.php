@@ -25,7 +25,7 @@
 	<div class="center">
 	<div id="panel">
 	<?php drawMenu("sidemenu"); ?>
-		<iframe src="<?=WEBROOT?>/tagpanel" style="border:none;overflow:hidden" width="270" height="270"></iframe>
+		<iframe src="<?=WEBROOT?>/tags?iframe" style="border:none;overflow:hidden" width="270" height="270"></iframe>
 	</div>
 
 	<div class="content">
