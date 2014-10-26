@@ -33,9 +33,9 @@ function drawMenu($id) { ?>
 		<a href="<?=WEBROOT?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
 </li><li>
 		<a href="<?=WEBROOT?>/users/"><i class="icon-group"></i> <span>Benutzerliste</span></a>
-</li><?php	if ($_SESSION['editor']): ?><li>
+</li><li>
 		<a href="<?=WEBROOT?>/tags"><i class="icon-tags"></i> <span>Tag-Editor</span></a>
-</li><?php	endif;
+</li><?php
 		endif;
 		if ($id == "headermenu"): ?><li>
 		<a href="javascript:Login.Show();"><i class="icon-signin"></i></a>

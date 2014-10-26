@@ -142,11 +142,17 @@ CREATE INDEX comment_problem ON comments(problem_id);
 -- -----------------------------------------------------
 CREATE TABLE tags (
   id SERIAL NOT NULL,
-  name VARCHAR UNIQUE NOT NULL,
+  name VARCHAR NOT NULL,
   description VARCHAR NULL,
   color INT NOT NULL DEFAULT 0,
   hidden INTEGER NOT NULL DEFAULT 0,
-  PRIMARY KEY (id) );
+  private_user INTEGER DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (private_user)
+    REFERENCES users(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+CREATE UNIQUE INDEX user_tags ON tags(name, private_user);
 
 -- -----------------------------------------------------
 -- ... and connection to problems

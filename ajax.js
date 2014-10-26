@@ -99,7 +99,9 @@ function TagList(form, init) {
 
 	// add initial tags
 	for (var i = 0; i < init.length; i++) {
-		this.list.push(init[i].name.replace(/ /g, "_"));
+		var url_name = (init[i].private ? "private/" : "") +
+			init[i].name.replace(/ /g, "_");
+		this.list.push(url_name);
 		this.taglist.appendChild(writeTag(init[i], this));
 		this.taglist.appendChild(document.createTextNode(" "));
 	}
@@ -122,6 +124,7 @@ function loadTag() {
 				document.forms['tageditor'].elements['description'].value = resp.description;
 				document.forms['tageditor'].elements['color'].value = resp.color;
 				document.forms['tageditor'].elements['hidden'].checked = (resp.hidden == 1);
+				document.forms['tageditor'].elements['private'].checked = (resp.private_user !== null);
 				document.getElementById('delete_tag').disabled = false;
 				document.getElementById('submit_tag').value = "\u00c4ndern";
 				tagPreview();
@@ -137,6 +140,7 @@ function loadTag() {
 		document.forms['tageditor'].elements['description'].value = "";
 		document.forms['tageditor'].elements['color'].value = "";
 		document.forms['tageditor'].elements['hidden'].checked = false;
+		document.forms['tageditor'].elements['private'].checked = true;
 		document.getElementById('delete_tag').disabled = true;
 		document.getElementById('submit_tag').value = "Hinzuf\u00fcgen";
 		document.getElementById('result_tag').innerHTML = "";

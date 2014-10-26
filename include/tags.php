@@ -3,13 +3,18 @@
 		// Named array containing the plain data
 		// The color is stored in string format
 		private $data = array();
-		private static $name_stmt = null;
+		private $writeable = false;
 
 		// Construct from database data set
 		function __construct(array $data = array()) {
-			$this->data = $data;
-			if (isset($this->data['color']))
-				$this->data['color'] = "#".substr("00000".dechex($this->data['color']),-6);
+			if (count($data)) {
+				$this->data = $data;
+				if (isset($this->data['color']))
+					$this->data['color'] = "#".substr("00000".dechex($this->data['color']),-6);
+			}
+			else {
+				$this->writeable = true;
+			}
 		}
 
 		// Is it valid?
@@ -17,25 +22,59 @@
 			return (bool)$this->data;
 		}
 
-		// Overwrite certain parameters
+		// Overwrite certain parameters, if allowed
 		function set(array $new_data) {
+			// Do we have the rights?
+			if (!$this->writeable)
+				return false;
+
+			if (!(($new_data["private_user"] == null && $_SESSION["editor"]) ||
+					$new_data["private_user"] == $_SESSION["user_id"]))
+				return false;
+
+			//  1) Tag can't be both hidden and private
+			//  2) We are not allowed to overwrite/choose IDs
+			if ($new_data["hidden"] && isset($new_data["private_user"]) ||
+					isset($new_data["id"]))
+				return false;
+
+			// Overwrite data
 			$this->data = array_merge($this->data, $new_data);
+			return true;
 		}
 
-		static function prepare_name_query(SQLDatabase $pb) {
-			if (!self::$name_stmt)
-				self::$name_stmt = $pb->prepare("SELECT * FROM tags WHERE name=$1".self::tag_restr(ACCESS_READ));
-		}
+		function from_name(SQLDatabase $pb, $name, $rights = ACCESS_READ) {
+			$split = explode("/", $name);
+			if (count($split) == 1)
+				$private = false;
+			else if (count($split) == 2 && $split[0] == "private") {
+				$private = true;
+				$name = $split[1];
+			}
+			else
+				return;
 
-		function from_name($name) {
-			self::$name_stmt->bind(1, $name, SQLTYPE_TEXT);
-			$tag = self::$name_stmt->exec()->fetchAssoc();
+			$query = $pb->query("SELECT * FROM tags WHERE name='{$pb->escape($name)}' "
+				."AND ".($private ? "private_user={$_SESSION["user_id"]}" : "private_user ISNULL")
+				.self::tag_restr($rights));
+			$tag = $query->fetchAssoc();
+
 			if ($tag)
 				$this->__construct($tag);
+			if ($rights == ACCESS_MODIFY)
+				$this->writeable = true;
 		}
 
-		function getName() {return $this->data["name"];}
-		function getURLName() {return str_replace(" ", "_", $this->data["name"]);}
+		// Get list name
+		function getName() {
+			return $this->data["name"].($this->data["private_user"] != null ? "*" : "");
+		}
+
+		// Get URL name, as used for queries
+		function getURLName() {
+			$prefix = ($this->data["private_user"] != null) ? "private/" : "";
+			return $prefix.str_replace(" ", "_", $this->data["name"]);
+		}
 
 		function json_encode() {
 			return $this->data ? json_encode($this->data) : null;
@@ -48,25 +87,29 @@
 
 		// Write tag to database
 		function write(SQLDatabase $pb) {
-			// Do we have the rights?
-			if (!$_SESSION['editor'])
-				return false;
+			if (!$this->writeable) return;
 
 			// Sanitize data
 			$tag = array_map(function($par) use ($pb) {return $pb->escape($par);}, $this->data);
 			$tag["color"] = (int)hexdec(substr($tag["color"], -6));
 
 			if (!isset($tag["id"]))
-				$pb->exec("INSERT INTO tags (name, description, color, hidden) "
-					."VALUES ('{$tag["name"]}', '{$tag["description"]}', {$tag["color"]}, {$tag["hidden"]})");
+				$pb->exec("INSERT INTO tags (name, description, color, hidden, private_user) "
+					."VALUES ('{$tag["name"]}', '{$tag["description"]}', {$tag["color"]}, {$tag["hidden"]}, {$tag["private_user"]})");
 			else
 				$pb->exec("UPDATE tags SET name='{$tag["name"]}', description='{$tag["description"]}', "
-					."color={$tag["color"]}, hidden={$tag["hidden"]} WHERE id={$tag["id"]}");
-			return true;
+					."color={$tag["color"]}, hidden={$tag["hidden"]}, private_user={$tag["private_user"]} WHERE id={$tag["id"]}");
 		}
 		function delete(SQLDatabase $pb) {
-			if (!$_SESSION['editor'])
-				return false;
+			// private or not?
+			if ($this->data["private_user"] != null) {
+				if ($this->data["private_user"] != $_SESSION["user_id"])
+					return false;
+			}
+			else {
+				if (!$_SESSION["editor"])
+					return false;
+			}
 			$pb->exec("PRAGMA foreign_keys=on");
 			$pb->exec("DELETE FROM tags WHERE id={$this->data["id"]}");
 			return true;
@@ -81,7 +124,7 @@
 		// Set or unset for problem
 		function set_for_file(SQLDatabase $pb, $id, $set) {
 			// are we allowed to set the tag?
-			if (!$_SESSION['editor'])
+			if (!($_SESSION['editor'] || $this->data["private_user"] == $_SESSION["user_id"]))
 				return false;
 			if ($set)
 				$pb->exec("INSERT INTO tag_list(problem_id, tag_id) VALUES ($id, {$this->data["id"]})");
@@ -93,14 +136,18 @@
 		// (Extra) condition to select only tags the current user is allowed to see
 		static function tag_restr($rights, $standalone = false) {
 			$cond = array();
+			if ($rights & ACCESS_READ)
+				$cond[] = "(private_user ISNULL OR private_user={$_SESSION["user_id"]})";
 			if (($rights & ACCESS_READ) && !$_SESSION['editor'])
 				$cond[] = "hidden=0";
+			if (($rights & ACCESS_MODIFY) && $_SESSION['editor'])
+				$cond[] = "private_user ISNULL OR private_user={$_SESSION["user_id"]}";
 			if (($rights & ACCESS_MODIFY) && !$_SESSION['editor'])
-				$cond[] = "0";		// = false
+				$cond[] = "private_user={$_SESSION["user_id"]}";
 
 			// return collapsed conditions
 			if (count($cond))
-				return ($standalone ? " WHERE " : " AND ").implode(" AND ", $cond);
+				return ($standalone ? "" : " AND ").implode(" AND ", $cond);
 			else
 				return "";
 		}
@@ -140,23 +187,23 @@
 
 		// Construct from a comma-separated list of names
 		function from_list(SQLDatabase $pb, $list) {
-			Tag::prepare_name_query($pb);
 			foreach (explode(",", $list) as $name) {
 				$tag = new Tag();
 				if ($name == "") continue;
-				$tag->from_name($name);
+				$tag->from_name($pb, $name);
 				$this->data[] = $tag;
 			}
 		}
 
-		function get(SQLDatabase $pb, array $fields) {
-			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags".Tag::tag_restr(ACCESS_READ, true));
+		function get(SQLDatabase $pb, array $fields, $rights = ACCESS_READ) {
+			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags WHERE ".Tag::tag_restr($rights, true));
 			$this->__construct($tags);
 		}
 
 		function from_file(SQLDatabase $pb, $id) {
-			$tags = $pb->query("SELECT name, description, color, hidden FROM tag_list JOIN tags"
-				." ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
+			$tags = $pb->query("SELECT name, description, color, hidden, "
+				."private_user NOT NULL AS private FROM tag_list JOIN tags "
+				."ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
 			$this->__construct($tags);
 		}
 
@@ -196,7 +243,9 @@
 
 		// Add the tags to file $id, and remove all others
 		function set_for_file(SQLDatabase $pb, $id) {
-			$pb->exec("DELETE FROM tag_list WHERE problem_id=$id");
+			$pb->exec("DELETE FROM tag_list WHERE problem_id=$id AND "
+				."EXISTS (SELECT id FROM tags WHERE tag_list.tag_id=tags.id AND "
+				."(private_user ISNULL OR private_user={$_SESSION["user_id"]}))");
 			$stmt = $pb->prepare("INSERT INTO tag_list (problem_id, tag_id) VALUES ($id, $1)");
 			foreach ($this->data as $tag)
 				$tag->exec_id($stmt);
@@ -236,7 +285,7 @@
 	// Print the tag form
 	function tag_form(SQLDatabase $pb, $form, TagList $taglist) {
 		$tags = new TagList;
-		$tags->get($pb, array("name"));
+		$tags->get($pb, array("name", "private_user"));
 		$tags->print_select("tagList.add(this.value); this.value='';", "Tag hinzuf&uuml;gen");
 		print "<input type='hidden' name='tags'/>";
 		print "<span id='taglist'></span>";

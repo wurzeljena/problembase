@@ -221,12 +221,17 @@ function writeTag(taginfo, taglist) {
 	// If it's not part of a tag list or a tag selector, it's a link
 	var link = (taglist === undefined) && !taginfo.hasOwnProperty("active");
 
+	// URL name
+	var url_name = taginfo.name.replace(/ /g, "_");
+	if (taginfo.private)
+		url_name = "private/" + url_name;
+
 	var tag = document.createElement(link ? "a" : "span");
 	tag.id = tag.textContent = taginfo.name;
 	tag.title = taginfo.description;
 	tag.className = "tag";
 	if (link)
-		tag.href = rootdir + "/tags/" + taginfo.name.replace(/ /g, "_");
+		tag.href = rootdir + "/tags/" + url_name;
 
 	// compute other color
 	var clr = taginfo.color.split("");
@@ -253,7 +258,7 @@ function writeTag(taginfo, taglist) {
 		var close = document.createElement("i");
 		close.className = "icon-remove close";
 		close.style.cursor = "pointer";
-		close.onclick = function () { taglist.remove(taginfo.name, this.parentNode); };
+		close.onclick = function () { taglist.remove(url_name, this.parentNode); };
 		tag.appendChild(close);
 	}
 
@@ -270,11 +275,11 @@ function writeTag(taginfo, taglist) {
 			{
 				if (this.style.opacity == 1) {
 					this.style.opacity = 0.3;
-					setTag(taginfo.problem, taginfo.name, 0);
+					setTag(taginfo.problem, url_name, 0);
 				}
 				else {
 					this.style.opacity = 1;
-					setTag(taginfo.problem, taginfo.name, 1);
+					setTag(taginfo.problem, url_name, 1);
 				}
 			}
 		}

@@ -59,8 +59,7 @@
 		$pb = load(LOAD_DB | INC_TAGS);
 
 		$tag = new Tag;
-		Tag::prepare_name_query($pb);
-		$tag->from_name(str_replace("_", " ", $_GET['name']));
+		$tag->from_name($pb, str_replace("_", " ", $_GET['name']));
 		$res = $tag->json_encode();
 		if ($res) {
 			header("Content-Type: application/json");
