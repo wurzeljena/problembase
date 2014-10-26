@@ -194,8 +194,11 @@
 			// initial script to print and mark the right ones
 			print "<script> var tagSelector = document.getElementsByClassName('tag_selector')[0];";
 			$all_tags = new TagList;
-			$all_tags->get($pb, array("*", "(name IN ({$this->tags->print_names()})) AS active",
-				"1 AS enabled", "{$this->data["file_id"]} as problem"), ACCESS_MODIFY);
+			$all_tags->get($pb, array("name", "description", "color", "hidden",
+				"EXISTS (SELECT problem_id FROM tag_list WHERE "
+					."problem_id={$this->data["file_id"]} AND tag_id=tags.id) AS active",
+				Tag::tag_restr(ACCESS_MODIFY, true)." AS enabled",
+				"{$this->data["file_id"]} as problem", "private_user NOT NULL AS private"));
 			print $all_tags->js("tagSelector", true);
 			print "</script>";
 		}

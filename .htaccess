@@ -41,8 +41,8 @@ RewriteRule ^users/([0-9]+)/delete$ lib/edit/user.php?id=$1&delete [L,QSA]
 RewriteRule ^tagpanel$ pages/edit/tagpanel.php [L]
 RewriteRule ^tags/$ pages/edit/tagpanel.php?standalone [L]
 RewriteCond %{HTTP_ACCEPT} =application/json
-RewriteRule ^tags/([_0-9A-Za-z]+)$ lib/ajax.php?query=tag&name=$1 [L,QSA]
-RewriteRule ^tags/([_0-9A-Za-z]+)$ pages/view/tag.php?name=$1 [L,QSA]
+RewriteRule ^tags/(private/)?([_0-9A-Za-z]+)$ lib/ajax.php?query=tag&name=$1$2 [L,QSA]
+RewriteRule ^tags/(private/)?([_0-9A-Za-z]+)$ pages/view/tag.php?name=$1$2 [L,QSA]
 RewriteRule ^tags$ lib/edit/misc.php?write=tag [L,QSA]
 
 # proposer queries

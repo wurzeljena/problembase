@@ -7,9 +7,8 @@
 		$pb = load(LOAD_DB | INC_HEAD | INC_TAGS);
 
 		$tag = new Tag;
-		Tag::prepare_name_query($pb);
 		if ($_POST["old_name"] != "")
-			$tag->from_name(str_replace("_", " ", $_POST["old_name"]), ACCESS_MODIFY);
+			$tag->from_name($pb, str_replace("_", " ", $_POST["old_name"]), ACCESS_MODIFY);
 
 		if (isset($_POST['delete']))
 			$success = $tag->delete($pb);
@@ -41,8 +40,7 @@
 		$pb = load(LOAD_DB | INC_TAGS);
 
 		$tag = new Tag;
-		Tag::prepare_name_query($pb);
-		$tag->from_name($_POST["tag"]);
+		$tag->from_name($pb, str_replace("_", " ", $_POST["tag"]));
 		$tag->set_for_file($pb, (int)$_GET["id"], $_POST["set"]);
 		$pb->close();
 		break;

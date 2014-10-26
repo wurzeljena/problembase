@@ -4,8 +4,6 @@
 		// The color is stored in string format
 		private $data = array();
 		private $writeable = false;
-		private static $name_stmt = null;
-		private static $name_write_stmt = null;
 
 		// Construct from database data set
 		function __construct(array $data = array()) {
@@ -45,30 +43,38 @@
 			return true;
 		}
 
-		static function prepare_name_query(SQLDatabase $pb) {
-			if (!self::$name_stmt) {
-				self::$name_stmt = $pb->prepare("SELECT * FROM tags WHERE name=$1".self::tag_restr(ACCESS_READ));
-				self::$name_write_stmt = $pb->prepare("SELECT * FROM tags WHERE name=$1".self::tag_restr(ACCESS_WRITE));
+		function from_name(SQLDatabase $pb, $name, $rights = ACCESS_READ) {
+			$split = explode("/", $name);
+			if (count($split) == 1)
+				$private = false;
+			else if (count($split) == 2 && $split[0] == "private") {
+				$private = true;
+				$name = $split[1];
 			}
-		}
+			else
+				return;
 
-		function from_name($name, $rights = ACCESS_READ) {
-			if ($rights == ACCESS_READ) {
-				self::$name_stmt->bind(1, $name, SQLTYPE_TEXT);
-				$tag = self::$name_stmt->exec()->fetchAssoc();
-			}
-			else {           // ACCESS_MODIFY
-				self::$name_write_stmt->bind(1, $name, SQLTYPE_TEXT);
-				$tag = self::$name_write_stmt->exec()->fetchAssoc();
-				$this->writeable = true;
-			}
+			$query = $pb->query("SELECT * FROM tags WHERE name='{$pb->escape($name)}' "
+				."AND ".($private ? "private_user={$_SESSION["user_id"]}" : "private_user ISNULL")
+				.self::tag_restr($rights));
+			$tag = $query->fetchAssoc();
 
 			if ($tag)
 				$this->__construct($tag);
+			if ($rights == ACCESS_MODIFY)
+				$this->writeable = true;
 		}
 
-		function getName() {return $this->data["name"];}
-		function getURLName() {return str_replace(" ", "_", $this->data["name"]);}
+		// Get list name
+		function getName() {
+			return $this->data["name"].($this->data["private_user"] != null ? "*" : "");
+		}
+
+		// Get URL name, as used for queries
+		function getURLName() {
+			$prefix = ($this->data["private_user"] != null) ? "private/" : "";
+			return $prefix.str_replace(" ", "_", $this->data["name"]);
+		}
 
 		function json_encode() {
 			return $this->data ? json_encode($this->data) : null;
@@ -141,7 +147,7 @@
 
 			// return collapsed conditions
 			if (count($cond))
-				return ($standalone ? " WHERE " : " AND ").implode(" AND ", $cond);
+				return ($standalone ? "" : " AND ").implode(" AND ", $cond);
 			else
 				return "";
 		}
@@ -181,23 +187,23 @@
 
 		// Construct from a comma-separated list of names
 		function from_list(SQLDatabase $pb, $list) {
-			Tag::prepare_name_query($pb);
 			foreach (explode(",", $list) as $name) {
 				$tag = new Tag();
 				if ($name == "") continue;
-				$tag->from_name($name);
+				$tag->from_name($pb, $name);
 				$this->data[] = $tag;
 			}
 		}
 
 		function get(SQLDatabase $pb, array $fields, $rights = ACCESS_READ) {
-			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags".Tag::tag_restr($rights, true));
+			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags WHERE ".Tag::tag_restr($rights, true));
 			$this->__construct($tags);
 		}
 
 		function from_file(SQLDatabase $pb, $id) {
-			$tags = $pb->query("SELECT name, description, color, hidden FROM tag_list JOIN tags"
-				." ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
+			$tags = $pb->query("SELECT name, description, color, hidden, "
+				."private_user NOT NULL AS private FROM tag_list JOIN tags "
+				."ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
 			$this->__construct($tags);
 		}
 
@@ -279,7 +285,7 @@
 	// Print the tag form
 	function tag_form(SQLDatabase $pb, $form, TagList $taglist) {
 		$tags = new TagList;
-		$tags->get($pb, array("name"));
+		$tags->get($pb, array("name", "private_user"));
 		$tags->print_select("tagList.add(this.value); this.value='';", "Tag hinzuf&uuml;gen");
 		print "<input type='hidden' name='tags'/>";
 		print "<span id='taglist'></span>";

@@ -6,7 +6,7 @@
 		http_error(403);
 
 	$tags = new TagList;
-	$tags->get($pb, array("name"), ACCESS_MODIFY);
+	$tags->get($pb, array("name", "private_user"), ACCESS_MODIFY);
 	$pb->close();
 
 	printhead("Tag-Editor");

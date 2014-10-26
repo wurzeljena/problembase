@@ -3,9 +3,8 @@
 	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_TASKLIST);
 
 	$tag = new Tag;
-	Tag::prepare_name_query($pb);
 	$name = str_replace("_", " ", $_GET["name"]);
-	$tag->from_name($name);
+	$tag->from_name($pb, $name);
 
 	// if no such tag exists, throw a 404 error
 	if (!$tag->is_valid())
