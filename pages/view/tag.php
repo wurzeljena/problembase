@@ -20,7 +20,7 @@
 	if ($page < 0 || $page >= $pages)
 		$page = 0;
 
-	printhead($name);
+	printhead(str_replace("private/", "", $name));
 ?>
 <body>
 	<?php printheader(); ?>

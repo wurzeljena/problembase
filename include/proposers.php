@@ -153,10 +153,13 @@
 		// Make tag statistic
 		function tag_statistic(SQLDatabase $pb, $limit = 5) {
 			$ids = array_map(function(Proposer $prop) {return $prop->get_id();}, $this->data);
-			$res = $pb->query("SELECT tags.*, count(problems.file_id) AS count_problems "
+			$res = $pb->query("SELECT name, description, color, hidden, "
+				."tags.private_user={$_SESSION["user_id"]} AS private, "
+				."count(problems.file_id) AS count_problems "
 				."FROM tag_list LEFT JOIN tags ON tags.id=tag_list.tag_id "
 				."LEFT JOIN problems ON tag_list.problem_id=problems.file_id "
-				."WHERE EXISTS (SELECT file_id FROM fileproposers "
+				."WHERE ".($_SESSION["editor"] ? "" : "public=1 AND ")
+				."EXISTS (SELECT file_id FROM fileproposers "
 				."WHERE fileproposers.file_id=problems.file_id AND "
 				."fileproposers.proposer_id IN (".implode(",", $ids)."))"
 				.Tag::tag_restr(ACCESS_READ)." GROUP BY id, name, description, "

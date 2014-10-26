@@ -163,7 +163,8 @@
 			$res = $pb->query("SELECT name, location, country, count(fileproposers.file_id) AS count_problems "
 				."FROM proposers JOIN fileproposers ON proposers.id=fileproposers.proposer_id "
 				."JOIN problems ON fileproposers.file_id=problems.file_id WHERE EXISTS "
-				."(SELECT tag_id FROM tag_list WHERE tag_list.problem_id=problems.file_id AND tag_id={$this->data["id"]}) "
+				."(SELECT tag_id FROM tag_list WHERE tag_list.problem_id=problems.file_id "
+				.($_SESSION["editor"] ? "" : "AND public=1 ")."AND tag_id={$this->data["id"]}) "
 				."GROUP BY name, location, country ORDER BY count_problems DESC LIMIT $limit");
 
 			// make ProposerList
