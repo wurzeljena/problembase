@@ -223,7 +223,7 @@ function writeTag(taginfo, taglist) {
 
 	// URL name
 	var url_name = taginfo.name.replace(/ /g, "_");
-	if (taginfo.private)
+	if (parseInt(taginfo.private))
 		url_name = "private/" + url_name;
 
 	var tag = document.createElement(link ? "a" : "span");
@@ -264,12 +264,12 @@ function writeTag(taginfo, taglist) {
 
 	// if it's part of a tag selector, add click handler
 	if (taginfo.hasOwnProperty("active")) {
-		if (taginfo.active)
+		if (parseInt(taginfo.active))
 			tag.style.opacity = 1;
 		else
 			tag.style.opacity = 0.3;
 
-		if (taginfo.enabled) {
+		if (parseInt(taginfo.enabled)) {
 			tag.style.cursor = "pointer";
 			tag.onclick = function ()
 			{

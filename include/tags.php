@@ -203,7 +203,7 @@
 
 		function from_file(SQLDatabase $pb, $id) {
 			$tags = $pb->query("SELECT name, description, color, hidden, "
-				."private_user NOT NULL AS private FROM tag_list JOIN tags "
+				.$pb->boolean_statement("private_user NOTNULL")." AS private FROM tag_list JOIN tags "
 				."ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
 			$this->__construct($tags);
 		}

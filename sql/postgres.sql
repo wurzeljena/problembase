@@ -146,7 +146,7 @@ CREATE TABLE tags (
   description VARCHAR NULL,
   color INT NOT NULL DEFAULT 0,
   hidden INTEGER NOT NULL DEFAULT 0,
-  private_user INTEGER DEFAULT NULL,
+  private_user INTEGER NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (private_user)
     REFERENCES users(id)

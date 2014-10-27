@@ -99,7 +99,7 @@ function TagList(form, init) {
 
 	// add initial tags
 	for (var i = 0; i < init.length; i++) {
-		var url_name = (init[i].private ? "private/" : "") +
+		var url_name = (parseInt(init[i].private) ? "private/" : "") +
 			init[i].name.replace(/ /g, "_");
 		this.list.push(url_name);
 		this.taglist.appendChild(writeTag(init[i], this));

@@ -10,6 +10,7 @@
 
 		function lastInsertRowid($table, $col);
 		static function escape($val);
+		static function boolean_statement($val);
 
 		function ftsCond($col, $search);
 
@@ -66,7 +67,11 @@
 		static function escape($val) {
 			return SQLite3::escapeString($val);
 		}
-		
+
+		static function boolean_statement($val) {
+			return $val;
+		}
+
 		function ftsCond($col, $search) {
 			return "$col MATCH '$search'";
 		}
@@ -155,7 +160,11 @@
 		static function escape($val) {
 			return pg_escape_string($val);
 		}
-		
+
+		static function boolean_statement($val) {
+			return "(".$val.")::int";
+		}
+
 		function ftsCond($col, $search) {
 			return "to_tsvector('german', $col) @@ to_tsquery('german', '$search')";
 		}
