@@ -94,9 +94,7 @@ first user.
 
 If you expect more users or want to use a separate database server for some
 other reason, [PostgreSQL](http://www.postgresql.org/) is also supported.
-Create the tables etc. by executing `sql/postgres.sql`. Since we frequently use
-`group_concat`, you have to set that up using this
-[code](https://gist.github.com/aaronpuchert/6049219). Create an initial user
+Create the tables etc. by executing `sql/postgres.sql`. Create an initial user
 as above.
 
 To set up the connection, simply set environment variable `DATABASE_URL` to
