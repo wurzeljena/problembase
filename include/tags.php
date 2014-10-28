@@ -28,13 +28,13 @@
 			if (!$this->writeable)
 				return false;
 
-			if (!(($new_data["private_user"] == null && $_SESSION["editor"]) ||
+			if (!((!$new_data["private_user"] && $_SESSION["editor"]) ||
 					$new_data["private_user"] == $_SESSION["user_id"]))
 				return false;
 
 			//  1) Tag can't be both hidden and private
 			//  2) We are not allowed to overwrite/choose IDs
-			if ($new_data["hidden"] && isset($new_data["private_user"]) ||
+			if ($new_data["hidden"] && (bool)$new_data["private_user"] ||
 					isset($new_data["id"]))
 				return false;
 
@@ -92,6 +92,8 @@
 			// Sanitize data
 			$tag = array_map(function($par) use ($pb) {return $pb->escape($par);}, $this->data);
 			$tag["color"] = (int)hexdec(substr($tag["color"], -6));
+			if (!$tag["private_user"])
+				$tag["private_user"] = "null";
 
 			if (!isset($tag["id"]))
 				$pb->exec("INSERT INTO tags (name, description, color, hidden, private_user) "
