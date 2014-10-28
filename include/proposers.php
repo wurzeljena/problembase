@@ -182,7 +182,7 @@
 	}
 
 	// Print the proposer form for the problems and solutions pages
-	function proposer_form(SQLDatabase $pb, $form, $file_id)
+	function proposer_form(SQLDatabase $pb, $form, ProposerList $proposers)
 	{
 		proposers_datalist($pb);
 		print "<div id='proplist'><input type='hidden' name='propnums'/></div>";
@@ -190,8 +190,6 @@
 
 		print "<script type='text/javascript'>";
 		print "var propForm = new PropForm('$form', ";
-		$proposers = new ProposerList;
-		$proposers->from_file($pb, $file_id);
 		print $proposers->json_encode();
 		print ");</script>";
 	}

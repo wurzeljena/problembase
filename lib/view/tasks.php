@@ -130,11 +130,12 @@
 				self::prepareQuery($pb);
 			self::$query->bind(1, $id, SQLTYPE_INTEGER);
 			$data = self::$query->exec()->fetchAssoc();
+
+			$this->proposers = new ProposerList;
+			$this->tags = new TagList;
 			if ($data) {
 				$this->data = $data;
-				$this->proposers = new ProposerList;
 				$this->proposers->from_file($pb, $this->data["file_id"]);
-				$this->tags = new TagList;
 				$this->tags->from_file($pb, $this->data["file_id"]);
 			}
 		}
@@ -179,12 +180,53 @@
 			print "</div></div>\n\n";
 		}
 
+		// Print simplified for forms
+		function print_simplified() {
+			print "<div class='problem'>";
+			print htmlspecialchars($this->data['problem']);
+			print "</div>";
+		}
+
 		// Print problem as TeX code
-		function print_tex() {
-			print "\\aufbox{\${$this->data['letter']}\,{$this->data['number']}$}{";
+		function print_tex($bare = false) {
+			if (!$bare)
+				print "\\aufbox";
+			print "{\${$this->data['letter']}\,{$this->data['number']}$}{";
 			$this->proposers->print_list($this->data["remarks"]);
 			print "}{%\n{$this->data['problem']}}\n\n";
 		}
+
+		// Print form
+		function print_form(SQLDatabase $pb) {
+			?>
+	<form class="task" id="task" title="Aufgabenformular" action="<?=WEBROOT?>/submit/<?= $this->is_valid() ? $this->data["id"]: "" ?>" method="POST">
+		<?php
+			proposer_form($pb, "task", $this->proposers);
+			tag_form($pb, "task", $this->tags);
+		?>
+		<textarea class="text" name="problem" id="text" rows="20" cols="65" placeholder="Aufgabentext"
+			style="height:200px;" onkeyup="Preview.Update()"><?php if ($this->is_valid()) print $this->data['problem']; ?></textarea>
+		<div class="preview" id="preview"></div>
+		<textarea class="text" name="remarks" rows="5" cols="65" placeholder="Anmerkungen"
+			title="Wenn keine Autoren angegeben sind, wird stattdessen diese Anmerkung gezeigt.
+Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wird anstatt der Tilde eingef&uuml;gt."
+			style="height:70px;"><?php if ($this->is_valid()) print $this->data['remarks']; ?></textarea>
+		<label for="proposed">Vorgeschlagen am:</label> <input type="date" class="text" name="proposed" id="proposed" style="width:100px;"
+			placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"
+			value="<?php if ($this->is_valid()) print $this->data['proposed']; else print date("Y-m-d"); ?>"/>
+		<input type="submit" value="<?php if ($this->is_valid()) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
+		<?php if ($this->is_valid()) {?>
+		<input type="checkbox" name="delete"/>
+		<input type="button" value="L&ouml;schen" style="float:right;"
+			onclick="if (confirm('Aufgabe wirklich l&ouml;schen?')) postDelete('task');"/>
+		<?php } ?>
+	</form>
+
+	<script type="text/javascript">
+		Preview.Init("text", "preview");
+		Preview.Update();
+	</script>
+<?php	}
 
 		// Print the tag selector for the problem
 		function tag_selector(SQLDatabase $pb) {

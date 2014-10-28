@@ -1,37 +1,46 @@
 <?php
 	class Solution {
-		private $data;      // Named array containing the data
-		private $problem_proposers;  // ProposerList object containing the proposers
-		private $proposers; // ProposerList object containing the proposers
-		private static $query;       // Query variable
+		private $data = array();  // Named array containing the data
+		private $problem;         // Task object
+		private $proposers;       // ProposerList object containing the proposers
+		private static $query;    // Query variable
 
 		// Prepare query for the constructor
 		private static function prepareQuery(SQLDatabase $pb) {
 			$query = "SELECT solutions.file_id, solutions.problem_id, files.content AS solution, "
-				."solutions.remarks, solutions.month, solutions.year, solutions.public, "
-				."problems.file_id AS problem_id, problems.remarks AS problem_remarks, "
-				."problemfiles.content AS problem, published.letter, published.number "
-				."FROM solutions INNER JOIN files ON solutions.file_id=files.rowid "
-				."INNER JOIN problems ON solutions.problem_id=problems.file_id "
-				."INNER JOIN files AS problemfiles ON problems.file_id=problemfiles.rowid "
-				."LEFT JOIN published ON published.problem_id = solutions.problem_id WHERE solutions.file_id=$1";
+				."solutions.remarks, solutions.month, solutions.year, solutions.public "
+				."FROM solutions INNER JOIN files ON solutions.file_id=files.rowid WHERE solutions.file_id=$1";
 			self::$query = $pb->prepare($query);
 		}
 
-		// Construct from id
-		function __construct(SQLDatabase $pb, $id) {
+		// Construct from id, eventually test if it's a solution for problem problem_id.
+		// If id == -1, create empty solution for problem problem_id.
+		function __construct(SQLDatabase $pb, $id, $problem_id = -1) {
 			if (!self::$query)
 				self::prepareQuery($pb);
 
-			// get data
-			self::$query->bind(1, $id, SQLTYPE_INTEGER);
-			$this->data = self::$query->exec()->fetchAssoc();
+			// Get data
+			if ($id != -1) {
+				self::$query->bind(1, $id, SQLTYPE_INTEGER);
+				$data = self::$query->exec()->fetchAssoc();
+				if (($problem_id != -1) && ($data["problem_id"] != $problem_id))
+					return;
+			}
+			else
+				$data = array("file_id" => -1);
 
-			// get proposers
+			// Got something valid?
+			if ($data)
+				$this->data = $data;
+
+			// Get problem
+			$this->problem = new Task($pb,
+				($problem_id == -1) ? $data["problem_id"] : $problem_id);
+
+			// Get proposers
 			$this->proposers = new ProposerList();
-			$this->proposers->from_file($pb, $this->data["file_id"]);
-			$this->problem_proposers = new ProposerList();
-			$this->problem_proposers->from_file($pb, $this->data["problem_id"]);
+			if (isset($data["file_id"]))
+				$this->proposers->from_file($pb, $data["file_id"]);
 		}
 
 		// Print solution as HTML
@@ -52,11 +61,80 @@
 
 		// Print the solution as TeX code
 		function print_tex() {
-			print "\\losbox{\${$this->data['letter']}\,{$this->data['number']}$}{";
-			$this->problem_proposers->print_list($this->data["problem_remarks"]);
-			print "}{%\n{$this->data['problem']}}{L\xC3\xB6sung von ";
+			print "\\losbox";
+			$this->problem->print_tex(true);
+			print "{Lösung von ";
 			$this->proposers->print_list($this->data["remarks"]);
-			print ":}{%{$this->data['solution']}}\n\n";
+			print ":}{%\n{$this->data['solution']}}\n\n";
+		}
+
+		// Print form
+		function print_form(SQLDatabase $pb) { ?>
+	<form class="solution" id="solution" title="L&ouml;sungsformular"
+		action="<?=WEBROOT?>/submit/<?=$this->data['problem_id']?>/<?php if (!$this->is_empty()) print $this->data["file_id"]; ?>" method="POST">
+		<?php
+			$this->problem->print_simplified();
+			proposer_form($pb, "solution", $this->proposers);
+		?>
+
+		<textarea class="text" name="solution" id="text" rows="60" cols="80" placeholder="L&ouml;sungstext"
+			style="height:400px;" onkeyup="Preview.Update()"><?php if (!$this->is_empty()) print $this->data['solution']; ?></textarea> <br/>
+		<div class="preview" id="preview"></div>
+		<textarea class="text" name="remarks" rows="5" cols="65" placeholder="Anmerkungen"
+			title="Wenn keine Autoren angegeben sind, wird stattdessen diese Anmerkung gezeigt.
+Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wird anstatt der Tilde eingef&uuml;gt."
+			style="height:70px;"><?php if (!$this->is_empty()) print $this->data['remarks']; ?></textarea>
+
+		<label for="published">Ver&ouml;ffentlicht in:</label>
+		<input type="text" class="text" name="published" id="published" placeholder="MM/JJ"
+			pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}" style="width:50px;" value="<?php if (isset($this->data['month']))
+			print $this->data['month']."/".str_pad($this->data['year']%100, 2, "0", STR_PAD_LEFT); ?>"/>
+		<input type="checkbox" name="public" id="public" <?php if (!$this->is_empty() && $this->data['public']) print "checked"; ?>/>
+			<label for="public">&ouml;ffentlich</label>
+		<input type="submit" value="<?php if (!$this->is_empty()) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
+		<?php if (!$this->is_empty()): ?>
+		<input type="checkbox" name="delete"/>
+		<input type="button" value="L&ouml;schen" style="float:right;"
+			onclick="if (confirm('L&ouml;sung wirklich l&ouml;schen?')) postDelete('solution');"/>
+		<?php endif; ?>
+	</form>
+
+	<input type="hidden" name="picnums" form="solution">
+	<!-- here come the figure forms... -->
+	</div>
+
+	<script type="text/javascript">
+		Preview.Init("text", "preview");
+		Preview.Update();
+
+		var picForm = new Pictures("solution", [<?php
+		if (!$this->is_empty()) {
+			$num = 0;
+			$pics = $pb->query("SELECT * FROM pictures WHERE file_id={$this->data["file_id"]}");
+			while($pic = $pics->fetchAssoc())
+				print (($num++ > 0) ? ", " : "").json_encode($pic);
+		}	?>]);
+	</script>
+
+	<a class="button" href="javascript:picForm.addPic();"><i class="icon-plus-sign"></i> Grafik hinzuf&uuml;gen</a>
+<?php	}
+
+		// Do we have valid data? (i.e. any data at all)
+		function is_valid() {
+			return (bool)$this->data && $this->problem->is_valid();
+		}
+
+		function is_empty() {
+			return $this->data["file_id"] == -1;
+		}
+
+		// Is the current user allowed to see the solution?
+		function access($right) {
+			if ($right == ACCESS_READ)
+				return ($this->data["id"] != -1) && ($_SESSION['editor']
+					|| ($this->problem->access(ACCESS_READ) && $this->data['public']));
+			else             // write or modify
+				return $_SESSION['editor'];
 		}
 	}
 
