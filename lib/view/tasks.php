@@ -148,7 +148,7 @@
 			print "<div class='tags'></div>\n";
 			// Create code for tags
 			$tag_code .= $this->tags->js($num != -1 ? "taglists[$num]" : "taglist");
-			$this->proposers->print_list($this->data["remarks"]);
+			$this->proposers->print_list($this->data["remarks"], true);
 			if (isset($this->data['proposed']))
 				print " <span class='proposed'>{$this->data['proposed']}</span>";
 
@@ -192,7 +192,7 @@
 			if (!$bare)
 				print "\\aufbox";
 			print "{\${$this->data['letter']}\,{$this->data['number']}$}{";
-			$this->proposers->print_list($this->data["remarks"]);
+			$this->proposers->print_list($this->data["remarks"], false);
 			print "}{%\n{$this->data['problem']}}\n\n";
 		}
 

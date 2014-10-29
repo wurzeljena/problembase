@@ -17,12 +17,18 @@
 		}
 
 		// Print Name and Location
-		function to_string() {
-			$urlname = str_replace(" ", "_", $this->data['name']);
-			$urllocation = str_replace(" ", "_", $this->data['location']);
-			return "<a href='".WEBROOT."/proposers/$urlname'>{$this->data['name']}</a>, "
-				."<a href='".WEBROOT."/proposers/$urlname/$urllocation'>{$this->data['location']}</a>"
-				.(isset($this->data['country']) ? " ({$this->data['country']})" : "");
+		function to_string($link) {
+			if ($link) {
+				$urlname = str_replace(" ", "_", $this->data['name']);
+				$urllocation = str_replace(" ", "_", $this->data['location']);
+				return "<a href='".WEBROOT."/proposers/$urlname'>{$this->data['name']}</a>, "
+					."<a href='".WEBROOT."/proposers/$urlname/$urllocation'>{$this->data['location']}</a>"
+					.(isset($this->data['country']) ? " ({$this->data['country']})" : "");
+			}
+			else {
+				return "{$this->data['name']}, {$this->data['location']}"
+					.(isset($this->data['country']) ? " ({$this->data['country']})" : "");
+			}
 		}
 
 		// Return JSON
@@ -109,8 +115,9 @@
 			return "[".implode(", ", $json)."]";
 		}
 
-		function print_list($remarks) {
-			$props = array_map(function(Proposer $prop) {return $prop->to_string();}, $this->data);
+		function print_list($remarks, $link) {
+			$props = array_map(function(Proposer $prop) use ($link)
+				{return $prop->to_string($link);}, $this->data);
 			$props = implode(" und ", $props);
 
 			if ($props) {
@@ -128,7 +135,7 @@
 		function print_statistic() {
 			$props = array_map(
 				function(Proposer $prop) {
-					$first = "<td>".$prop->to_string()."</td>";
+					$first = "<td>".$prop->to_string(true)."</td>";
 					$second = "<td>".$prop->problem_count()."</td>";
 					return $first.$second;
 				}, $this->data);
