@@ -13,7 +13,7 @@
 
 		// Print Name
 		function get_name() {
-			return htmlspecialchars($this->data["name"]);
+			return htmlspecialchars($this->data["name"], ENT_QUOTES);
 		}
 
 		// Print Name and Location
