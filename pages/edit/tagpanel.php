@@ -23,8 +23,8 @@
 		<div>
 			<?php $tags->print_select("loadTag();", "Neuer Tag", "old_name"); ?>
 			<input type="checkbox" name="delete"/>
-			<input type="button" id="delete_tag" value="L&ouml;schen" disabled
-				onclick="if (confirm('Tag wirklich l&ouml;schen?')) postDelete('tageditor');"/>
+			<input type="button" id="delete_tag" value="Löschen" disabled
+				onclick="if (confirm('Tag wirklich löschen?')) postDelete('tageditor');"/>
 		</div>
 		<div>
 			<input type="text" name="name" style="width:120px;" placeholder="Name" pattern="[ 0-9A-Za-z]*" required onkeyup="tagPreview();" title="Nur Buchstaben, Ziffern und Lehrzeichen">
@@ -35,7 +35,7 @@
 <?php	if (!$_SESSION["editor"]): ?>
 			<input type="hidden" name="private" value="1" />
 <?php	endif; ?>
-			<input type="submit" id="submit_tag" style="margin:1em;" value="Hinzuf&uuml;gen"> <br/>
+			<input type="submit" id="submit_tag" style="margin:1em;" value="Hinzufügen"> <br/>
 			<span class="info" style="font-variant: small-caps; margin: 5px;">(Vorschau)</span><span id="result_tag"></span>
 		</div>
 	</form>

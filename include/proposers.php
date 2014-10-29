@@ -193,7 +193,7 @@
 	{
 		proposers_datalist($pb);
 		print "<div id='proplist'><input type='hidden' name='propnums'/></div>";
-		print "<input type='button' value='Autor hinzuf&uuml;gen' onclick='propForm.addProp();'/>";
+		print "<input type='button' value='Autor hinzufügen' onclick='propForm.addProp();'/>";
 
 		print "<script type='text/javascript'>";
 		print "var propForm = new PropForm('$form', ";

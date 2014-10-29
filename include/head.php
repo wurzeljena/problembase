@@ -28,7 +28,7 @@
 function drawMenu($id) { ?>
 	<nav id="<?=$id?>">
 	<ul>
-		<li><a href="<?=WEBROOT?>/browse"><i class="icon-home"></i> <span>&Uuml;bersicht</span></a>
+		<li><a href="<?=WEBROOT?>/browse"><i class="icon-home"></i> <span>Übersicht</span></a>
 </li><?php	if ($_SESSION['user_id'] != -1): ?><li>
 		<a href="<?=WEBROOT?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
 </li><li>

@@ -45,7 +45,7 @@
 
 		// show buttons between solutions and comments
 		if ($_SESSION['editor'])
-			print "<a class='button' href='".WEBROOT."/problem/$id/solution'><i class='icon-book'></i> L&ouml;sung hinzuf&uuml;gen</a>";
+			print "<a class='button' href='".WEBROOT."/problem/$id/solution'><i class='icon-book'></i> Lösung hinzufügen</a>";
 		if ($_SESSION['user_id'] != -1 && !$pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", false))
 			print "<a class='button' style='float:right;' href='".WEBROOT."/problem/$id/evaluate'><i class='icon-comments'></i> Kommentar schreiben</a>";
 

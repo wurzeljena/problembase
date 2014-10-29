@@ -54,8 +54,8 @@
 		<input type="submit" value="Speichern" style="float:right;"/>
 		<?php if (isset($id)) {?>
 		<input type="checkbox" name="delete"/>
-		<input type="button" value="L&ouml;schen" style="float:right;"
-			onclick="if (confirm('Kommentar wirklich l&ouml;schen?')) postDelete('eval');"/>
+		<input type="button" value="Löschen" style="float:right;"
+			onclick="if (confirm('Kommentar wirklich löschen?')) postDelete('eval');"/>
 		<?php } ?>
 	</form>
 	</div>

@@ -59,13 +59,13 @@
 				<form id="edit" action="<?=WEBROOT?>/users/<?=$_SESSION['user_id']?>/edit" method="POST">
 					<input type="text" name="name" placeholder="Name" value="<?=$user['name']?>">
 					<input type="email" name="email" style="width:200px;" placeholder="E-Mail" value="<?=$user['email']?>">
-					<input type="submit" value="&Auml;ndern">
+					<input type="submit" value="Ändern">
 				</form>
 				<form id="pw" action="<?=WEBROOT?>/users/<?=$_SESSION['user_id']?>/changepw" method="POST" onsubmit="return validate_password()">
 					<input type="password" style="width:100px;" name="old_pw" placeholder="Altes Passwort">
 					<input type="password" style="width:100px;" name="new_pw" placeholder="Neues Passwort">
-					<input type="password" style="width:100px;" name="new_pw_check" placeholder="Best&auml;tigen">
-					<input type="submit" value="Passwort &auml;ndern">
+					<input type="password" style="width:100px;" name="new_pw_check" placeholder="Bestätigen">
+					<input type="submit" value="Passwort ändern">
 				</form>
 				</td></tr>
 				<?php } ?>

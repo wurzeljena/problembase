@@ -8,13 +8,13 @@
 
 	// Return 404, if problem or solution not found
 	if (!$solution->is_valid())
-		http_error(404, "Aufgabe oder L&ouml;sung nicht gefunden");
+		http_error(404, "Aufgabe oder Lösung nicht gefunden");
 
 	// Are we allowed to modify it?
 	if (!$solution->access(ACCESS_MODIFY))
 		http_error(403);
 
-	printhead("L&ouml;sung ".(isset($id) ? "bearbeiten" : "erstellen"));
+	printhead("Lösung ".(isset($id) ? "bearbeiten" : "erstellen"));
 ?>
 <body>
 	<?php printheader(); ?>
@@ -25,7 +25,7 @@
 	</div>
 
 	<div class="content">
-	<h2 class="solution">L&ouml;sung bearbeiten</h2>
+	<h2 class="solution">Lösung bearbeiten</h2>
 	<?php $solution->print_form($pb); ?>
 	</div>
 

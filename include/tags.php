@@ -289,7 +289,7 @@
 	function tag_form(SQLDatabase $pb, $form, TagList $taglist) {
 		$tags = new TagList;
 		$tags->get($pb, array("name", "private_user"));
-		$tags->print_select("tagList.add(this.value); this.value='';", "Tag hinzuf&uuml;gen");
+		$tags->print_select("tagList.add(this.value); this.value='';", "Tag hinzufügen");
 		print "<input type='hidden' name='tags'/>";
 		print "<span id='taglist'></span>";
 		print "<script>var tagList = new TagList('$form', {$taglist->json_encode()});</script>";

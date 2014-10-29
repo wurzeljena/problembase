@@ -209,7 +209,7 @@
 		<div class="preview" id="preview"></div>
 		<textarea class="text" name="remarks" rows="5" cols="65" placeholder="Anmerkungen"
 			title="Wenn keine Autoren angegeben sind, wird stattdessen diese Anmerkung gezeigt.
-Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wird anstatt der Tilde eingef&uuml;gt."
+Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird anstatt der Tilde eingefügt."
 			style="height:70px;"><?php if ($this->is_valid()) print $this->data['remarks']; ?></textarea>
 		<label for="proposed">Vorgeschlagen am:</label> <input type="date" class="text" name="proposed" id="proposed" style="width:100px;"
 			placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"
@@ -217,8 +217,8 @@ Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wi
 		<input type="submit" value="<?php if ($this->is_valid()) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
 		<?php if ($this->is_valid()) {?>
 		<input type="checkbox" name="delete"/>
-		<input type="button" value="L&ouml;schen" style="float:right;"
-			onclick="if (confirm('Aufgabe wirklich l&ouml;schen?')) postDelete('task');"/>
+		<input type="button" value="Löschen" style="float:right;"
+			onclick="if (confirm('Aufgabe wirklich löschen?')) postDelete('task');"/>
 		<?php } ?>
 	</form>
 
@@ -253,7 +253,7 @@ Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wi
 					str_pad($this->data["year"]%100, 2, "0", STR_PAD_LEFT);
 			else
 				$volume = "";
-?>			<a class='button danger' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>&Auml;ndern</span></a>
+?>			<a class='button danger' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>Ändern</span></a>
 			<form id="publish" style="display:none;" action="<?=WEBROOT?>/problem/<?=$this->data["file_id"]?>/publish" method="POST">
 				Im <label for="volume">Heft</label>
 				<input type="text" class="text" id="volume" name="volume" placeholder="MM/JJ"
@@ -264,7 +264,7 @@ Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wi
 				<input type="text" class="text" name="number" placeholder="Nummer" pattern="[1-9]|[0-5][0-9]|60"
 					style="width:20px;" value="<?=$this->data["number"]?>">,
 				<input type="checkbox" name="public" id="public" <?=$this->data["public"] ? "checked" : "";?>>
-					<label for="public">&ouml;ffentlich</label>
+					<label for="public">öffentlich</label>
 				<input type="submit" value="Speichern">
 			</form>
 

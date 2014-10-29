@@ -70,32 +70,32 @@
 
 		// Print form
 		function print_form(SQLDatabase $pb) { ?>
-	<form class="solution" id="solution" title="L&ouml;sungsformular"
+	<form class="solution" id="solution" title="Lösungsformular"
 		action="<?=WEBROOT?>/submit/<?=$this->data['problem_id']?>/<?php if (!$this->is_empty()) print $this->data["file_id"]; ?>" method="POST">
 		<?php
 			$this->problem->print_simplified();
 			proposer_form($pb, "solution", $this->proposers);
 		?>
 
-		<textarea class="text" name="solution" id="text" rows="60" cols="80" placeholder="L&ouml;sungstext"
+		<textarea class="text" name="solution" id="text" rows="60" cols="80" placeholder="Lösungstext"
 			style="height:400px;" onkeyup="Preview.Update()"><?php if (!$this->is_empty()) print $this->data['solution']; ?></textarea> <br/>
 		<div class="preview" id="preview"></div>
 		<textarea class="text" name="remarks" rows="5" cols="65" placeholder="Anmerkungen"
 			title="Wenn keine Autoren angegeben sind, wird stattdessen diese Anmerkung gezeigt.
-Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wird anstatt der Tilde eingef&uuml;gt."
+Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird anstatt der Tilde eingefügt."
 			style="height:70px;"><?php if (!$this->is_empty()) print $this->data['remarks']; ?></textarea>
 
-		<label for="published">Ver&ouml;ffentlicht in:</label>
+		<label for="published">Veröffentlicht in:</label>
 		<input type="text" class="text" name="published" id="published" placeholder="MM/JJ"
 			pattern="([1-9]|0[1-9]|1[0-2])/[0-9]{2}" style="width:50px;" value="<?php if (isset($this->data['month']))
 			print $this->data['month']."/".str_pad($this->data['year']%100, 2, "0", STR_PAD_LEFT); ?>"/>
 		<input type="checkbox" name="public" id="public" <?php if (!$this->is_empty() && $this->data['public']) print "checked"; ?>/>
-			<label for="public">&ouml;ffentlich</label>
+			<label for="public">öffentlich</label>
 		<input type="submit" value="<?php if (!$this->is_empty()) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
 		<?php if (!$this->is_empty()): ?>
 		<input type="checkbox" name="delete"/>
-		<input type="button" value="L&ouml;schen" style="float:right;"
-			onclick="if (confirm('L&ouml;sung wirklich l&ouml;schen?')) postDelete('solution');"/>
+		<input type="button" value="Löschen" style="float:right;"
+			onclick="if (confirm('Lösung wirklich löschen?')) postDelete('solution');"/>
 		<?php endif; ?>
 	</form>
 
@@ -116,7 +116,7 @@ Enth&auml;lt sie eine '~', so wird die Autorenliste darum erg&auml;nzt, diese wi
 		}	?>]);
 	</script>
 
-	<a class="button" href="javascript:picForm.addPic();"><i class="icon-plus-sign"></i> Grafik hinzuf&uuml;gen</a>
+	<a class="button" href="javascript:picForm.addPic();"><i class="icon-plus-sign"></i> Grafik hinzufügen</a>
 <?php	}
 
 		// Do we have valid data? (i.e. any data at all)
