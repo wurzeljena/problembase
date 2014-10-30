@@ -1,0 +1,17 @@
+{
+	"name": "wurzeljena/problembase",
+	"description": "Database of mathematical problems",
+	"license" : "MIT",
+	"authors": [
+		{
+			"name": "Aaron Puchert",
+			"email": "aaronpuchert@alice-dsl.net"
+		}
+	],
+	"require": {
+		"php": "~5.6.0"
+	},
+	"require-dev": {
+		"heroku/heroku-buildpack-php": "*"
+	}
+}

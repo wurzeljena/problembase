@@ -11,7 +11,12 @@
 sql/*.sqlite
 
 # Local configuration
-conf/*.conf
+conf/nginx.conf
+conf/apache.conf
 
 # Local logs
 logs/*
+
+# Ignore composer lockfile and dependencies
+composer.lock
+vendor/
