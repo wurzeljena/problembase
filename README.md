@@ -70,7 +70,8 @@ your needs.
 
 The nginx server should be configured to handle PHP scripts via PHP-FPM. Apart
 from that, a pretty basic configuration should work, don't forget to include
-`conf/nginx.d/*.conf` at the end of the server directive.
+`conf/nginx_app.conf` in the server directive, between `server`, `root` etc.
+and the code passing PHP files to the FPM server.
 
 ### SQLite
 
