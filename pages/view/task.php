@@ -1,6 +1,6 @@
 <?php
 	include '../../lib/master.php';
-	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_TASKLIST | INC_SOLLIST | INC_EVALLIST);
+	$pb = load(LOAD_DB | INC_HEAD | INC_PROBLEMS | INC_SOLUTIONS | INC_EVALUATIONS);
 
 	$id = (int)$_GET['id'];
 	$problem = new Task($pb, $id);

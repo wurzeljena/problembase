@@ -1,6 +1,6 @@
 <?php
 	include '../../lib/master.php';
-	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_TASKLIST | INC_SOLLIST);
+	$pb = load(LOAD_DB | INC_HEAD | INC_PROBLEMS | INC_SOLUTIONS);
 
 	// get name and location, if set
 	$data = array();

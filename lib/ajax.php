@@ -5,7 +5,7 @@
 	switch ($_GET["query"]) {
 	// ### PROBLEMS ###
 	case "tasklist":               // Tasklists
-		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS | INC_TASKLIST);
+		$pb = load(LOAD_DB | INC_PROBLEMS);
 		header("Content-Type: text/html; encoding=utf-8");
 
 		$filter = new Filter($_GET['hash']);
@@ -15,7 +15,7 @@
 		break;
 
 	case "issue_tasks":            // Answer to TeX requests from issue pages
-		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS | INC_TASKLIST);
+		$pb = load(LOAD_DB | INC_PROBLEMS);
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=aufg"
 			.str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)
@@ -31,7 +31,7 @@
 
 	// ### SOLUTIONS ###
 	case "issue_solutions":        // Answer to TeX requests from issue pages
-		$pb = load(LOAD_DB | INC_PROPOSERS | INC_TAGS | INC_TASKLIST | INC_SOLLIST);
+		$pb = load(LOAD_DB | INC_SOLUTIONS);
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=loes"
 			.(str_pad($_GET['year']%100, 2, "0", STR_PAD_LEFT)).str_pad($_GET['month'], 2, "0", STR_PAD_LEFT).".tex");

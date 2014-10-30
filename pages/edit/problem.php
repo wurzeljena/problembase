@@ -1,6 +1,6 @@
 <?php
 	include '../../lib/master.php';
-	$pb = load(LOAD_DB | INC_HEAD | INC_TAGS | INC_PROPOSERS | INC_TASKLIST);
+	$pb = load(LOAD_DB | INC_HEAD | INC_PROBLEMS);
 
 	// Get problem
 	$id = isset($_GET['id']) ? (int)$_GET['id'] : -1;
