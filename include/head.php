@@ -10,7 +10,7 @@
 	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="<?=WEBROOT?>/pb.css"/>
 	<link rel="stylesheet" type="text/css" href="<?=WEBROOT?>/Font-Awesome/css/font-awesome.css"/>
-	<link rel="icon" href="<?=WEBROOT?>/dw.ico"/>
+	<link rel="icon" href="<?=WEBROOT?>/img/dw.ico"/>
 <?php	if ($ok): ?>
 	<script type="text/javascript"> var rootdir="<?=WEBROOT?>"; </script>
 	<script type="text/javascript" src="<?=WEBROOT?>/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
