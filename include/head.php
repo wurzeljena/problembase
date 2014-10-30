@@ -14,8 +14,8 @@
 <?php	if ($ok): ?>
 	<script type="text/javascript"> var rootdir="<?=WEBROOT?>"; </script>
 	<script type="text/javascript" src="<?=WEBROOT?>/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
-	<script type="text/javascript" src="<?=WEBROOT?>/fancy.js"></script>
-	<script type="text/javascript" src="<?=WEBROOT?>/ajax.js"></script>
+	<script type="text/javascript" src="<?=WEBROOT?>/js/fancy.js"></script>
+	<script type="text/javascript" src="<?=WEBROOT?>/js/ajax.js"></script>
 <?php	else: ?>
 	<style type="text/css">
 		li.alt {color: Gray; font-style: italic;}
