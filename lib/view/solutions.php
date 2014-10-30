@@ -63,7 +63,7 @@
 		function print_tex() {
 			print "\\losbox";
 			$this->problem->print_tex(true);
-			print "{Lösung von ";
+			print "\n{Lösung von ";
 			$this->proposers->print_list($this->data["remarks"], false);
 			print ":}{%\n{$this->data['solution']}}\n\n";
 		}

@@ -193,7 +193,9 @@
 				print "\\aufbox";
 			print "{\${$this->data['letter']}\,{$this->data['number']}$}{";
 			$this->proposers->print_list($this->data["remarks"], false);
-			print "}{%\n{$this->data['problem']}}\n\n";
+			print "}{%\n{$this->data['problem']}}";
+			if (!$bare)
+				print "\n\n";
 		}
 
 		// Print form

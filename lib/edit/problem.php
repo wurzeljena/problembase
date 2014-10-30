@@ -15,6 +15,10 @@
 	foreach($params as $key)
 		$$key = $_POST[$key];
 
+	// Textareas send \r\n as linebreaks, we want \n only.
+	$problem = $pb->escape(str_replace("\r", "", $problem));
+	$remarks = $pb->escape(str_replace("\r", "", $remarks));
+
 	$pb->exec("BEGIN");
 	if (isset($_POST["delete"])) {
 		$pb->exec("DELETE FROM problems WHERE file_id=$id");
@@ -31,14 +35,14 @@
 		// write into db
 		$proposed = $proposed ? "date('$proposed')" : "null";	// convert to date if not empty
 		if (isset($id)) {
-			$pb->exec("UPDATE files SET content='{$pb->escape($problem)}' WHERE rowid=$id");
-			$pb->exec("UPDATE problems SET remarks='{$pb->escape($remarks)}', proposed=$proposed WHERE file_id=$id");
+			$pb->exec("UPDATE files SET content='$problem' WHERE rowid=$id");
+			$pb->exec("UPDATE problems SET remarks='$remarks', proposed=$proposed WHERE file_id=$id");
 		}
 		else {
-			$pb->exec("INSERT INTO files(content) VALUES('{$pb->escape($problem)}')");
+			$pb->exec("INSERT INTO files(content) VALUES('$problem')");
 			$id = $pb->lastInsertRowID("files", "rowid");
 			$pb->exec("INSERT INTO problems(file_id, remarks, proposed, public) VALUES "
-				."($id, '{$pb->escape($remarks)}', $proposed, 0)");
+				."($id, '$remarks', $proposed, 0)");
 		}
 
 		// write proposers

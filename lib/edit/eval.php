@@ -6,9 +6,17 @@
 		http_error(403);
 
 	// read parameters
-	$id = $pb->escape($_GET["id"]);
+	$id = (int)$_GET["id"];
 	foreach(array("diff", "beauty", "know", "comment") as $key)
 		$$key = $pb->escape($_POST[$key]);
+
+	// Make sure we have numbers where we want them
+	$diff = (int)$diff;
+	$beauty = (int)$beauty;
+	$know = (int)$know;
+
+	// Textareas send \r\n as linebreaks, we want \n only.
+	$comment = $pb->escape(str_replace("\r", "", $comment));
 	$editorial = isset($_POST['editorial']) ? 1 : 0;
 
 	// write into db
