@@ -9,7 +9,7 @@ RewriteEngine On
 
 # main page
 RewriteRule ^$ %{ENV:PBROOT}/browse [R,L]
-RewriteRule ^browse$ index.php [L]
+RewriteRule ^browse$ pages/browse.php [L]
 RewriteRule ^logon$ lib/logon.php [L,QSA]
 RewriteRule ^tasks$ lib/ajax.php?query=tasklist [L,QSA]
 

@@ -1,5 +1,5 @@
 <?php
-	include 'lib/master.php';
+	include '../lib/master.php';
 	$pb = load(LOAD_DB | INC_HEAD | INC_PROPOSERS | INC_TAGS | INC_TASKLIST);
 
 	printhead();
