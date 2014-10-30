@@ -201,7 +201,7 @@
 		// Print form
 		function print_form(SQLDatabase $pb) {
 			?>
-	<form class="task" id="task" title="Aufgabenformular" action="<?=WEBROOT?>/submit/<?= $this->is_valid() ? $this->data["id"]: "" ?>" method="POST">
+	<form class="task" id="task" title="Aufgabenformular" action="<?=WEBROOT?>/submit/<?= $this->is_valid() ? $this->data["file_id"]: "" ?>" method="POST">
 		<?php
 			proposer_form($pb, "task", $this->proposers);
 			tag_form($pb, "task", $this->tags);
