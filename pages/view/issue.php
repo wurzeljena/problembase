@@ -12,7 +12,7 @@
 	$filter->filter(false);
 
 	// generate list
-	$tasklist = new TaskList($pb, $filter->array);
+	$tasklist = new ProblemList($pb, $filter->array);
 
 	// generate solution list
 	$sollist = new SolutionList($pb, array("year=$year", "month=$month"));

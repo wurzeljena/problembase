@@ -49,7 +49,7 @@ function PageLoader(hash, max_pages, page) {
 			}
 		}
 
-		xmlhttp.open("GET", rootdir + "/tasks?hash=" + hash + "&page=" + page, true);
+		xmlhttp.open("GET", rootdir + "/problemlist?hash=" + hash + "&page=" + page, true);
 		xmlhttp.send();
 	}
 

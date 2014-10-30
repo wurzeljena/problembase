@@ -109,7 +109,7 @@
 		}
 	}
 
-	class Task {
+	class Problem {
 		private $data;      // Named array containing the properties
 		private $proposers; // ProposerList for the problem
 		private $tags;      // TagList for the problem
@@ -287,7 +287,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		}
 	}
 
-	class TaskList {
+	class ProblemList {
 		private $ids;       // array of problem ids
 		private $problems;  // corresponding data
 
@@ -301,7 +301,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 			// get problems
 			$this->problems = Array();
 			foreach ($this->ids AS $id)
-				$this->problems[] = new Task($pb, $id);
+				$this->problems[] = new Problem($pb, $id);
 		}
 
 		// print given tasks as HTML

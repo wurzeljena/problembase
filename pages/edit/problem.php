@@ -4,7 +4,7 @@
 
 	// Get problem
 	$id = isset($_GET['id']) ? (int)$_GET['id'] : -1;
-	$problem = new Task($pb, $id);
+	$problem = new Problem($pb, $id);
 
 	// If no such problem exists, throw a 404 error
 	if ($id != -1 && !$problem->is_valid())

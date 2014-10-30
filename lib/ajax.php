@@ -4,17 +4,17 @@
 	// The query parameter tells us what the user wants to know.
 	switch ($_GET["query"]) {
 	// ### PROBLEMS ###
-	case "tasklist":               // Tasklists
+	case "problemlist":            // Problem lists
 		$pb = load(LOAD_DB | INC_PROBLEMS);
 		header("Content-Type: text/html; encoding=utf-8");
 
 		$filter = new Filter($_GET['hash']);
-		$tasklist = new TaskList($pb, $filter->array,
+		$tasklist = new ProblemList($pb, $filter->array,
 			$_GET['page'] * TASKS_PER_PAGE, TASKS_PER_PAGE);
 		$tasklist->print_html();
 		break;
 
-	case "issue_tasks":            // Answer to TeX requests from issue pages
+	case "issue_problems":         // Answer to TeX requests from issue pages
 		$pb = load(LOAD_DB | INC_PROBLEMS);
 		header("Content-Type: application/x-tex; encoding=utf-8");
 		header("Content-Disposition: attachment; filename=aufg"
@@ -25,7 +25,7 @@
 		$hash = $filter->set_params($_GET);
 		$filter->construct_query($pb, array("number ASC"));
 		$filter->filter(false);
-		$tasklist = new TaskList($pb, $filter->array);
+		$tasklist = new ProblemList($pb, $filter->array);
 		$tasklist->print_tex();
 		break;
 

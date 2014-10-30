@@ -3,7 +3,7 @@
 	$pb = load(LOAD_DB | INC_HEAD | INC_PROBLEMS | INC_SOLUTIONS | INC_EVALUATIONS);
 
 	$id = (int)$_GET['id'];
-	$problem = new Task($pb, $id);
+	$problem = new Problem($pb, $id);
 
 	// if no such problem exists, throw a 404 error
 	if (!$problem->is_valid())

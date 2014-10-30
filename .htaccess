@@ -11,11 +11,11 @@ RewriteEngine On
 RewriteRule ^$ %{ENV:PBROOT}/browse [R,L]
 RewriteRule ^browse$ pages/browse.php [L]
 RewriteRule ^logon$ lib/logon.php [L,QSA]
-RewriteRule ^tasks$ lib/ajax.php?query=tasklist [L,QSA]
+RewriteRule ^problemlist$ lib/ajax.php?query=problemlist [L,QSA]
 
 # content pages and submitting
 RewriteRule ^problem$ pages/edit/problem.php [L]
-RewriteRule ^problem/([0-9]+)$ pages/view/task.php?id=$1 [L]
+RewriteRule ^problem/([0-9]+)$ pages/view/problem.php?id=$1 [L]
 RewriteRule ^problem/([0-9]+)/edit$ pages/edit/problem.php?id=$1 [L]
 RewriteRule ^problem/([0-9]+)/solution$ pages/edit/solution.php?problem_id=$1 [L]
 RewriteRule ^problem/([0-9]+)/solution/([0-9]+)$ pages/edit/solution.php?id=$2&problem_id=$1 [L]
@@ -52,5 +52,5 @@ RewriteRule ^proposers/([^/]+)/([^/]+)$ pages/view/proposer.php?name=$1&location
 
 # issue
 RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))$ pages/view/issue.php?year=$1&month=$2 [L]
-RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/problems$ lib/ajax.php?query=issue_tasks&year=$1&month=$2 [L]
+RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/problems$ lib/ajax.php?query=issue_problems&year=$1&month=$2 [L]
 RewriteRule ^issues/([0-9]{4})/(([1-9]|0[1-9]|1[0-2]))/solutions$ llib/ajax.php?query=issue_solutions&year=$1&month=$2 [L]

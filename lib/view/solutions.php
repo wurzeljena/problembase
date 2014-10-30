@@ -1,7 +1,7 @@
 <?php
 	class Solution {
 		private $data = array();  // Named array containing the data
-		private $problem;         // Task object
+		private $problem;         // Problem object
 		private $proposers;       // ProposerList object containing the proposers
 		private static $query;    // Query variable
 
@@ -34,7 +34,7 @@
 				$this->data = $data;
 
 			// Get problem
-			$this->problem = new Task($pb,
+			$this->problem = new Problem($pb,
 				($problem_id == -1) ? $data["problem_id"] : $problem_id);
 
 			// Get proposers
