@@ -55,7 +55,11 @@
 			print "</div>\n";
 
 			print "<div class='text' id='soln'>";
-			print htmlspecialchars($this->data['solution']);
+			$replacement = "<div class='picture'><a href='".WEBROOT."/problem/{$this->data['problem_id']}"
+				."/solution/{$this->data['file_id']}/picture-$1' class='icon-picture'></a></div>";
+			$solution = preg_replace("/\\\\includegraphics{([0-9]+)}/", $replacement,
+				htmlspecialchars($this->data['solution']));
+			print $solution;
 			print "</div></div>\n\n";
 		}
 

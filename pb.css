@@ -707,7 +707,14 @@ div.eval > label:hover ~ input:checked ~ label
 	text-shadow	: 1px 1px #4B4, 2px 2px #292, .1em .1em .2em rgba(0,0,0,.5);
 }
 
-/* PICTURE FORMS */
+/* PICTURES & PICTURE FORMS */
+div.picture
+{
+	display	: inline-block;
+	padding	: 5px;
+	border-radius	: 5px;
+	background	: #80C0C0;
+}
 div.picform
 {
 	margin	: 1em 5px;
@@ -715,10 +722,9 @@ div.picform
 	background	: #80C0C0;
 	box-shadow	: 3px 3px 5px #60A0A0;
 }
-h4.icon-picture
-{
-	color		: #206060;
-}
+.icon-picture {color: #206060;}
+a.icon-picture {font-size: x-large;}
+a.icon-picture:hover {color: #20A0A0;}
 div.picform input.text, div.picform textarea {background : #B0E0E0;}
 div.picform input.text:hover, div.picform textarea:hover {background : #C0F0F0;}
 input.id {width: 50px;}

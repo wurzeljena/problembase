@@ -42,6 +42,27 @@
 		$sollist = new SolutionList($pb, array("year={$_GET['year']}", "month={$_GET['month']}"));
 		$sollist->print_tex($year, $period);
 		break;
+	case "picture":                // Fetch a picture
+		$pb = load(LOAD_DB);
+		$id = (int)$_GET["id"];
+		$solution_id = (int)$_GET["solution_id"];
+
+		$picture = $pb->querySingle("SELECT content FROM pictures WHERE file_id=$solution_id "
+			."AND id=$id".($_SESSION["editor"] ? "" : " AND public=1"), false);
+
+		if ($picture) {
+			header("Content-Type: application/x-metapost; encoding=utf-8");
+			header("Content-Disposition: attachment; filename=$id.mp");
+
+			// print picture
+			print "input tftools;\n\n";
+			print "beginfig($id);\n  ";
+			print str_replace("\n", "\n  ", $picture);	// indent
+			print "\nendfig;\n";
+		}
+		else
+			http_error(404, "Bild nicht gefunden");
+		break;
 
 	// ### PROPOSERS ###
 	case "proposer":               // Answer to Ajax queries for proposers
