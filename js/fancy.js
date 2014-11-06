@@ -450,37 +450,6 @@ function Pictures(form, list) {
 	}
 }
 
-// starring mechanism
-function Stars(name) {
-	this.input = document.getElementById(name);
-	this.value = parseInt(this.input.value);
-	this.stars = new Array();
-	for (var i = 0; i < 5; i++)
-		this.stars[i] = document.getElementById(name + (i+1));
-
-	this.show = function (num) {
-		for (var i = 0; i < 5; i++) {
-			if (i < num) {
-				this.stars[i].src = rootdir + "/img/mandstar.png";
-				this.stars[i].alt = "*";
-			}
-			else {
-				this.stars[i].src = rootdir + "/img/mand.png";
-				this.stars[i].alt = "o";
-			}
-		}
-	};
-	this.set = function (num) {
-		this.value = num;
-		this.input.value = this.value;
-	};
-	this.reset = function () {
-		this.show(this.value);
-	};
-
-	this.reset();
-};
-
 // wait timer for failed logins
 function WaitTimer(timestr) {
 	var self = this;

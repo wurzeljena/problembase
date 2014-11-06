@@ -283,14 +283,6 @@ h3 > *.tag
 	font-size	: small;
 	color		: #606060;
 }
-img.star
-{
-	margin	: 3px -3px -6px -3px;
-	padding	: 0;
-	transform	: rotate(60deg);
-	-webkit-transform	: rotate(60deg);
-}
-form img.star {cursor: pointer;}
 
 /**************************
 	CONTENT FORMATTING
@@ -477,11 +469,6 @@ div.comment div.text
 	display	: inline;
 	margin	: 3px 0px;
 }
-div.comment div.eval
-{
-	clear	: right;
-	text-align	: center;
-}
 
 /* SOLUTION LIST */
 div.solution
@@ -655,15 +642,69 @@ form.eval
 }
 form.eval input.text, form.eval textarea {background : #F0F050;}
 form.eval input.text:hover, form.eval textarea:hover {background : #F0F080;}
-span.evalspan
+div.eval
 {
+	display		: inline-block;
 	white-space	: nowrap;
 }
-span.eval, label.eval
+span.eval
 {
 	font-size	: small;
-	font-style	: italic;
 	padding		: 0.5em;
+}
+
+/**
+ * The following is inspired by http://lea.verou.me/2011/08/accessible-star-rating-widget-with-pure-css/
+ * See http://jsfiddle.net/leaverou/CGP87/light/, (c) Lea Verou 2011
+ */
+div.eval:not(:checked) > input
+{
+	display: none;
+}
+
+div.eval:not(:checked) > label,
+div.eval > span.unchecked
+{
+	color		: #DDD;
+	text-shadow	: 1px 1px #BBB, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+}
+div.eval:not(:checked) > label
+{
+	float		: right;
+	width		: 1em;
+	padding		: 0 .1em;
+	overflow	: hidden;
+	white-space	: nowrap;
+	cursor		: pointer;
+}
+
+div.eval:not(:checked) > input ~ label:before
+{
+	content	: '★ ';
+}
+
+div.eval > input:checked ~ label,
+div.eval > span.checked
+{
+	color		: #3D0;
+	text-shadow	: 1px 1px #2B0, 2px 2px #190, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+div.eval:not(:checked) > label:hover,
+div.eval:not(:checked) > label:hover ~ label
+{
+	color		: #3D6;
+	text-shadow	: 1px 1px #2B4, 2px 2px #192, .1em .1em .2em rgba(0,0,0,.5);
+}
+
+div.eval > input:checked + label:hover,
+div.eval > input:checked + label:hover ~ label,
+div.eval > input:checked ~ label:hover,
+div.eval > input:checked ~ label:hover ~ label,
+div.eval > label:hover ~ input:checked ~ label
+{
+	color		: #6D6;
+	text-shadow	: 1px 1px #4B4, 2px 2px #292, .1em .1em .2em rgba(0,0,0,.5);
 }
 
 /* PICTURE FORMS */

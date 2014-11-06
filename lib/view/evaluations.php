@@ -18,19 +18,19 @@
 				print " <a href='mailto:{$this->data['email']}'><i class='icon-envelope-alt'></i></a>";
 			print '</div><div class="text">'.htmlspecialchars($this->data['comment']).'</div>';
 
-			print '<div class="eval">';
+			print "<div style='clear:right;'>\n";
 			$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
 			$critcols = array('beauty', 'difficulty', 'knowledge_required');
 			for ($crit=0; $crit<3; ++$crit) {
-				print '<span class="evalspan">';
-				print '<span class="eval">'.$critnames[$crit].'</span> ';
-				for ($star=1; $star<=5; ++$star)
-					print ($star <= $this->data[$critcols[$crit]]) ?
-						"<img class='star' src='".WEBROOT."/img/mandstar.png' alt='*'> " :
-						"<img class='star' src='".WEBROOT."/img/mand.png' alt='o'> ";
-				print '</span> ';
+				print '<div class="eval">';
+				print "<span class='eval'>{$critnames[$crit]}</span>\n";
+				for ($star=1; $star<=5; ++$star) {
+					$class = ($star <= $this->data[$critcols[$crit]]) ? "checked" : "unchecked";
+					print "\t<span class='$class'>★</span>\n";
+				}
+				print "</div>\n";
 			}
-			print '</div></div>';
+			print "</div></div>";
 		}
 		
 	}

@@ -32,19 +32,15 @@
 		<?php
 			$critnames = array('Eleganz', 'Schwierigkeit', 'Wissen');
 			$critcols = array('beauty', 'difficulty', 'knowledge_required');
-			$critobj = array('Beauty', 'Diff', 'Know');
 			$critid = array('beauty', 'diff', 'know');
 			for ($crit=0; $crit<3; ++$crit) {
-				print "<span class='evalspan'>";
-				print "<label class='eval' for='{$critid[$crit]}stars'>{$critnames[$crit]}</label>";
-				print "<span id='{$critid[$crit]}stars' onmouseout='{$critobj[$crit]}.reset();'>";
-				for ($star=1; $star<=5; ++$star)
-					print "<img class='star' id='{$critid[$crit]}$star' "
-						."onmouseover='{$critobj[$crit]}.show($star);' onclick='{$critobj[$crit]}.set($star);'/> ";
-				print "</span>";
-				print "<input type='hidden' name='{$critid[$crit]}' id='{$critid[$crit]}' value='".
-					(empty($comment) ? -1 : $comment[$critcols[$crit]])."'/>";
-				print "</span> ";
+				print "<div class='eval'>\n";
+				$selected = empty($comment) ? -1 : $comment[$critcols[$crit]];
+				for ($star=5; $star>0; --$star)
+					print "<input type='radio' id='{$critid[$crit]}$star' name='{$critid[$crit]}' value='$star'"
+						.($selected == $star ? " checked" : "")."/><label for='{$critid[$crit]}$star'>$star</label>\n";
+				print "<span class='eval'>{$critnames[$crit]}</span>\n";
+				print "</div>\n\n";
 			}
 		?>
 		<textarea name="comment" rows="10" cols="80" placeholder="Kommentar" style="height:100px;"><?php
@@ -60,11 +56,5 @@
 	</form>
 	</div>
 	</div>
-
-	<script type="text/javascript">
-		var Beauty = new Stars("beauty");
-		var Diff = new Stars("diff");
-		var Know = new Stars("know");
-	</script>
 </body>
 </html>
