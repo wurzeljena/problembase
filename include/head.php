@@ -32,7 +32,7 @@ function drawMenu($id) { ?>
 </li><?php	if ($_SESSION['user_id'] != -1): ?><li>
 		<a href="<?=WEBROOT?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
 </li><li>
-		<a href="<?=WEBROOT?>/users/"><i class="icon-group"></i> <span>Benutzerliste</span></a>
+		<a href="<?=WEBROOT?>/users"><i class="icon-group"></i> <span>Benutzerliste</span></a>
 </li><li>
 		<a href="<?=WEBROOT?>/tags"><i class="icon-tags"></i> <span>Tag-Editor</span></a>
 </li><?php
