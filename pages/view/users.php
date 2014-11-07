@@ -26,13 +26,8 @@
 		<?php
 			while ($user = $users->fetchAssoc()) { ?>
 				<tr id=<?=$user['id']?>>
-					<td><?=$user['name']?></td>
-					<?php
-					if ($user['id']==$_SESSION['user_id'])
-						print '<td><a class="button" href="javascript:User.Trig();"><i class="icon-pencil"></i> Bearbeiten</a></td>	';
-					else
-						print '<td style="font-family:monospace;">'.$user['email'].'</td>';
-					?>
+					<td><a class="username" href="<?=WEBROOT?>/users/<?=$user["id"]?>"><?=$user['name']?></a></td>
+					<td class="email"><?=$user['email']?></td>
 					<td><input type="checkbox" <?php
 						print 'id="root'.$user['id'].'" ';
 						if ($user['root'])
@@ -53,22 +48,6 @@
 						?>></td>
 					<td><?=$user['numcomm']?></td>
 				</tr>
-
-				<?php if ($user['id']==$_SESSION['user_id']) { ?>
-				<tr class="own" id="forms" style="visibility:hidden; position:absolute;"><td colspan="5">
-				<form id="edit" action="<?=WEBROOT?>/users/<?=$_SESSION['user_id']?>/edit" method="POST">
-					<input type="text" name="name" placeholder="Name" value="<?=$user['name']?>">
-					<input type="email" name="email" style="width:200px;" placeholder="E-Mail" value="<?=$user['email']?>">
-					<input type="submit" value="Ändern">
-				</form>
-				<form id="pw" action="<?=WEBROOT?>/users/<?=$_SESSION['user_id']?>/changepw" method="POST" onsubmit="return validate_password()">
-					<input type="password" style="width:100px;" name="old_pw" placeholder="Altes Passwort">
-					<input type="password" style="width:100px;" name="new_pw" placeholder="Neues Passwort">
-					<input type="password" style="width:100px;" name="new_pw_check" placeholder="Bestätigen">
-					<input type="submit" value="Passwort ändern">
-				</form>
-				</td></tr>
-				<?php } ?>
 			<?php } ?>
 			</tbody>
 
@@ -88,9 +67,5 @@
 	</div>
 
 	<?php $pb->close(); ?>
-	
-	<script type="text/javascript">
-		var User = new Trigger("forms");
-	</script>
 </body>
 </html>

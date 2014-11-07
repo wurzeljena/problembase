@@ -54,7 +54,7 @@
 			print "<h3 id='comments'><i class='icon-comment-alt'></i> Kommentare</h3>";
 
 		$evals = new EvalList;
-		$evals->get($pb, $id);
+		$evals->get_for_problem($pb, $id);
 		$evals->print_html();
 	?>
 

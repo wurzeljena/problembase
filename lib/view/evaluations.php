@@ -13,9 +13,10 @@
 				.($this->data['editorial'] ? " editorial" : "")."'>";
 			if ($this->data['user_id'] == $_SESSION['user_id'])
 				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
-			print "<div class='author'>{$this->data['name']}";
+			print "<div class='author'><a class='username' "
+				."href='".WEBROOT."/users/{$this->data['user_id']}'>{$this->data['name']}</a>";
 			if ($_SESSION['editor'])
-				print " <a href='mailto:{$this->data['email']}'><i class='icon-envelope-alt'></i></a>";
+				print " <a class='envelope' href='mailto:{$this->data['email']}'><i class='icon-envelope-alt'></i></a>";
 			print '</div><div class="text">'.htmlspecialchars($this->data['comment']).'</div>';
 
 			print "<div style='clear:right;'>\n";
@@ -39,9 +40,17 @@
 		private $data = array();    // Array of Evaluation objects
 
 		// Evaluations for a problem
-		function get(SQLDatabase $pb, $problem_id) {
+		function get_for_problem(SQLDatabase $pb, $problem_id) {
 			$cond = $_SESSION['editor'] ? "" : " AND (editorial=0 OR user_id={$_SESSION["user_id"]})";
 			$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$problem_id".$cond);
+			while ($comment = $comments->fetchAssoc())
+				$this->data[] = new Evaluation($comment);
+		}
+
+		// Evaluations for one user
+		function get_for_user(SQLDatabase $pb, $user_id) {
+			$cond = $_SESSION['editor'] ? "" : " AND (editorial=0 OR user_id={$_SESSION["user_id"]})";
+			$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE user_id=$user_id".$cond);
 			while ($comment = $comments->fetchAssoc())
 				$this->data[] = new Evaluation($comment);
 		}

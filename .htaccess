@@ -32,7 +32,7 @@ RewriteRule ^submit/([0-9]+)/eval$ lib/edit/eval.php?id=$1 [L,QSA]
 # user management
 RewriteRule ^users$ pages/view/users.php [L]
 RewriteRule ^users/new$ lib/edit/user.php [L,QSA]
-RewriteRule ^users/([0-9]+)$ %{ENV:PBROOT}/users [R,L]
+RewriteRule ^users/([0-9]+)$ pages/view/user.php?id=$1 [L]
 RewriteRule ^users/([0-9]+)/edit$ lib/edit/user.php?id=$1 [L,QSA]
 RewriteRule ^users/([0-9]+)/changepw$ lib/edit/user.php?id=$1 [L,QSA]
 RewriteRule ^users/([0-9]+)/delete$ lib/edit/user.php?id=$1&delete [L,QSA]

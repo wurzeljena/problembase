@@ -90,11 +90,12 @@ div.head form#login
 		float : right;
 	}
 }
-span#username
+.username
 {
-	color  : #F06020;
-	margin	: 5px;
+	color	: #F06020;
+	text-decoration	: none;
 }
+span.username {margin: 5px;}
 span#wait
 {
 	font-family	: Sans-Serif;
@@ -283,6 +284,10 @@ h3 > *.tag
 	font-size	: small;
 	color		: #606060;
 }
+a.email
+{
+	text-decoration	: none;
+}
 
 /**************************
 	CONTENT FORMATTING
@@ -455,10 +460,8 @@ div.comment div.author
 	margin		: 3px 10px 3px 0px;
 	font-family	: Sans-Serif;
 	font-size	: small;
-	font-style	: italic;
-	color	: #404040;
 }
-div.comment div.author a
+div.comment div.author a.envelope
 {
 	margin-left	: 3px;
 	font-size	: medium;
@@ -518,15 +521,11 @@ table.users td, table.users th
 {
 	padding	: 5px 10px;
 }
-table.users tr#forms td
-{
-	background	: #40A0E0;
-}
+
 form#edit, form#pw, form#newuser
 {
-	padding		: 0px;
-	margin		: 0px;
-	margin-top	: 5px;
+	background	: #40A0E0;
+	box-shadow	: 3px 3px 5px #80C0E0;
 }
 
 /* STATISTIC DIVS & TABLES */

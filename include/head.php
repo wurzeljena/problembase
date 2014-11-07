@@ -55,7 +55,7 @@ function drawMenu($id) { ?>
 		<input type="password" name="password" placeholder="Passwort">
 		<input type="submit" value="Login">
 	<?php else:
-			print "<span id='username'>{$_SESSION['user_name']}</span>";
+			print "<a class='username' href='".WEBROOT."/users/{$_SESSION['user_id']}'>{$_SESSION['user_name']}</a>";
 		?>
 		<input type="hidden" name="logout" value="1">
 		<input type="submit" value="Logout">
