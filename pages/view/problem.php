@@ -55,7 +55,7 @@
 
 		$evals = new EvalList;
 		$evals->get_for_problem($pb, $id);
-		$evals->print_html();
+		$evals->print_html(false);
 	?>
 
 		<?php $pb->close(); ?>

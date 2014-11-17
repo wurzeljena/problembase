@@ -20,7 +20,7 @@
 	<div class="content">
 		<h3>Übersicht zu <?=$user["name"]?></h3>
 
-		<?php if ($_SESSION['user_id'] != -1) : ?>
+		<?php if ($_SESSION['editor'] || $own) : ?>
 		<div>
 			E-Mail: <a class="email"  href="mailto:<?=$user["email"]?>"><?=$user["email"]?></span>
 		<?php if ($own): ?>
@@ -49,14 +49,14 @@
 
 		<h3>Kommentare</h3>
 		<?php else :
-			print "</div>";
+				print "</div>";
 			endif;
 		endif;
 
 		// Liste der Kommentare
 		$evals = new EvalList;
 		$evals->get_for_user($pb, $id);
-		$evals->print_html();
+		$evals->print_html(true);
 		?>
 	</div>
 	</div>

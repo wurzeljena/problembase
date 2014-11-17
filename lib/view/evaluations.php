@@ -8,11 +8,13 @@
 		}
 
 		// Print as HTML
-		function print_html() {
+		function print_html($link) {
 			print "<div class='comment".($this->data['user_id']==$_SESSION['user_id'] ? " own" : "")
 				.($this->data['editorial'] ? " editorial" : "")."'>";
 			if ($this->data['user_id'] == $_SESSION['user_id'])
 				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+			if ($link)
+				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}'><i class='icon-hand-right'></i> <span>Zur Aufgabe</span></a>\n";
 			print "<div class='author'><a class='username' "
 				."href='".WEBROOT."/users/{$this->data['user_id']}'>{$this->data['name']}</a>";
 			if ($_SESSION['editor'])
@@ -56,9 +58,9 @@
 		}
 
 		// Print them all
-		function print_html() {
+		function print_html($link) {
 			foreach($this->data as $comment)
-				$comment->print_html();
+				$comment->print_html($link);
 		}
 	}
 ?>

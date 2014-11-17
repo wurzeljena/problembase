@@ -2,11 +2,12 @@
 	include '../../lib/master.php';
 	$pb = load(LOAD_DB | INC_HEAD);
 
-	// if user isn't authenticated, throw a 403 error
-	if ($_SESSION['user_id'] == -1)
+	// Let only editors and admins see the user list
+	if (!($_SESSION["editor"] || $_SESSION["root"]))
 		http_error(403);
 
-	$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
+	$users = $pb->query("SELECT users.*, COUNT(problem_id) as numcomm FROM users "
+		."LEFT JOIN comments ON comments.user_id=users.id GROUP BY id ORDER BY name");
 	$root = $_SESSION['root'];
 
 	printhead("Benutzerliste");
