@@ -124,7 +124,7 @@ function loadTag() {
 				document.forms['tageditor'].elements['description'].value = resp.description;
 				document.forms['tageditor'].elements['color'].value = resp.color;
 				document.forms['tageditor'].elements['hidden'].checked = (resp.hidden == 1);
-				document.forms['tageditor'].elements['private'].checked = (resp.private_user !== null);
+				document.forms['tageditor'].elements['private'].checked = resp.private;
 				document.getElementById('delete_tag').disabled = false;
 				document.getElementById('submit_tag').value = "\u00c4ndern";
 				tagPreview();
@@ -161,7 +161,8 @@ function tagPreview() {
 	var taginfo = {
 		name: document.forms['tageditor'].elements['name'].value,
 		description: document.forms['tageditor'].elements['description'].value,
-		color: document.forms['tageditor'].elements['color'].value
+		color: document.forms['tageditor'].elements['color'].value,
+		private: document.forms['tageditor'].elements['private'].checked
 	};
 
 	document.getElementById('result_tag').innerHTML = "";

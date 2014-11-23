@@ -223,7 +223,7 @@ function writeTag(taginfo, taglist) {
 
 	// URL name
 	var url_name = taginfo.name.replace(/ /g, "_");
-	if (parseInt(taginfo.private))
+	if (taginfo.private)
 		url_name = "private/" + url_name;
 
 	var tag = document.createElement(link ? "a" : "span");

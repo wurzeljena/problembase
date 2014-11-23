@@ -77,12 +77,19 @@
 		}
 
 		function json_encode() {
-			return $this->data ? json_encode($this->data) : null;
+			if ($this->data) {
+				$data = $this->data;
+				$data["private"] = (bool)$data["private_user"];
+				unset($data["private_user"]);
+				return json_encode($data);
+			}
+			else
+				return null;
 		}
 
 		// Print JS code to write tag into the DOM-variable named $taglist.
 		function js($taglist) {
-			return "$taglist.appendChild(writeTag(".json_encode($this->data)."));\n";
+			return "$taglist.appendChild(writeTag(".$this->json_encode()."));\n";
 		}
 
 		// Write tag to database
@@ -204,8 +211,7 @@
 		}
 
 		function from_file(SQLDatabase $pb, $id) {
-			$tags = $pb->query("SELECT name, description, color, hidden, "
-				.$pb->boolean_statement("private_user NOTNULL")." AS private FROM tag_list JOIN tags "
+			$tags = $pb->query("SELECT name, description, color, hidden, private_user FROM tag_list JOIN tags "
 				."ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
 			$this->__construct($tags);
 		}
