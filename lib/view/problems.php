@@ -142,15 +142,17 @@
 
 		// Print problem as HTML, write tag code in string
 		function print_html(&$tag_code, $num = -1) {
-			print "<div class='task ".($this->data['public'] ? "" : "nonpublic")."'"
+			print "<article class='task".($this->data['public'] ? "" : " nonpublic")."'"
 				.($num != -1 ? " id='prob$num'" : "").">\n";
 			print "<div class='info top'>";
 			print "<div class='tags'></div>\n";
 			// Create code for tags
 			$tag_code .= $this->tags->js($num != -1 ? "taglists[$num]" : "taglist");
-			$this->proposers->print_list($this->data["remarks"], true);
-			if (isset($this->data['proposed']))
-				print " <span class='proposed'>{$this->data['proposed']}</span>";
+			print $this->proposers->to_string($this->data["remarks"], true);
+			if (isset($this->data['proposed'])) {
+				$date = new DateTime($this->data['proposed']);
+				print " <time class='proposed' datetime='{$this->data['proposed']}'>{$date->format('d.m.Y')}</time>";
+			}
 
 			print "</div>\n<div class='text'>";
 			print htmlspecialchars($this->data['problem']);
@@ -177,7 +179,7 @@
 				print " | <i class='icon-book' title='Lösungen'></i> {$this->data['numsol']}";
 			if (isset($this->data['numcomm']))
 				print " | <i class='icon-comments' title='Kommentare'></i> {$this->data['numcomm']}";
-			print "</div></div>\n\n";
+			print "</div></article>\n\n";
 		}
 
 		// Print simplified for forms
@@ -192,7 +194,7 @@
 			if (!$bare)
 				print "\\aufbox";
 			print "{\${$this->data['letter']}\,{$this->data['number']}$}{";
-			$this->proposers->print_list($this->data["remarks"], false);
+			print $this->proposers->to_string($this->data["remarks"], false);
 			print "}{%\n{$this->data['problem']}}";
 			if (!$bare)
 				print "\n\n";

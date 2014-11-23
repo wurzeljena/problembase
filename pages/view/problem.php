@@ -19,13 +19,13 @@
 	<?php printheader(); ?>
 
 	<div class="center">
-	<div id="panel">
+	<aside id="panel">
 	<?php
 		drawMenu("sidemenu");
 		if ($_SESSION['user_id'] != -1)
 			$problem->tag_selector($pb);
 	?>
-	</div>
+	</aside>
 
 	<div class="content">
 		<?php

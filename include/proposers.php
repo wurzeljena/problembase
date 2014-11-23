@@ -17,8 +17,8 @@
 		}
 
 		// Print Name and Location
-		function to_string($link) {
-			if ($link) {
+		function to_string($html) {
+			if ($html) {
 				$urlname = str_replace(" ", "_", $this->data['name']);
 				$urllocation = str_replace(" ", "_", $this->data['location']);
 				return "<a href='".WEBROOT."/proposers/$urlname'>{$this->data['name']}</a>, "
@@ -115,20 +115,26 @@
 			return "[".implode(", ", $json)."]";
 		}
 
-		function print_list($remarks, $link) {
-			$props = array_map(function(Proposer $prop) use ($link)
-				{return $prop->to_string($link);}, $this->data);
+		function to_string($remarks, $html) {
+			$props = array_map(function(Proposer $prop) use ($html)
+				{return $prop->to_string($html);}, $this->data);
 			$props = implode(" und ", $props);
 
 			if ($props) {
 				// if there is a ~ in the remarks, they serve as template
 				if (strpos($remarks, "~") !== false)
-					print str_replace("~", $props, $remarks);
+					$res = str_replace("~", $props, $remarks);
 				else
-					print $props;
+					$res = $props;
 			}
 			else    // print just the remarks, if there are no proposers
-				print $remarks;
+				$res = $remarks;
+
+			// Return as HTML5 author information, if desired
+			if ($html)
+				return "<address>$res</address>";
+			else
+				return $res;
 		}
 
 		// Print proposer statistic

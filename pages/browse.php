@@ -22,7 +22,7 @@
 	<?php printheader(); ?>
 
 	<div class="center">
-	<div id="panel">
+	<aside id="panel">
 	<?php drawMenu("sidemenu"); ?>
 
 	<form class="filter" id="filter" title="Filter" action="<?=WEBROOT?>/browse" method="GET">
@@ -69,7 +69,7 @@
 	</form>
 
 	<?php $date = getdate(); printcalendar($date['year'], -1); ?>
-	</div>
+	</aside>
 
 	<div class="content" id="tasklist"></div>
 

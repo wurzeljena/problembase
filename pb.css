@@ -29,10 +29,10 @@ div.content
 }
 
 /* side panel right to div.content */
-div#panel { max-width: 340px; }
+aside#panel { max-width: 340px; }
 @media (min-width: 900px)
 {
-	div#panel
+	aside#panel
 	{
 		position: fixed;
 		left	: 50%;
@@ -43,7 +43,7 @@ div#panel { max-width: 340px; }
 }
 @media (max-width: 899px)
 {
-	div#panel iframe { display: none; }
+	aside#panel iframe { display: none; }
 }
 
 /* page header */
@@ -266,7 +266,7 @@ i.close
 	margin-bottom	: -1px;
 	margin-left		: 3px;
 }
-div.task div.tags
+article.task div.tags
 {
 	float	: right;
 	font-style	: normal;
@@ -287,6 +287,10 @@ h3 > *.tag
 a.email
 {
 	text-decoration	: none;
+}
+address
+{
+	display	: inline;
 }
 
 /**************************
@@ -380,7 +384,7 @@ div#pager
 }
 
 /* TASK PAGE */
-div.task
+article.task
 {
 	border	: 1px solid Gray;
 	border-radius : 5px;
@@ -396,7 +400,7 @@ div.text:before
 	font-size	: small;
 	color		: Gray;
 }
-div.task div.text:before {content: "Aufgabe: ";}
+article.task div.text:before {content: "Aufgabe: ";}
 div.info
 {
 	font-style	: italic;
@@ -407,7 +411,7 @@ div.top
 	border-bottom	: 1px solid Gray;
 	padding			: 5px;
 }
-span.proposed
+time.proposed
 {
 	color	: #A0A0A0;
 	padding	: 0 1em;
@@ -444,7 +448,7 @@ div.tag_selector i.icon-tags
 
 /* comments */
 h3#comments {color: #A0A000;}
-div.comment
+article.comment
 {
 	border	: 1px solid Gray;
 	border-radius : 5px;
@@ -452,29 +456,29 @@ div.comment
 	background	: #C0C020;
 	position	: relative;
 }
-div.own {background: #E0E020;}
-div.editorial div.text:before	{content:"(intern) "; }
-div.comment div.author
+article.own {background: #E0E020;}
+article.editorial div.text:before	{content:"(intern) "; }
+article.comment address
 {
 	display		: inline;
 	margin		: 3px 10px 3px 0px;
 	font-family	: Sans-Serif;
 	font-size	: small;
 }
-div.comment div.author a.envelope
+article.comment address a.envelope
 {
 	margin-left	: 3px;
 	font-size	: medium;
 	text-decoration	: none;
 }
-div.comment div.text
+article.comment div.text
 {
 	display	: inline;
 	margin	: 3px 0px;
 }
 
 /* SOLUTION LIST */
-div.solution
+article.solution
 {
 	border	: 1px solid Gray;
 	border-radius : 5px;
@@ -482,8 +486,8 @@ div.solution
 	margin : 15px 5px; padding : 5px;
 	position	: relative;
 }
-div.solution div.text:before {content: "L\00f6sung: ";}
-div.nonpublic
+article.solution div.text:before {content: "L\00f6sung: ";}
+article.nonpublic
 {
 	border-style: dashed;
 	opacity	: 0.7;

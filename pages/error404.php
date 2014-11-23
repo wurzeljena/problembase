@@ -20,9 +20,9 @@
 	<?php printheader(); ?>
 
 	<div class="center">
-	<div id="panel">
+	<aside id="panel">
 	<?php drawMenu("sidemenu"); ?>
-	</div>
+	</aside>
 
 	<div class="content">
 	<h3><?=$error?></h3>

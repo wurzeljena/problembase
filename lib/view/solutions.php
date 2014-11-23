@@ -45,13 +45,13 @@
 
 		// Print solution as HTML
 		function print_html($edit, $linkback) {
-			print '<div class="solution '.($this->data['public'] ? "" : "nonpublic").'">';
+			print '<article class="solution'.($this->data['public'] ? "" : " nonpublic").'">';
 			if ($edit)
 				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/solution/{$this->data['file_id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>\n";
 			if ($linkback)
 				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}'><i class='icon-hand-right'></i> <span>Zur Aufgabe</span></a>\n";
 			print "<div class='info top'>";
-			$this->proposers->print_list($this->data["remarks"], true);
+			print $this->proposers->to_string($this->data["remarks"], true);
 			print "</div>\n";
 
 			print "<div class='text' id='soln'>";
@@ -60,7 +60,7 @@
 			$solution = preg_replace("/\\\\includegraphics{([0-9]+)}/", $replacement,
 				htmlspecialchars($this->data['solution']));
 			print $solution;
-			print "</div></div>\n\n";
+			print "</div></article>\n\n";
 		}
 
 		// Print the solution as TeX code
@@ -68,7 +68,7 @@
 			print "\\losbox";
 			$this->problem->print_tex(true);
 			print "\n{Lösung von ";
-			$this->proposers->print_list($this->data["remarks"], false);
+			print $this->proposers->to_string($this->data["remarks"], false);
 			print ":}{%\n{$this->data['solution']}}\n\n";
 		}
 

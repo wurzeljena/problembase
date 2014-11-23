@@ -20,10 +20,10 @@
 	<?php printheader(); ?>
 
 	<div class="center">
-	<div id="panel">
+	<aside id="panel">
 	<?php drawMenu("sidemenu"); ?>
 		<iframe src="<?=WEBROOT?>/tags?iframe" style="border:none;overflow:hidden" width="270" height="270"></iframe>
-	</div>
+	</aside>
 
 	<div class="content">
 	<h2 class="task">Aufgabe bearbeiten</h2>

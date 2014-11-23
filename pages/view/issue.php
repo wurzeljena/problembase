@@ -21,10 +21,10 @@
 	<?php printheader(); ?>
 
 	<div class="center">
-	<div id="panel">
+	<aside id="panel">
 	<?php drawMenu("sidemenu");
 		printcalendar($year, $month); ?>
-	</div>
+	</aside>
 
 	<div class="content" id="tasklist">
 		<h2 class="issue">Heft <?=$month?>/<?=$year?></h2>
