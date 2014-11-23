@@ -27,7 +27,7 @@
 					return;
 			}
 			else
-				$data = array("file_id" => -1);
+				$data = array("file_id" => -1, "problem_id" => $problem_id);
 
 			// Got something valid?
 			if ($data)

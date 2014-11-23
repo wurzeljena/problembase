@@ -5,7 +5,12 @@
 	// Get user
 	$id = (int)$_GET["id"];
 	$user = $pb->querySingle("SELECT users.* FROM users WHERE users.id=$id", true);
-	$own = ($_SESSION['user_id'] == $id);
+
+	// Return 404, when user not found
+	if (!count($user))
+		http_error(404, "Benutzer nicht gefunden!");
+
+	$own = ($_SESSION["user_id"] == $user["id"]);
 
 	printhead("Benutzer {$user["name"]}");
 ?>

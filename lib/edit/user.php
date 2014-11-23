@@ -33,15 +33,17 @@
 
 	// delete user
 	if (isset($_GET["id"]) && isset($_GET["delete"]) && $_SESSION['root']) {
-		$pb->exec("DELETE FROM users WHERE id={$_GET["id"]}");
-		header("Location: ".WEBROOT."/users/");
+		$pb->exec("DELETE FROM users WHERE id='{$pb->escape($_GET['id'])}'");
+		header("Location: ".WEBROOT."/users");
 	}
 
 	// change name/email or password - user has to be logged in
 	if (isset($_GET["id"]) && $_GET["id"]==$_SESSION['user_id']) {
 		$id = $pb->escape($_GET["id"]);
 		if (isset($_POST["name"]) && isset($_POST["email"])) {
-			$pb->exec("UPDATE users SET name='{$_POST["name"]}', email='{$_POST["email"]}' WHERE id=$id");
+			$_SESSION["user_name"] = $name = $pb->escape($_POST["name"]);
+			$_SESSION["email"] = $new_mail = $pb->escape($_POST["email"]);
+			$pb->exec("UPDATE users SET name='$name', email='$new_mail' WHERE id=$id");
 		}
 		if (isset($_POST["old_pw"]) && isset($_POST["new_pw"])) {
 			$encr_pw = $pb->querySingle("SELECT encr_pw FROM users WHERE id=$id", false);
