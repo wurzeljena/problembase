@@ -229,8 +229,8 @@ a.danger:hover
 a.danger:active {box-shadow	: inset 2px 2px 1px #600000;}
 a.inner
 {
-	float		: right;
-	position	: relative;
+	position	: absolute;
+	right		: 5px;
 	opacity		: 0;
 	transition	: opacity 0.5s;
 }
