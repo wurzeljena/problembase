@@ -41,7 +41,7 @@
 
 			// Update or insert?
 			if (isset($data["id"])) {
-				$update = "UPDATE proposers name='{$data["name"]}', location='{$data["location"]}'"
+				$update = "UPDATE proposers SET name='{$data["name"]}', location='{$data["location"]}'"
 					.($data["country"] != "" ? ", country='{$data["country"]}'": "")." WHERE id={$data["id"]}";
 
 				$pb->exec($update);
