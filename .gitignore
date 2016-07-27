@@ -17,6 +17,5 @@ conf/apache.conf
 # Local logs
 logs/*
 
-# Ignore composer lockfile and dependencies
-composer.lock
+# Ignore dependencies
 vendor/
