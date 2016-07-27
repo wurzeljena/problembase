@@ -256,7 +256,7 @@ function writeTag(taginfo, taglist) {
 	// if it's part of a tag list, show close button
 	if (taglist !== undefined) {
 		var close = document.createElement("i");
-		close.className = "icon-remove close";
+		close.className = "fa fa-remove close";
 		close.style.cursor = "pointer";
 		close.onclick = function () { taglist.remove(url_name, this.parentNode); };
 		tag.appendChild(close);
@@ -385,7 +385,7 @@ function Pictures(form, list) {
 		pic.className = "picform";
 
 		var header = document.createElement("h4");
-		header.className = "icon-picture";
+		header.className = "fa fa-picture-o";
 		pic.appendChild(header);
 
 		var numfield = document.createElement("input");

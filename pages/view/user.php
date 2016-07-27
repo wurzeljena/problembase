@@ -29,8 +29,8 @@
 		<div>
 			E-Mail: <a class="email"  href="mailto:<?=$user["email"]?>"><?=$user["email"]?></span>
 		<?php if ($own): ?>
-			<a class="button" style="float:right;" href="javascript:password_form.Show();"><i class="icon-key"></i> Passwort ändern</a>
-			<a class="button" style="float:right;" href="javascript:edit_form.Show();"><i class="icon-pencil"></i> Bearbeiten</a>
+			<a class="button" style="float:right;" href="javascript:password_form.Show();"><i class="fa fa-key"></i> Passwort ändern</a>
+			<a class="button" style="float:right;" href="javascript:edit_form.Show();"><i class="fa fa-pencil"></i> Bearbeiten</a>
 		</div>
 
 		<form id="edit" style="display:none;"

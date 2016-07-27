@@ -12,13 +12,13 @@
 			print "<article class='comment".($this->data['user_id']==$_SESSION['user_id'] ? " own" : "")
 				.($this->data['editorial'] ? " editorial" : "")."'>";
 			if ($this->data['user_id'] == $_SESSION['user_id'])
-				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/evaluate'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>";
+				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/evaluate'><i class='fa fa-pencil'></i> <span>Bearbeiten</span></a>";
 			if ($link)
-				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}'><i class='icon-hand-right'></i> <span>Zur Aufgabe</span></a>\n";
+				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}'><i class='fa fa-hand-o-right'></i> <span>Zur Aufgabe</span></a>\n";
 			print "<address><a class='username' "
 				."href='".WEBROOT."/users/{$this->data['user_id']}'>{$this->data['name']}</a>";
 			if ($_SESSION['editor'])
-				print " <a class='envelope' href='mailto:{$this->data['email']}'><i class='icon-envelope-alt'></i></a>";
+				print " <a class='envelope' href='mailto:{$this->data['email']}'><i class='fa fa-envelope-o'></i></a>";
 			print '</address><div class="text">'.htmlspecialchars($this->data['comment']).'</div>';
 
 			print "<div style='clear:right;'>\n";
@@ -35,9 +35,8 @@
 			}
 			print "</div></article>";
 		}
-		
 	}
-	
+
 	class EvalList {
 		private $data = array();    // Array of Evaluation objects
 

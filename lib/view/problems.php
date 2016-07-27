@@ -160,10 +160,10 @@
 
 			if ($num != -1)
 				print "<a class='button inner bottom' href='".WEBROOT."/problem/{$this->data['file_id']}'>"
-					."<i class='icon-hand-right'></i> <span>Lösungen/Kommentare</span></a>\n";
+					."<i class='fa fa-hand-o-right'></i> <span>Lösungen/Kommentare</span></a>\n";
 			if ($num == -1 && $_SESSION['editor'])
 				print "<a class='button inner bottom' href='".WEBROOT."/problem/{$this->data['file_id']}/edit'>"
-					."<i class='icon-pencil'></i> <span>Bearbeiten</span></a>\n";
+					."<i class='fa fa-pencil'></i> <span>Bearbeiten</span></a>\n";
 
 			print "<div class='info'>";
 			// find out if published
@@ -176,9 +176,9 @@
 				print "Nicht publiziert";
 
 			if (isset($this->data['numsol']))
-				print " | <i class='icon-book' title='Lösungen'></i> {$this->data['numsol']}";
+				print " | <i class='fa fa-book' title='Lösungen'></i> {$this->data['numsol']}";
 			if (isset($this->data['numcomm']))
-				print " | <i class='icon-comments' title='Kommentare'></i> {$this->data['numcomm']}";
+				print " | <i class='fa fa-comments' title='Kommentare'></i> {$this->data['numcomm']}";
 			print "</div></article>\n\n";
 		}
 
@@ -235,7 +235,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		// Print the tag selector for the problem
 		function tag_selector(SQLDatabase $pb) {
 			// create empty div for tags
-			print "<div class='tag_selector'><i class='icon-tags'></i></div>";
+			print "<div class='tag_selector'><i class='fa fa-tags'></i></div>";
 
 			// initial script to print and mark the right ones
 			print "<script> var tagSelector = document.getElementsByClassName('tag_selector')[0];";
@@ -256,7 +256,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 					str_pad($this->data["year"]%100, 2, "0", STR_PAD_LEFT);
 			else
 				$volume = "";
-?>			<a class='button danger' href='javascript:Publ.Show();'><i class='icon-globe'></i> <span>Ändern</span></a>
+?>			<a class='button danger' href='javascript:Publ.Show();'><i class='fa fa-globe'></i> <span>Ändern</span></a>
 			<form id="publish" style="display:none;" action="<?=WEBROOT?>/problem/<?=$this->data["file_id"]?>/publish" method="POST">
 				Im <label for="volume">Heft</label>
 				<input type="text" class="text" id="volume" name="volume" placeholder="MM/JJ"

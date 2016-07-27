@@ -45,13 +45,13 @@
 
 		// show buttons between solutions and comments
 		if ($_SESSION['editor'])
-			print "<a class='button' href='".WEBROOT."/problem/$id/solution'><i class='icon-book'></i> Lösung hinzufügen</a>";
+			print "<a class='button' href='".WEBROOT."/problem/$id/solution'><i class='fa fa-book'></i> Lösung hinzufügen</a>";
 		if ($_SESSION['user_id'] != -1 && !$pb->querySingle("SELECT * FROM comments WHERE user_id={$_SESSION['user_id']} AND problem_id=$id", false))
-			print "<a class='button' style='float:right;' href='".WEBROOT."/problem/$id/evaluate'><i class='icon-comments'></i> Kommentar schreiben</a>";
+			print "<a class='button' style='float:right;' href='".WEBROOT."/problem/$id/evaluate'><i class='fa fa-comment'></i> Kommentar schreiben</a>";
 
 		// if not logged in, separate comments from solutions with a lightweight header
 		if (!$_SESSION['editor'])
-			print "<h3 id='comments'><i class='icon-comment-alt'></i> Kommentare</h3>";
+			print "<h3 id='comments'><i class='fa fa-comments-o'></i> Kommentare</h3>";
 
 		$evals = new EvalList;
 		$evals->get_for_problem($pb, $id);

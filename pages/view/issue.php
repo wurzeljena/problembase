@@ -29,12 +29,12 @@
 	<div class="content" id="tasklist">
 		<h2 class="issue">Heft <?=$month?>/<?=$year?></h2>
 		<h3 id="problems">Aufgaben
-			<a class='button' style='float:right;' href='<?=WEBROOT?>/issues/<?=$year?>/<?=$month?>/problems'><i class='icon-cloud-download'></i> T<div class="tex">E</div>X</a>
+			<a class='button' style='float:right;' href='<?=WEBROOT?>/issues/<?=$year?>/<?=$month?>/problems'><i class='fa fa-cloud-download'></i> T<div class="tex">E</div>X</a>
 		</h3>
 		<?=$tasklist->print_html()?>
 
 		<h3 id="solutions">Lösungen
-			<a class='button' style='float:right;' href='<?=WEBROOT?>/issues/<?=$year?>/<?=$month?>/solutions'><i class='icon-cloud-download'></i> T<div class="tex">E</div>X</a>
+			<a class='button' style='float:right;' href='<?=WEBROOT?>/issues/<?=$year?>/<?=$month?>/solutions'><i class='fa fa-cloud-download'></i> T<div class="tex">E</div>X</a>
 		</h3>
 		<?=$sollist->print_html(false, true)?>
 	</div>

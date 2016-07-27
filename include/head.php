@@ -9,11 +9,11 @@
 	<meta name="author" content="Wurzel e.V."/>
 	<meta name="viewport" content="user-scalable=no,width=device-width">
 	<link rel="stylesheet" type="text/css" href="<?=WEBROOT?>/pb.css"/>
-	<link rel="stylesheet" type="text/css" href="<?=WEBROOT?>/Font-Awesome/css/font-awesome.css"/>
+	<link rel="stylesheet" type="text/css" href="<?=WEBROOT?>/vendor/fortawesome/font-awesome/css/font-awesome.css"/>
 	<link rel="icon" href="<?=WEBROOT?>/img/dw.ico"/>
 <?php	if ($ok): ?>
 	<script type="text/javascript"> var rootdir="<?=WEBROOT?>"; </script>
-	<script type="text/javascript" src="<?=WEBROOT?>/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+	<script type="text/javascript" src="<?=WEBROOT?>/vendor/mathjax/mathjax/MathJax.js?config=TeX-AMS_HTML"></script>
 	<script type="text/javascript" src="<?=WEBROOT?>/js/fancy.js"></script>
 	<script type="text/javascript" src="<?=WEBROOT?>/js/ajax.js"></script>
 <?php	else: ?>
@@ -28,17 +28,17 @@
 function drawMenu($id) { ?>
 	<nav id="<?=$id?>">
 	<ul>
-		<li><a href="<?=WEBROOT?>/browse"><i class="icon-home"></i> <span>Übersicht</span></a>
+		<li><a href="<?=WEBROOT?>/browse"><i class="fa fa-home"></i> <span>Übersicht</span></a>
 </li><?php	if ($_SESSION['user_id'] != -1): ?><li>
-		<a href="<?=WEBROOT?>/problem"><i class="icon-plus"></i> <span>Neue Aufgabe</span></a>
+		<a href="<?=WEBROOT?>/problem"><i class="fa fa-plus"></i> <span>Neue Aufgabe</span></a>
 </li><?php	if ($_SESSION['editor'] || $_SESSION["root"]): ?><li>
-		<a href="<?=WEBROOT?>/users"><i class="icon-group"></i> <span>Benutzerliste</span></a>
+		<a href="<?=WEBROOT?>/users"><i class="fa fa-group"></i> <span>Benutzerliste</span></a>
 </li><?php	endif; ?><li>
-		<a href="<?=WEBROOT?>/tags"><i class="icon-tags"></i> <span>Tag-Editor</span></a>
+		<a href="<?=WEBROOT?>/tags"><i class="fa fa-tags"></i> <span>Tag-Editor</span></a>
 </li><?php
 		endif;
 		if ($id == "headermenu"): ?><li>
-		<a href="javascript:Login.Show();"><i class="icon-signin"></i></a>
+		<a href="javascript:Login.Show();"><i class="fa fa-sign-in"></i></a>
 </li><?php endif; ?>
 	</ul>
 	</nav>
@@ -71,10 +71,10 @@ function drawMenu($id) { ?>
 
 	function printcalendar($year, $month) { ?>
 	<div id="calendar">
-		<div style="text-align:center;"><a class="dirbutton icon-circle-arrow-left" href="javascript:calendar.incr_decade(-1)"></a><div id="years"></div>
-			<a class="dirbutton icon-circle-arrow-right" href="javascript:calendar.incr_decade(1)"></a>
+		<div style="text-align:center;"><a class="dirbutton fa fa-arrow-circle-left" href="javascript:calendar.incr_decade(-1)"></a><div id="years"></div>
+			<a class="dirbutton fa fa-arrow-circle-right" href="javascript:calendar.incr_decade(1)"></a>
 		</div>
-		<div><h4 class="icon-calendar"></h4>
+		<div><h4 class="fa fa-calendar"></h4>
 			<div id="months"></div>
 		</div>
 	</div>

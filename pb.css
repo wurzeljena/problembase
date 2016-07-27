@@ -73,7 +73,7 @@ div.head form#login
 }
 @media (max-width: 899px) {
 	div.head form#login
-	{	
+	{
 		z-index	: 2;
 		display	: none;
 		position: absolute;
@@ -184,7 +184,7 @@ h3
 }
 
 /* pseudo-headers for small boxes*/
-h4 {
+h4.fa {
 	font-size	: xx-large;
 	vertical-align	: middle !important;
 	margin	: 10px 5px 5px 10px;
@@ -322,6 +322,7 @@ a.dirbutton
 	font-size	: x-large;
 	color	: #800040;
 	vertical-align	: middle;
+	text-decoration	: none;
 }
 a.dirbutton:hover
 {
@@ -340,7 +341,7 @@ div#calendar div#months
 	margin	: 10px 10px 5px 10px;
 	max-width	: 180px;
 }
-h4.icon-calendar
+h4.fa-calendar
 {
 	color	: #800040;
 }
@@ -439,7 +440,7 @@ div.tag_selector
 	padding		: 5px;
 	line-height	: 1.5em;
 }
-div.tag_selector i.icon-tags
+div.tag_selector i.fa-tags
 {
 	font-size	: x-large;
 	color		: #A0A080;
@@ -725,9 +726,9 @@ div.picform
 	background	: #80C0C0;
 	box-shadow	: 3px 3px 5px #60A0A0;
 }
-.icon-picture {color: #206060;}
-a.icon-picture {font-size: x-large;}
-a.icon-picture:hover {color: #20A0A0;}
+.fa-picture-o {color: #206060;}
+a.fa-picture-o {font-size: x-large;}
+a.fa-picture-o:hover {color: #20A0A0;}
 div.picform input.text, div.picform textarea {background : #B0E0E0;}
 div.picform input.text:hover, div.picform textarea:hover {background : #C0F0F0;}
 input.id {width: 50px;}
@@ -743,7 +744,7 @@ form div.problem
 	background	: #FFD080;
 	margin : 5px; padding : 5px;
 }
-form div.problem:before 
+form div.problem:before
 {
 	content	: "Aufgabe: ";
 	font-family	: Sans-Serif;

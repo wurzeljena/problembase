@@ -47,16 +47,16 @@
 		function print_html($edit, $linkback) {
 			print '<article class="solution'.($this->data['public'] ? "" : " nonpublic").'">';
 			if ($edit)
-				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/solution/{$this->data['file_id']}'><i class='icon-pencil'></i> <span>Bearbeiten</span></a>\n";
+				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/solution/{$this->data['file_id']}'><i class='fa fa-pencil'></i> <span>Bearbeiten</span></a>\n";
 			if ($linkback)
-				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}'><i class='icon-hand-right'></i> <span>Zur Aufgabe</span></a>\n";
+				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}'><i class='fa fa-hand-o-right'></i> <span>Zur Aufgabe</span></a>\n";
 			print "<div class='info top'>";
 			print $this->proposers->to_string($this->data["remarks"], true);
 			print "</div>\n";
 
 			print "<div class='text' id='soln'>";
 			$replacement = "<div class='picture'><a href='".WEBROOT."/problem/{$this->data['problem_id']}"
-				."/solution/{$this->data['file_id']}/picture-$1' class='icon-picture'></a></div>";
+				."/solution/{$this->data['file_id']}/picture-$1' class='fa fa-picture-o'></a></div>";
 			$solution = preg_replace("/\\\\includegraphics{([0-9]+)}/", $replacement,
 				htmlspecialchars($this->data['solution']));
 			print $solution;
@@ -120,7 +120,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		}	?>]);
 	</script>
 
-	<a class="button" href="javascript:picForm.addPic();"><i class="icon-plus-sign"></i> Grafik hinzufügen</a>
+	<a class="button" href="javascript:picForm.addPic();"><i class="fa fa-plus-circle"></i> Grafik hinzufügen</a>
 <?php	}
 
 		// Do we have valid data? (i.e. any data at all)

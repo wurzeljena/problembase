@@ -74,11 +74,11 @@
 	<div class="content" id="tasklist"></div>
 
 	<div id="pager">
-		<a href="javascript:pageLoader.setPage(0);" class="button"><i class="icon-double-angle-left"></i></a>
-		<a href="javascript:pageLoader.setPage(pageLoader.getPage() - 1);" class="button"><i class="icon-angle-left"></i></a>
+		<a href="javascript:pageLoader.setPage(0);" class="button"><i class="fa fa-angle-double-left"></i></a>
+		<a href="javascript:pageLoader.setPage(pageLoader.getPage() - 1);" class="button"><i class="fa fa-angle-left"></i></a>
 		Seite <span id="page"><?=($page+1)?></span>/<?=$pages?>
-		<a href="javascript:pageLoader.setPage(pageLoader.getPage() + 1);" class="button"><i class="icon-angle-right"></i></a>
-		<a href="javascript:pageLoader.setPage(<?=($pages-1)?>);" class="button"><i class="icon-double-angle-right"></i></a>
+		<a href="javascript:pageLoader.setPage(pageLoader.getPage() + 1);" class="button"><i class="fa fa-angle-right"></i></a>
+		<a href="javascript:pageLoader.setPage(<?=($pages-1)?>);" class="button"><i class="fa fa-angle-double-right"></i></a>
 	</div>
 	</div>
 
