@@ -4,11 +4,15 @@
 body
 {
 	background-color	: #FFFFC0;
-	font-family	: Georgia;
+	font-family	: sans-serif;
 	margin	: 0;
 	padding-top	: 40px;
 }
 body.iframe { padding-top: 0; }
+article div.text
+{
+	font-family: serif;
+}
 
 /* PAGE LAYOUT */
 div.center {margin: 0 auto;}
@@ -98,7 +102,6 @@ div.head form#login
 span.username {margin: 5px;}
 span#wait
 {
-	font-family	: Sans-Serif;
 	font-size	: small;
 	color	: Red;
 	margin	: 0px 10px;
@@ -162,7 +165,7 @@ nav ul li a span
 /* huge script headers turned to the left */
 h2
 {
-	font-family : Mistral, Garamond, Serif;
+	font-family : serif;
 	font-style	: italic;
 	font-size	: 50px;
 	font-weight	: normal;
@@ -253,7 +256,6 @@ div.taglist, span#taglist
 	padding			: 2px 5px;
 	margin			: 2px;
 	border-radius	: 3px;
-	font-family		: Sans-Serif;
 	font-weight		: bold;
 	font-size		: small;
 	text-decoration	: none;
@@ -280,7 +282,6 @@ h3 > *.tag
 /* MISCELLANEOUS */
 *.info
 {
-	font-family	: Sans-Serif;
 	font-size	: small;
 	color		: #606060;
 }
@@ -396,7 +397,7 @@ article.task
 div.text {margin : 10px;}
 div.text:before
 {
-	font-family	: Sans-Serif;
+	font-family	: sans-serif;
 	font-variant: small-caps;
 	font-size	: small;
 	color		: Gray;
@@ -463,7 +464,6 @@ article.comment address
 {
 	display		: inline;
 	margin		: 3px 10px 3px 0px;
-	font-family	: Sans-Serif;
 	font-size	: small;
 }
 article.comment address a.envelope
@@ -546,7 +546,6 @@ table.stat {border-collapse: collapse;}
 { table.stat {width: 80%;} }
 @media (max-width:599px)
 { h3 span.extra {display: none;} }
-table.stat tbody {font-size:small;}
 table.stat td + td {text-align:right;}
 table.stat tbody tr:hover {
 	background	: #F07070;
@@ -568,7 +567,6 @@ input, textarea, select {margin : 5px;}
 input.text
 {
 	width	: 150px;
-	font-family	: Georgia;
 }
 input.text, textarea {border : 1px dashed #808080;}
 textarea
@@ -600,7 +598,6 @@ form.filter input[name="filter"]	{width: 120px;}
 form.filter div#questions input		{width: 150px;}
 label.question
 {
-	font-family	: Sans-Serif;
 	font-size	: small;
 	color		: #A0A0A0;
 }
@@ -739,6 +736,7 @@ input.location {width : 100px;}
 /* PREVIEWS IN FORMS */
 form div.problem
 {
+	font-family: serif;
 	border	: 1px solid Gray;
 	border-radius : 5px;
 	background	: #FFD080;
@@ -747,7 +745,7 @@ form div.problem
 form div.problem:before
 {
 	content	: "Aufgabe: ";
-	font-family	: Sans-Serif;
+	font-family	: sans-serif;
 	font-variant: small-caps;
 	font-size	: small;
 	color		: Gray;
@@ -755,6 +753,7 @@ form div.problem:before
 
 div.preview
 {
+	font-family: serif;
 	border	: 1px solid Gray;
 	border-radius : 5px;
 	background	: #FFF0C0;
@@ -763,7 +762,7 @@ div.preview
 div.preview:before
 {
 	content	: "(Vorschau) ";
-	font-family	: Sans-Serif;
+	font-family	: sans-serif;
 	font-variant: small-caps;
 	font-size	: small;
 	color		: Gray;
