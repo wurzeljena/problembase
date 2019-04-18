@@ -9,9 +9,9 @@
 		}
 	],
 	"require": {
-		"php": "~7.0.0",
-		"FortAwesome/Font-Awesome": "~4.6.0",
-		"mathjax/mathjax": "~2.6.0"
+		"php": "~7",
+		"fortawesome/font-awesome": "~4",
+		"mathjax/mathjax": "~2"
 	},
 	"require-dev": {
 		"heroku/heroku-buildpack-php": "*"
