@@ -1,7 +1,7 @@
 <?php
 	class Proposer {
 		// Named array containing the data
-		private $data;
+		private array $data;
 
 		// Construct from array
 		function __construct(array $data) {
@@ -68,7 +68,7 @@
 
 	class ProposerList {
 		// Array consisting of Proposer objects.
-		private $data = array();
+		private array $data = array();
 
 		// Construct from SQL query
 		function __construct(SQLResult $res = null) {

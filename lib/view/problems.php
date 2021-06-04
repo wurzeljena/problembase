@@ -1,9 +1,9 @@
 <?php
 	class Filter {
-		private $par;       // parameter list
-		private $hash;      // ... and its hash
-		private $query;     // SQLite query
-		public $array;      // result array
+		private ?array $par;      // parameter list
+		private ?string $hash;    // ... and its hash
+		private ?SQLStmt $query;
+		public ?array $array;     // result array
 
 		function __construct(?string $hash = null) {
 			$this->hash = $hash;
@@ -110,10 +110,10 @@
 	}
 
 	class Problem {
-		private $data;      // Named array containing the properties
-		private $proposers; // ProposerList for the problem
-		private $tags;      // TagList for the problem
-		private static $query = null;   // Constructor query
+		private ?array $data = null;  // Named array containing the properties
+		private ProposerList $proposers;
+		private TagList $tags;
+		private static ?SQLStmt $query = null;  // Constructor query
 
 		// Prepare query
 		private static function prepareQuery(SQLDatabase $pb) {
@@ -289,8 +289,8 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 	}
 
 	class ProblemList {
-		private $ids;       // array of problem ids
-		private $problems;  // corresponding data
+		private array $ids;       // array of problem ids
+		private array $problems;  // corresponding data
 
 		function __construct(SQLDatabase $pb, array $array, int $start = 0, int $length = 0) {
 			// get ids

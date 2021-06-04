@@ -1,9 +1,9 @@
 <?php
 	class Solution {
-		private $data = array();  // Named array containing the data
-		private $problem;         // Problem object
-		private $proposers;       // ProposerList object containing the proposers
-		private static $query;    // Query variable
+		private array $data = array();  // Named array containing the data
+		private Problem $problem;
+		private ProposerList $proposers;
+		private static ?SQLStmt $query = null;
 
 		// Prepare query for the constructor
 		private static function prepareQuery(SQLDatabase $pb) {
@@ -143,7 +143,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 	}
 
 	class SolutionList {
-		private $solutions;    // Array containing of Solution objects
+		private array $solutions;    // Array containing of Solution objects
 
 		// Build list of solutions fulfilling the given $conditions
 		function __construct(SQLDatabase $pb, array $conditions) {

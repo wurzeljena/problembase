@@ -1,6 +1,6 @@
 <?php
 	class Evaluation {
-		private $data;      // Named array containing the data
+		private array $data;      // Named array containing the data
 
 		// Construct from array
 		function __construct(array $data) {
@@ -38,7 +38,7 @@
 	}
 
 	class EvalList {
-		private $data = array();    // Array of Evaluation objects
+		private array $data = array();    // Array of Evaluation objects
 
 		// Evaluations for a problem
 		function get_for_problem(SQLDatabase $pb, int $problem_id) {

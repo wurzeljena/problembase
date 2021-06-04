@@ -36,7 +36,7 @@
 
 	// SQLITE3 IMPLEMENTATION
 	class SQLiteDB implements SQLDatabase {
-		public $db;
+		public SQLite3 $db;
 
 		function __construct(string $path) {
 			$this->db = new SQLite3($path);
@@ -83,7 +83,7 @@
 	}
 
 	class SQLiteStmt implements SQLStmt {
-		private $stmt;
+		private SQLite3Stmt $stmt;
 		static private $sqlite3_map = array(
 			SQLTYPE_NULL => SQLITE3_NULL,
 			SQLTYPE_INTEGER => SQLITE3_INTEGER,
@@ -105,7 +105,7 @@
 	}
 
 	class SQLiteRes implements SQLResult {
-		private $result;
+		private SQLite3Result $result;
 
 		function __construct(SQLite3Result $result) {
 			$this->result = $result;
@@ -177,7 +177,7 @@
 
 	class PostgresStmt implements SQLStmt {
 		private $conn;
-		private $name;
+		private string $name;
 		private $params = Array();
 
 		function __construct($conn, string $name) {

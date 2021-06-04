@@ -2,8 +2,8 @@
 	class Tag {
 		// Named array containing the plain data
 		// The color is stored in string format
-		private $data = array();
-		private $writeable = false;
+		private array $data = array();
+		private bool $writeable = false;
 
 		// Construct from database data set
 		function __construct(array $data = array()) {
@@ -186,7 +186,7 @@
 
 	class TagList {
 		// Array consisting of Tags
-		private $data = array();
+		private array $data = array();
 
 		// Construct from query
 		function __construct(?SQLResult $res = null) {
