@@ -1,22 +1,23 @@
 <?php
 	// GENERAL SQL DATABASE INTERFACE
 	interface SQLDatabase {
-		function query($stmt);
-		function querySingle($stmt, $entire_row);
+		function query(string $stmt) : SQLResult;
+		function querySingle(string $stmt, bool $entire_row);
 
 		// prepare statement: placeholders are $1, $2, ...; to be used in this order
-		function prepare($stmt);
-		function exec($stmt);
+		function prepare(string $stmt) : SQLStmt;
+		function exec(string $stmt);
 
-		function lastInsertRowid($table, $col);
-		static function escape($val);
-		static function boolean_statement($val);
+		function lastInsertRowid(string $table, string $col) : int;
+		static function escape(?string $val) : ?string;
+		static function boolean_statement(string $val) : string;
 
-		function ftsCond($col, $search);
+		function ftsCond(string $col, string $search) : string;
 
 		function close();
 	}
 
+	// Constants for $type in SQLStmt::bind.
 	define("SQLTYPE_NULL", 0);
 	define("SQLTYPE_INTEGER", 1);
 	define("SQLTYPE_FLOAT", 2);
@@ -24,8 +25,8 @@
 	define("SQLTYPE_BLOB", 4);
 
 	interface SQLStmt {
-		function bind($param, $value, $type);
-		function exec();
+		function bind(string $param, $value, int $type);
+		function exec() : SQLResult;
 	}
 
 	interface SQLResult {
@@ -37,42 +38,42 @@
 	class SQLiteDB implements SQLDatabase {
 		public $db;
 
-		function __construct($path) {
+		function __construct(string $path) {
 			$this->db = new SQLite3($path);
 			$this->db->exec("PRAGMA foreign_keys=on;");
 		}
 
-		function query($stmt) {
+		function query(string $stmt) : SQLResult {
 			return new SQLiteRes($this->db->query($stmt));
 		}
 
-		function querySingle($stmt, $entire_row) {
+		function querySingle(string $stmt, bool $entire_row) {
 			return $this->db->querySingle($stmt, $entire_row);
 		}
 
-		function prepare($stmt) {
+		function prepare(string $stmt) : SQLStmt {
 			$mod_stmt = preg_replace('/\$\d/', "?", $stmt);
 			$obj = $this->db->prepare($mod_stmt);
 			return new SQLiteStmt($obj);
 		}
 
-		function exec($stmt) {
+		function exec(string $stmt) {
 			$this->db->exec($stmt);
 		}
 
-		function lastInsertRowID($table, $col) {
+		function lastInsertRowID(string $table, string $col) : int {
 			return $this->db->lastInsertRowID();
 		}
 
-		static function escape($val) {
-			return SQLite3::escapeString($val);
+		static function escape(?string $val) : ?string {
+			return is_null($val) ? null : SQLite3::escapeString($val);
 		}
 
-		static function boolean_statement($val) {
+		static function boolean_statement(string $val) : string {
 			return $val;
 		}
 
-		function ftsCond($col, $search) {
+		function ftsCond(string $col, string $search) : string {
 			return "$col MATCH '$search'";
 		}
 
@@ -90,15 +91,15 @@
 			SQLTYPE_TEXT => SQLITE3_TEXT,
 			SQLTYPE_BLOB => SQLITE3_BLOB);
 
-		function __construct($stmt) {
+		function __construct(SQLite3Stmt $stmt) {
 			$this->stmt = $stmt;
 		}
 
-		function bind($param, $value, $type) {
+		function bind(string $param, $value, int $type) {
 			$this->stmt->bindValue($param, $value, self::$sqlite3_map[$type]);
 		}
 
-		function exec() {
+		function exec() : SQLResult {
 			return new SQLiteRes($this->stmt->execute());
 		}
 	}
@@ -106,7 +107,7 @@
 	class SQLiteRes implements SQLResult {
 		private $result;
 
-		function __construct($result) {
+		function __construct(SQLite3Result $result) {
 			$this->result = $result;
 		}
 
@@ -123,15 +124,15 @@
 	class PostgresDB implements SQLDatabase {
 		public $conn;
 
-		function __construct($desc) {
+		function __construct(string $desc) {
 			$this->conn = pg_connect($desc) or die("Could not connect: " . pg_last_error());
 		}
 
-		function query($stmt) {
+		function query(string $stmt) : SQLResult {
 			return new PostgresResult(pg_query($this->conn, $stmt));
 		}
 
-		function querySingle($stmt, $entire_row) {
+		function querySingle(string $stmt, bool $entire_row) {
 			$res = $this->query($stmt);
 			if ($entire_row)
 				return $res->fetchAssoc();
@@ -141,31 +142,31 @@
 			}
 		}
 
-		function prepare($stmt) {
+		function prepare(string $stmt) : SQLStmt {
 			$hash = md5($stmt);
 			pg_prepare($this->conn, $hash, $stmt);
 			return new PostgresStmt($this->conn, $hash);
 		}
 
-		function exec($stmt) {
+		function exec(string $stmt) {
 			pg_exec($this->conn, $stmt);
 		}
 
-		function lastInsertRowID($table, $col) {
+		function lastInsertRowID(string $table, string $col) : int {
 			$res = pg_query("SELECT currval(pg_get_serial_sequence('$table', '$col'))");
 			$row = pg_fetch_row($res);
 			return $row[0];
 		}
 
-		static function escape($val) {
-			return pg_escape_string($val);
+		static function escape(?string $val) : ?string {
+			return is_null($val) ? null : pg_escape_string($val);
 		}
 
-		static function boolean_statement($val) {
+		static function boolean_statement(string $val) : string {
 			return "(".$val.")::int";
 		}
 
-		function ftsCond($col, $search) {
+		function ftsCond(string $col, string $search) : string {
 			return "to_tsvector('german', $col) @@ to_tsquery('german', '$search')";
 		}
 
@@ -179,16 +180,16 @@
 		private $name;
 		private $params = Array();
 
-		function __construct($conn, $name) {
+		function __construct($conn, string $name) {
 			$this->conn = $conn;
 			$this->name = $name;
 		}
 
-		function bind($param, $value, $type) {
+		function bind(string $param, $value, $type) {
 			$this->params[$param] = $value;
 		}
 
-		function exec() {
+		function exec() : SQLResult {
 			return new PostgresResult(pg_execute($this->conn, $this->name, $this->params));
 		}
 	}

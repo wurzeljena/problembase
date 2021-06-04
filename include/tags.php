@@ -18,12 +18,12 @@
 		}
 
 		// Is it valid?
-		function is_valid() {
+		function is_valid() : bool {
 			return (bool)$this->data;
 		}
 
 		// Overwrite certain parameters, if allowed
-		function set(array $new_data) {
+		function set(array $new_data) : bool {
 			// Do we have the rights?
 			if (!$this->writeable)
 				return false;
@@ -43,7 +43,7 @@
 			return true;
 		}
 
-		function from_name(SQLDatabase $pb, $name, $rights = ACCESS_READ) {
+		function from_name(SQLDatabase $pb, string $name, int $rights = ACCESS_READ) {
 			$split = explode("/", $name);
 			if (count($split) == 1)
 				$private = false;
@@ -66,12 +66,12 @@
 		}
 
 		// Get list name
-		function getName() {
+		function getName() : string {
 			return $this->data["name"].($this->data["private_user"] != null ? "*" : "");
 		}
 
 		// Get URL name, as used for queries
-		function getURLName() {
+		function getURLName() : string {
 			$prefix = ($this->data["private_user"] != null) ? "private/" : "";
 			return $prefix.str_replace(" ", "_", $this->data["name"]);
 		}
@@ -88,7 +88,7 @@
 		}
 
 		// Print JS code to write tag into the DOM-variable named $taglist.
-		function js($taglist) {
+		function js(string $taglist) : string {
 			return "$taglist.appendChild(writeTag(".$this->json_encode()."));\n";
 		}
 
@@ -109,7 +109,7 @@
 				$pb->exec("UPDATE tags SET name='{$tag["name"]}', description='{$tag["description"]}', "
 					."color={$tag["color"]}, hidden={$tag["hidden"]}, private_user={$tag["private_user"]} WHERE id={$tag["id"]}");
 		}
-		function delete(SQLDatabase $pb) {
+		function delete(SQLDatabase $pb) : bool {
 			// private or not?
 			if ($this->data["private_user"] != null) {
 				if ($this->data["private_user"] != $_SESSION["user_id"])
@@ -131,7 +131,7 @@
 		}
 
 		// Set or unset for problem
-		function set_for_file(SQLDatabase $pb, $id, $set) {
+		function set_for_file(SQLDatabase $pb, int $id, bool $set) : bool {
 			// are we allowed to set the tag?
 			if (!($_SESSION['editor'] || $this->data["private_user"] == $_SESSION["user_id"]))
 				return false;
@@ -143,7 +143,7 @@
 		}
 
 		// (Extra) condition to select only tags the current user is allowed to see
-		static function tag_restr($rights, $standalone = false) {
+		static function tag_restr(int $rights, bool $standalone = false) : string {
 			$cond = array();
 			if ($rights & ACCESS_READ)
 				$cond[] = "(private_user ISNULL OR private_user={$_SESSION["user_id"]})";
@@ -162,13 +162,13 @@
 		}
 
 		// SQL condition to find problems with this tag
-		function filter_condition() {
+		function filter_condition() : string {
 			return "EXISTS (SELECT tag_id FROM tag_list WHERE problems.file_id=tag_list.problem_id "
 				."and tag_list.tag_id={$this->data["id"]})";
 		}
 
 		// Get proposer statistic
-		function proposer_statistic(SQLDatabase $pb, $limit = 5) {
+		function proposer_statistic(SQLDatabase $pb, int $limit = 5) : ProposerList {
 			$res = $pb->query("SELECT name, location, country, count(fileproposers.file_id) AS count_problems "
 				."FROM proposers JOIN fileproposers ON proposers.id=fileproposers.proposer_id "
 				."JOIN problems ON fileproposers.file_id=problems.file_id WHERE EXISTS "
@@ -181,7 +181,7 @@
 		}
 
 		// get count
-		function problem_count() { return $this->data["count_problems"]; }
+		function problem_count() : int { return $this->data["count_problems"]; }
 	}
 
 	class TagList {
@@ -189,14 +189,14 @@
 		private $data = array();
 
 		// Construct from query
-		function __construct(SQLResult $res = null) {
-			if ($res)
+		function __construct(?SQLResult $res = null) {
+			if (!is_null($res))
 				while($tag = $res->fetchAssoc())
 					$this->data[] = new Tag($tag);
 		}
 
 		// Construct from a comma-separated list of names
-		function from_list(SQLDatabase $pb, $list) {
+		function from_list(SQLDatabase $pb, string $list) {
 			foreach (explode(",", $list) as $name) {
 				$tag = new Tag();
 				if ($name == "") continue;
@@ -205,30 +205,30 @@
 			}
 		}
 
-		function get(SQLDatabase $pb, array $fields, $rights = ACCESS_READ) {
+		function get(SQLDatabase $pb, array $fields, int $rights = ACCESS_READ) {
 			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags WHERE ".Tag::tag_restr($rights, true));
 			$this->__construct($tags);
 		}
 
-		function from_file(SQLDatabase $pb, $id) {
+		function from_file(SQLDatabase $pb, int $id) {
 			$tags = $pb->query("SELECT name, description, color, hidden, private_user FROM tag_list JOIN tags "
 				."ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
 			$this->__construct($tags);
 		}
 
-		function json_encode() {
+		function json_encode() : string {
 			$json = array_map(function(Tag $tag) {return $tag->json_encode();}, $this->data);
 			return "[".implode(", ", $json)."]";
 		}
 
 		// Print a comma-separated list of the quoted names
-		function print_names() {
+		function print_names() : string {
 			$names = array_map(function(Tag $tag) {return "\"".$tag->getName()."\"";}, $this->data);
 			return implode(",", $names);
 		}
 
 		// Print a HTML <select> element for tags with the tags as options
-		function print_select($onchange, $default, $name = "") {
+		function print_select(string $onchange, string $default, string $name = "") {
 			print "<select ".(($name != "") ? "name = '$name' " : "")."onchange=\"$onchange\" value=''>";
 			print "<option selected value=''>&mdash;$default&mdash;</option>";
 
@@ -240,7 +240,7 @@
 
 		// Print commands writing the tags into the element given by the JavaScript
 		// variable named $taglist. Eventually with spaces between tags.
-		function js($taglist, $spaces = false) {
+		function js(string $taglist, bool $spaces = false) : string {
 			$res = "";
 			foreach ($this->data as $tag) {
 				$res .= $tag->js($taglist);
@@ -251,7 +251,7 @@
 		}
 
 		// Add the tags to file $id, and remove all others
-		function set_for_file(SQLDatabase $pb, $id) {
+		function set_for_file(SQLDatabase $pb, int $id) {
 			$pb->exec("DELETE FROM tag_list WHERE problem_id=$id AND "
 				."EXISTS (SELECT id FROM tags WHERE tag_list.tag_id=tags.id AND "
 				."(private_user ISNULL OR private_user={$_SESSION["user_id"]}))");
@@ -261,7 +261,7 @@
 		}
 
 		// Condition for filtering all problems with this taglist
-		function filter_condition() {
+		function filter_condition() : string {
 			$cond = array();
 			foreach ($this->data as $tag)
 				$cond[] = $tag->filter_condition();
@@ -292,7 +292,7 @@
 	}
 
 	// Print the tag form
-	function tag_form(SQLDatabase $pb, $form, TagList $taglist) {
+	function tag_form(SQLDatabase $pb, string $form, TagList $taglist) {
 		$tags = new TagList;
 		$tags->get($pb, array("name", "private_user"));
 		$tags->print_select("tagList.add(this.value); this.value='';", "Tag hinzufügen");

@@ -15,7 +15,7 @@
 
 		// Construct from id, eventually test if it's a solution for problem problem_id.
 		// If id == -1, create empty solution for problem problem_id.
-		function __construct(SQLDatabase $pb, $id, $problem_id = -1) {
+		function __construct(SQLDatabase $pb, int $id, int $problem_id = -1) {
 			if (!self::$query)
 				self::prepareQuery($pb);
 
@@ -44,7 +44,7 @@
 		}
 
 		// Print solution as HTML
-		function print_html($edit, $linkback) {
+		function print_html(bool $edit, bool $linkback) {
 			print '<article class="solution'.($this->data['public'] ? "" : " nonpublic").'">';
 			if ($edit)
 				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/solution/{$this->data['file_id']}'><i class='fa fa-pencil'></i> <span>Bearbeiten</span></a>\n";
@@ -124,16 +124,16 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 <?php	}
 
 		// Do we have valid data? (i.e. any data at all)
-		function is_valid() {
+		function is_valid() : bool {
 			return (bool)$this->data && $this->problem->is_valid();
 		}
 
-		function is_empty() {
+		function is_empty() : bool {
 			return $this->data["file_id"] == -1;
 		}
 
 		// Is the current user allowed to see the solution?
-		function access($right) {
+		function access(int $right) : bool {
 			if ($right == ACCESS_READ)
 				return ($this->data["id"] != -1) && ($_SESSION['editor']
 					|| ($this->problem->access(ACCESS_READ) && $this->data['public']));
@@ -161,13 +161,13 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		}
 
 		// Print solutions as HTML
-		function print_html($edit, $linkback = false) {
+		function print_html(bool $edit, bool $linkback = false) {
 			foreach ($this->solutions as $solution)
 				$solution->print_html($edit, $linkback);
 		}
 
 		// Print published solutions and their respective problems as TeX
-		function print_tex($probyear, $period) {
+		function print_tex(int $probyear, int $period) {
 			$monbegin = ($period == 1) ? 1 : 7;
 			$monend = $monbegin + 5;
 

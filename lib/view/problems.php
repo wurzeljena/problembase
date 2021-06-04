@@ -5,9 +5,9 @@
 		private $query;     // SQLite query
 		public $array;      // result array
 
-		function __construct($hash = null) {
+		function __construct(?string $hash = null) {
 			$this->hash = $hash;
-			if ($hash) {
+			if (!is_null($hash)) {
 				$cache = $_SESSION['cache'][$hash];
 				$this->par = $cache['filter'];
 				$this->array = $cache['data'];
@@ -15,7 +15,7 @@
 		}
 
 		// construct from given parameter list (could be a GET request)
-		function set_params($par) {
+		function set_params(array $par) : string {
 			$names = array('filter', 'proposer', 'name', 'location', 'number', 'month',
 				'year', 'with_solution', 'not_published', 'start', 'end', 'tags');
 			$filter = array_intersect_key($par, array_fill_keys($names, 0));
@@ -25,7 +25,7 @@
 		}
 
 		// translate filter criterions to SQL
-		function construct_query($pb, $order = null) {
+		function construct_query(SQLDatabase $pb, ?array $order = null) {
 			$query = "SELECT problems.file_id, problems.proposed, letter, number, month, year "
 				."FROM problems LEFT JOIN published ON problems.file_id=published.problem_id";
 
@@ -88,7 +88,7 @@
 				$query .= " WHERE ".implode(" AND ", $filter);
 
 			// order entries
-			if ($order)
+			if (!is_null($order))
 				$query .= " ORDER BY ".implode(", ", $order);
 
 			// prepare query
@@ -96,7 +96,7 @@
 		}
 
 		// filter tasks, save the result in the session cache and return the index
-		function filter($cache = false) {
+		function filter(bool $cache = false) {
 			// write results to array
 			$res = $this->query->exec();
 			$this->array = array();
@@ -125,7 +125,7 @@
 		}
 
 		// Construct from file id
-		function __construct(SQLDatabase $pb, $id) {
+		function __construct(SQLDatabase $pb, int $id) {
 			if (!self::$query)
 				self::prepareQuery($pb);
 			self::$query->bind(1, $id, SQLTYPE_INTEGER);
@@ -141,7 +141,7 @@
 		}
 
 		// Print problem as HTML, write tag code in string
-		function print_html(&$tag_code, $num = -1) {
+		function print_html(string &$tag_code, int $num = -1) {
 			print "<article class='task".($this->data['public'] ? "" : " nonpublic")."'"
 				.($num != -1 ? " id='prob$num'" : "").">\n";
 			print "<div class='info top'>";
@@ -190,7 +190,7 @@
 		}
 
 		// Print problem as TeX code
-		function print_tex($bare = false) {
+		function print_tex(bool $bare = false) {
 			if (!$bare)
 				print "\\aufbox";
 			print "{\${$this->data['letter']}\,{$this->data['number']}$}{";
@@ -277,10 +277,10 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 <?php	}
 
 		// Do we have valid data? (i.e. any data at all)
-		function is_valid() { return (bool)$this->data; }
+		function is_valid() : bool { return (bool)$this->data; }
 
 		// Is the current user allowed to see the problem?
-		function access($right) {
+		function access($right) : bool {
 			if ($right == ACCESS_READ)
 				return $this->data['public'] || $_SESSION['editor'];
 			else    // write or modify
@@ -292,7 +292,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		private $ids;       // array of problem ids
 		private $problems;  // corresponding data
 
-		function __construct(SQLDatabase $pb, array $array, $start=0, $length=0) {
+		function __construct(SQLDatabase $pb, array $array, int $start = 0, int $length = 0) {
 			// get ids
 			if ($length)
 				$this->ids = array_slice($array, $start, $length);

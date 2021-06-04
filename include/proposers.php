@@ -9,15 +9,15 @@
 		}
 
 		// Get ID
-		function get_id() { return $this->data["id"]; }
+		function get_id() : int { return $this->data["id"]; }
 
 		// Print Name
-		function get_name() {
+		function get_name() : string {
 			return htmlspecialchars($this->data["name"], ENT_QUOTES);
 		}
 
 		// Print Name and Location
-		function to_string($html) {
+		function to_string(bool $html) : string {
 			if ($html) {
 				$urlname = str_replace(" ", "_", $this->data['name']);
 				$urllocation = str_replace(" ", "_", $this->data['location']);
@@ -32,7 +32,7 @@
 		}
 
 		// Return JSON
-		function json_encode() { return json_encode($this->data); }
+		function json_encode() : string { return json_encode($this->data); }
 
 		// Write to database
 		function write(SQLDatabase $pb) {
@@ -63,7 +63,7 @@
 		}
 
 		// get count
-		function problem_count() { return $this->data["count_problems"]; }
+		function problem_count() : int { return $this->data["count_problems"]; }
 	}
 
 	class ProposerList {
@@ -88,15 +88,15 @@
 			}
 		}
 
-		function get(SQLDatabase $pb, array $fields, $name=null, $location=null) {
+		function get(SQLDatabase $pb, array $fields, ?string $name = null, ?string $location = null) {
 			$proposers = $pb->query("SELECT ".implode(", ", $fields)." FROM proposers"
-				.($name ? " WHERE name='{$pb->escape($name)}'" : "")
-				.($location ? " AND location='{$pb->escape($location)}'" : ""));
+				.(is_null($name) ? "" : " WHERE name='{$pb->escape($name)}'")
+				.(is_null($location) ? "" : " AND location='{$pb->escape($location)}'"));
 
 			$this->__construct($proposers);
 		}
 
-		function from_file(SQLDatabase $pb, $id) {
+		function from_file(SQLDatabase $pb, int $id) {
 			$proposers = $pb->query("SELECT id, name, location, country FROM fileproposers "
 				."JOIN proposers ON fileproposers.proposer_id=proposers.id WHERE file_id=$id");
 
@@ -110,25 +110,25 @@
 			print "</datalist>";
 		}
 
-		function json_encode() {
+		function json_encode() : string {
 			$json = array_map(function(Proposer $prop) {return $prop->json_encode();}, $this->data);
 			return "[".implode(", ", $json)."]";
 		}
 
-		function to_string($remarks, $html) {
+		function to_string(?string $remarks, bool $html) : string {
 			$props = array_map(function(Proposer $prop) use ($html)
 				{return $prop->to_string($html);}, $this->data);
 			$props = implode(" und ", $props);
 
 			if ($props) {
 				// if there is a ~ in the remarks, they serve as template
-				if (strpos($remarks, "~") !== false)
+				if (!is_null($remarks) && strpos($remarks, "~") !== false)
 					$res = str_replace("~", $props, $remarks);
 				else
 					$res = $props;
 			}
 			else    // print just the remarks, if there are no proposers
-				$res = $remarks;
+				$res = $remarks ?? "";
 
 			// Return as HTML5 author information, if desired
 			if ($html)
@@ -156,7 +156,7 @@
 				$proposer->write($pb);
 		}
 
-		function set_for_file(SQLDatabase $pb, $id) {
+		function set_for_file(SQLDatabase $pb, int $id) {
 			$pb->exec("DELETE FROM fileproposers WHERE file_id=$id");
 			$stmt = $pb->prepare("INSERT INTO fileproposers (file_id, proposer_id) VALUES ($id, $1)");
 			foreach ($this->data as $proposer)
@@ -164,7 +164,7 @@
 		}
 
 		// Make tag statistic
-		function tag_statistic(SQLDatabase $pb, $limit = 5) {
+		function tag_statistic(SQLDatabase $pb, int $limit = 5) : TagList {
 			$ids = array_map(function(Proposer $prop) {return $prop->get_id();}, $this->data);
 			$res = $pb->query("SELECT name, description, color, hidden, private_user, "
 				."count(problems.file_id) AS count_problems "
@@ -182,7 +182,7 @@
 		}
 
 		// How many are we?
-		function count() { return count($this->data); }
+		function count() : int { return count($this->data); }
 	}
 
 	// Print a datalist containing all names of proposers from the past
@@ -194,7 +194,7 @@
 	}
 
 	// Print the proposer form for the problems and solutions pages
-	function proposer_form(SQLDatabase $pb, $form, ProposerList $proposers)
+	function proposer_form(SQLDatabase $pb, string $form, ProposerList $proposers)
 	{
 		proposers_datalist($pb);
 		print "<div id='proplist'><input type='hidden' name='propnums'/></div>";
