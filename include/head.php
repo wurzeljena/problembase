@@ -2,7 +2,7 @@
 	function printhead($title = "", $ok = true) {
 ?>
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de-DE">
 <head>
 	<title><?=$title.($title ? " &middot; " : "")?>Aufgabendatenbank</title>
 	<meta charset="UTF-8">
