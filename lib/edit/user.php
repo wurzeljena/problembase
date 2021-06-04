@@ -8,8 +8,8 @@
 	// new user
 	if (isset($_POST["newname"]) && !isset($_GET["id"]) && $_SESSION["root"]) {
 		// generate password
-		$salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
-		$password = strtr(base64_encode(mcrypt_create_iv(6, MCRYPT_DEV_URANDOM)), '+', '.');
+		$salt = strtr(base64_encode(random_bytes(16)), '+', '.');
+		$password = strtr(base64_encode(random_bytes(6)), '+', '.');
 		$salted_pw = crypt($password, '$6$rounds=5000$'.$salt.'$');
 
 		$pb->exec("INSERT INTO users (name, email, encr_pw, root, editor) VALUES "
@@ -48,7 +48,7 @@
 		if (isset($_POST["old_pw"]) && isset($_POST["new_pw"])) {
 			$encr_pw = $pb->querySingle("SELECT encr_pw FROM users WHERE id=$id", false);
 			if ($encr_pw == "" || $encr_pw == crypt($_POST["old_pw"], $encr_pw)) {
-				$salt = strtr(base64_encode(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), '+', '.');
+				$salt = strtr(base64_encode(random_bytes(16)), '+', '.');
 				$pb->exec("UPDATE users SET encr_pw='".crypt($_POST["new_pw"], '$6$rounds=5000$'.$salt.'$')."' WHERE id=$id");
 			}
 		}
