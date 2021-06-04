@@ -215,7 +215,7 @@
 			title="Wenn keine Autoren angegeben sind, wird stattdessen diese Anmerkung gezeigt.
 Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird anstatt der Tilde eingefügt."
 			style="height:70px;"><?php if ($this->is_valid()) print $this->data['remarks']; ?></textarea>
-		<label for="proposed">Vorgeschlagen am:</label> <input type="date" class="text" name="proposed" id="proposed" style="width:100px;"
+		<label for="proposed">Vorgeschlagen am:</label> <input type="date" class="text" name="proposed" id="proposed"
 			placeholder="JJJJ-MM-TT" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"
 			value="<?php if ($this->is_valid()) print $this->data['proposed']; else print date("Y-m-d"); ?>"/>
 		<input type="submit" value="<?php if ($this->is_valid()) print "Speichern"; else print "Erstellen"; ?>" style="float:right;"/>
