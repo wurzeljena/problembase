@@ -35,7 +35,7 @@
 		function json_encode() : string { return json_encode($this->data); }
 
 		// Write to database
-		function write(SQLDatabase $pb) {
+		function write(SQLDatabase $pb) : void {
 			// prepare data
 			$data = array_map(function($par) use ($pb) {return $pb->escape($par);}, $this->data);
 
@@ -57,7 +57,7 @@
 		}
 
 		// execute statement for proposer
-		function exec(SQLStmt $stmt) {
+		function exec(SQLStmt $stmt) : void {
 			$stmt->bind(1, $this->data["id"], SQLTYPE_INTEGER);
 			$stmt->exec();
 		}
@@ -78,7 +78,7 @@
 		}
 
 		function fromserialdata(array $nums, array $proposer, array $proposer_id,
-				array $location, array $country) {
+				array $location, array $country) : void {
 			foreach ($nums as $num) {
 				$cur = array("name" => $proposer[$num],
 					"location" => $location[$num], "country" => $country[$num]);
@@ -88,7 +88,7 @@
 			}
 		}
 
-		function get(SQLDatabase $pb, array $fields, ?string $name = null, ?string $location = null) {
+		function get(SQLDatabase $pb, array $fields, ?string $name = null, ?string $location = null) : void {
 			$proposers = $pb->query("SELECT ".implode(", ", $fields)." FROM proposers"
 				.(is_null($name) ? "" : " WHERE name='{$pb->escape($name)}'")
 				.(is_null($location) ? "" : " AND location='{$pb->escape($location)}'"));
@@ -96,14 +96,14 @@
 			$this->__construct($proposers);
 		}
 
-		function from_file(SQLDatabase $pb, int $id) {
+		function from_file(SQLDatabase $pb, int $id) : void {
 			$proposers = $pb->query("SELECT id, name, location, country FROM fileproposers "
 				."JOIN proposers ON fileproposers.proposer_id=proposers.id WHERE file_id=$id");
 
 			$this->__construct($proposers);
 		}
 
-		function print_datalist() {
+		function print_datalist() : void {
 			print "<datalist id='proposers'>";
 			foreach ($this->data as $proposer)
 				print "<option value='{$proposer->get_name()}'>";
@@ -138,7 +138,7 @@
 		}
 
 		// Print proposer statistic
-		function print_statistic() {
+		function print_statistic() : void {
 			$props = array_map(
 				function(Proposer $prop) {
 					$first = "<td>".$prop->to_string(true)."</td>";
@@ -151,12 +151,12 @@
 			print "</tr></tbody></table>";
 		}
 
-		function write(SQLDatabase $pb) {
+		function write(SQLDatabase $pb) : void {
 			foreach ($this->data as &$proposer)
 				$proposer->write($pb);
 		}
 
-		function set_for_file(SQLDatabase $pb, int $id) {
+		function set_for_file(SQLDatabase $pb, int $id) : void {
 			$pb->exec("DELETE FROM fileproposers WHERE file_id=$id");
 			$stmt = $pb->prepare("INSERT INTO fileproposers (file_id, proposer_id) VALUES ($id, $1)");
 			foreach ($this->data as $proposer)
@@ -186,7 +186,7 @@
 	}
 
 	// Print a datalist containing all names of proposers from the past
-	function proposers_datalist(SQLDatabase $pb)
+	function proposers_datalist(SQLDatabase $pb) : void
 	{
 		$proposers = new ProposerList;
 		$proposers->get($pb, array("DISTINCT name"));
@@ -194,7 +194,7 @@
 	}
 
 	// Print the proposer form for the problems and solutions pages
-	function proposer_form(SQLDatabase $pb, string $form, ProposerList $proposers)
+	function proposer_form(SQLDatabase $pb, string $form, ProposerList $proposers) : void
 	{
 		proposers_datalist($pb);
 		print "<div id='proplist'><input type='hidden' name='propnums'/></div>";

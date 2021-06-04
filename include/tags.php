@@ -43,7 +43,7 @@
 			return true;
 		}
 
-		function from_name(SQLDatabase $pb, string $name, int $rights = ACCESS_READ) {
+		function from_name(SQLDatabase $pb, string $name, int $rights = ACCESS_READ) : void {
 			$split = explode("/", $name);
 			if (count($split) == 1)
 				$private = false;
@@ -93,7 +93,7 @@
 		}
 
 		// Write tag to database
-		function write(SQLDatabase $pb) {
+		function write(SQLDatabase $pb) : void {
 			if (!$this->writeable) return;
 
 			// Sanitize data
@@ -125,7 +125,7 @@
 		}
 
 		// Execute SQL statement with $1 = $id
-		function exec_id(SQLStmt $stmt) {
+		function exec_id(SQLStmt $stmt) : void {
 			$stmt->bind(1, $this->data["id"], SQLTYPE_INTEGER);
 			$stmt->exec();
 		}
@@ -196,7 +196,7 @@
 		}
 
 		// Construct from a comma-separated list of names
-		function from_list(SQLDatabase $pb, string $list) {
+		function from_list(SQLDatabase $pb, string $list) : void {
 			foreach (explode(",", $list) as $name) {
 				$tag = new Tag();
 				if ($name == "") continue;
@@ -205,12 +205,12 @@
 			}
 		}
 
-		function get(SQLDatabase $pb, array $fields, int $rights = ACCESS_READ) {
+		function get(SQLDatabase $pb, array $fields, int $rights = ACCESS_READ) : void {
 			$tags = $pb->query("SELECT ".implode(", ", $fields)." FROM tags WHERE ".Tag::tag_restr($rights, true));
 			$this->__construct($tags);
 		}
 
-		function from_file(SQLDatabase $pb, int $id) {
+		function from_file(SQLDatabase $pb, int $id) : void {
 			$tags = $pb->query("SELECT name, description, color, hidden, private_user FROM tag_list JOIN tags "
 				."ON tag_list.tag_id=tags.id WHERE problem_id=$id".Tag::tag_restr(ACCESS_READ));
 			$this->__construct($tags);
@@ -228,7 +228,7 @@
 		}
 
 		// Print a HTML <select> element for tags with the tags as options
-		function print_select(string $onchange, string $default, string $name = "") {
+		function print_select(string $onchange, string $default, string $name = "") : void {
 			print "<select ".(($name != "") ? "name = '$name' " : "")."onchange=\"$onchange\" value=''>";
 			print "<option selected value=''>&mdash;$default&mdash;</option>";
 
@@ -251,7 +251,7 @@
 		}
 
 		// Add the tags to file $id, and remove all others
-		function set_for_file(SQLDatabase $pb, int $id) {
+		function set_for_file(SQLDatabase $pb, int $id) : void {
 			$pb->exec("DELETE FROM tag_list WHERE problem_id=$id AND "
 				."EXISTS (SELECT id FROM tags WHERE tag_list.tag_id=tags.id AND "
 				."(private_user ISNULL OR private_user={$_SESSION["user_id"]}))");
@@ -269,7 +269,7 @@
 		}
 
 		// Print tag statistic
-		function print_statistic() {
+		function print_statistic() : void {
 			if (!count($this->data))
 				return;
 
@@ -292,7 +292,7 @@
 	}
 
 	// Print the tag form
-	function tag_form(SQLDatabase $pb, string $form, TagList $taglist) {
+	function tag_form(SQLDatabase $pb, string $form, TagList $taglist) : void {
 		$tags = new TagList;
 		$tags->get($pb, array("name", "private_user"));
 		$tags->print_select("tagList.add(this.value); this.value='';", "Tag hinzufügen");

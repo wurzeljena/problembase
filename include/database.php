@@ -6,7 +6,7 @@
 
 		// prepare statement: placeholders are $1, $2, ...; to be used in this order
 		function prepare(string $stmt) : SQLStmt;
-		function exec(string $stmt);
+		function exec(string $stmt) : void;
 
 		function lastInsertRowid(string $table, string $col) : int;
 		static function escape(?string $val) : ?string;
@@ -14,7 +14,7 @@
 
 		function ftsCond(string $col, string $search) : string;
 
-		function close();
+		function close() : void;
 	}
 
 	// Constants for $type in SQLStmt::bind.
@@ -25,7 +25,7 @@
 	define("SQLTYPE_BLOB", 4);
 
 	interface SQLStmt {
-		function bind(string $param, $value, int $type);
+		function bind(string $param, $value, int $type) : void;
 		function exec() : SQLResult;
 	}
 
@@ -57,7 +57,7 @@
 			return new SQLiteStmt($obj);
 		}
 
-		function exec(string $stmt) {
+		function exec(string $stmt) : void {
 			$this->db->exec($stmt);
 		}
 
@@ -77,7 +77,7 @@
 			return "$col MATCH '$search'";
 		}
 
-		function close() {
+		function close() : void {
 			$this->db->close();
 		}
 	}
@@ -95,7 +95,7 @@
 			$this->stmt = $stmt;
 		}
 
-		function bind(string $param, $value, int $type) {
+		function bind(string $param, $value, int $type) : void {
 			$this->stmt->bindValue($param, $value, self::$sqlite3_map[$type]);
 		}
 
@@ -148,7 +148,7 @@
 			return new PostgresStmt($this->conn, $hash);
 		}
 
-		function exec(string $stmt) {
+		function exec(string $stmt) : void {
 			pg_exec($this->conn, $stmt);
 		}
 
@@ -170,7 +170,7 @@
 			return "to_tsvector('german', $col) @@ to_tsquery('german', '$search')";
 		}
 
-		function close() {
+		function close() : void {
 			pg_close($this->conn);
 		}
 	}
@@ -185,7 +185,7 @@
 			$this->name = $name;
 		}
 
-		function bind(string $param, $value, $type) {
+		function bind(string $param, $value, $type) : void {
 			$this->params[$param] = $value;
 		}
 

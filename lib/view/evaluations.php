@@ -8,7 +8,7 @@
 		}
 
 		// Print as HTML
-		function print_html(bool $link) {
+		function print_html(bool $link) : void {
 			print "<article class='comment".($this->data['user_id']==$_SESSION['user_id'] ? " own" : "")
 				.($this->data['editorial'] ? " editorial" : "")."'>";
 			if ($this->data['user_id'] == $_SESSION['user_id'])
@@ -41,7 +41,7 @@
 		private array $data = array();    // Array of Evaluation objects
 
 		// Evaluations for a problem
-		function get_for_problem(SQLDatabase $pb, int $problem_id) {
+		function get_for_problem(SQLDatabase $pb, int $problem_id) : void {
 			$cond = $_SESSION['editor'] ? "" : " AND (editorial=0 OR user_id={$_SESSION["user_id"]})";
 			$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE problem_id=$problem_id".$cond);
 			while ($comment = $comments->fetchAssoc())
@@ -49,7 +49,7 @@
 		}
 
 		// Evaluations for one user
-		function get_for_user(SQLDatabase $pb, int $user_id) {
+		function get_for_user(SQLDatabase $pb, int $user_id) : void {
 			$cond = $_SESSION['editor'] ? "" : " AND (editorial=0 OR user_id={$_SESSION["user_id"]})";
 			$comments = $pb->query("SELECT * FROM comments JOIN users ON comments.user_id=users.id WHERE user_id=$user_id".$cond);
 			while ($comment = $comments->fetchAssoc())
@@ -57,7 +57,7 @@
 		}
 
 		// Print them all
-		function print_html(bool $link) {
+		function print_html(bool $link) : void {
 			foreach($this->data as $comment)
 				$comment->print_html($link);
 		}

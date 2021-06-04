@@ -25,7 +25,7 @@
 		}
 
 		// translate filter criterions to SQL
-		function construct_query(SQLDatabase $pb, ?array $order = null) {
+		function construct_query(SQLDatabase $pb, ?array $order = null) : void {
 			$query = "SELECT problems.file_id, problems.proposed, letter, number, month, year "
 				."FROM problems LEFT JOIN published ON problems.file_id=published.problem_id";
 
@@ -96,7 +96,7 @@
 		}
 
 		// filter tasks, save the result in the session cache and return the index
-		function filter(bool $cache = false) {
+		function filter(bool $cache = false) : void {
 			// write results to array
 			$res = $this->query->exec();
 			$this->array = array();
@@ -116,7 +116,7 @@
 		private static ?SQLStmt $query = null;  // Constructor query
 
 		// Prepare query
-		private static function prepareQuery(SQLDatabase $pb) {
+		private static function prepareQuery(SQLDatabase $pb) : void {
 			self::$query = $pb->prepare("SELECT problems.*, files.content AS problem, "
 				."(SELECT COUNT(solutions.file_id) FROM solutions WHERE problems.file_id=solutions.problem_id) AS numsol, "
 				."(SELECT COUNT(comments.user_id) FROM comments WHERE problems.file_id=comments.problem_id) AS numcomm, "
@@ -141,7 +141,7 @@
 		}
 
 		// Print problem as HTML, write tag code in string
-		function print_html(string &$tag_code, int $num = -1) {
+		function print_html(string &$tag_code, int $num = -1) : void {
 			print "<article class='task".($this->data['public'] ? "" : " nonpublic")."'"
 				.($num != -1 ? " id='prob$num'" : "").">\n";
 			print "<div class='info top'>";
@@ -183,14 +183,14 @@
 		}
 
 		// Print simplified for forms
-		function print_simplified() {
+		function print_simplified() : void {
 			print "<div class='problem'>";
 			print htmlspecialchars($this->data['problem']);
 			print "</div>";
 		}
 
 		// Print problem as TeX code
-		function print_tex(bool $bare = false) {
+		function print_tex(bool $bare = false) : void {
 			if (!$bare)
 				print "\\aufbox";
 			print "{\${$this->data['letter']}\,{$this->data['number']}$}{";
@@ -201,7 +201,7 @@
 		}
 
 		// Print form
-		function print_form(SQLDatabase $pb) {
+		function print_form(SQLDatabase $pb) : void {
 			?>
 	<form class="task" id="task" title="Aufgabenformular" action="<?=WEBROOT?>/submit/<?= $this->is_valid() ? $this->data["file_id"]: "" ?>" method="POST">
 		<?php
@@ -233,7 +233,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 <?php	}
 
 		// Print the tag selector for the problem
-		function tag_selector(SQLDatabase $pb) {
+		function tag_selector(SQLDatabase $pb) : void {
 			// create empty div for tags
 			print "<div class='tag_selector'><i class='fa fa-tags'></i></div>";
 
@@ -250,7 +250,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		}
 
 		// print the publishing form
-		function publish_form() {
+		function publish_form() : void {
 			if (isset($this->data["year"]))
 				$volume = $this->data["month"]."/".
 					str_pad($this->data["year"]%100, 2, "0", STR_PAD_LEFT);
@@ -306,7 +306,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		}
 
 		// print given tasks as HTML
-		function print_html() {
+		function print_html() : void {
 			// Code for writing tags
 			$tag_code = "(function () {var taglists = document.getElementsByClassName('tags');";
 
@@ -318,7 +318,7 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		}
 
 		// print published tasks as TeX
-		function print_tex() {
+		function print_tex() : void {
 			print "\\documentclass[exercises]{wurzel2008}\n\\title{\\Wurzel-Aufgaben}\n\n"
 				."\\begin{document}\n\\maketitle\n";
 

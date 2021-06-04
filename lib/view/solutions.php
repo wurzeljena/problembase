@@ -44,7 +44,7 @@
 		}
 
 		// Print solution as HTML
-		function print_html(bool $edit, bool $linkback) {
+		function print_html(bool $edit, bool $linkback) : void {
 			print '<article class="solution'.($this->data['public'] ? "" : " nonpublic").'">';
 			if ($edit)
 				print "<a class='button inner' href='".WEBROOT."/problem/{$this->data['problem_id']}/solution/{$this->data['file_id']}'><i class='fa fa-pencil'></i> <span>Bearbeiten</span></a>\n";
@@ -64,7 +64,7 @@
 		}
 
 		// Print the solution as TeX code
-		function print_tex() {
+		function print_tex() : void {
 			print "\\losbox";
 			$this->problem->print_tex(true);
 			print "\n{Lösung von ";
@@ -73,7 +73,7 @@
 		}
 
 		// Print form
-		function print_form(SQLDatabase $pb) { ?>
+		function print_form(SQLDatabase $pb) : void { ?>
 	<form class="solution" id="solution" title="Lösungsformular"
 		action="<?=WEBROOT?>/submit/<?=$this->data['problem_id']?>/<?php if (!$this->is_empty()) print $this->data["file_id"]; ?>" method="POST">
 		<?php
@@ -161,13 +161,13 @@ Enthält sie eine '~', so wird die Autorenliste darum ergänzt, diese wird ansta
 		}
 
 		// Print solutions as HTML
-		function print_html(bool $edit, bool $linkback = false) {
+		function print_html(bool $edit, bool $linkback = false) : void {
 			foreach ($this->solutions as $solution)
 				$solution->print_html($edit, $linkback);
 		}
 
 		// Print published solutions and their respective problems as TeX
-		function print_tex(int $probyear, int $period) {
+		function print_tex(int $probyear, int $period) : void {
 			$monbegin = ($period == 1) ? 1 : 7;
 			$monend = $monbegin + 5;
 
