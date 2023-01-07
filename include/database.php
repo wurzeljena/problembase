@@ -25,7 +25,7 @@
 	define("SQLTYPE_BLOB", 4);
 
 	interface SQLStmt {
-		function bind(string $param, $value, int $type) : void;
+		function bind(int $param, $value, int $type) : void;
 		function exec() : SQLResult;
 	}
 
@@ -95,7 +95,7 @@
 			$this->stmt = $stmt;
 		}
 
-		function bind(string $param, $value, int $type) : void {
+		function bind(int $param, $value, int $type) : void {
 			$this->stmt->bindValue($param, $value, self::$sqlite3_map[$type]);
 		}
 
@@ -185,7 +185,7 @@
 			$this->name = $name;
 		}
 
-		function bind(string $param, $value, $type) : void {
+		function bind(int $param, $value, $type) : void {
 			$this->params[$param] = $value;
 		}
 
