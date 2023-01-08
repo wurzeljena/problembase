@@ -52,7 +52,7 @@
 		}
 
 		function prepare(string $stmt) : SQLStmt {
-			$mod_stmt = preg_replace('/\$\d/', "?", $stmt);
+			$mod_stmt = preg_replace('/\$(\d*)/', "?$1", $stmt);
 			$obj = $this->db->prepare($mod_stmt);
 			return new SQLiteStmt($obj);
 		}
