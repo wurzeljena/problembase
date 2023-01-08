@@ -1,10 +1,10 @@
 <?php
-	function printhead($title = "", $ok = true) {
+	function printhead(?string $title = null, bool $ok = true) : void {
 ?>
 <!DOCTYPE html>
 <html lang="de-DE">
 <head>
-	<title><?=$title.($title ? " &middot; " : "")?>Aufgabendatenbank</title>
+	<title><?=(is_null($title) ? "" : "$title &middot; ")?>Aufgabendatenbank</title>
 	<meta charset="UTF-8">
 	<meta name="author" content="Wurzel e.V."/>
 	<meta name="viewport" content="user-scalable=no,width=device-width">
@@ -25,7 +25,7 @@
 </head>
 <?php }
 
-function drawMenu($id) { ?>
+function drawMenu(string $id) : void { ?>
 	<nav id="<?=$id?>">
 	<ul>
 		<li><a href="<?=WEBROOT?>/browse"><i class="fa fa-home"></i> <span>Übersicht</span></a>
@@ -44,7 +44,7 @@ function drawMenu($id) { ?>
 	</nav>
 <?php }
 
-	function printheader() { ?>
+	function printheader() : void { ?>
 <div class="head"><div class="center">
 	<?php drawMenu("headermenu"); ?>
 	<a id="logo" style="letter-spacing:-2px;" href="<?=WEBROOT?>/"><span style="font-size:115%;">&#x221A;</span><span style="text-decoration:overline">WURZEL</span></a>
@@ -69,7 +69,7 @@ function drawMenu($id) { ?>
 </div></div>
 <?php }
 
-	function printcalendar($year, $month) { ?>
+	function printcalendar(int $year, int $month) : void { ?>
 	<div id="calendar">
 		<div style="text-align:center;"><a class="dirbutton fa fa-arrow-circle-left" href="javascript:calendar.incr_decade(-1)"></a><div id="years"></div>
 			<a class="dirbutton fa fa-arrow-circle-right" href="javascript:calendar.incr_decade(1)"></a>
